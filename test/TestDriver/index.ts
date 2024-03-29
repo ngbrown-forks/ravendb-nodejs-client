@@ -23,7 +23,6 @@ import * as proxyAgent from "http-proxy-agent";
 import * as http from "http";
 import { Stopwatch } from "../../src/Utility/Stopwatch";
 import { delay } from "../../src/Utility/PromiseUtil";
-import * as open from "open";
 import { ClusterTestContext } from "../Utils/TestUtil";
 import { GetIndexErrorsOperation } from "../../src";
 import { TimeUtil } from "../../src/Utility/TimeUtil";
@@ -300,14 +299,9 @@ export abstract class RavenTestDriver {
         // eslint-disable-next-line no-console
         console.log(url);
 
-        if (os.platform() === "win32") {
-            // noinspection JSIgnoredPromiseFromCall
-            open(url);
-        } else {
-            spawn("xdg-open", [url], {
-                detached: true
-            });
-        }
+        import("open").then(open => {
+            open.default(url);
+        })
     }
 
     public setupRevisions(

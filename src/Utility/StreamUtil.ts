@@ -1,22 +1,11 @@
 import * as stream from "readable-stream";
-import * as promisify from "util.promisify";
+import { promisify } from "node:util";
 
 export const finishedAsync: (src: any) => Promise<any> =
     promisify(stream.finished);
 export const pipelineAsync: (...src: stream.Stream[]) => Promise<any> =
     promisify(stream.pipeline);
 
-export function reduceStreamToPromise<T>(
-    readable: stream.Readable,
-    dataCallback?: (result: T, chunk: any) => T,
-    seed?: T): Promise<T> {
-    if (dataCallback) {
-        readable.on("data", data => seed = dataCallback(seed, data));
-    }
-
-    return finishedAsync(readable)
-        .then(() => seed);
-}
 
 export async function readToBuffer(stream: stream.Stream): Promise<Buffer> {
     const chunks: Uint8Array[] = [];
