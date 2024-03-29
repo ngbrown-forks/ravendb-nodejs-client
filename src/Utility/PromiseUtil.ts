@@ -1,16 +1,16 @@
-import * as BluebirdPromise from "bluebird";
 import { getError } from "../Exceptions";
 import { clearTimeout } from "timers";
 
 export interface IDefer<TResult> {
     resolve: (value: TResult) => void;
     reject: (error: any) => void;
-    promise: BluebirdPromise<TResult>;
+    isFulfilled: boolean;
+    promise: Promise<TResult>;
 }
 
-export function raceToResolution<TResult>(
-    promises: BluebirdPromise<TResult>[],
-    onErrorCallback?: (err) => void): BluebirdPromise<TResult> {
+export async function raceToResolution<TResult>(
+    promises: Promise<TResult>[],
+    onErrorCallback?: (err) => void): Promise<TResult> {
 
     // There is no way to know which promise is rejected.
     // So we map it to a new promise to return the index when it fails
@@ -19,7 +19,9 @@ export function raceToResolution<TResult>(
             throw index;
         }));
 
-    return BluebirdPromise.race(indexPromises).catch(index => {
+    try {
+        return await Promise.race(indexPromises);
+    } catch (index) {
         // The promise has rejected, remove it from the list of promises and just continue the race.
         const p = promises.splice(index, 1)[0];
         p.catch(err => {
@@ -28,20 +30,25 @@ export function raceToResolution<TResult>(
             }
         });
         return raceToResolution(promises);
-    });
+    }
 }
 
 export function defer<T>(): IDefer<T> {
     let resolve: (value: T) => void;
     let reject: (error: any) => void;
-    const promise = new BluebirdPromise<T>(function (res, rej) {
-        resolve = res;
+    let isFulfilled = false;
+    const promise = new Promise<T>(function (res, rej) {
+        resolve = v => {
+            isFulfilled = true;
+            res(v);
+        }
         reject = rej;
     });
     return {
         resolve,
         reject,
-        promise
+        promise,
+        isFulfilled
     };
 }
 

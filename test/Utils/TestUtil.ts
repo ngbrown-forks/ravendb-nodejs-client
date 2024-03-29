@@ -23,11 +23,10 @@ import {
 import * as rimraf from "rimraf";
 import { ChildProcess } from "child_process";
 import { TypeUtil } from "../../src/Utility/TypeUtil";
-import * as BluebirdPromise from "bluebird";
 import { getLogger } from "../../src/Utility/LogUtil";
 import { AdminJsConsoleOperation } from "./AdminJsConsoleOperation";
 import { Stopwatch } from "../../src/Utility/Stopwatch";
-import { delay } from "../../src/Utility/PromiseUtil";
+import { delay, wrapWithTimeout } from "../../src/Utility/PromiseUtil";
 import moment = require("moment");
 import { INDEXES } from "../../src/Constants";
 
@@ -243,17 +242,15 @@ export class RavenTestContext extends RavenTestDriver implements IDisposable {
             }
         }
 
-        new BluebirdPromise(resolve => {
+        const executorsDisposedTask = new Promise<void>(resolve => {
             if (store) {
                 store.on("executorsDisposed", () => resolve());
             } else {
                 resolve();
             }
-        })
-            .timeout(2000)
-            .finally(() => {
-                this.stopServerProcess(p);
-            });
+        });
+        wrapWithTimeout(executorsDisposedTask, 2000)
+            .finally(() => this.stopServerProcess(p));
 
         if (store) {
             store.dispose();
@@ -391,24 +388,22 @@ export class RavenTestContext extends RavenTestDriver implements IDisposable {
         const STORE_DISPOSAL_TIMEOUT = 10000;
         const storeDisposalPromises = [...this._documentStores].map(async (store) => {
             try {
-                const result = new BluebirdPromise((resolve) => {
+                const result = new Promise<void>((resolve) => {
                     store.once("executorsDisposed", () => {
                         resolve();
                     });
                 })
-                    .timeout(STORE_DISPOSAL_TIMEOUT)
-                    .then(() => null);
 
                 store.dispose();
-                return result;
+                return wrapWithTimeout(result, STORE_DISPOSAL_TIMEOUT);
             } catch (err) {
                 return getError("TestDriverTeardownError", "Error disposing document store", err);
             }
         });
 
-        BluebirdPromise.all(storeDisposalPromises)
+        Promise.all(storeDisposalPromises)
             .then((errors) => {
-                const anyErrors = errors.filter(x => !!x);
+                const anyErrors = errors.filter(x => x) as Error[];
                 if (anyErrors.length) {
                     throw new MultiError(anyErrors);
                 }

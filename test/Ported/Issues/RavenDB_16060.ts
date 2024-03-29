@@ -12,7 +12,7 @@ import { User } from "../../Assets/Entities";
 import { assertThat } from "../../Utils/AssertExtensions";
 import { TimeValue } from "../../../src/Primitives/TimeValue";
 import { StockPrice } from "../TimeSeries/TimeSeriesTypedSession";
-import { delay } from "bluebird";
+import { delay } from "../../../src/Utility/PromiseUtil";
 
 (RavenTestContext.isPullRequest ? describe.skip : describe)("RavenDB_16060Test", function () {
 

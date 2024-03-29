@@ -31,7 +31,7 @@ export class DatabaseConnectionState implements IChangesConnectionState<Database
     private _connected: Promise<void>;
 
     public set(connection: Promise<void>): void {
-        if (!this._firstSet.promise.isFulfilled()) {
+        if (!this._firstSet.isFulfilled) {
             connection
                 .then(() => {
                     this._firstSet.resolve(undefined);

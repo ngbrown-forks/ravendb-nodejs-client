@@ -88,7 +88,7 @@ export class DatabaseChanges implements IDatabaseChanges {
                 return;
             }
 
-            if (this._tcs.promise.isFulfilled()) {
+            if (this._tcs.isFulfilled) {
                 this._tcs = PromiseUtil.defer<IDatabaseChanges>();
             }
         } finally {

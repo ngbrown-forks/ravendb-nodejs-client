@@ -1,5 +1,4 @@
 import { v4 as uuidv4 } from "uuid";
-import * as BluebirdPromise from "bluebird";
 
 import { throwError } from "../Exceptions";
 import { RequestExecutor } from "../Http/RequestExecutor";
@@ -20,6 +19,7 @@ import { DatabaseChangesOptions } from "./Changes/DatabaseChangesOptions";
 import { IDisposable } from "../Types/Contracts";
 import { MultiDatabaseHiLoIdGenerator } from "./Identity/MultiDatabaseHiLoIdGenerator";
 import { TypeUtil } from "../Utility/TypeUtil";
+import { wrapWithTimeout } from "../Utility/PromiseUtil";
 
 const log = getLogger({ module: "DocumentStore" });
 
@@ -112,21 +112,24 @@ export class DocumentStore extends DocumentStoreBase {
             // if this is still going, we continue with disposal, it is for graceful shutdown only, anyway
         */
 
-        const disposeChain = BluebirdPromise.resolve();
+        const disposeChain = Promise.resolve();
 
         disposeChain
-            .then(() => {
+            .then(async () => {
                 if (this._multiDbHiLo) {
-                    return Promise.resolve()
-                        .then(() => this._multiDbHiLo.returnUnusedRange())
-                        .catch(err => this._log.warn("Error returning unused ID range.", err));
+                    try {
+                        await Promise.resolve();
+                        return await this._multiDbHiLo.returnUnusedRange();
+                    } catch (err) {
+                        return await this._log.warn("Error returning unused ID range.", err);
+                    }
                 }
             })
-            .then(() => {
+            .then(async () => {
                 this._disposed = true;
                 this.subscriptions.dispose();
 
-                return new BluebirdPromise((resolve, reject) => {
+                const task = new Promise<void>((resolve, reject) => {
                     let listenersExecCallbacksCount = 0;
                     const listenersCount = this.listenerCount("afterDispose");
                     if (listenersCount === 0) {
@@ -138,9 +141,13 @@ export class DocumentStore extends DocumentStoreBase {
                             }
                         });
                     }
-                })
-                .timeout(5000)
-                .catch((err) => this._log.warn(`Error handling 'afterDispose'`, err));
+                });
+
+                try {
+                    return await wrapWithTimeout(task, 5_000);
+                } catch (err) {
+                    return await this._log.warn(`Error handling 'afterDispose'`, err);
+                }
             })
             .then(() => {
                 this._log.info(`Disposing request executors ${this._requestExecutors.size}`);

@@ -1,4 +1,3 @@
-import * as BluebirdPromise from "bluebird";
 import { IDisposable } from "../Types/Contracts";
 import { getLogger } from "../Utility/LogUtil";
 
@@ -47,10 +46,18 @@ export class Timer implements IDisposable {
 
     private _timerAction() {
         log.info(`Start timer action ${this._action.name}`);
-        const actionPromise = BluebirdPromise.resolve(this._action())
-            .tapCatch(reason => log.warn(`Error executing timer action ${this._action.name}.`, reason))
-            .finally(() => log.info(`Finish timer action ${this._action.name}.`));
-        this._scheduledActionPromise = Promise.resolve(actionPromise);
+
+        const actionPromise = async () => {
+            try {
+                return await this._action();
+            } catch (e) {
+                log.warn(`Error executing timer action ${this._action.name}.`, e);
+                throw e;
+            } finally {
+                log.info(`Finish timer action ${this._action.name}.`)
+            }
+        }
+        this._scheduledActionPromise = actionPromise();
     }
 
     private _clearTimers() {

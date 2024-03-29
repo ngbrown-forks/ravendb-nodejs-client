@@ -1,7 +1,6 @@
 import { GetClusterTopologyCommand } from "../ServerWide/Commands/GetClusterTopologyCommand";
 import { NodeSelector } from "./NodeSelector";
 import * as os from "os";
-import * as BluebirdPromise from "bluebird";
 import * as semaphore from "semaphore";
 import { getLogger } from "../Utility/LogUtil";
 import { RequestExecutor, IRequestExecutorOptions } from "./RequestExecutor";
@@ -103,7 +102,7 @@ export class ClusterRequestExecutor extends RequestExecutor {
         });
     }
 
-    public updateTopology(parameters: UpdateTopologyParameters): Promise<boolean> {
+    public async updateTopology(parameters: UpdateTopologyParameters): Promise<boolean> {
         if (this._disposed) {
             return Promise.resolve(false);
         }
@@ -113,40 +112,39 @@ export class ClusterRequestExecutor extends RequestExecutor {
         }
 
         const acquiredSemContext = acquireSemaphore(this._clusterTopologySemaphore, { timeout: parameters.timeoutInMs });
-        const result = BluebirdPromise.resolve(acquiredSemContext.promise)
-            .then(() => {
-                if (this._disposed) {
-                    return false;
-                }
+        try {
+            await acquiredSemContext.promise;
 
-                const command = new GetClusterTopologyCommand(parameters.debugTag);
-                return this.execute(command, null, {
-                    chosenNode: parameters.node,
-                    nodeIndex: null,
-                    shouldRetry: false
-                })
-                    .then(() => {
-                        const results = command.result;
-                        const nodes = ServerNode.createFrom(results.topology);
+            if (this._disposed) {
+                return false;
+            }
 
-                        const newTopology = new Topology(results.etag, nodes);
+            const command = new GetClusterTopologyCommand(parameters.debugTag);
+            await this.execute(command, null, {
+                chosenNode: parameters.node,
+                nodeIndex: null,
+                shouldRetry: false
+            });
 
-                        this._updateNodeSelector(newTopology, parameters.forceUpdate);
+            const results = command.result;
+            const nodes = ServerNode.createFrom(results.topology);
 
-                        this._onTopologyUpdatedInvoke(newTopology);
-                    })
-                    .then(() => true);
+            const newTopology = new Topology(results.etag, nodes);
 
-            }, (reason: Error) => {
-                if (reason.name === "TimeoutError") {
-                    return false;
-                }
+            this._updateNodeSelector(newTopology, parameters.forceUpdate);
 
-                throw reason;
-            })
-            .finally(() => acquiredSemContext.dispose());
+            this._onTopologyUpdatedInvoke(newTopology);
 
-        return Promise.resolve(result);
+            return true;
+        } catch (reason) {
+            if (reason.name === "TimeoutError") {
+                return false;
+            }
+
+            throw reason;
+        } finally {
+            acquiredSemContext.dispose();
+        }
     }
 
     protected _updateClientConfigurationAsync(serverNode: ServerNode): Promise<void> {

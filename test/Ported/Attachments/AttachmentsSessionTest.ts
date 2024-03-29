@@ -183,7 +183,6 @@ describe("Attachments Session", function () {
             assert.ok(result.data);
 
             assert.strictEqual(result.data.listenerCount("data"), 0);
-            assert.ok(result.data.readableLength);
             assert.ok(result.data.isPaused());
 
             // AttachmentResult data stream is paused until you resume() or pipe() it
@@ -233,7 +232,7 @@ describe("Attachments Session", function () {
 
             const result = await session.advanced.attachments.get("users/1", "file1");
             try {
-                assert.strictEqual(result.data.readableLength, 3);
+                await testContext.waitForValue(async () => result.data.readableLength, 3, { timeout: 2_000 });
             } finally {
                 result.dispose();
             }

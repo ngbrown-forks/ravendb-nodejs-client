@@ -1,7 +1,7 @@
 import * as assert from "assert";
 import * as SemaphoreUtil from "../../src/Utility/SemaphoreUtil";
 import * as semaphore from "semaphore";
-import { delay } from "bluebird";
+import { delay } from "../../src/Utility/PromiseUtil";
 
 describe("SemaphoreUtil", function () {
 

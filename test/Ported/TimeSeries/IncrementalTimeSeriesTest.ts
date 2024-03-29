@@ -11,7 +11,7 @@ import { disposeTestDocumentStore, RavenTestContext, testContext } from "../../U
 import { User } from "../../Assets/Entities";
 import { assertThat, assertThrows } from "../../Utils/AssertExtensions";
 import { TimeValue } from "../../../src/Primitives/TimeValue";
-import { delay } from "bluebird";
+import { delay } from "../../../src/Utility/PromiseUtil";
 
 
 const INCREMENTAL_TS_NAME = HEADERS.INCREMENTAL_TIME_SERIES_PREFIX + "HeartRate";

@@ -1,5 +1,4 @@
 import * as os from "os";
-import * as BluebirdPromise from "bluebird";
 import * as semaphore from "semaphore";
 import * as stream from "readable-stream";
 import { acquireSemaphore, SemaphoreAcquisitionContext } from "../Utility/SemaphoreUtil";
@@ -530,70 +529,68 @@ export class RequestExecutor implements IDisposable {
         }
     }
 
-    public updateTopology(parameters: UpdateTopologyParameters): Promise<boolean> {
+    public async updateTopology(parameters: UpdateTopologyParameters): Promise<boolean> {
         if (this._disableTopologyUpdates) {
-            return Promise.resolve(false);
+            return false;
         }
 
         if (this._disposed) {
-            return Promise.resolve(false);
+            return false;
         }
 
         const acquiredSemContext = acquireSemaphore(this._updateDatabaseTopologySemaphore, { timeout: parameters.timeoutInMs });
-        const result = BluebirdPromise.resolve(acquiredSemContext.promise)
-            .then(async () => {
-                    if (this._disposed) {
-                        return false;
-                    }
 
-                    this._log.info(`Update topology from ${parameters.node.url}.`);
+        try {
+            await acquiredSemContext.promise;
 
-                    const getTopology = new GetDatabaseTopologyCommand(parameters.debugTag, this.conventions.sendApplicationIdentifier ? parameters.applicationIdentifier : null);
+            if (this._disposed) {
+                return false;
+            }
 
-                    if (this._defaultTimeout != null && this._defaultTimeout > getTopology.timeout) {
-                        getTopology.timeout = this._defaultTimeout;
-                    }
+            this._log.info(`Update topology from ${parameters.node.url}.`);
 
-                    await this.execute(getTopology, null, {
-                        chosenNode: parameters.node,
-                        nodeIndex: null,
-                        shouldRetry: false,
-                    });
+            const getTopology = new GetDatabaseTopologyCommand(parameters.debugTag, this.conventions.sendApplicationIdentifier ? parameters.applicationIdentifier : null);
 
-                    const topology = getTopology.result;
-                    if (!this._nodeSelector) {
-                        this._nodeSelector = new NodeSelector(topology);
+            if (this._defaultTimeout != null && this._defaultTimeout > getTopology.timeout) {
+                getTopology.timeout = this._defaultTimeout;
+            }
 
-                        if (this.conventions.readBalanceBehavior === "FastestNode") {
-                            this._nodeSelector.scheduleSpeedTest();
-                        }
-
-                    } else if (this._nodeSelector.onUpdateTopology(topology, parameters.forceUpdate)) {
-                        this._disposeAllFailedNodesTimers();
-
-                        if (this.conventions.readBalanceBehavior === "FastestNode") {
-                            this._nodeSelector.scheduleSpeedTest();
-                        }
-                    }
-
-                    this._topologyEtag = this._nodeSelector.getTopology().etag;
-
-                    this._onTopologyUpdatedInvoke(topology);
-
-                    return true;
-                },
-                (reason: Error) => {
-                    if (reason.name === "TimeoutError") {
-                        return false;
-                    }
-
-                    throw reason;
-                })
-            .finally(() => {
-                acquiredSemContext.dispose();
+            await this.execute(getTopology, null, {
+                chosenNode: parameters.node,
+                nodeIndex: null,
+                shouldRetry: false,
             });
 
-        return Promise.resolve(result);
+            const topology = getTopology.result;
+            if (!this._nodeSelector) {
+                this._nodeSelector = new NodeSelector(topology);
+
+                if (this.conventions.readBalanceBehavior === "FastestNode") {
+                    this._nodeSelector.scheduleSpeedTest();
+                }
+
+            } else if (this._nodeSelector.onUpdateTopology(topology, parameters.forceUpdate)) {
+                this._disposeAllFailedNodesTimers();
+
+                if (this.conventions.readBalanceBehavior === "FastestNode") {
+                    this._nodeSelector.scheduleSpeedTest();
+                }
+            }
+
+            this._topologyEtag = this._nodeSelector.getTopology().etag;
+
+            this._onTopologyUpdatedInvoke(topology);
+
+            return true;
+        } catch (reason) {
+            if (reason.name === "TimeoutError") {
+                return false;
+            }
+
+            throw reason;
+        } finally {
+            acquiredSemContext.dispose();
+        }
     }
 
     protected _updateNodeSelector(topology: Topology, forceUpdate: boolean) {
@@ -1308,17 +1305,17 @@ export class RequestExecutor implements IDisposable {
     private _executeOnAllToFigureOutTheFastest<TResult>(
         chosenNode: ServerNode,
         command: RavenCommand<TResult>): Promise<{ response: HttpResponse, bodyStream: stream.Readable }> {
-        let preferredTask: BluebirdPromise<IndexAndResponse> = null;
+        let preferredTask: Promise<IndexAndResponse> = null;
 
         const nodes = this._nodeSelector.getTopology().nodes;
-        const tasks: BluebirdPromise<IndexAndResponse>[] = nodes.map(x => null);
+        const tasks: Promise<IndexAndResponse>[] = nodes.map(x => null);
 
-        let task: BluebirdPromise<IndexAndResponse>;
+        let task: Promise<IndexAndResponse>;
         for (let i = 0; i < nodes.length; i++) {
             const taskNumber = i;
             this.numberOfServerRequests++;
 
-            task = BluebirdPromise.resolve()
+            task = Promise.resolve()
                 .then(() => {
                     const req = this._createRequest(nodes[taskNumber], command, TypeUtil.NOOP);
                     if (!req) {
@@ -1330,7 +1327,7 @@ export class RequestExecutor implements IDisposable {
                 .then(commandResult => new IndexAndResponse(taskNumber, commandResult.response, commandResult.bodyStream))
                 .catch(err => {
                     tasks[taskNumber] = null;
-                    return BluebirdPromise.reject(err);
+                    return Promise.reject(err);
                 });
 
             if (nodes[i].clusterTag === chosenNode.clusterTag) {
