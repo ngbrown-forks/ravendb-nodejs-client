@@ -1,7 +1,7 @@
 import { AbstractJavaScriptIndexCreationTask, IDocumentStore } from "../../../src";
 import { disposeTestDocumentStore, RavenTestContext, testContext } from "../../Utils/TestUtil";
 import { assertThat } from "../../Utils/AssertExtensions";
-import { delay } from "bluebird";
+import { delay } from "../../../src/Utility/PromiseUtil";
 
 (RavenTestContext.is60Server || RavenTestContext.isPullRequest ? describe.skip : describe)("CanQueryAndIncludeRevisionsTest", function () {
 

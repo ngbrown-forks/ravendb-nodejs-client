@@ -1,5 +1,4 @@
-import * as BluebirdPromise from "bluebird";
-import { ChildProcess, spawn } from "child_process";
+import { ChildProcess } from "child_process";
 import * as os from "os";
 
 import { CONSTANTS } from "../../src/Constants";
@@ -22,8 +21,7 @@ import { RequestExecutor } from "../../src/Http/RequestExecutor";
 import * as proxyAgent from "http-proxy-agent";
 import * as http from "http";
 import { Stopwatch } from "../../src/Utility/Stopwatch";
-import { delay } from "../../src/Utility/PromiseUtil";
-import * as open from "open";
+import { delay, wrapWithTimeout } from "../../src/Utility/PromiseUtil";
 import { ClusterTestContext } from "../Utils/TestUtil";
 import { GetIndexErrorsOperation } from "../../src";
 import { TimeUtil } from "../../src/Utility/TimeUtil";
@@ -85,12 +83,13 @@ export abstract class RavenTestDriver {
             log.info("Exiting.");
         });
 
-        const scrapServerUrl = () => {
+        const scrapServerUrl = async () => {
             const SERVER_VERSION_REGEX = /Version (4.\d)/;
             const SERVER_URL_REGEX = /Server available on:\s*(\S+)\s*$/m;
             const serverProcess = process;
             let serverOutput = "";
-            const result = new BluebirdPromise<string>((resolve, reject) => {
+
+            const result = new Promise<string>((resolve, reject) => {
                 serverProcess.stderr
                     .on("data", (chunk) => serverOutput += chunk);
                 serverProcess.stdout
@@ -119,15 +118,14 @@ export abstract class RavenTestDriver {
                     .on("error", (err) => reject(err));
             });
 
-            // timeout if url won't show up after 5s
-            return result
-                // eslint-disable-next-line no-console
-                .tap(url => console.log("DEBUG: RavenDB server URL", url))
-                .timeout(5000)
-                .catch((err) => {
-                    throwError("UrlScrappingError", "Error scrapping URL from server process output: "
-                        + os.EOL + serverOutput, err);
-                });
+            try {
+                const url = await wrapWithTimeout(result, 5_000);
+                console.log("DEBUG: RavenDB server URL", url);
+                return url;
+            } catch (err) {
+                throwError("UrlScrappingError", "Error scrapping URL from server process output: "
+                    + os.EOL + serverOutput, err);
+            }
         };
 
         let serverUrl: string;
@@ -153,14 +151,14 @@ export abstract class RavenTestDriver {
         return store.initialize();
     }
 
-    public waitForIndexing(store: IDocumentStore): Promise<void>;
-    public waitForIndexing(store: IDocumentStore, database?: string): Promise<void>;
-    public waitForIndexing(store: IDocumentStore, database?: string, timeout?: number): Promise<void>;
-    public waitForIndexing(
+    public async waitForIndexing(store: IDocumentStore): Promise<void>;
+    public async waitForIndexing(store: IDocumentStore, database?: string): Promise<void>;
+    public async waitForIndexing(store: IDocumentStore, database?: string, timeout?: number): Promise<void>;
+    public async waitForIndexing(
         store: IDocumentStore, database?: string, timeout?: number, throwOnIndexErrors?: boolean): Promise<void>;
-    public waitForIndexing(
+    public async waitForIndexing(
         store: IDocumentStore, database?: string, timeout?: number, throwOnIndexErrors?: boolean, nodeTag?: string): Promise<void>;
-    public waitForIndexing(
+    public async waitForIndexing(
         store: IDocumentStore,
         database?: string,
         timeout?: number,
@@ -200,13 +198,12 @@ export abstract class RavenTestDriver {
             }
         };
 
-        const result = BluebirdPromise.resolve(pollIndexingStatus())
-            .timeout(timeout)
-            .tapCatch((err) => {
-                log.warn(err, "Wait for indexing timeout.");
-            });
-
-        return Promise.resolve(result);
+        try {
+            await wrapWithTimeout(pollIndexingStatus(), timeout);
+        } catch (err) {
+            log.warn(err, "Wait for indexing timeout.");
+            throw err;
+        }
     }
 
     public async waitForDocumentDeletion(store: IDocumentStore, id: string) {
@@ -300,14 +297,9 @@ export abstract class RavenTestDriver {
         // eslint-disable-next-line no-console
         console.log(url);
 
-        if (os.platform() === "win32") {
-            // noinspection JSIgnoredPromiseFromCall
-            open(url);
-        } else {
-            spawn("xdg-open", [url], {
-                detached: true
-            });
-        }
+        import("open").then(open => {
+            open.default(url);
+        })
     }
 
     public setupRevisions(

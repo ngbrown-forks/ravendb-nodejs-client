@@ -1,5 +1,4 @@
 import { OperationCompletionAwaiter } from "./OperationCompletionAwaiter";
-import * as BluebirdPromise from "bluebird";
 import {
     IOperation,
     AwaitableOperation,
@@ -75,41 +74,36 @@ export class OperationExecutor {
 
         await this._requestExecutor.execute(command as RavenCommand<TResult>, sessionInfo);
 
-        const result = BluebirdPromise.resolve()
-            .then(() => {
-                if (operation.resultType === "OperationId") {
-                    const idResult = command.result as OperationIdResult;
-                    return new OperationCompletionAwaiter(
-                        this._requestExecutor,
-                        this._requestExecutor.conventions,
-                        idResult.operationId,
-                        command.selectedNodeTag || idResult.operationNodeTag);
+        if (operation.resultType === "OperationId") {
+            const idResult = command.result as OperationIdResult;
+            return new OperationCompletionAwaiter(
+                this._requestExecutor,
+                this._requestExecutor.conventions,
+                idResult.operationId,
+                command.selectedNodeTag || idResult.operationNodeTag);
 
-                } else if (operation.resultType === "PatchResult") {
-                    const patchOperationResult = new PatchOperationResult<TResult>();
-                    if (command.statusCode === StatusCodes.NotModified) {
-                        patchOperationResult.status = "NotModified";
-                        return patchOperationResult;
-                    }
+        } else if (operation.resultType === "PatchResult") {
+            const patchOperationResult = new PatchOperationResult<TResult>();
+            if (command.statusCode === StatusCodes.NotModified) {
+                patchOperationResult.status = "NotModified";
+                return patchOperationResult;
+            }
 
-                    if (command.statusCode === StatusCodes.NotFound) {
-                        patchOperationResult.status = "DocumentDoesNotExist";
-                        return patchOperationResult;
-                    }
+            if (command.statusCode === StatusCodes.NotFound) {
+                patchOperationResult.status = "DocumentDoesNotExist";
+                return patchOperationResult;
+            }
 
-                    const patchResult = command.result as any as PatchResult;
-                    patchOperationResult.status = patchResult.status;
-                    const { conventions } = this._requestExecutor;
-                    conventions.tryRegisterJsType(documentType);
-                    const entityType = conventions.getJsTypeByDocumentType(documentType);
-                    patchOperationResult.document = conventions.deserializeEntityFromJson(
-                        entityType, patchResult.modifiedDocument) as TResult;
-                    return patchOperationResult;
-                }
+            const patchResult = command.result as any as PatchResult;
+            patchOperationResult.status = patchResult.status;
+            const { conventions } = this._requestExecutor;
+            conventions.tryRegisterJsType(documentType);
+            const entityType = conventions.getJsTypeByDocumentType(documentType);
+            patchOperationResult.document = conventions.deserializeEntityFromJson(
+                entityType, patchResult.modifiedDocument) as TResult;
+            return patchOperationResult;
+        }
 
-                return command.result as TResult;
-            });
-
-        return Promise.resolve(result);
+        return command.result as TResult;
     }
 }

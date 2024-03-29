@@ -2,9 +2,6 @@ const glob = require("glob");
 const fs = require("fs");
 const path = require("path");
 const os = require("os");
-const promisify = require("util.promisify");
-
-const globAsync = promisify(glob);
 
 const IGNORE_MODULES = [
     "**/*.d.ts",
@@ -91,7 +88,7 @@ const IGNORE_MODULES = [
 ];
 
 function main() {
-    return globAsync("**/*.ts", {
+    return glob.glob("**/*.ts", {
         cwd: path.join(__dirname, "../src"),
         ignore: IGNORE_MODULES
     })

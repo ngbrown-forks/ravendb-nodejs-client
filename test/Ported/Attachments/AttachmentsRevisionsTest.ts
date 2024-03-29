@@ -134,6 +134,8 @@ import { CONSTANTS } from "../../../src/Constants";
             const revision = await session.advanced.attachments.getRevision("users/1", "profile.png", changeVector);
 
             try {
+                await testContext.waitForValue(async () => revision.data.readableLength, 3, { timeout: 2_000 });
+
                 const data = revision.data.read(3);
                 assert.strictEqual(data[0], 1);
                 assert.strictEqual(data[1], 2);
