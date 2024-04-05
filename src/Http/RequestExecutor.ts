@@ -46,7 +46,7 @@ import {
 } from "../Documents/Session/SessionEvents";
 import { TimeUtil } from "../Utility/TimeUtil";
 import { UpdateTopologyParameters } from "./UpdateTopologyParameters";
-import { v4 as uuidv4 } from "uuid";
+import { randomUUID } from "node:crypto";
 import { DatabaseHealthCheckOperation } from "../Documents/Operations/DatabaseHealthCheckOperation";
 import { GetNodeInfoCommand } from "../ServerWide/Commands/GetNodeInfoCommand";
 
@@ -439,7 +439,7 @@ export class RequestExecutor implements IDisposable {
         // due to cloudflare constraints we can't init GLOBAL_APPLICATION_IDENTIFIER in static
 
         if (!this.GLOBAL_APPLICATION_IDENTIFIER) {
-            this.GLOBAL_APPLICATION_IDENTIFIER = uuidv4();
+            this.GLOBAL_APPLICATION_IDENTIFIER = randomUUID();
         }
 
         return this.GLOBAL_APPLICATION_IDENTIFIER;

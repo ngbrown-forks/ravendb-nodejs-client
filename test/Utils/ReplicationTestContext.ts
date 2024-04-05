@@ -12,7 +12,7 @@ import {
 import { Stopwatch } from "../../src/Utility/Stopwatch";
 import { DocumentType } from "../../src";
 import { delay } from "../../src/Utility/PromiseUtil";
-import { v4 as uuidv4 } from "uuid";
+import { randomUUID } from "node:crypto";
 import { assertThat } from "./AssertExtensions";
 import { ExternalReplicationBase } from "../../src/Documents/Replication/ExternalReplicationBase";
 import { UpdatePullReplicationAsSinkOperation } from "../../src/Documents/Operations/Replication/UpdatePullReplicationAsSinkOperation";
@@ -24,7 +24,7 @@ export class ReplicationTestContext {
     }
 
     public async ensureReplicating(src: IDocumentStore, dst: IDocumentStore) {
-        const id = "marker/" + uuidv4();
+        const id = "marker/" + randomUUID();
 
         {
             const s = src.openSession();

@@ -1,5 +1,5 @@
-import { v4 as uuidv4 } from "uuid";
 
+import { randomUUID } from "node:crypto";
 import { throwError } from "../Exceptions";
 import { RequestExecutor } from "../Http/RequestExecutor";
 import { getLogger } from "../Utility/LogUtil";
@@ -200,7 +200,7 @@ export class DocumentStore extends DocumentStoreBase {
         databaseOrSessionOptions = databaseOrSessionOptions || {} as any;
         const sessionOpts = databaseOrSessionOptions as SessionOptions;
 
-        const sessionId = uuidv4();
+        const sessionId = randomUUID();
         const session = new DocumentSession(this, sessionId, sessionOpts);
         this.registerEvents(session);
         this.emit("sessionCreated", { session });

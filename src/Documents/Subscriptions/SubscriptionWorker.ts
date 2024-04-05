@@ -35,7 +35,7 @@ import { DocumentConventions } from "../Conventions/DocumentConventions";
 import { ServerCasing, ServerResponse } from "../../Types";
 import { CONSTANTS } from "../../Constants";
 import { TcpNegotiationResponse } from "../../ServerWide/Tcp/TcpNegotiationResponse";
-import { v4 as uuidv4 } from "uuid";
+import { randomUUID } from "node:crypto";
 
 type EventTypes = "afterAcknowledgment" | "onEstablishedSubscriptionConnection" | "connectionRetry" | "batch" | "error" | "end" | "unexpectedSubscriptionError";
 
@@ -63,7 +63,7 @@ export class SubscriptionWorker<T extends object> implements IDisposable {
             maxDocsPerBatch: 4096,
             timeToWaitBeforeConnectionRetry: 5 * 1000,
             maxErroneousPeriod: 5 * 60 * 1000,
-            workerId: uuidv4()
+            workerId: randomUUID()
         }, options);
         this._revisions = withRevisions;
 

@@ -11,7 +11,7 @@ import { GetServerWideExternalReplicationOperation } from "../../../../../src/Se
 import { ServerWideExternalReplicationResponse } from "../../../../../src/ServerWide/Operations/OngoingTasks/ServerWideTaskResponse";
 import { assertThat } from "../../../../Utils/AssertExtensions";
 import { DeleteServerWideTaskOperation } from "../../../../../src/ServerWide/Operations/OngoingTasks/DeleteServerWideTaskOperation";
-import { v4 as uuidv4 } from "uuid";
+import { randomUUID } from "node:crypto";
 import { PutConnectionStringResult } from "../../../../../src/Documents/Operations/ConnectionStrings/PutConnectionStringOperation";
 
 (RavenTestContext.isPullRequest ? describe.skip : describe)("ServerWideReplicationTest", function () {
@@ -111,8 +111,8 @@ import { PutConnectionStringResult } from "../../../../../src/Documents/Operatio
             assertThat(record.ravenConnectionStrings)
                 .hasSize(1);
 
-            const dbName = "db/" + uuidv4();
-            const csName = "cs/" + uuidv4();
+            const dbName = "db/" + randomUUID();
+            const csName = "cs/" + randomUUID();
 
             const connectionString: RavenConnectionString = {
                 name: csName,
