@@ -1,6 +1,6 @@
-import * as md5 from "md5";
 import { TypeUtil } from "../../Utility/TypeUtil";
 import { TypesAwareObjectMapper } from "../../Mapping/ObjectMapper";
+import { createHash } from "node:crypto";
 
 const typeSignatures = {
     bigint: Buffer.from([1]),
@@ -18,7 +18,8 @@ export class HashCalculator {
     private _buffers: Buffer[] = [];
 
     public getHash(): string {
-        return md5(Buffer.concat(this._buffers));
+        const buffer= Buffer.concat(this._buffers);
+        return createHash("md5").update(buffer).digest("hex");
     }
 
     //TBD 4.1 public void Write(HighlightedField[] highlightedFields)
