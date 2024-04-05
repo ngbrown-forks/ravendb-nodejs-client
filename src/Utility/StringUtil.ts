@@ -69,7 +69,7 @@ export class StringUtil {
             const c: string = field[i];
 
             if (i === 0) {
-                if (!this.isLetter(c) && ["_", "@"].indexOf(c) === -1) {
+                if (!this.isLetter(c) && !["_", "@"].includes(c)) {
                     escape = true;
                     break;
                 }
@@ -77,7 +77,7 @@ export class StringUtil {
                 continue;
             }
 
-            if (!this.isLetterOrDigit(c) && ["_", "@", ".", "[", "]"].indexOf(c) === -1) {
+            if (!this.isLetterOrDigit(c) && !["_", "@", ".", "[", "]"].includes(c)) {
                 escape = true;
                 break;
             }

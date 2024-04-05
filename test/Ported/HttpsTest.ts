@@ -159,7 +159,7 @@ describe("HttpsTest", function () {
             const names = certificateDefinitions.map(x => x.name);
             assertThat(names)
                 .contains("cert3-newName");
-            assertThat(!!names.find(x => x === "cert3"))
+            assertThat(names.includes("cert3"))
                 .isFalse();
 
             const certificateMetadata = await store.maintenance.server.send(new GetCertificateMetadataOperation(cert1Thumbprint));

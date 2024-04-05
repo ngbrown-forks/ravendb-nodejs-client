@@ -459,7 +459,7 @@ describe("ObjectMapper", function () {
             for (const item of resultSet) {
                 assert.strictEqual(item.constructor, Tree);
                 assert.ok(testObj.treeSpecies
-                    .map(x => x.name).some(x => x === item.name));
+                    .map(x => x.name).includes(item.name));
             }
 
             assert.strictEqual(resultSet.size, 2);

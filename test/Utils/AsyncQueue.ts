@@ -39,7 +39,7 @@ export class AsyncQueue<T> {
 
                     // we don't want to wait for value
                     if (resolveToDelete) {
-                        const index = this._promises.findIndex(x => x === resolveToDelete);
+                        const index = this._promises.indexOf(resolveToDelete);
                         if (index !== -1) {
                             this._promises.splice(index, 1);
                         }

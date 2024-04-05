@@ -30,11 +30,10 @@ describe("RavenDB_14272", function () {
                 .hasSize(1);
             assertThat(result[0].userDefs.size)
                 .isEqualTo(2);
-            Array.from(userTalk.userDefs.keys())
-                .forEach(val => {
+            for (const val of Array.from(userTalk.userDefs.keys())) {
                     assertThat(Array.from(result[0].userDefs.keys()))
                         .contains(val);
-                });
+                }
         }
     });
 
@@ -54,11 +53,10 @@ describe("RavenDB_14272", function () {
                 .hasSize(1);
             assertThat(result[0].userDefs.size)
                 .isEqualTo(2);
-            Array.from(userTalk.userDefs.keys())
-                .forEach(val => {
-                    assertThat(Array.from(result[0].userDefs.keys()))
-                        .contains(val);
-                });
+            for (const val of Array.from(userTalk.userDefs.keys())) {
+                assertThat(Array.from(result[0].userDefs.keys()))
+                    .contains(val);
+            }
         }
     });
 
@@ -103,10 +101,10 @@ describe("RavenDB_14272", function () {
                 assertThat(projection.userDefs)
                     .hasSize(2);
 
-                Array.from(userTalk.userDefs.keys()).forEach(key => {
+                for (const key of Array.from(userTalk.userDefs.keys())) {
                     assertThat(Array.from(projection.userDefs.keys()))
                         .contains(key);
-                });
+                }
             });
 
             await StreamUtil.finishedAsync(queryStream);

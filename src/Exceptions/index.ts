@@ -177,7 +177,7 @@ export class ExceptionDispatcher {
         const message = schema.message;
         const typeAsString = schema.type;
         if (code === StatusCodes.Conflict) {
-            if (typeAsString.indexOf("DocumentConflictException") !== -1) {
+            if (typeAsString.includes("DocumentConflictException")) {
                 return getError("DocumentConflictException", message, inner);
             }
 

@@ -691,12 +691,12 @@ class FanoutByNumbers extends AbstractJavaScriptIndexCreationTask<Fanout> {
 
         this.map(Fanout, f => {
             const result: FanoutByNumbersResult[] = [];
-            f.numbers.forEach(item => {
+            for (const item of f.numbers) {
                 result.push({
                     foo: f.foo,
                     sum: item
                 });
-            });
+            }
             return result;
         })
     }

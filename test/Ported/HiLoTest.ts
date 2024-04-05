@@ -40,12 +40,11 @@ describe("HiLo", function () {
         const userIds = users.map(x => x.id);
         assert.strictEqual(new Set(userIds).size, userIds.length, `Ids are not unique: ${userIds}`);
 
-        userIds
-            .map(id => id.split("/")[1])
-            .forEach(numericPart => {
+        for (const numericPart of userIds
+            .map(id => id.split("/")[1])) {
                 assert.ok(parseInt(numericPart, 10) < 33,
                     "Obtained ids should be less than 33, though they are:" + users.map(x => x.id).toString());
-            });
+            }
 
     });
 
@@ -208,14 +207,13 @@ describe("HiLo", function () {
 
         await Promise.all(tasks);
 
-        users
+        for (const numericPart of users
             .map(x => x.id)
             .map(id => id.split("/")[1])
-            .map(x => x.split("-")[0])
-            .forEach(numericPart => {
+            .map(x => x.split("-")[0])) {
                 assert.ok(numericPart);
                 assert.ok(parseInt(numericPart, 10) < 33);
-            });
+            }
     });
 
     it("does get another range when gets over max and leaves no gaps", async () => {

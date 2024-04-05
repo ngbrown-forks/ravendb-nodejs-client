@@ -146,7 +146,7 @@ describe("FacetPagingTest", function () {
                         ["desc", "asc"])
                         .map(x => x.count);
 
-                assert.strictEqual(counts[counts.length - 1], facetResults["manufacturer"].remainingHits);
+                assert.strictEqual(counts.at(-1), facetResults["manufacturer"].remainingHits);
             }
         }
     });

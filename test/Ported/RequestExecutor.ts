@@ -98,7 +98,7 @@ async function onBeforeAfterAndFailRequestInternal(failCount: number, clusterSiz
                 const command = new FirstFailCommand("User/1", null, documentJson, failCount);
                 try {
                     await requestExecutor.execute(command);
-                } catch (e) {
+                } catch {
                     // ignored
                 }
 

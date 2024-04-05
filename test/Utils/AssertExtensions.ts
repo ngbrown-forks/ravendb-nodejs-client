@@ -133,32 +133,32 @@ export class JavaAssertionBuilder {
     }
 
     public allMatch(matcher: (v: any) => boolean) {
-        this._value.forEach(v => {
+        for (const v of this._value) {
             assert.ok(matcher(v));
-        });
+        }
     }
 
     public anyMatch(matcher: (v: any) => boolean) {
         let hasMatch = false;
-        this._value.forEach(v => {
+        for (const v of this._value) {
             if (matcher(v)) {
                 hasMatch = true;
             }
-        });
+        }
 
         assert.ok(hasMatch);
     }
 
     public anySatisfy(matcher: (v: any) => void) {
         let satisfy = false;
-        this._value.forEach(v => {
+        for (const v of this._value) {
             try {
                 matcher(v);
                 satisfy = true;
-            } catch (e) {
+            } catch {
                 // ignore
             }
-        });
+        }
 
         assert.ok(satisfy, "None of items satisfy condition");
         return this;

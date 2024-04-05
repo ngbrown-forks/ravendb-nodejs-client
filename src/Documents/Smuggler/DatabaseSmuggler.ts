@@ -105,7 +105,7 @@ export class DatabaseSmuggler {
 
         options.operateOnTypes = oldOperateOnTypes;
 
-        const lastFile = files.slice(-1).pop();
+        const lastFile = files.at(-1);
         await this.import(options, path.resolve(lastFile));
     }
 

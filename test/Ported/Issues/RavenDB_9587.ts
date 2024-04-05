@@ -40,10 +40,10 @@ describe("RavenDB-9587", function () {
                 .isNotNull();
             assertThat(timings instanceof QueryTimings)
                 .isTrue();
-            Object.keys(timings.timings).forEach(key => {
+            for (const key of Object.keys(timings.timings)) {
                 assertThat(timings.timings[key] instanceof QueryTimings)
                     .isTrue();
-            });
+            }
         }
 
     });
