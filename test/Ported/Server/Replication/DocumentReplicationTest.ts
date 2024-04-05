@@ -1,6 +1,6 @@
 import { User } from "../../../Assets/Entities";
 
-import * as assert from "assert";
+import * as assert from "node:assert";
 import { RavenTestContext, testContext, disposeTestDocumentStore } from "../../../Utils/TestUtil";
 
 import {

@@ -1,4 +1,4 @@
-import * as assert from "assert";
+import * as assert from "node:assert";
 import { testContext, disposeTestDocumentStore } from "../Utils/TestUtil";
 
 import {
@@ -85,7 +85,7 @@ describe("Request executor", function () {
                 const command = databaseNamesOperation.getCommand(documentConventions);
                 await executor.execute(command);
 
-                assert.ok(command.result.indexOf(store.database) !== -1);
+                assert.ok(command.result.includes(store.database));
             } finally {
                 executor.dispose();
             }

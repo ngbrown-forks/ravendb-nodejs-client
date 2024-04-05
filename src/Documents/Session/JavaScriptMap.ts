@@ -1,4 +1,4 @@
-import * as os from "os";
+import * as os from "node:os";
 
 export class JavaScriptMap<TKey, TValue> {
     private readonly _suffix: number;

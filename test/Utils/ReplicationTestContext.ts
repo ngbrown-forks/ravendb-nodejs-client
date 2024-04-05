@@ -60,13 +60,9 @@ export class ReplicationTestContext {
 
         await store.maintenance.send(new PutConnectionStringOperation(connectionString));
 
-        let op: IMaintenanceOperation<ModifyOngoingTaskResult>;
-
-        if ("hubName" in watcher) {
-            op = new UpdatePullReplicationAsSinkOperation(watcher as PullReplicationAsSink);
-        } else {
-            op = new UpdateExternalReplicationOperation(watcher);
-        }
+        const op: IMaintenanceOperation<ModifyOngoingTaskResult> = "hubName" in watcher
+            ? new UpdatePullReplicationAsSinkOperation(watcher as PullReplicationAsSink)
+            : new UpdateExternalReplicationOperation(watcher);
 
         return await store.maintenance.send(op);
     }

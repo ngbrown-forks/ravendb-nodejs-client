@@ -10,7 +10,7 @@ import { throwError } from "../../Exceptions";
 import * as semaphore from "semaphore";
 import * as WebSocket from "ws";
 import { StringUtil } from "../../Utility/StringUtil";
-import { EventEmitter } from "events";
+import { EventEmitter } from "node:events";
 import * as PromiseUtil from "../../Utility/PromiseUtil";
 import { IDefer } from "../../Utility/PromiseUtil";
 import { acquireSemaphore } from "../../Utility/SemaphoreUtil";

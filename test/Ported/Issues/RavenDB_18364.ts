@@ -1,6 +1,6 @@
 import { DocumentStore, IDocumentStore } from "../../../src";
 import { ClusterTestContext, RavenTestContext } from "../../Utils/TestUtil";
-import { URL } from "url";
+import { URL } from "node:url";
 import { assertThat } from "../../Utils/AssertExtensions";
 
 (RavenTestContext.isPullRequest ? describe.skip : describe)("RavenDB_18364", function () {

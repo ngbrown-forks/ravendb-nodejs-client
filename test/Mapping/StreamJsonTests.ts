@@ -1,7 +1,7 @@
-import * as fs from "fs";
-import * as path from "path";
+import * as fs from "node:fs";
+import * as path from "node:path";
 import * as stream from "readable-stream";
-import * as assert from "assert";
+import * as assert from "node:assert";
 import * as Parser from "stream-json/Parser";
 import * as StreamValues from "stream-json/streamers/StreamValues";
 import { stringer } from "stream-json/Stringer";

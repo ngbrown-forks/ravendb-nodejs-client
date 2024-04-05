@@ -1,6 +1,6 @@
 import * as moment from "moment";
 import { User, Event } from "../Assets/Entities";
-import * as assert from "assert";
+import * as assert from "node:assert";
 import { testContext, disposeTestDocumentStore } from "../Utils/TestUtil";
 
 import {
@@ -355,8 +355,8 @@ describe("QueryTest", function () {
                 .all();
 
             assert.strictEqual(uniqueNames.length, 2);
-            assert.ok(uniqueNames.indexOf("Tarzan") !== -1);
-            assert.ok(uniqueNames.indexOf("John") !== -1);
+            assert.ok(uniqueNames.includes("Tarzan"));
+            assert.ok(uniqueNames.includes("John"));
         });
 
         it("query search with or", async () => {

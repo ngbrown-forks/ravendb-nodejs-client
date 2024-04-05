@@ -1,5 +1,5 @@
 import { QueryToken } from "./QueryToken";
-import * as os from "os";
+import * as os from "node:os";
 
 export class DeclareToken extends QueryToken {
 

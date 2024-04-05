@@ -1,4 +1,4 @@
-import * as os from "os";
+import * as os from "node:os";
 import * as semaphore from "semaphore";
 import * as stream from "readable-stream";
 import { acquireSemaphore, SemaphoreAcquisitionContext } from "../Utility/SemaphoreUtil";
@@ -32,12 +32,12 @@ import { validateUri } from "../Utility/UriUtil";
 import * as StreamUtil from "../Utility/StreamUtil";
 import { closeHttpResponse } from "../Utility/HttpUtil";
 import { PromiseStatusTracker } from "../Utility/PromiseUtil";
-import type * as http from "http";
-import type * as https from "https";
+import type * as http from "node:http";
+import type * as https from "node:https";
 import { IBroadcast } from "./IBroadcast";
 import { StringUtil } from "../Utility/StringUtil";
 import { IRaftCommand } from "./IRaftCommand";
-import { EventEmitter } from "events";
+import { EventEmitter } from "node:events";
 import {
     BeforeRequestEventArgs,
     FailedRequestEventArgs,
@@ -357,7 +357,7 @@ export class RequestExecutor implements IDisposable {
                 return RequestExecutor.HTTPS_AGENT_CACHE.get(cacheKey);
             } else {
                 // eslint-disable-next-line @typescript-eslint/no-var-requires
-                const https = require("https");
+                const https = require("node:https");
 
                 const agent = new https.Agent({
                     keepAlive: true,
@@ -376,7 +376,7 @@ export class RequestExecutor implements IDisposable {
     private static assertKeepAliveAgent() {
         if (!RequestExecutor.KEEP_ALIVE_HTTP_AGENT) {
             // eslint-disable-next-line @typescript-eslint/no-var-requires
-            const http = require("http");
+            const http = require("node:http");
 
             RequestExecutor.KEEP_ALIVE_HTTP_AGENT = new http.Agent({
                 keepAlive: true

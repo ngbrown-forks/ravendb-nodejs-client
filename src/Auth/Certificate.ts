@@ -1,7 +1,7 @@
 import { IAuthOptions } from "./AuthOptions";
 import { StringUtil } from "../Utility/StringUtil";
 import { throwError } from "../Exceptions";
-import { AgentOptions } from "https";
+import { AgentOptions } from "node:https";
 import WebSocket = require("ws");
 
 export type CertificateType = "pem" | "pfx";

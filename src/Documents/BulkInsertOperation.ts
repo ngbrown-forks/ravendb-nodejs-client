@@ -27,7 +27,7 @@ import { ClassConstructor, EntityConstructor } from "../Types";
 import { TimeSeriesOperations } from "./TimeSeries/TimeSeriesOperations";
 import { TimeSeriesValuesHelper } from "./Session/TimeSeries/TimeSeriesValuesHelper";
 import { Timer } from "../Primitives/Timer";
-import { EventEmitter } from "events";
+import { EventEmitter } from "node:events";
 import { BulkInsertOnProgressEventArgs } from "./Session/SessionEvents";
 
 export class BulkInsertOperation {

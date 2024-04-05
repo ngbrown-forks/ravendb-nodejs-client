@@ -16,7 +16,7 @@ import { DropSubscriptionConnectionCommand } from "../Commands/DropSubscriptionC
 import { GetSubscriptionsCommand } from "../Commands/GetSubscriptionsCommand";
 import { ToggleOngoingTaskStateOperation } from "../Operations/OngoingTasks/ToggleOngoingTaskStateOperation";
 import { SubscriptionIncludeBuilder } from "../Session/Loaders/SubscriptionIncludeBuilder";
-import * as os from "os";
+import * as os from "node:os";
 import { IncludesUtil } from "../Session/IncludesUtil";
 import { StringBuilder } from "../../Utility/StringBuilder";
 import { SubscriptionUpdateOptions } from "./SubscriptionUpdateOptions";

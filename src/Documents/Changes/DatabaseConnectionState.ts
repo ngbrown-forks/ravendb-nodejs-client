@@ -1,6 +1,6 @@
 import { DatabaseChange } from "./DatabaseChange";
 import { ChangesType, IChangesConnectionState } from "./IChangesConnectionState";
-import { EventEmitter } from "events";
+import { EventEmitter } from "node:events";
 import { getError } from "../../Exceptions";
 import { IDefer } from "../../Utility/PromiseUtil";
 import * as PromiseUtil from "../../Utility/PromiseUtil";

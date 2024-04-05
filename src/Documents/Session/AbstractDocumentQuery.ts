@@ -38,7 +38,7 @@ import { CounterIncludesToken } from "./Tokens/CounterIncludesToken";
 import { QueryResult } from "../Queries/QueryResult";
 import { DocumentType } from "../DocumentAbstractions";
 import { QueryEventsEmitter } from "./QueryEvents";
-import { EventEmitter } from "events";
+import { EventEmitter } from "node:events";
 import { StringUtil } from "../../Utility/StringUtil";
 import { IntersectMarkerToken } from "./Tokens/IntersectMarkerToken";
 import { DocumentConventions } from "../Conventions/DocumentConventions";
@@ -76,7 +76,7 @@ import { QueryHighlightings } from "../Queries/Highlighting/QueryHighlightings";
 import { ExplanationOptions } from "../Queries/Explanation/ExplanationOptions";
 import { CountersByDocId } from "./CounterInternalTypes";
 import { IncludeBuilderBase } from "./Loaders/IncludeBuilderBase";
-import * as os from "os";
+import * as os from "node:os";
 import { GraphQueryToken } from "./Tokens/GraphQueryToken";
 import { IncludesUtil } from "./IncludesUtil";
 import { TimeSeriesIncludesToken } from "./Tokens/TimeSeriesIncludesToken";
@@ -1383,7 +1383,7 @@ export abstract class AbstractDocumentQuery<T extends object, TSelf extends Abst
             throwError("InvalidOperationException", "Proximity can only be used right after search clause.");
         }
 
-        const whereToken = tokens[tokens.length - 1];
+        const whereToken = tokens.at(-1);
         if (!(whereToken instanceof WhereToken)) {
             throwError("InvalidOperationException", "Proximity can only be used right after search clause.");
         }

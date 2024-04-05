@@ -1,10 +1,10 @@
-import * as net from "net";
-import { Socket } from "net";
-import { URL } from "url";
+import * as net from "node:net";
+import { Socket } from "node:net";
+import { URL } from "node:url";
 import { IAuthOptions } from "../Auth/AuthOptions";
-import * as tls from "tls";
+import * as tls from "node:tls";
 import { Certificate } from "../Auth/Certificate";
-import { PeerCertificate } from "tls";
+import { PeerCertificate } from "node:tls";
 import { getError, throwError } from "../Exceptions";
 import { TcpConnectionInfo } from "../ServerWide/Commands/GetTcpInfoCommand";
 import { OperationTypes, SupportedFeatures } from "../ServerWide/Tcp/TcpConnectionHeaderMessage";

@@ -3,7 +3,7 @@ import { testContext, disposeTestDocumentStore } from "../Utils/TestUtil";
 import {
     IDocumentStore,
 } from "../../src";
-import * as assert from "assert";
+import * as assert from "node:assert";
 import { getStringWritable } from "../Utils/Streams";
 import { parseJsonVerbose } from "../Utils/Json";
 import * as stream from "readable-stream";

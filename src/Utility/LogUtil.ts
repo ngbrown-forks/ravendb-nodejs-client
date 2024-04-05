@@ -1,4 +1,4 @@
-import { debuglog } from "util";
+import { debuglog } from "node:util";
 import { printError } from "../Exceptions";
 
 const isDebug = !!process.env.NODE_DEBUG;

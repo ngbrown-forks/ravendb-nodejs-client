@@ -1,7 +1,7 @@
 import { GetOngoingTaskInfoOperation, IDocumentStore, PeriodicBackupConfiguration } from "../../src";
 import { disposeTestDocumentStore, RavenTestContext, TemporaryDirContext, testContext } from "../Utils/TestUtil";
-import * as path from "path";
-import * as fs from "fs";
+import * as path from "node:path";
+import * as fs from "node:fs";
 import { UpdatePeriodicBackupOperation } from "../../src/Documents/Operations/Backups/UpdatePeriodicBackupOperation";
 import { StartBackupOperation } from "../../src/Documents/Operations/Backups/StartBackupOperation";
 import { GetPeriodicBackupStatusOperation } from "../../src/Documents/Operations/Backups/GetPeriodicBackupStatusOperation";

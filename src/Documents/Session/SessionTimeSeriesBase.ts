@@ -315,7 +315,7 @@ export class SessionTimeSeriesBase {
 
             rangesToGetFromServer.push({
                 name: this.name,
-                from: ranges[ranges.length - 1].to,
+                from: ranges.at(-1).to,
                 to
             });
         }
@@ -460,7 +460,7 @@ export class SessionTimeSeriesBase {
 
             let shouldSkip = false;
             if (mergedValues.length > 0) {
-                shouldSkip = ranges[i].entries[0].timestamp.getTime() === mergedValues[mergedValues.length - 1].timestamp.getTime();
+                shouldSkip = ranges[i].entries[0].timestamp.getTime() === mergedValues.at(-1).timestamp.getTime();
             }
 
             const toAdd = ranges[i].entries.slice(!shouldSkip ? 0 : 1);
@@ -543,7 +543,7 @@ export class SessionTimeSeriesBase {
 
         return ranges.length === 0
             || DatesComparator.compare(leftDate(ranges[0].from), rightDate(to)) > 0
-            || DatesComparator.compare(rightDate(ranges[ranges.length - 1].to), leftDate(from)) < 0;
+            || DatesComparator.compare(rightDate(ranges.at(-1).to), leftDate(from)) < 0;
     }
 }
 

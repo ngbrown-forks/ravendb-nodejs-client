@@ -1,9 +1,9 @@
 import * as stream from "readable-stream";
-import * as path from "path";
-import * as fs from "fs";
-import * as assert from "assert";
+import * as path from "node:path";
+import * as fs from "node:fs";
+import * as assert from "node:assert";
 import { testContext, disposeTestDocumentStore } from "../Utils/TestUtil";
-import * as util from "util";
+import * as util from "node:util";
 
 import DocumentStore, {
     IDocumentStore,

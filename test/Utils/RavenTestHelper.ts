@@ -1,5 +1,5 @@
 import { GetIndexErrorsOperation, IDocumentStore } from "../../src";
-import * as os from "os";
+import * as os from "node:os";
 import { throwError } from "../../src/Exceptions";
 import { StringBuilder } from "../../src/Utility/StringBuilder";
 

@@ -1,5 +1,5 @@
 import { MaintenanceOperationExecutor } from "./Operations/MaintenanceOperationExecutor";
-import { EventEmitter } from "events";
+import { EventEmitter } from "node:events";
 import { IDocumentStore, SessionDisposingEventArgs } from "./IDocumentStore";
 import { throwError } from "../Exceptions";
 import { validateUri } from "../Utility/UriUtil";

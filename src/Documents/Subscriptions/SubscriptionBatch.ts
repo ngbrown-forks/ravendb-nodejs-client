@@ -2,7 +2,7 @@ import { DocumentType } from "../DocumentAbstractions";
 import { getLogger } from "../../Utility/LogUtil";
 import { GenerateEntityIdOnTheClient } from "../Identity/GenerateEntityIdOnTheClient";
 import { throwError } from "../../Exceptions";
-import * as os from "os";
+import * as os from "node:os";
 import { CONSTANTS } from "../../Constants";
 import { StringUtil } from "../../Utility/StringUtil";
 import { createMetadataDictionary } from "../../Mapping/MetadataAsDictionary";

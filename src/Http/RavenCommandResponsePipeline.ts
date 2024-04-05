@@ -1,4 +1,4 @@
-import { EventEmitter } from "events";
+import { EventEmitter } from "node:events";
 import * as Parser from "stream-json/Parser";
 import {
     ObjectKeyCaseTransformStreamOptions,
@@ -216,7 +216,7 @@ export class RavenCommandResponsePipeline<TStreamResult> extends EventEmitter {
         const opts = this._opts;
         let resultPromise: Promise<TStreamResult>;
         if (opts.jsonAsync) {
-            const asm = Asm.connectTo(streams[streams.length - 1] as any);
+            const asm = Asm.connectTo(streams.at(-1) as any);
             resultPromise = new Promise(resolve => {
                 asm.on("done", asm => resolve(asm.current));
             });

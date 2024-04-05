@@ -1,6 +1,6 @@
 import { GetClusterTopologyCommand } from "../ServerWide/Commands/GetClusterTopologyCommand";
 import { NodeSelector } from "./NodeSelector";
-import * as os from "os";
+import * as os from "node:os";
 import * as semaphore from "semaphore";
 import { getLogger } from "../Utility/LogUtil";
 import { RequestExecutor, IRequestExecutorOptions } from "./RequestExecutor";

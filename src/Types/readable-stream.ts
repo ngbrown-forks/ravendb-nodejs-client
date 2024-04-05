@@ -2,7 +2,7 @@
 declare module "readable-stream";
 
 declare module "readable-stream" {
-    import * as events from "events";
+    import * as events from "node:events";
 
     class pipeable extends events.EventEmitter {
         public pipe<T extends NodeJS.WritableStream>(destination: T, options?: { end?: boolean; }): T;

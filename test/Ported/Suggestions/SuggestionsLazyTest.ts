@@ -1,4 +1,4 @@
-import * as assert from "assert";
+import * as assert from "node:assert";
 
 import { IDocumentStore, IndexDefinition, IndexFieldOptions, PutIndexesOperation } from "../../../src";
 import { disposeTestDocumentStore, testContext } from "../../Utils/TestUtil";

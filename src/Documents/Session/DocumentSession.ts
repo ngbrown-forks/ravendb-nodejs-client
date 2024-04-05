@@ -1,5 +1,5 @@
 import * as stream from "readable-stream";
-import * as os from "os";
+import * as os from "node:os";
 import { DocumentQuery } from "./DocumentQuery";
 import { MultiLoaderWithInclude } from "./Loaders/MultiLoaderWithInclude";
 import { BatchOperation } from "./Operations/BatchOperation";

@@ -6,7 +6,7 @@ import {
     StreamQueryStatistics,
     StreamResult, TimeSeriesRawResult,
 } from "../../../../src";
-import * as assert from "assert";
+import * as assert from "node:assert";
 import { User } from "../../../Assets/Entities";
 import * as StreamUtil from "../../../../src/Utility/StreamUtil";
 import { CONSTANTS } from "../../../../src/Constants";

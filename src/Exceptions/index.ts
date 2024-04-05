@@ -3,7 +3,7 @@ import { closeHttpResponse } from "../Utility/HttpUtil";
 import { StatusCodes } from "../Http/StatusCode";
 import { HttpResponse } from "../Primitives/Http";
 import { JsonSerializer } from "../Mapping/Json/Serializer";
-import * as os from "os";
+import * as os from "node:os";
 
 export function printError(err: Error): string {
     return VError.fullStack(err);
@@ -244,9 +244,9 @@ export class ExceptionDispatcher {
         const prefix = "Raven.Client.Exceptions.";
         if (typeAsString && typeAsString.startsWith(prefix)) {
             const exceptionName = typeAsString.substring(prefix.length);
-            if (exceptionName.indexOf(".") !== -1) {
+            if (exceptionName.includes(".")) {
                 const tokens = exceptionName.split(".");
-                return tokens[tokens.length - 1] as RavenErrorType;
+                return tokens.at(-1) as RavenErrorType;
             }
 
             return exceptionName;

@@ -1,4 +1,4 @@
-import * as assert from "assert";
+import * as assert from "node:assert";
 
 import { CaseInsensitiveKeysMap } from "../../src/Primitives/CaseInsensitiveKeysMap";
 import { CaseInsensitiveStringSet } from "../../src/Primitives/CaseInsensitiveStringSet";

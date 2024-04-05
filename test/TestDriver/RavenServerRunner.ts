@@ -1,6 +1,6 @@
-import * as fs from "fs";
-import * as path from "path";
-import { ChildProcess, spawn } from "child_process";
+import * as fs from "node:fs";
+import * as path from "node:path";
+import { ChildProcess, spawn } from "node:child_process";
 import { RavenServerLocator } from "./RavenServerLocator";
 import { throwError } from "../../src/Exceptions";
 

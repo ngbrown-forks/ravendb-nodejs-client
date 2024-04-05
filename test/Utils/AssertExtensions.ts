@@ -1,4 +1,4 @@
-import * as assert from "assert";
+import * as assert from "node:assert";
 
 // eslint-disable-next-line @typescript-eslint/ban-types
 export async function assertThrows(func: Function, errAssert?: (err: Error) => void) {
@@ -48,7 +48,7 @@ export class JavaAssertionBuilder {
     }
 
     public contains(val) {
-        assert.ok(this._value.indexOf(val) !== -1, `'${this._value}' does not contain '${val}.'`);
+        assert.ok(this._value.includes(val), `'${this._value}' does not contain '${val}.'`);
         return this;
     }
 
