@@ -12,7 +12,7 @@ import { TypeInfo } from "../Mapping/ObjectMapper";
 import { JsonSerializer } from "../Mapping/Json/Serializer";
 import { RavenCommandResponsePipeline } from "./RavenCommandResponsePipeline";
 import { DocumentConventions } from "../Documents/Conventions/DocumentConventions";
-import * as http from "node:http";
+import { Agent } from "node:http";
 import { ObjectTypeDescriptor } from "../Types";
 import { ReadableWebToNodeStream } from "../Utility/ReadableWebToNodeStream";
 import { LengthUnawareFormData } from "../Utility/LengthUnawareFormData";
@@ -120,7 +120,7 @@ export abstract class RavenCommand<TResult> {
             this._responseType);
     }
 
-    public async send(agent: http.Agent,
+    public async send(agent: Agent,
         requestOptions: HttpRequestParameters): Promise<{ response: HttpResponse, bodyStream: Readable }> {
 
         const { body, uri, fetcher, ...restOptions } = requestOptions;
@@ -128,7 +128,7 @@ export abstract class RavenCommand<TResult> {
         log.info(`Send command ${this.constructor.name} to ${uri}${body ? " with body " + body : ""}.`);
 
         if (requestOptions.agent) { // support for fiddler
-            agent = requestOptions.agent as http.Agent;
+            agent = requestOptions.agent as Agent;
         }
 
         const bodyToUse = fetcher ? RavenCommand.maybeWrapBody(body) : body;

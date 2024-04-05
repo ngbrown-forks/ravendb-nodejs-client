@@ -1,4 +1,4 @@
-import * as os from "node:os";
+import { EOL } from "node:os";
 import * as semaphore from "semaphore";
 import { Readable } from "node:stream";
 import { acquireSemaphore, SemaphoreAcquisitionContext } from "../Utility/SemaphoreUtil";
@@ -22,14 +22,14 @@ import {
 import CurrentIndexAndNode from "./CurrentIndexAndNode";
 import { HEADERS } from "../Constants";
 import { HttpRequestParameters, HttpResponse, HttpRequestParametersWithoutUri } from "../Primitives/Http";
-import * as PromiseUtil from "../Utility/PromiseUtil";
+import { raceToResolution } from "../Utility/PromiseUtil";
 import { GetStatisticsOperation } from "../Documents/Operations/GetStatisticsOperation";
 import { DocumentConventions } from "../Documents/Conventions/DocumentConventions";
 import { TypeUtil } from "../Utility/TypeUtil";
 import { SessionInfo } from "../Documents/Session/IDocumentSession";
 import { JsonSerializer } from "../Mapping/Json/Serializer";
 import { validateUri } from "../Utility/UriUtil";
-import * as StreamUtil from "../Utility/StreamUtil";
+import { readToEnd } from "../Utility/StreamUtil";
 import { closeHttpResponse } from "../Utility/HttpUtil";
 import { PromiseStatusTracker } from "../Utility/PromiseUtil";
 import type * as http from "node:http";
@@ -884,7 +884,7 @@ export class RequestExecutor implements IDisposable {
     protected _throwExceptions(details: string): void {
         throwError("InvalidOperationException",
             "Failed to retrieve database topology from all known nodes"
-            + os.EOL + details);
+            + EOL + details);
     }
 
     public static validateUrls(initialUrls: string[], authOptions: IAuthOptions) {
@@ -1255,11 +1255,11 @@ export class RequestExecutor implements IDisposable {
             + " request via "
             + (req.method || "GET") + " "
             + req.uri + " to all configured nodes in the topology, "
-            + "none of the attempt succeeded." + os.EOL;
+            + "none of the attempt succeeded." + EOL;
 
         if (this._topologyTakenFromNode) {
             message += "I was able to fetch " + this._topologyTakenFromNode.database
-                + " topology from " + this._topologyTakenFromNode.url + "." + os.EOL;
+                + " topology from " + this._topologyTakenFromNode.url + "." + EOL;
         }
 
         let nodes: ServerNode[];
@@ -1275,7 +1275,7 @@ export class RequestExecutor implements IDisposable {
             for (const node of nodes) {
                 const error = command.failedNodes.get(node);
 
-                message += os.EOL +
+                message += EOL +
                     "[Url: " + node.url + ", " +
                     "ClusterTag: " + node.clusterTag + ", " +
                     "ServerRole: " + node.serverRole + ", " +
@@ -1337,7 +1337,7 @@ export class RequestExecutor implements IDisposable {
             tasks[i] = task;
         }
 
-        const result = PromiseUtil.raceToResolution(tasks)
+        const result = raceToResolution(tasks)
             .then(fastest => {
                 this._nodeSelector.recordFastest(fastest.index, nodes[fastest.index]);
             })
@@ -1435,7 +1435,7 @@ export class RequestExecutor implements IDisposable {
         sessionInfo: SessionInfo,
         shouldRetry: boolean): Promise<boolean> {
         responseBodyStream.resume();
-        const readBody = () => StreamUtil.readToEnd(responseBodyStream);
+        const readBody = () => readToEnd(responseBodyStream);
         switch (response.status) {
             case StatusCodes.NotFound: {
                 this._cache.setNotFound(url);
@@ -1459,7 +1459,7 @@ export class RequestExecutor implements IDisposable {
                 const msg = await readBody();
                 throwError("AuthorizationException",
                     `Forbidden access to ${chosenNode.database}@${chosenNode.url}`
-                    + `, ${req.method || "GET"} ${req.uri}` + os.EOL + msg);
+                    + `, ${req.method || "GET"} ${req.uri}` + EOL + msg);
                 break;
             }
             case StatusCodes.Gone: {
@@ -1913,7 +1913,7 @@ export class RequestExecutor implements IDisposable {
         const exceptionSchema = {
             url: req.uri.toString(),
             message: e.message,
-            error: `An exception occurred while contacting ${ req.uri }: ${ e.message } . ${ os.EOL + e.stack }`,
+            error: `An exception occurred while contacting ${ req.uri }: ${ e.message } . ${ EOL + e.stack }`,
             type: e.name
         };
 

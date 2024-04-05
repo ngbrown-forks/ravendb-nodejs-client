@@ -48,7 +48,7 @@ import { PatchCommandData } from "../Commands/Batches/PatchCommandData";
 import { IdTypeAndName } from "../IdTypeAndName";
 import { IRevisionsSessionOperations } from "./IRevisionsSessionOperations";
 import { DocumentSessionRevisions } from "./DocumentSessionRevisions";
-import * as StreamUtil from "../../Utility/StreamUtil";
+import { stringToReadable, pipelineAsync } from "../../Utility/StreamUtil";
 import { StreamResult } from "../Commands/StreamResult";
 import { DocumentResultStream } from "./DocumentResultStream";
 import { StreamOperation } from "./Operations/StreamOperation";
@@ -218,8 +218,8 @@ export class DocumentSession extends InMemoryDocumentSessionOperations
             if (!writable) {
                 operation.setResult(command.result);
             } else {
-                const readable = StreamUtil.stringToReadable(JSON.stringify(command.result));
-                await StreamUtil.pipelineAsync(readable, writable);
+                const readable = stringToReadable(JSON.stringify(command.result));
+                await pipelineAsync(readable, writable);
             }
         }
     }
@@ -381,8 +381,8 @@ export class DocumentSession extends InMemoryDocumentSessionOperations
         if (command) {
             await this._requestExecutor.execute(command, this._sessionInfo);
             if (writable) {
-                return StreamUtil.pipelineAsync(
-                    StreamUtil.stringToReadable(JSON.stringify(command.result)),
+                return pipelineAsync(
+                    stringToReadable(JSON.stringify(command.result)),
                     writable);
             } else {
                 operation.setResult(command.result);

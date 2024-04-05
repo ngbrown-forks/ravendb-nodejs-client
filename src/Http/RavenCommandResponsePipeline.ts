@@ -9,7 +9,7 @@ import {
     getObjectKeyCaseTransformProfile
 } from "../Mapping/Json/Conventions";
 import { CasingConvention } from "../Utility/ObjectUtil";
-import * as StreamUtil from "../Utility/StreamUtil";
+import { pipelineAsync } from "../Utility/StreamUtil";
 import { Stream, Transform, Readable, Writable, pipeline } from "node:stream";
 import {
     CollectResultStream,
@@ -236,7 +236,7 @@ export class RavenCommandResponsePipeline<TStreamResult> extends EventEmitter {
                 });
         }
 
-        return StreamUtil.pipelineAsync(...streams)
+        return pipelineAsync(...streams)
             .then(() => resultPromise);
     }
 }

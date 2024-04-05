@@ -12,7 +12,6 @@ import { IDocumentStore } from "../../src/Documents/IDocumentStore";
 import { getError, throwError } from "../../src/Exceptions";
 import { IAuthOptions } from "../../src/Auth/AuthOptions";
 import * as os from "node:os";
-import "../../src/Utility/Polyfills";
 import {
     CreateDatabaseOperation,
     DatabaseRecord,

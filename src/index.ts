@@ -1,5 +1,3 @@
-import "./Utility/Polyfills";
-
 export { DocumentConventions } from "./Documents/Conventions/DocumentConventions";
 export { BulkInsertConventions } from "./Documents/Conventions/BulkInsertConventions";
 export { RavenErrorType } from "./Exceptions";
@@ -743,7 +741,7 @@ export * from "./ServerWide/Operations/ModifyDatabaseTopologyResult";
 // MAPPING
 export { TypesAwareObjectMapper } from "./Mapping/ObjectMapper";
 export { Mapping } from "./Mapping";
-
+import * as Json from "./Mapping/Json";
 
 // CONSTANTS
 export { CONSTANTS } from "./Constants";

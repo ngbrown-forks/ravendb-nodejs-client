@@ -16,7 +16,7 @@ import { DropSubscriptionConnectionCommand } from "../Commands/DropSubscriptionC
 import { GetSubscriptionsCommand } from "../Commands/GetSubscriptionsCommand";
 import { ToggleOngoingTaskStateOperation } from "../Operations/OngoingTasks/ToggleOngoingTaskStateOperation";
 import { SubscriptionIncludeBuilder } from "../Session/Loaders/SubscriptionIncludeBuilder";
-import * as os from "node:os";
+import { EOL } from "node:os";
 import { IncludesUtil } from "../Session/IncludesUtil";
 import { StringBuilder } from "../../Utility/StringBuilder";
 import { SubscriptionUpdateOptions } from "./SubscriptionUpdateOptions";
@@ -137,7 +137,7 @@ export class DocumentSubscriptions implements IDisposable {
             let numberOfIncludesAdded = 0;
 
             if (builder.documentsToInclude && builder.documentsToInclude.size) {
-                queryBuilder.append(os.EOL + "include ");
+                queryBuilder.append(EOL + "include ");
 
                 for (const inc of builder.documentsToInclude) {
                     const include = "doc." + inc;
@@ -163,7 +163,7 @@ export class DocumentSubscriptions implements IDisposable {
             if (builder.isAllCounters) {
                 if (!numberOfIncludesAdded) {
                     queryBuilder
-                        .append(os.EOL)
+                        .append(EOL)
                         .append("include ");
                 }
 
@@ -173,7 +173,7 @@ export class DocumentSubscriptions implements IDisposable {
             } else if (builder.countersToInclude && builder.countersToInclude.size) {
                 if (!numberOfIncludesAdded) {
                     queryBuilder
-                        .append(os.EOL)
+                        .append(EOL)
                         .append("include ");
                 }
 
@@ -193,7 +193,7 @@ export class DocumentSubscriptions implements IDisposable {
                 for (const timeSeriesRange of builder.timeSeriesToInclude) {
                     if (numberOfIncludesAdded === 0) {
                         queryBuilder
-                            .append(os.EOL)
+                            .append(EOL)
                             .append("include ");
                     }
 

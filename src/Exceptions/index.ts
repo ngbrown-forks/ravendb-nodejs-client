@@ -3,7 +3,7 @@ import { closeHttpResponse } from "../Utility/HttpUtil";
 import { StatusCodes } from "../Http/StatusCode";
 import { HttpResponse } from "../Primitives/Http";
 import { JsonSerializer } from "../Mapping/Json/Serializer";
-import * as os from "node:os";
+import { EOL } from "node:os";
 
 export function printError(err: Error): string {
     return VError.fullStack(err);
@@ -185,7 +185,7 @@ export class ExceptionDispatcher {
         }
 
         const error =
-            schema.error + os.EOL
+            schema.error + EOL
             + "The server at " + schema.url + " responded with status code: " + code;
 
         const determinedType = this._getType(typeAsString) as RavenErrorType;

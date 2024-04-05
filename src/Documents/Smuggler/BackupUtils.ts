@@ -1,7 +1,7 @@
 import { CONSTANTS } from "../../Constants";
 import { StringUtil } from "../../Utility/StringUtil";
-import * as path from "node:path";
-import * as fs from "node:fs";
+import { basename, extname, resolve } from "node:path";
+import { statSync } from "node:fs";
 
 export class BackupUtils {
     // eslint-disable-next-line @typescript-eslint/no-empty-function
@@ -42,22 +42,22 @@ export class BackupUtils {
     }
 
     public static comparator(o1: string, o2: string) {
-        const baseName1 = path.basename(o1, path.extname(o1));
-        const baseName2 = path.basename(o2, path.extname(o2));
+        const baseName1 = basename(o1, extname(o1));
+        const baseName2 = basename(o2, extname(o2));
 
         if (baseName1 !== baseName2) {
             return baseName1.localeCompare(baseName2);
         }
 
-        const extension1 = path.extname(o1);
-        const extension2 = path.extname(o2);
+        const extension1 = extname(o1);
+        const extension2 = extname(o2);
 
         if (extension1 !== extension2) {
             return periodicBackupFileExtensionComparator(o1, o2);
         }
 
-        const lastModified1 = fs.statSync(o1).mtimeMs;
-        const lastModified2 = fs.statSync(o2).mtimeMs;
+        const lastModified1 = statSync(o1).mtimeMs;
+        const lastModified2 = statSync(o2).mtimeMs;
 
         return lastModified1 - lastModified2;
     }
@@ -65,15 +65,15 @@ export class BackupUtils {
 }
 
 export function periodicBackupFileExtensionComparator(o1: string, o2: string) {
-    if (path.resolve(o1) === path.resolve(o2)) {
+    if (resolve(o1) === resolve(o2)) {
         return 0;
     }
 
-    if (StringUtil.equalsIgnoreCase(path.extname(o1), "." + CONSTANTS.Documents.PeriodicBackup.SNAPSHOT_EXTENSION)) {
+    if (StringUtil.equalsIgnoreCase(extname(o1), "." + CONSTANTS.Documents.PeriodicBackup.SNAPSHOT_EXTENSION)) {
         return -1;
     }
 
-    if (StringUtil.equalsIgnoreCase(path.extname(o1), "." + CONSTANTS.Documents.PeriodicBackup.FULL_BACKUP_EXTENSION)) {
+    if (StringUtil.equalsIgnoreCase(extname(o1), "." + CONSTANTS.Documents.PeriodicBackup.FULL_BACKUP_EXTENSION)) {
         return -1;
     }
 

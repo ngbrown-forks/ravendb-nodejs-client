@@ -2,7 +2,7 @@ import { DocumentType } from "../DocumentAbstractions";
 import { getLogger } from "../../Utility/LogUtil";
 import { GenerateEntityIdOnTheClient } from "../Identity/GenerateEntityIdOnTheClient";
 import { throwError } from "../../Exceptions";
-import * as os from "node:os";
+import { EOL } from "node:os";
 import { CONSTANTS } from "../../Constants";
 import { StringUtil } from "../../Utility/StringUtil";
 import { createMetadataDictionary } from "../../Mapping/MetadataAsDictionary";
@@ -225,7 +225,7 @@ export class Item<T> {
     private _throwItemProcessError() {
         throwError("InvalidOperationException",
             "Failed to process document " + this.id + " with Change Vector "
-            + this.changeVector + " because: " + os.EOL + this.exceptionMessage);
+            + this.changeVector + " because: " + EOL + this.exceptionMessage);
     }
 
     public get result() {

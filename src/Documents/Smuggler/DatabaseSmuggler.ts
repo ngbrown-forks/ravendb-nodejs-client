@@ -7,10 +7,10 @@ import { DatabaseSmugglerExportOptions } from "./DatabaseSmugglerExportOptions";
 import { HttpCache } from "../../Http/HttpCache";
 import { HeadersBuilder } from "../../Utility/HttpUtil";
 import { DatabaseSmugglerOptions } from "./DatabaseSmugglerOptions";
-import * as fs from "node:fs";
-import * as StreamUtil from "../../Utility/StreamUtil";
+import { existsSync, mkdirSync, createWriteStream, readdirSync, createReadStream } from "node:fs";
+import { pipelineAsync } from "../../Utility/StreamUtil";
 import { LengthUnawareFormData } from "../../Utility/LengthUnawareFormData";
-import * as path from "node:path";
+import { dirname, resolve, extname } from "node:path";
 import { BackupUtils } from "./BackupUtils";
 import { RequestExecutor } from "../../Http/RequestExecutor";
 import { OperationCompletionAwaiter } from "../Operations/OperationCompletionAwaiter";
@@ -55,14 +55,14 @@ export class DatabaseSmuggler {
                 await importOperation.waitForCompletion();
             });
         } else {
-            const directory = path.dirname(path.resolve(toFileOrToDatabase));
-            if (!fs.existsSync(directory)) {
-                fs.mkdirSync(directory, { recursive: true });
+            const directory = dirname(resolve(toFileOrToDatabase));
+            if (!existsSync(directory)) {
+                mkdirSync(directory, { recursive: true });
             }
 
             return await this._export(options, async response => {
-                const fileStream = fs.createWriteStream(toFileOrToDatabase);
-                await StreamUtil.pipelineAsync(response, fileStream);
+                const fileStream = createWriteStream(toFileOrToDatabase);
+                await pipelineAsync(response, fileStream);
             });
         }
     }
@@ -89,8 +89,8 @@ export class DatabaseSmuggler {
     }
 
     public async importIncremental(options: DatabaseSmugglerImportOptions, fromDirectory: string) {
-        const files = fs.readdirSync(fromDirectory)
-            .filter(x => BackupUtils.BACKUP_FILE_SUFFIXES.includes("." + path.extname(x)))
+        const files = readdirSync(fromDirectory)
+            .filter(x => BackupUtils.BACKUP_FILE_SUFFIXES.includes("." + extname(x)))
             .sort(BackupUtils.comparator);
 
         if (!files.length) {
@@ -101,13 +101,13 @@ export class DatabaseSmuggler {
 
         for (let i = 0; i < files.length - 1; i++) {
             const filePath = files[i];
-            await this.import(options, path.resolve(filePath));
+            await this.import(options, resolve(filePath));
         }
 
         options.operateOnTypes = oldOperateOnTypes;
 
         const lastFile = files.at(-1);
-        await this.import(options, path.resolve(lastFile));
+        await this.import(options, resolve(lastFile));
     }
 
     public static configureOptionsFromIncrementalImport(options: DatabaseSmugglerOptions) {
@@ -133,13 +133,13 @@ export class DatabaseSmuggler {
             let fromFile = fileOrStream;
 
             do {
-                const fos = fs.createReadStream(fromFile);
+                const fos = createReadStream(fromFile);
 
                 result = await this._import(options, fos);
 
                 countOfFileParts++;
                 fromFile = StringUtil.format("{0}.part{1}", fromFile, countOfFileParts);
-            } while (fs.existsSync(fromFile));
+            } while (existsSync(fromFile));
 
             return result;
         } else {

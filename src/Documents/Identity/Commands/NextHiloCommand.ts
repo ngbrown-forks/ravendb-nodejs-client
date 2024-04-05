@@ -1,4 +1,3 @@
-import { stringify } from "qs";
 import { ServerNode } from "../../../Http/ServerNode";
 import { DateUtil } from "../../../Utility/DateUtil";
 import { RavenCommand } from "../../../Http/RavenCommand";
@@ -6,6 +5,7 @@ import { throwError } from "../../../Exceptions";
 import { HttpRequestParameters } from "../../../Primitives/Http";
 import { Stream } from "node:stream";
 import { DocumentConventions } from "../../Conventions/DocumentConventions";
+import { stringify } from "node:querystring";
 
 export interface HiLoResult {
     prefix: string;

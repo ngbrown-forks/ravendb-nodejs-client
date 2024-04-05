@@ -23,14 +23,14 @@ import { ObjectUtil } from "../../Utility/ObjectUtil";
 import { SubscriptionConnectionServerMessage } from "./SubscriptionConnectionServerMessage";
 import { EmptyCallback } from "../../Types/Callbacks";
 import { delay, wrapWithTimeout } from "../../Utility/PromiseUtil";
-import * as Parser from "stream-json/Parser";
-import * as StreamValues from "stream-json/streamers/StreamValues";
+import { parser } from "stream-json/Parser";
+import { streamValues } from "stream-json/streamers/StreamValues";
 import { BatchFromServer, CounterIncludeItem } from "./BatchFromServer";
 import { ServerNode } from "../../Http/ServerNode";
 import { RequestExecutor } from "../../Http/RequestExecutor";
 import { GetTcpInfoCommand, TcpConnectionInfo } from "../../ServerWide/Commands/GetTcpInfoCommand";
 import { GetTcpInfoForRemoteTaskCommand } from "../Commands/GetTcpInfoForRemoteTaskCommand";
-import * as os from "node:os";
+import { EOL } from "node:os";
 import { DocumentConventions } from "../Conventions/DocumentConventions";
 import { ServerCasing, ServerResponse } from "../../Types";
 import { CONSTANTS } from "../../Constants";
@@ -280,8 +280,8 @@ export class SubscriptionWorker<T extends object> implements IDisposable {
 
         this._parser = pipeline([
             socket,
-            new Parser({ jsonStreaming: true, streamValues: false }),
-            new StreamValues(),
+            parser({ jsonStreaming: true, streamValues: false }),
+            streamValues(),
             keysTransform
         ], err => {
             if (err && !socket.destroyed) {
@@ -418,7 +418,7 @@ export class SubscriptionWorker<T extends object> implements IDisposable {
 
                 const error = getError("SubscriptionDoesNotBelongToNodeException",
                     "Subscription with id '" + this._options.subscriptionName
-                    + "' cannot be processed by current node '" + currentNode + "', it will be redirected to " + appropriateNode + os.EOL + reasons);
+                    + "' cannot be processed by current node '" + currentNode + "', it will be redirected to " + appropriateNode + EOL + reasons);
                 (error as any).appropriateNode = appropriateNode;
                 throw error;
             }

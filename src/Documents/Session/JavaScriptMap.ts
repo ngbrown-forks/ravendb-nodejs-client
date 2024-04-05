@@ -1,4 +1,4 @@
-import * as os from "node:os";
+import { EOL } from "node:os";
 
 export class JavaScriptMap<TKey, TValue> {
     private readonly _suffix: number;
@@ -33,7 +33,7 @@ export class JavaScriptMap<TKey, TValue> {
     }
 
     getScript(): string {
-        return this._scriptLines.join(os.EOL);
+        return this._scriptLines.join(EOL);
     }
 
     get parameters() {

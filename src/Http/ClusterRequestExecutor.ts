@@ -1,6 +1,6 @@
 import { GetClusterTopologyCommand } from "../ServerWide/Commands/GetClusterTopologyCommand";
 import { NodeSelector } from "./NodeSelector";
-import * as os from "node:os";
+import { EOL } from "node:os";
 import * as semaphore from "semaphore";
 import { getLogger } from "../Utility/LogUtil";
 import { RequestExecutor, IRequestExecutorOptions } from "./RequestExecutor";
@@ -153,7 +153,7 @@ export class ClusterRequestExecutor extends RequestExecutor {
 
     protected _throwExceptions(details: string): void {
         throwError("InvalidOperationException",
-            "Failed to retrieve cluster topology from all known nodes" + os.EOL + details);
+            "Failed to retrieve cluster topology from all known nodes" + EOL + details);
     }
 
     public dispose(): void {
