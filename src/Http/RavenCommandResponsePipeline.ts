@@ -1,5 +1,5 @@
 import { EventEmitter } from "node:events";
-import * as Parser from "stream-json/Parser";
+import { parser } from "stream-json/Parser";
 import {
     ObjectKeyCaseTransformStreamOptions,
     ObjectKeyCaseTransformStream
@@ -18,7 +18,7 @@ import {
 } from "../Mapping/Json/Streams/CollectResultStream";
 import { throwError, getError } from "../Exceptions";
 import { TypeUtil } from "../Utility/TypeUtil";
-import * as Asm from "stream-json/Assembler";
+import { connectTo } from "stream-json/Assembler";
 import { ErrorFirstCallback } from "../Types/Callbacks";
 import { StringBuilder } from "../Utility/StringBuilder";
 import { parser as jsonlParser } from "stream-json/jsonl/Parser";
@@ -159,8 +159,7 @@ export class RavenCommandResponsePipeline<TStreamResult> extends EventEmitter {
         }
 
         if (opts.jsonAsync) {
-            const parser = new Parser({ streamValues: false });
-            streams.push(parser);
+            streams.push(parser({ streamValues: false }));
 
             if (opts.jsonAsync.filters && opts.jsonAsync.filters.length) {
                 streams.push(...opts.jsonAsync.filters);
@@ -213,7 +212,7 @@ export class RavenCommandResponsePipeline<TStreamResult> extends EventEmitter {
         const opts = this._opts;
         let resultPromise: Promise<TStreamResult>;
         if (opts.jsonAsync) {
-            const asm = Asm.connectTo(streams.at(-1) as any);
+            const asm = connectTo(streams.at(-1) as any);
             resultPromise = new Promise(resolve => {
                 asm.on("done", asm => resolve(asm.current));
             });

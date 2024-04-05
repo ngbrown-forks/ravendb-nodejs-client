@@ -1,5 +1,4 @@
 import { ArrayUtil } from "../Utility/ArrayUtil";
-import * as moment from "moment";
 import { ServerNode } from "./ServerNode";
 import CurrentIndexAndNode from "../Http/CurrentIndexAndNode";
 import { Topology } from "./Topology";
@@ -292,7 +291,7 @@ export class NodeSelector {
         }
         this._switchToSpeedTestPhase();
 
-        const minuteMs = moment.duration(1, "m").asMilliseconds();
+        const minuteMs = 60_000;
         this._updateFastestNodeTimer = new Timer(async () => this._switchToSpeedTestPhase(), minuteMs, minuteMs);
     }
 

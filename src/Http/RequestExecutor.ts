@@ -32,8 +32,8 @@ import { validateUri } from "../Utility/UriUtil";
 import { readToEnd } from "../Utility/StreamUtil";
 import { closeHttpResponse } from "../Utility/HttpUtil";
 import { PromiseStatusTracker } from "../Utility/PromiseUtil";
-import type * as http from "node:http";
-import type * as https from "node:https";
+import { Agent as httpAgent } from "node:http";
+import { Agent as httpsAgent } from "node:https";
 import { IBroadcast } from "./IBroadcast";
 import { StringUtil } from "../Utility/StringUtil";
 import { IRaftCommand } from "./IRaftCommand";
@@ -183,15 +183,15 @@ export class RequestExecutor implements IDisposable {
 
     protected _firstTopologyUpdatePromiseInternal;
 
-    private _httpAgent: http.Agent;
+    private _httpAgent: httpAgent;
 
     /*
       we don't initialize this here due to issue with cloudflare
       see: https://github.com/cloudflare/miniflare/issues/292
     */
-    private static KEEP_ALIVE_HTTP_AGENT: http.Agent = null;
+    private static KEEP_ALIVE_HTTP_AGENT: httpAgent = null;
 
-    private static readonly HTTPS_AGENT_CACHE = new Map<string, https.Agent>();
+    private static readonly HTTPS_AGENT_CACHE = new Map<string, httpsAgent>();
 
     protected get firstTopologyUpdatePromise(): Promise<void> {
         return this._firstTopologyUpdatePromiseInternal;
@@ -337,7 +337,7 @@ export class RequestExecutor implements IDisposable {
             : null;
     }
 
-    public getHttpAgent(): http.Agent {
+    public getHttpAgent(): httpAgent {
         if (this.conventions.customFetch) {
             return null;
         }
@@ -349,7 +349,7 @@ export class RequestExecutor implements IDisposable {
         return this._httpAgent = this._createHttpAgent();
     }
 
-    private _createHttpAgent(): http.Agent {
+    private _createHttpAgent(): httpAgent {
         if (this._certificate) {
             const agentOptions = this._certificate.toAgentOptions();
             const cacheKey = JSON.stringify(agentOptions, null, 0);
