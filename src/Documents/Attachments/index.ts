@@ -1,4 +1,4 @@
-import * as stream from "readable-stream";
+import { Stream, Readable } from "node:stream";
 import { HttpResponse } from "../../Primitives/Http";
 import { closeHttpResponse } from "../../Utility/HttpUtil";
 import { CapitalizeType } from "../../Types";
@@ -26,7 +26,7 @@ export interface AttachmentDetails extends AttachmentName {
 export class AttachmentResult {
 
     constructor(
-        public data: stream.Readable,
+        public data: Readable,
         public details: AttachmentDetails,
         private _response: HttpResponse) {
         // empty
@@ -37,4 +37,4 @@ export class AttachmentResult {
     }
 }
 
-export type AttachmentData = stream.Readable | Buffer;
+export type AttachmentData = Readable | Buffer;

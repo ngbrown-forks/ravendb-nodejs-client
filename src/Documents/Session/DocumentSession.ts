@@ -1,4 +1,4 @@
-import * as stream from "readable-stream";
+import { pipeline, Writable, Transform, TransformCallback, Readable } from "node:stream";
 import * as os from "node:os";
 import { DocumentQuery } from "./DocumentQuery";
 import { MultiLoaderWithInclude } from "./Loaders/MultiLoaderWithInclude";
@@ -201,10 +201,10 @@ export class DocumentSession extends InMemoryDocumentSessionOperations
     private async _loadInternal(
         ids: string[],
         operation: LoadOperation,
-        writable: stream.Writable): Promise<void>;
+        writable: Writable): Promise<void>;
     private async _loadInternal(
         ids: string[],
-        operation: LoadOperation, writable?: stream.Writable)
+        operation: LoadOperation, writable?: Writable)
         : Promise<void> {
         if (!ids) {
             throwError("InvalidArgumentException", "Ids cannot be null");
@@ -338,14 +338,14 @@ export class DocumentSession extends InMemoryDocumentSessionOperations
 
     public async loadStartingWithIntoStream<TEntity extends object>(
         idPrefix: string,
-        writable: stream.Writable): Promise<void>;
+        writable: Writable): Promise<void>;
     public async loadStartingWithIntoStream<TEntity extends object>(
         idPrefix: string,
-        writable: stream.Writable,
+        writable: Writable,
         opts: SessionLoadStartingWithOptions<TEntity>): Promise<void>;
     public async loadStartingWithIntoStream<TEntity extends object>(
         idPrefix: string,
-        writable: stream.Writable,
+        writable: Writable,
         opts?: SessionLoadStartingWithOptions<TEntity>): Promise<void> {
 
         if (!writable) {
@@ -362,7 +362,7 @@ export class DocumentSession extends InMemoryDocumentSessionOperations
     }
 
     public async loadIntoStream(
-        ids: string[], writable: stream.Writable): Promise<void> {
+        ids: string[], writable: Writable): Promise<void> {
         return this._loadInternal(ids, new LoadOperation(this), writable);
     }
 
@@ -370,7 +370,7 @@ export class DocumentSession extends InMemoryDocumentSessionOperations
         idPrefix: string,
         operation: LoadStartingWithOperation,
         opts: SessionLoadStartingWithOptions<TEntity>,
-        writable?: stream.Writable): Promise<GetDocumentsCommand> {
+        writable?: Writable): Promise<GetDocumentsCommand> {
         const { matches, start, pageSize, exclude, startAfter } =
         opts || {} as SessionLoadStartingWithOptions<TEntity>;
         operation.withStartWith(idPrefix, {
@@ -979,7 +979,7 @@ export class DocumentSession extends InMemoryDocumentSessionOperations
             }
         });
 
-        return stream.pipeline(docsReadable, result) as DocumentResultStream<T>;
+        return pipeline(docsReadable, result, TypeUtil.NOOP) as unknown as DocumentResultStream<T>;
     }
 
     private async _streamQueryResults<T extends object>(
@@ -1012,7 +1012,7 @@ export class DocumentSession extends InMemoryDocumentSessionOperations
             }
         });
 
-        return stream.pipeline(docsReadable, result) as DocumentResultStream<T>;
+        return pipeline(docsReadable, result, TypeUtil.NOOP) as unknown as DocumentResultStream<T>;
     }
 
     private _getStreamResultTransform<TEntity extends object>(
@@ -1020,9 +1020,9 @@ export class DocumentSession extends InMemoryDocumentSessionOperations
         clazz: ObjectTypeDescriptor<TEntity>,
         fieldsToFetchToken: any,
         isProjectInto: boolean) {
-        return new stream.Transform({
+        return new Transform({
             objectMode: true,
-            transform(chunk: object, encoding: string, callback: stream.TransformCallback) {
+            transform(chunk: object, encoding: string, callback: TransformCallback) {
                 const doc = chunk["value"];
                 const metadata = doc[CONSTANTS.Documents.Metadata.KEY];
                 let changeVector: string = null;
@@ -1047,17 +1047,17 @@ export class DocumentSession extends InMemoryDocumentSessionOperations
     /**
      *  Returns the results of a query directly into stream
      */
-    public async streamInto<T extends object>(query: IDocumentQuery<T>, writable: stream.Writable): Promise<void>;
+    public async streamInto<T extends object>(query: IDocumentQuery<T>, writable: Writable): Promise<void>;
     /**
      *  Returns the results of a query directly into stream
      */
-    public async streamInto<T extends object>(query: IRawDocumentQuery<T>, writable: stream.Writable): Promise<void>;
+    public async streamInto<T extends object>(query: IRawDocumentQuery<T>, writable: Writable): Promise<void>;
     /**
      *  Returns the results of a query directly into stream
      */
     public async streamInto<T extends object>(
         query: IRawDocumentQuery<T> | IDocumentQuery<T>,
-        writable: stream.Writable): Promise<void> {
+        writable: Writable): Promise<void> {
         const streamOperation = new StreamOperation(this);
         const command = streamOperation.createRequest(query.getIndexQuery());
         await this.requestExecutor.execute(command, this._sessionInfo);

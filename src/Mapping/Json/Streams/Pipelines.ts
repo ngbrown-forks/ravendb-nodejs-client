@@ -1,4 +1,4 @@
-import * as stream from "readable-stream";
+import { Stream, Transform, Writable } from "node:stream";
 import { RavenCommandResponsePipeline } from "../../../Http/RavenCommandResponsePipeline";
 import { DocumentConventions } from "../../../Documents/Conventions/DocumentConventions";
 import { stringer as jsonlStringer } from "stream-json/jsonl/Stringer";
@@ -13,7 +13,7 @@ export function getDocumentResultsAsObjects(
 ): RavenCommandResponsePipeline<object[]> {
     const pipeline = RavenCommandResponsePipeline.create<object[]>();
 
-    const keysTransform = new stream.Transform({
+    const keysTransform = new Transform({
         objectMode: true,
         transform(chunk, encoding, callback) {
             let value = chunk["value"];
@@ -58,9 +58,9 @@ export function getDocumentStreamResultsIntoStreamPipeline(
 }
 
 export async function streamResultsIntoStream(
-    bodyStream: stream.Stream,
+    bodyStream: Stream,
     conventions: DocumentConventions,
-    writable: stream.Writable): Promise<void> {
+    writable: Writable): Promise<void> {
 
     return new Promise<void>((resolve, reject) => {
         getDocumentStreamResultsIntoStreamPipeline(conventions)

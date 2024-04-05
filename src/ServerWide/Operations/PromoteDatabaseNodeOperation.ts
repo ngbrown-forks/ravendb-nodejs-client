@@ -1,6 +1,6 @@
 import { throwError } from "../../Exceptions";
 import { HttpRequestParameters } from "../../Primitives/Http";
-import * as stream from "readable-stream";
+import { Stream } from "node:stream";
 import { IServerOperation, OperationResultType } from "../../Documents/Operations/OperationAbstractions";
 import { DatabasePutResult } from "./index";
 import { RavenCommand } from "../../Http/RavenCommand";
@@ -55,7 +55,7 @@ class PromoteDatabaseNodeCommand extends RavenCommand<DatabasePutResult> impleme
         }
     }
 
-    async setResponseAsync(bodyStream: stream.Stream, fromCache: boolean): Promise<string> {
+    async setResponseAsync(bodyStream: Stream, fromCache: boolean): Promise<string> {
         if (!bodyStream) {
             this._throwInvalidResponse();
         }

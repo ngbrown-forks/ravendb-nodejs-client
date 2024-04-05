@@ -1,5 +1,5 @@
 import { HttpRequestParameters } from "../../../Primitives/Http";
-import * as stream from "readable-stream";
+import { Stream } from "node:stream";
 import {
     ConnectionStringType,
     SqlConnectionString,
@@ -66,7 +66,7 @@ export class GetConnectionStringCommand extends RavenCommand<GetConnectionString
         };
     }
 
-    public async setResponseAsync(bodyStream: stream.Stream, fromCache: boolean): Promise<string> {
+    public async setResponseAsync(bodyStream: Stream, fromCache: boolean): Promise<string> {
         if (!bodyStream) {
             return;
         }

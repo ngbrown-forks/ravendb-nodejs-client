@@ -1,6 +1,6 @@
 // Taken from: https://github.com/Borewit/readable-web-to-node-stream/blob/master/lib/index.ts
 
-import { Readable } from 'readable-stream';
+import { Readable } from "node:stream";
 
 /**
  * Converts a Web-API stream into Node stream.Readable class

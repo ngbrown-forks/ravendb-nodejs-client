@@ -8,7 +8,7 @@ import { HttpRequestParameters } from "../../../Primitives/Http";
 import { HeadersBuilder } from "../../../Utility/HttpUtil";
 import { ReplacerContext } from "../../../Mapping/Json/ReplacerFactory";
 import { IndexTypeExtensions } from "../../Indexes/IndexTypeExtensions";
-import * as stream from "readable-stream";
+import { Stream } from "node:stream";
 import { ServerNode } from "../../../Http/ServerNode";
 import { IRaftCommand } from "../../../Http/IRaftCommand";
 import { RaftIdGenerator } from "../../../Utility/RaftIdGenerator";
@@ -104,7 +104,7 @@ export class PutIndexesCommand extends RavenCommand<PutIndexResult[]> implements
         };
     }
 
-    public async setResponseAsync(bodyStream: stream.Stream, fromCache: boolean): Promise<string> {
+    public async setResponseAsync(bodyStream: Stream, fromCache: boolean): Promise<string> {
         let body: string = null;
         const results = await this._defaultPipeline(x => body = x)
             .process(bodyStream);

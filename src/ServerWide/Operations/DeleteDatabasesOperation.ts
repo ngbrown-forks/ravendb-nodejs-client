@@ -1,4 +1,4 @@
-import * as stream from "readable-stream";
+import { Stream } from "node:stream";
 import { IServerOperation, OperationResultType } from "../../Documents/Operations/OperationAbstractions";
 import { throwError } from "../../Exceptions";
 import { RavenCommand } from "../../Http/RavenCommand";
@@ -75,7 +75,7 @@ export class DeleteDatabaseCommand extends RavenCommand<DeleteDatabaseResult> im
         };
     }
 
-    public async setResponseAsync(bodyStream: stream.Stream, fromCache: boolean): Promise<string> {
+    public async setResponseAsync(bodyStream: Stream, fromCache: boolean): Promise<string> {
         if (!bodyStream) {
             this._throwInvalidResponse();
         }

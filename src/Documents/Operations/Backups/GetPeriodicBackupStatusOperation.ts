@@ -1,7 +1,7 @@
 import { IMaintenanceOperation, OperationResultType } from "../OperationAbstractions";
 import { GetPeriodicBackupStatusOperationResult } from "./GetPeriodicBackupStatusOperationResult";
 import { HttpRequestParameters } from "../../../Primitives/Http";
-import * as stream from "readable-stream";
+import { Stream } from "node:stream";
 import { DocumentConventions } from "../../Conventions/DocumentConventions";
 import { RavenCommand } from "../../../Http/RavenCommand";
 import { ServerNode } from "../../../Http/ServerNode";
@@ -46,7 +46,7 @@ class GetPeriodicBackupStatusCommand extends RavenCommand<GetPeriodicBackupStatu
         return true;
     }
 
-    async setResponseAsync(bodyStream: stream.Stream, fromCache: boolean): Promise<string> {
+    async setResponseAsync(bodyStream: Stream, fromCache: boolean): Promise<string> {
         if (!bodyStream) {
             this._throwInvalidResponse();
         }

@@ -8,7 +8,7 @@ import { Socket } from "node:net";
 import { StringUtil } from "../../Utility/StringUtil";
 import { getError, throwError, RavenErrorType } from "../../Exceptions";
 import { TcpUtils } from "../../Utility/TcpUtils";
-import * as stream from "readable-stream";
+import { Transform, pipeline, Readable } from "node:stream";
 import { TcpNegotiateParameters } from "../../ServerWide/Tcp/TcpNegotiateParameters";
 import {
     SUBSCRIPTION_TCP_VERSION,
@@ -49,7 +49,7 @@ export class SubscriptionWorker<T extends object> implements IDisposable {
     private _processingCanceled = false;
     private readonly _options: SubscriptionWorkerOptions<T>;
     private _tcpClient: Socket;
-    private _parser: stream.Transform;
+    private _parser: Transform;
     private _disposed: boolean = false;
     private _subscriptionTask: Promise<void>;
     private _forcedTopologyUpdateAttempts = 0;
@@ -263,7 +263,7 @@ export class SubscriptionWorker<T extends object> implements IDisposable {
         const conventions = this._store.conventions;
         const revisions = this._revisions;
 
-        const keysTransform = new stream.Transform({
+        const keysTransform = new Transform({
             objectMode: true,
             transform(chunk, encoding, callback) {
                 let value = chunk["value"];
@@ -278,7 +278,7 @@ export class SubscriptionWorker<T extends object> implements IDisposable {
         });
 
 
-        this._parser = stream.pipeline([
+        this._parser = pipeline([
             socket,
             new Parser({ jsonStreaming: true, streamValues: false }),
             new StreamValues(),
@@ -287,7 +287,7 @@ export class SubscriptionWorker<T extends object> implements IDisposable {
             if (err && !socket.destroyed) {
                 this._emitter.emit("error", err);
             }
-        }) as stream.Transform;
+        }) as Transform;
 
         this._parser.pause();
     }
@@ -637,7 +637,7 @@ export class SubscriptionWorker<T extends object> implements IDisposable {
     }
 
     private async _readNextObject(): Promise<SubscriptionConnectionServerMessage> {
-        const stream: NodeJS.ReadableStream = this._parser;
+        const stream: Readable = this._parser;
         if (this._processingCanceled) {
             return null;
         }

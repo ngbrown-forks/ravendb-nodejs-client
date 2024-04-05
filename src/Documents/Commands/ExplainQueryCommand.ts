@@ -4,7 +4,7 @@ import { DocumentConventions } from "../Conventions/DocumentConventions";
 import { IndexQuery, writeIndexQuery } from "../Queries/IndexQuery";
 import { throwError } from "../../Exceptions";
 import { ServerNode } from "../../Http/ServerNode";
-import * as stream from "readable-stream";
+import { Stream } from "node:stream";
 
 export interface ExplainQueryResult {
     index: string;
@@ -43,7 +43,7 @@ export class ExplainQueryCommand extends RavenCommand<ExplainQueryResult[]> {
         };
     }
 
-    public async setResponseAsync(bodyStream: stream.Stream, fromCache: boolean): Promise<string> {
+    public async setResponseAsync(bodyStream: Stream, fromCache: boolean): Promise<string> {
         if (!bodyStream) {
             this.result = null;
             return;

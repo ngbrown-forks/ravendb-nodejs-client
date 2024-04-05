@@ -5,7 +5,7 @@ import { StringUtil } from "../../Utility/StringUtil";
 import { throwError } from "../../Exceptions";
 import { ServerNode } from "../../Http/ServerNode";
 import { StatusCodes } from "../../Http/StatusCode";
-import * as stream from "readable-stream";
+import { Stream, Readable } from "node:stream";
 import { getRequiredEtagHeader } from "../../Utility/HttpUtil";
 import { HEADERS } from "../../Constants";
 
@@ -57,7 +57,7 @@ export class HeadAttachmentCommand extends RavenCommand<string> {
     public async processResponse(
         cache: HttpCache,
         response: HttpResponse,
-        bodyStream: stream.Readable,
+        bodyStream: Readable,
         url: string): Promise<ResponseDisposeHandling> {
         if (response.status === StatusCodes.NotModified) {
             this.result = this._changeVector;

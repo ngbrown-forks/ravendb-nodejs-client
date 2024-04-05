@@ -4,7 +4,7 @@ import { SecurityClearance } from "./SecurityClearance";
 import { throwError } from "../../../Exceptions";
 import { HttpRequestParameters, HttpResponse } from "../../../Primitives/Http";
 import { getHeaders } from "../../../Utility/HttpUtil";
-import * as stream from "readable-stream";
+import { Stream } from "node:stream";
 import { readToBuffer } from "../../../Utility/StreamUtil";
 import { IServerOperation, OperationResultType } from "../../../Documents/Operations/OperationAbstractions";
 import { DocumentConventions } from "../../../Documents/Conventions/DocumentConventions";
@@ -97,7 +97,7 @@ class CreateClientCertificateCommand extends RavenCommand<CertificateRawData> im
         super.setResponseRaw(response, body);
     }
 
-    async setResponseAsync(bodyStream: stream.Stream, fromCache: boolean): Promise<string> {
+    async setResponseAsync(bodyStream: Stream, fromCache: boolean): Promise<string> {
         if (!bodyStream) {
             this._throwInvalidResponse();
         }

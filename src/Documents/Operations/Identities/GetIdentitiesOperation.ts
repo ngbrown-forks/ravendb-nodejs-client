@@ -3,7 +3,7 @@ import { OperationResultType, IMaintenanceOperation } from "../OperationAbstract
 import { DocumentConventions } from "../../Conventions/DocumentConventions";
 import { RavenCommand } from "../../../Http/RavenCommand";
 import { ServerNode } from "../../../Http/ServerNode";
-import * as stream from "readable-stream";
+import { Stream } from "node:stream";
 
 export interface IdentitiesCollection {
     [key: string]: number;
@@ -35,7 +35,7 @@ export class GetIdentitiesCommand extends RavenCommand<IdentitiesCollection> {
         return { uri };
     }
 
-    public async setResponseAsync(bodyStream: stream.Stream, fromCache: boolean): Promise<string> {
+    public async setResponseAsync(bodyStream: Stream, fromCache: boolean): Promise<string> {
         let body: string = null;
         this.result = await this._pipeline<IdentitiesCollection>()
             .parseJsonSync()

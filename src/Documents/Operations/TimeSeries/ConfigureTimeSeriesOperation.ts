@@ -3,7 +3,7 @@ import { ConfigureTimeSeriesOperationResult } from "./ConfigureTimeSeriesOperati
 import { TimeSeriesConfiguration } from "./TimeSeriesConfiguration";
 import { throwError } from "../../../Exceptions";
 import { HttpRequestParameters } from "../../../Primitives/Http";
-import * as stream from "readable-stream";
+import { Stream } from "node:stream";
 import { RaftIdGenerator } from "../../../Utility/RaftIdGenerator";
 import { ServerNode } from "../../../Http/ServerNode";
 import { RavenCommand } from "../../../Http/RavenCommand";
@@ -56,7 +56,7 @@ class ConfigureTimeSeriesCommand extends RavenCommand<ConfigureTimeSeriesOperati
         }
     }
 
-    async setResponseAsync(bodyStream: stream.Stream, fromCache: boolean): Promise<string> {
+    async setResponseAsync(bodyStream: Stream, fromCache: boolean): Promise<string> {
         if (!bodyStream) {
             this._throwInvalidResponse();
         }

@@ -1,7 +1,7 @@
 import { ServerNode } from "./ServerNode";
 import { HttpCache } from "./HttpCache";
 import { StatusCodes } from "./StatusCode";
-import * as stream from "readable-stream";
+import { Stream, Readable, PassThrough } from "node:stream";
 import { Response, default as fetch, RequestInit } from "node-fetch";
 import { HttpRequestParameters, HttpResponse } from "../Primitives/Http";
 import { getLogger } from "../Utility/LogUtil";
@@ -16,7 +16,6 @@ import * as http from "node:http";
 import { ObjectTypeDescriptor } from "../Types";
 import { ReadableWebToNodeStream } from "../Utility/ReadableWebToNodeStream";
 import { LengthUnawareFormData } from "../Utility/LengthUnawareFormData";
-import { Stream } from "readable-stream";
 
 const log = getLogger({ module: "RavenCommand" });
 
@@ -95,7 +94,7 @@ export abstract class RavenCommand<TResult> {
             this.result = null;
             return;
         }
-        const readable = new stream.Readable();
+        const readable = new Readable();
         readable.push(cachedValue);
         readable.push(null);
         await this.setResponseAsync(readable, true);
@@ -109,7 +108,7 @@ export abstract class RavenCommand<TResult> {
             .objectKeysTransform("camel");
     }
 
-    public async setResponseAsync(bodyStream: stream.Stream, fromCache: boolean): Promise<string> {
+    public async setResponseAsync(bodyStream: Stream, fromCache: boolean): Promise<string> {
         if (this._responseType === "Empty" || this._responseType === "Raw") {
             this._throwInvalidResponse();
         }
@@ -122,7 +121,7 @@ export abstract class RavenCommand<TResult> {
     }
 
     public async send(agent: http.Agent,
-        requestOptions: HttpRequestParameters): Promise<{ response: HttpResponse, bodyStream: stream.Readable }> {
+        requestOptions: HttpRequestParameters): Promise<{ response: HttpResponse, bodyStream: Readable }> {
 
         const { body, uri, fetcher, ...restOptions } = requestOptions;
 
@@ -136,13 +135,13 @@ export abstract class RavenCommand<TResult> {
 
         const optionsToUse = { body: bodyToUse, ...restOptions, agent } as RequestInit;
 
-        const passthrough = new stream.PassThrough();
+        const passthrough = new PassThrough();
         passthrough.pause();
 
         const fetchFn = fetcher ?? fetch; // support for custom fetcher
         const response = await fetchFn(uri, optionsToUse);
 
-        const effectiveStream: stream.Readable =
+        const effectiveStream: Readable =
             fetcher && response.body
                 ? new ReadableWebToNodeStream(response.body)
                 : (response.body ?? new Stream());
@@ -160,7 +159,7 @@ export abstract class RavenCommand<TResult> {
         if (body instanceof LengthUnawareFormData) {
             throw new Error("Requests using FormData as payload are not yet supported!");
         }
-        if (body instanceof stream.Readable) {
+        if (body instanceof Readable) {
             throw new Error("Requests using stream.Readable as payload are not yet supported!");
         }
 
@@ -190,7 +189,7 @@ export abstract class RavenCommand<TResult> {
     public async processResponse(
         cache: HttpCache,
         response: HttpResponse,
-        bodyStream: stream.Readable,
+        bodyStream: Readable,
         url: string): Promise<ResponseDisposeHandling> {
         if (!response) {
             return "Automatic";
@@ -266,7 +265,7 @@ export abstract class RavenCommand<TResult> {
         return conventions.objectMapper.fromObjectLiteral<TResponse>(raw, typeInfo, knownTypes);
     }
 
-    protected async _parseResponseDefaultAsync(bodyStream: stream.Stream): Promise<string> {
+    protected async _parseResponseDefaultAsync(bodyStream: Stream): Promise<string> {
         let body: string = null;
         this.result = await this._defaultPipeline(_ => body = _).process(bodyStream);
         return body;

@@ -8,7 +8,7 @@ import { IRaftCommand } from "../../Http/IRaftCommand";
 import { ServerNode } from "../../Http/ServerNode";
 import { HttpRequestParameters } from "../../Primitives/Http";
 import { RaftIdGenerator } from "../../Utility/RaftIdGenerator";
-import stream from "readable-stream";
+import { Stream } from "node:stream";
 
 export class ModifyDatabaseTopologyOperation implements IServerOperation<ModifyDatabaseTopologyResult> {
     private readonly _databaseName: string;
@@ -67,7 +67,7 @@ class ModifyDatabaseTopologyCommand extends RavenCommand<ModifyDatabaseTopologyR
         return RaftIdGenerator.newId();
     }
 
-    public async setResponseAsync(bodyStream: stream.Stream, fromCache: boolean): Promise<string> {
+    public async setResponseAsync(bodyStream: Stream, fromCache: boolean): Promise<string> {
         let body: string = null;
         this.result = await this._defaultPipeline(_ => body = _)
             .process(bodyStream);

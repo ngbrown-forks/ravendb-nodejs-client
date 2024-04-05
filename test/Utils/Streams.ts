@@ -1,8 +1,8 @@
-import * as stream from "readable-stream";
+import { Writable } from "node:stream";
 
-export function getStringWritable(): stream.Writable {
+export function getStringWritable(): Writable {
     let buf = "";
-    const result = new stream.Writable({
+    const result = new Writable({
         write(chunk, enc, callback) {
             buf += chunk.toString();
             callback();

@@ -1,7 +1,7 @@
 import { RavenCommand } from "../../Http/RavenCommand";
 import { SubscriptionState } from "../Subscriptions/SubscriptionState";
 import { HttpRequestParameters } from "../../Primitives/Http";
-import * as stream from "readable-stream";
+import { Stream } from "node:stream";
 import { ServerNode } from "../../Http/ServerNode";
 
 export class GetSubscriptionStateCommand extends RavenCommand<SubscriptionState> {
@@ -21,7 +21,7 @@ export class GetSubscriptionStateCommand extends RavenCommand<SubscriptionState>
         };
     }
 
-    public async setResponseAsync(bodyStream: stream.Stream, fromCache: boolean): Promise<string> {
+    public async setResponseAsync(bodyStream: Stream, fromCache: boolean): Promise<string> {
         return this._parseResponseDefaultAsync(bodyStream);
     }
 

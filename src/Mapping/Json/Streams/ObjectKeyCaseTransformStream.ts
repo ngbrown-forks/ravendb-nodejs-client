@@ -1,4 +1,4 @@
-import * as stream from "readable-stream";
+import { Transform } from "node:stream";
 import {
     ObjectUtil,
     ObjectChangeCaseOptions,
@@ -23,7 +23,7 @@ const DEFAULT_OBJECT_KEY_CASE_TRANSFORM_OPTS = {
     recursive: true
 };
 
-export class ObjectKeyCaseTransformStream extends stream.Transform {
+export class ObjectKeyCaseTransformStream extends Transform {
 
     private _ignorePaths: (string | RegExp)[];
     private readonly _getIgnorePaths: (entry: object) => (string | RegExp)[] = () => this._ignorePaths;

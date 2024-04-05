@@ -1,6 +1,6 @@
 import { IServerOperation, OperationIdResult, OperationResultType } from "../OperationAbstractions";
 import { HttpRequestParameters } from "../../../Primitives/Http";
-import * as stream from "readable-stream";
+import { Stream } from "node:stream";
 import { DocumentConventions } from "../../Conventions/DocumentConventions";
 import { RavenCommand } from "../../../Http/RavenCommand";
 import { ServerNode } from "../../../Http/ServerNode";
@@ -60,7 +60,7 @@ class RestoreBackupCommand extends RavenCommand<OperationIdResult> {
         }
     }
 
-    async setResponseAsync(bodyStream: stream.Stream, fromCache: boolean): Promise<string> {
+    async setResponseAsync(bodyStream: Stream, fromCache: boolean): Promise<string> {
         if (!bodyStream) {
             this._throwInvalidResponse();
         }

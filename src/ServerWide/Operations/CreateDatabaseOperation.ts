@@ -1,4 +1,4 @@
-import * as stream from "readable-stream";
+import { Stream } from "node:stream";
 import { HttpRequestParameters } from "../../Primitives/Http";
 import { RavenCommand } from "../../Http/RavenCommand";
 import { DatabasePutResult } from ".";
@@ -78,7 +78,7 @@ export class CreateDatabaseCommand extends RavenCommand<DatabasePutResult> imple
         };
     }
 
-    public async setResponseAsync(bodyStream: stream.Stream, fromCache: boolean): Promise<string> {
+    public async setResponseAsync(bodyStream: Stream, fromCache: boolean): Promise<string> {
         if (!bodyStream) {
             this._throwInvalidResponse();
         }

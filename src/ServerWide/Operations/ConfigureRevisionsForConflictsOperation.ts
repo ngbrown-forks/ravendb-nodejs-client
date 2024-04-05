@@ -6,7 +6,7 @@ import { DocumentConventions } from "../../Documents/Conventions/DocumentConvent
 import { IRaftCommand } from "../../Http/IRaftCommand";
 import { ServerNode } from "../../Http/ServerNode";
 import { HttpRequestParameters } from "../../Primitives/Http";
-import * as stream from "readable-stream";
+import { Stream } from "node:stream";
 import { RaftIdGenerator } from "../../Utility/RaftIdGenerator";
 
 export class ConfigureRevisionsForConflictsOperation implements IServerOperation<ConfigureRevisionsForConflictsResult> {
@@ -67,7 +67,7 @@ class ConfigureRevisionsForConflictsCommand extends RavenCommand<ConfigureRevisi
         }
     }
 
-    async setResponseAsync(bodyStream: stream.Stream, fromCache: boolean): Promise<string> {
+    async setResponseAsync(bodyStream: Stream, fromCache: boolean): Promise<string> {
         if (!bodyStream) {
             this._throwInvalidResponse();
         }

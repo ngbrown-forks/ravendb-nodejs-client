@@ -1,7 +1,7 @@
 import { CertificateDefinition } from "./CertificateDefinition";
 import { throwError } from "../../../Exceptions";
 import { HttpRequestParameters } from "../../../Primitives/Http";
-import * as stream from "readable-stream";
+import { Stream } from "node:stream";
 import { IServerOperation, OperationResultType } from "../../../Documents/Operations/OperationAbstractions";
 import { DocumentConventions } from "../../../Documents/Conventions/DocumentConventions";
 import { RavenCommand } from "../../../Http/RavenCommand";
@@ -54,7 +54,7 @@ class GetCertificateCommand extends RavenCommand<CertificateDefinition> {
         }
     }
 
-    async setResponseAsync(bodyStream: stream.Stream, fromCache: boolean): Promise<string> {
+    async setResponseAsync(bodyStream: Stream, fromCache: boolean): Promise<string> {
         if (!bodyStream) {
             return;
         }

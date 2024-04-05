@@ -9,7 +9,7 @@ import { RavenCommand } from "../../../Http/RavenCommand";
 import { IRaftCommand } from "../../../Http/IRaftCommand";
 import { HttpRequestParameters } from "../../../Primitives/Http";
 import { ServerNode } from "../../../Http/ServerNode";
-import * as stream from "readable-stream";
+import { Stream } from "node:stream";
 import { RaftIdGenerator } from "../../../Utility/RaftIdGenerator";
 
 export class PutPullReplicationAsHubOperation implements IMaintenanceOperation<ModifyOngoingTaskResult> {
@@ -67,7 +67,7 @@ class UpdatePullReplicationDefinitionCommand extends RavenCommand<ModifyOngoingT
         }
     }
 
-    async setResponseAsync(bodyStream: stream.Stream, fromCache: boolean): Promise<string> {
+    async setResponseAsync(bodyStream: Stream, fromCache: boolean): Promise<string> {
         if (!bodyStream) {
             this._throwInvalidResponse();
         }

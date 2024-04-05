@@ -7,7 +7,7 @@ import { IRaftCommand } from "../../../Http/IRaftCommand";
 import { RaftIdGenerator } from "../../../Utility/RaftIdGenerator";
 import { HttpRequestParameters } from "../../../Primitives/Http";
 import { ServerNode } from "../../../Http/ServerNode";
-import * as stream from "readable-stream";
+import { Stream } from "node:stream";
 import {
     PutServerWideBackupConfigurationResponse
 } from "../OngoingTasks/ServerWideTaskResponse";
@@ -66,7 +66,7 @@ class PutServerWideBackupConfigurationCommand extends RavenCommand<PutServerWide
         }
     }
 
-    async setResponseAsync(bodyStream: stream.Stream, fromCache: boolean): Promise<string> {
+    async setResponseAsync(bodyStream: Stream, fromCache: boolean): Promise<string> {
         return this._parseResponseDefaultAsync(bodyStream);
     }
 }

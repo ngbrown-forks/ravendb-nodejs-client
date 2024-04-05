@@ -4,7 +4,7 @@ import { RavenCommand } from "../../../Http/RavenCommand";
 import { IndexDefinition } from "../../Indexes/IndexDefinition";
 import { IMaintenanceOperation, OperationResultType } from "../OperationAbstractions";
 import { DocumentConventions } from "../../Conventions/DocumentConventions";
-import * as stream from "readable-stream";
+import { Stream } from "node:stream";
 
 export class GetIndexesOperation implements IMaintenanceOperation<IndexDefinition[]> {
 
@@ -52,7 +52,7 @@ export class GetIndexesCommand extends RavenCommand<IndexDefinition[]> {
         return { uri };
     }
 
-    public async setResponseAsync(bodyStream: stream.Stream, fromCache: boolean): Promise<string> {
+    public async setResponseAsync(bodyStream: Stream, fromCache: boolean): Promise<string> {
         if (!bodyStream) {
             this._throwInvalidResponse();
         }

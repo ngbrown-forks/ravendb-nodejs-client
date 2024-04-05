@@ -8,7 +8,7 @@ import { RavenCommand } from "../../../Http/RavenCommand";
 import { throwError } from "../../../Exceptions";
 import { ServerNode } from "../../../Http/ServerNode";
 import { HttpRequestParameters } from "../../../Primitives/Http";
-import * as stream from "readable-stream";
+import { Stream } from "node:stream";
 
 export class CounterBatchOperation implements IOperation<CountersDetail> {
 
@@ -50,7 +50,7 @@ export class CounterBatchCommand extends RavenCommand<CountersDetail> {
         headers: this._headers().typeAppJson().build()
     };
 }
-    public async setResponseAsync(bodyStream: stream.Stream, fromCache: boolean): Promise<string> {
+    public async setResponseAsync(bodyStream: Stream, fromCache: boolean): Promise<string> {
         if (!bodyStream) {
             return;
         }

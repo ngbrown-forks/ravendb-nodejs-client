@@ -5,7 +5,7 @@ import { throwError } from "../../Exceptions";
 import { HttpCache } from "../../Http/HttpCache";
 import { getRequiredEtagHeader } from "../../Utility/HttpUtil";
 import { ServerNode } from "../../Http/ServerNode";
-import * as stream from "readable-stream";
+import { Readable } from "node:stream";
 import { HEADERS } from "../../Constants";
 
 export class HeadDocumentCommand extends RavenCommand<string> {
@@ -48,7 +48,7 @@ export class HeadDocumentCommand extends RavenCommand<string> {
     public async processResponse(
         cache: HttpCache,
         response: HttpResponse,
-        bodyStream: stream.Readable,
+        bodyStream: Readable,
         url: string): Promise<ResponseDisposeHandling> {
         if (response.status === StatusCodes.NotModified) {
             this.result = this._changeVector;

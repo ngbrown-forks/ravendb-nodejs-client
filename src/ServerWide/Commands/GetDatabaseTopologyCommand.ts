@@ -1,4 +1,4 @@
-import * as stream from "readable-stream";
+import { Stream } from "node:stream";
 import { RavenCommand } from "../../Http/RavenCommand";
 import { ServerNode } from "../../Http/ServerNode";
 import { Topology } from "../../Http/Topology";
@@ -49,7 +49,7 @@ export class GetDatabaseTopologyCommand extends RavenCommand<Topology> {
         return { uri };
     }
 
-    public async setResponseAsync(bodyStream: stream.Stream, fromCache: boolean): Promise<string> {
+    public async setResponseAsync(bodyStream: Stream, fromCache: boolean): Promise<string> {
         if (!bodyStream) {
             return;
         }

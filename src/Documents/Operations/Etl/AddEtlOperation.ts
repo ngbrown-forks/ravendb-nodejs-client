@@ -2,7 +2,7 @@ import { ConnectionString } from "./ConnectionString";
 import { IMaintenanceOperation, OperationResultType } from "../OperationAbstractions";
 import { EtlConfiguration } from "./EtlConfiguration";
 import { HttpRequestParameters } from "../../../Primitives/Http";
-import * as stream from "readable-stream";
+import { Stream } from "node:stream";
 import { DocumentConventions } from "../../Conventions/DocumentConventions";
 import { RavenCommand } from "../../../Http/RavenCommand";
 import { ServerNode } from "../../../Http/ServerNode";
@@ -54,7 +54,7 @@ class AddEtlCommand<T extends ConnectionString> extends RavenCommand<AddEtlOpera
         }
     }
 
-    async setResponseAsync(bodyStream: stream.Stream, fromCache: boolean): Promise<string> {
+    async setResponseAsync(bodyStream: Stream, fromCache: boolean): Promise<string> {
         if (!bodyStream) {
             this._throwInvalidResponse();
         }

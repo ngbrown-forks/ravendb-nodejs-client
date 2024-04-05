@@ -9,7 +9,7 @@ import { DocumentConventions } from "../Conventions/DocumentConventions";
 import { HttpCache } from "../../Http/HttpCache";
 import { ServerNode } from "../../Http/ServerNode";
 import { PatchResult } from "./PatchResult";
-import * as stream from "readable-stream";
+import { Stream } from "node:stream";
 import { ObjectUtil } from "../../Utility/ObjectUtil";
 import { ServerCasing, ServerResponse } from "../../Types";
 
@@ -170,7 +170,7 @@ export class PatchCommand extends RavenCommand<PatchResult> {
         return req;
     }
 
-    public async setResponseAsync(bodyStream: stream.Stream, fromCache: boolean): Promise<string> {
+    public async setResponseAsync(bodyStream: Stream, fromCache: boolean): Promise<string> {
         if (!bodyStream) {
             return;
         }

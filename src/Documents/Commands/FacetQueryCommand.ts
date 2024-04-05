@@ -1,6 +1,6 @@
 import { QueryResult } from "../Queries/QueryResult";
 import { DocumentConventions } from "../Conventions/DocumentConventions";
-import * as stream from "readable-stream";
+import { Stream } from "node:stream";
 import { QueryCommand } from "./QueryCommand";
 import { RavenCommandResponsePipeline } from "../../Http/RavenCommandResponsePipeline";
 import { ServerCasing, ServerResponse } from "../../Types";
@@ -8,7 +8,7 @@ import { ObjectUtil } from "../../Utility/ObjectUtil";
 
 export class FacetQueryCommand extends QueryCommand {
 
-    public async setResponseAsync(bodyStream: stream.Stream, fromCache: boolean): Promise<string> {
+    public async setResponseAsync(bodyStream: Stream, fromCache: boolean): Promise<string> {
         if (!bodyStream) {
             this.result = null;
             return;
@@ -22,7 +22,7 @@ export class FacetQueryCommand extends QueryCommand {
     }
 
     public static async parseQueryResultResponseAsync(
-        bodyStream: stream.Stream,
+        bodyStream: Stream,
         conventions: DocumentConventions,
         fromCache: boolean,
         bodyCallback?: (body: string) => void): Promise<QueryResult> {

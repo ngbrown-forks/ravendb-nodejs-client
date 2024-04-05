@@ -8,7 +8,7 @@ import {
 } from "../../src";
 import { HttpRequestParameters } from "../../src/Primitives/Http";
 import { RaftIdGenerator } from "../../src/Utility/RaftIdGenerator";
-import stream from "readable-stream";
+import { Stream } from "node:stream";
 
 export class GenerateCertificateOperation implements IMaintenanceOperation<PullReplicationCertificate> {
 
@@ -38,7 +38,7 @@ class GenerateCertificateCommand extends RavenCommand<PullReplicationCertificate
         return RaftIdGenerator.newId();
     }
 
-    public async setResponseAsync(bodyStream: stream.Stream, fromCache: boolean): Promise<string> {
+    public async setResponseAsync(bodyStream: Stream, fromCache: boolean): Promise<string> {
         return this._parseResponseDefaultAsync(bodyStream);
     }
 }

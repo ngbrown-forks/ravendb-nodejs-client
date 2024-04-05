@@ -1,4 +1,4 @@
-import * as stream from "readable-stream";
+import { finished } from "node:stream";
 import * as path from "node:path";
 import * as fs from "node:fs";
 import * as assert from "node:assert";
@@ -537,7 +537,7 @@ describe("Readme samples", function () {
             });
 
             await new Promise<void>((resolve, reject) => {
-                stream.finished(userStream, err => {
+                finished(userStream, err => {
                     err ? reject(err) : resolve();
                 });
             });

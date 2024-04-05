@@ -6,7 +6,7 @@ import { IndexQuery, writeIndexQuery } from "../Queries/IndexQuery";
 import { throwError } from "../../Exceptions";
 import { ServerNode } from "../../Http/ServerNode";
 import { JsonSerializer } from "../../Mapping/Json/Serializer";
-import * as stream from "readable-stream";
+import { Stream } from "node:stream";
 import { RavenCommandResponsePipeline } from "../../Http/RavenCommandResponsePipeline";
 import { StringBuilder } from "../../Utility/StringBuilder";
 import { ServerCasing, ServerResponse } from "../../Types";
@@ -85,7 +85,7 @@ export class QueryCommand extends RavenCommand<QueryResult> {
         return super._serializer;
     }
 
-    public async setResponseAsync(bodyStream: stream.Stream, fromCache: boolean): Promise<string> {
+    public async setResponseAsync(bodyStream: Stream, fromCache: boolean): Promise<string> {
         if (!bodyStream) {
             this.result = null;
             return;
@@ -103,7 +103,7 @@ export class QueryCommand extends RavenCommand<QueryResult> {
     }
 
     public static async parseQueryResultResponseAsync(
-        bodyStream: stream.Stream,
+        bodyStream: Stream,
         conventions: DocumentConventions,
         fromCache: boolean,
         bodyCallback?: (body: string) => void): Promise<QueryResult> {

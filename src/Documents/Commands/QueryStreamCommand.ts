@@ -1,4 +1,4 @@
-import * as stream from "readable-stream";
+import { Readable } from "node:stream";
 import { RavenCommand, ResponseDisposeHandling } from "../../Http/RavenCommand";
 import { DocumentConventions } from "../Conventions/DocumentConventions";
 import { IndexQuery, writeIndexQuery } from "../Queries/IndexQuery";
@@ -43,7 +43,7 @@ export class QueryStreamCommand extends RavenCommand<StreamResultResponse> {
     public async processResponse(
         cache: HttpCache,
         response: HttpResponse,
-        bodyStream: stream.Readable,
+        bodyStream: Readable,
         url: string): Promise<ResponseDisposeHandling> {
         this.result = {
             response,

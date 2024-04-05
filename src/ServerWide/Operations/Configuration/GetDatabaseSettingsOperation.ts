@@ -4,8 +4,8 @@ import { throwError } from "../../../Exceptions";
 import { RavenCommand } from "../../../Http/RavenCommand";
 import { ServerNode } from "../../../Http/ServerNode";
 import { HttpRequestParameters } from "../../../Primitives/Http";
-import stream from "readable-stream";
 import { DocumentConventions } from "../../../Documents/Conventions/DocumentConventions";
+import { Stream } from "node:stream";
 
 export class GetDatabaseSettingsOperation implements IMaintenanceOperation<DatabaseSettings> {
 
@@ -53,7 +53,7 @@ class GetDatabaseSettingsCommand extends RavenCommand<DatabaseSettings> {
         }
     }
 
-    async setResponseAsync(bodyStream: stream.Stream, fromCache: boolean): Promise<string> {
+    async setResponseAsync(bodyStream: Stream, fromCache: boolean): Promise<string> {
         if (!bodyStream) {
             this._throwInvalidResponse();
         }

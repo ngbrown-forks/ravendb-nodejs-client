@@ -10,7 +10,7 @@ import { HttpRequestParameters } from "../../../Primitives/Http";
 import { DocumentCountersOperation } from "./DocumentCountersOperation";
 import { CounterOperation } from "./CounterOperation";
 import { CounterBatch } from "./CounterBatch";
-import * as stream from "readable-stream";
+import { Stream } from "node:stream";
 import { StringBuilder } from "../../../Utility/StringBuilder";
 
 export class GetCountersOperation implements IOperation<CountersDetail> {
@@ -149,7 +149,7 @@ export class GetCounterValuesCommand extends RavenCommand<CountersDetail> {
         return true;
     }
 
-    public async setResponseAsync(bodyStream: stream.Stream, fromCache: boolean): Promise<string> {
+    public async setResponseAsync(bodyStream: Stream, fromCache: boolean): Promise<string> {
         if (!bodyStream) {
             return;
         }

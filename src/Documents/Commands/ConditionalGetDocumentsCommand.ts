@@ -1,7 +1,7 @@
 import { RavenCommand, ResponseDisposeHandling } from "../../Http/RavenCommand";
 import { ServerNode } from "../../Http/ServerNode";
 import { HttpRequestParameters, HttpResponse } from "../../Primitives/Http";
-import * as stream from "readable-stream";
+import { Stream, Readable } from "node:stream";
 import { HttpCache } from "../../Http/HttpCache";
 import { StatusCodes } from "../../Http/StatusCode";
 import { DocumentConventions } from "../Conventions/DocumentConventions";
@@ -37,7 +37,7 @@ export class ConditionalGetDocumentsCommand extends RavenCommand<ConditionalGetR
         }
     }
 
-    public async setResponseAsync(bodyStream: stream.Stream, fromCache: boolean): Promise<string> {
+    public async setResponseAsync(bodyStream: Stream, fromCache: boolean): Promise<string> {
         if (!bodyStream) {
             this.result = null;
             return;
@@ -52,7 +52,7 @@ export class ConditionalGetDocumentsCommand extends RavenCommand<ConditionalGetR
     }
 
     public static async parseDocumentsResultResponseAsync(
-        bodyStream: stream.Stream,
+        bodyStream: Stream,
         conventions: DocumentConventions,
         bodyCallback?: (body: string) => void): Promise<ConditionalGetResult> {
 
@@ -80,7 +80,7 @@ export class ConditionalGetDocumentsCommand extends RavenCommand<ConditionalGetR
         };
     }
 
-    public async processResponse(cache: HttpCache, response: HttpResponse, bodyStream: stream.Readable, url: string): Promise<ResponseDisposeHandling> {
+    public async processResponse(cache: HttpCache, response: HttpResponse, bodyStream: Readable, url: string): Promise<ResponseDisposeHandling> {
         if (response.status === StatusCodes.NotModified) {
             return "Automatic";
         }

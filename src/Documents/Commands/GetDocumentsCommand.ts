@@ -1,4 +1,4 @@
-import * as stream from "readable-stream";
+import { Stream } from "node:stream";
 import { RavenCommand } from "../../Http/RavenCommand";
 import {
     RavenCommandResponsePipeline
@@ -316,7 +316,7 @@ export class GetDocumentsCommand extends RavenCommand<GetDocumentsResult> {
         return hasher.getHash();
     }
 
-    public async setResponseAsync(bodyStream: stream.Stream, fromCache: boolean): Promise<string> {
+    public async setResponseAsync(bodyStream: Stream, fromCache: boolean): Promise<string> {
         if (!bodyStream) {
             this.result = null;
             return;
@@ -331,7 +331,7 @@ export class GetDocumentsCommand extends RavenCommand<GetDocumentsResult> {
     }
 
     public static async parseDocumentsResultResponseAsync(
-        bodyStream: stream.Stream,
+        bodyStream: Stream,
         conventions: DocumentConventions,
         bodyCallback?: (body: string) => void): Promise<GetDocumentsResult> {
 

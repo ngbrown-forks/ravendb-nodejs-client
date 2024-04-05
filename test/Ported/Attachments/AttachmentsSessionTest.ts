@@ -7,7 +7,7 @@ import {
     DeleteAttachmentOperation,
     DeleteCommandData
 } from "../../../src";
-import * as stream from "readable-stream";
+import { Readable, Writable } from "node:stream";
 import { User } from "../../Assets/Entities";
 import { CONSTANTS } from "../../../src/Constants";
 import * as StreamUtil from "../../../src/Utility/StreamUtil";
@@ -32,7 +32,7 @@ describe("Attachments Session", function () {
 
         const profileStream = Buffer.from([1, 2, 3]);
         const backgroundStream = Buffer.from([10, 20, 30, 40, 50]);
-        const fileStream = new stream.Readable();
+        const fileStream = new Readable();
         for (const x of [1, 2, 3, 4, 5]) fileStream.push(Buffer.from(x.toString()));
         fileStream.push(null);
 
@@ -189,7 +189,7 @@ describe("Attachments Session", function () {
             // result.data.resume();
 
             let bufResult = Buffer.from([]);
-            result.data.pipe(new stream.Writable({
+            result.data.pipe(new Writable({
                 write(chunk, enc, cb) {
                     bufResult = Buffer.concat([bufResult, chunk]);
                     cb();

@@ -41,7 +41,7 @@
     "Hibernating Rhinos"
   ],
   "engines": {
-    "node": ">=16.0.0"
+    "node": ">=18.0.0"
   },
   "keywords": [
     "ravendb",
@@ -79,7 +79,7 @@
     "unzipper": "^0.10.11"
   },
   "dependencies": {
-    "@types/node": "^18.7.7",
+    "@types/node": "^18.19.29",
     "@types/node-fetch": "^2.6.2",
     "@types/qs": "^6.9.7",
     "@types/semaphore": "^1.1.0",
@@ -96,7 +96,6 @@
     "object.values": "^1.1.5",
     "pluralize": "^4.0.0",
     "qs": "^6.11.0",
-    "readable-stream": "^3.6.0",
     "safe-memory-cache": "^2.0.0",
     "semaphore": "^1.1.0",
     "stream-json": "^1.7.4",

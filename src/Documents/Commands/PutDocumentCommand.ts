@@ -3,7 +3,7 @@ import { throwError } from "../../Exceptions";
 import { ServerNode } from "../../Http/ServerNode";
 import { HttpRequestParameters } from "../../Primitives/Http";
 import { HeadersBuilder } from "../../Utility/HttpUtil";
-import * as stream from "readable-stream";
+import { Stream } from "node:stream";
 import { JsonSerializer } from "../../Mapping/Json/Serializer";
 
 export interface PutResult {
@@ -59,7 +59,7 @@ export class PutDocumentCommand extends RavenCommand<PutResult> {
         return req;
     }
 
-    public async setResponseAsync(bodyStream: stream.Stream, fromCache: boolean): Promise<string> {
+    public async setResponseAsync(bodyStream: Stream, fromCache: boolean): Promise<string> {
         return this._parseResponseDefaultAsync(bodyStream);
     }
 

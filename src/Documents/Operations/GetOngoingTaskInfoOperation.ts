@@ -3,7 +3,7 @@ import { OngoingTask } from "./OngoingTasks/OngoingTask";
 import { OngoingTaskType } from "./OngoingTasks/OngoingTaskType";
 import { TypeUtil } from "../../Utility/TypeUtil";
 import { HttpRequestParameters } from "../../Primitives/Http";
-import * as stream from "readable-stream";
+import { Stream } from "node:stream";
 import { NestedTypes } from "../../Mapping/ObjectMapper";
 import { DocumentConventions } from "../Conventions/DocumentConventions";
 import { RavenCommand } from "../../Http/RavenCommand";
@@ -77,7 +77,7 @@ class GetOngoingTaskInfoCommand extends RavenCommand<OngoingTask> {
         }
     }
 
-    async setResponseAsync(bodyStream: stream.Stream, fromCache: boolean): Promise<string> {
+    async setResponseAsync(bodyStream: Stream, fromCache: boolean): Promise<string> {
         let body: string = null;
         const results = await this._defaultPipeline(_ => body = _)
             .process(bodyStream);

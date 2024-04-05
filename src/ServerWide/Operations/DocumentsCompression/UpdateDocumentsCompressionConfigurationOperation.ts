@@ -8,7 +8,7 @@ import { IRaftCommand } from "../../../Http/IRaftCommand";
 import { HttpRequestParameters } from "../../../Primitives/Http";
 import { ServerNode } from "../../../Http/ServerNode";
 import { RaftIdGenerator } from "../../../Utility/RaftIdGenerator";
-import * as stream from "readable-stream";
+import { Stream } from "node:stream";
 
 export class UpdateDocumentsCompressionConfigurationOperation implements IMaintenanceOperation<DocumentCompressionConfigurationResult> {
     private readonly _documentsCompressionConfiguration: DocumentsCompressionConfiguration;
@@ -61,7 +61,7 @@ class UpdateDocumentCompressionConfigurationCommand extends RavenCommand<Documen
         }
     }
 
-    async setResponseAsync(bodyStream: stream.Stream, fromCache: boolean): Promise<string> {
+    async setResponseAsync(bodyStream: Stream, fromCache: boolean): Promise<string> {
         if (!bodyStream) {
             return;
         }

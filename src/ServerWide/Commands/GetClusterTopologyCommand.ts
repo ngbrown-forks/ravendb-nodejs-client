@@ -2,7 +2,7 @@ import { RavenCommand } from "../../Http/RavenCommand";
 import { ClusterTopology } from "../../Http/ClusterTopology";
 import { HttpRequestParameters } from "../../Primitives/Http";
 import { ServerNode, ServerNodeRole } from "../../Http/ServerNode";
-import * as stream from "readable-stream";
+import { Stream } from "node:stream";
 import { NodeStatus } from "../../Http/RequestExecutor";
 
 export class ClusterTopologyResponse {
@@ -34,7 +34,7 @@ export class GetClusterTopologyCommand extends RavenCommand<ClusterTopologyRespo
         return { uri };
     }
 
-    public async setResponseAsync(bodyStream: stream.Stream, fromCache: boolean): Promise<string> {
+    public async setResponseAsync(bodyStream: Stream, fromCache: boolean): Promise<string> {
         if (!bodyStream) {
             this._throwInvalidResponse();
         }

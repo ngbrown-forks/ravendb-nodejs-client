@@ -5,7 +5,7 @@ import { RavenCommand } from "../../Http/RavenCommand";
 import { DocumentConventions } from "../Conventions/DocumentConventions";
 import { ServerNode } from "../../Http/ServerNode";
 import { JsonSerializer } from "../../Mapping/Json/Serializer";
-import * as stream from "readable-stream";
+import { Stream } from "node:stream";
 
 export class GetCollectionStatisticsOperation implements IMaintenanceOperation<CollectionStatistics> {
 
@@ -38,7 +38,7 @@ export class GetCollectionStatisticsCommand extends RavenCommand<CollectionStati
         return JsonSerializer.getDefault();
     }
 
-    public async setResponseAsync(bodyStream: stream.Stream, fromCache: boolean): Promise<string> {
+    public async setResponseAsync(bodyStream: Stream, fromCache: boolean): Promise<string> {
         if (!bodyStream) {
             this._throwInvalidResponse();
         }

@@ -1,4 +1,4 @@
-import * as stream from "readable-stream";
+import { Readable } from "node:stream";
 import { RavenCommand, ResponseDisposeHandling } from "../../Http/RavenCommand";
 import { StreamResultResponse } from "./StreamResultResponse";
 import { throwError } from "../../Exceptions";
@@ -29,7 +29,7 @@ export class StreamCommand extends RavenCommand<StreamResultResponse> {
     public async processResponse(
         cache: HttpCache,
         response: HttpResponse,
-        bodyStream: stream.Readable,
+        bodyStream: Readable,
         url: string): Promise<ResponseDisposeHandling> {
         this.result = {
             response,

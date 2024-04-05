@@ -4,7 +4,7 @@ import { DocumentConventions } from "../../../Documents/Conventions/DocumentConv
 import { RavenCommand } from "../../../Http/RavenCommand";
 import { HttpRequestParameters } from "../../../Primitives/Http";
 import { ServerNode } from "../../../Http/ServerNode";
-import * as stream from "readable-stream";
+import { Stream } from "node:stream";
 import { ServerWideBackupConfiguration } from "./ServerWideBackupConfiguration";
 import { GetServerWideBackupConfigurationsResponse } from "../../../Documents/Operations/GetServerWideBackupConfigurationsResponse";
 
@@ -53,7 +53,7 @@ class GetServerWideBackupConfigurationCommand extends RavenCommand<ServerWideBac
         }
     }
 
-    async setResponseAsync(bodyStream: stream.Stream, fromCache: boolean): Promise<string> {
+    async setResponseAsync(bodyStream: Stream, fromCache: boolean): Promise<string> {
         if (!bodyStream) {
             return;
         }

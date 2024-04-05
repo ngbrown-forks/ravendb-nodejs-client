@@ -9,7 +9,7 @@ import { RaftIdGenerator } from "../../../Utility/RaftIdGenerator";
 import { ServerNode } from "../../../Http/ServerNode";
 import { HttpRequestParameters, HttpResponse } from "../../../Primitives/Http";
 import { HttpCache } from "../../../Http/HttpCache";
-import * as stream from "readable-stream";
+import { Readable } from "node:stream";
 import { StatusCodes } from "../../../Http/StatusCode";
 
 export class RegisterReplicationHubAccessOperation implements IMaintenanceOperation<void> {
@@ -78,7 +78,7 @@ class RegisterReplicationHubAccessCommand extends RavenCommand<void> implements 
         }
     }
 
-    async processResponse(cache: HttpCache, response: HttpResponse, bodyStream: stream.Readable, url: string): Promise<ResponseDisposeHandling> {
+    async processResponse(cache: HttpCache, response: HttpResponse, bodyStream: Readable, url: string): Promise<ResponseDisposeHandling> {
         if (response.status === StatusCodes.NotFound) {
             throwError("ReplicationHubNotFoundException",
                 "The replication hub " + this._hubName + " was not found on the database. Did you forget to define it first?");

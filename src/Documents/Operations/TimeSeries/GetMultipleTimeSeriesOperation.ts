@@ -8,7 +8,7 @@ import { IDocumentStore } from "../../IDocumentStore";
 import { HttpCache } from "../../../Http/HttpCache";
 import { HttpRequestParameters } from "../../../Primitives/Http";
 import { DateUtil } from "../../../Utility/DateUtil";
-import * as stream from "readable-stream";
+import { Stream } from "node:stream";
 import { CaseInsensitiveKeysMap } from "../../../Primitives/CaseInsensitiveKeysMap";
 import { GetTimeSeriesCommand, reviveTimeSeriesRangeResult } from "./GetTimeSeriesOperation";
 import { DocumentConventions } from "../../Conventions/DocumentConventions";
@@ -131,7 +131,7 @@ export class GetMultipleTimeSeriesCommand extends RavenCommand<TimeSeriesDetails
         }
     }
 
-    async setResponseAsync(bodyStream: stream.Stream, fromCache: boolean): Promise<string> {
+    async setResponseAsync(bodyStream: Stream, fromCache: boolean): Promise<string> {
         if (!bodyStream) {
             return;
         }

@@ -2,7 +2,7 @@ import { RavenCommand } from "../../../Http/RavenCommand";
 import { throwError } from "../../../Exceptions";
 import { ServerNode } from "../../../Http/ServerNode";
 import { HttpRequestParameters } from "../../../Primitives/Http";
-import * as stream from "readable-stream";
+import { Stream } from "node:stream";
 
 
 export class GetRevisionsCountOperation {
@@ -38,7 +38,7 @@ class GetRevisionsCountCommand extends RavenCommand<number> {
         }
     }
 
-    async setResponseAsync(bodyStream: stream.Stream, fromCache: boolean): Promise<string> {
+    async setResponseAsync(bodyStream: Stream, fromCache: boolean): Promise<string> {
         let body: string = null;
         const result = await this._defaultPipeline<{ revisionsCount: number }>(_ => body = _).process(bodyStream);
 

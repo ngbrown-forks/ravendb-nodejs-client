@@ -4,7 +4,7 @@ import { RavenCommand } from "../../Http/RavenCommand";
 import { HttpRequestParameters } from "../../Primitives/Http";
 import { DocumentConventions } from "../Conventions/DocumentConventions";
 import { DatabaseStatistics } from "./DatabaseStatistics";
-import * as stream from "readable-stream";
+import { Stream } from "node:stream";
 
 export class GetStatisticsOperation implements IMaintenanceOperation<DatabaseStatistics> {
 
@@ -47,7 +47,7 @@ export class GetStatisticsCommand extends RavenCommand<DatabaseStatistics> {
         return { uri };
     }
 
-    public async setResponseAsync(bodyStream: stream.Stream, fromCache: boolean): Promise<string> {
+    public async setResponseAsync(bodyStream: Stream, fromCache: boolean): Promise<string> {
         return this._parseResponseDefaultAsync(bodyStream);
     }
 

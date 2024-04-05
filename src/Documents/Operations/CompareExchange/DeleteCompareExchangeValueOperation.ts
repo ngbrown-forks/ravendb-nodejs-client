@@ -8,7 +8,7 @@ import { HttpCache } from "../../../Http/HttpCache";
 import { RavenCommand } from "../../../Http/RavenCommand";
 import { throwError } from "../../../Exceptions";
 import { ServerNode } from "../../../Http/ServerNode";
-import * as stream from "readable-stream";
+import { Stream } from "node:stream";
 import { IRaftCommand } from "../../../Http/IRaftCommand";
 import { RaftIdGenerator } from "../../../Utility/RaftIdGenerator";
 
@@ -67,7 +67,7 @@ export class RemoveCompareExchangeCommand<T> extends RavenCommand<CompareExchang
         };
     }
 
-    public async setResponseAsync(bodyStream: stream.Stream, fromCache: boolean): Promise<string> {
+    public async setResponseAsync(bodyStream: Stream, fromCache: boolean): Promise<string> {
         let body: string = null;
         const resObj = await this._pipeline<ServerCasing<ServerResponse<CompareExchangeResultResponse>>>()
             .collectBody(_ => body = _)

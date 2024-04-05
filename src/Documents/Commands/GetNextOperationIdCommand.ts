@@ -1,7 +1,7 @@
 import { RavenCommand } from "../../Http/RavenCommand";
 import { ServerNode } from "../../Http/ServerNode";
 import { HttpRequestParameters } from "../../Primitives/Http";
-import * as stream from "readable-stream";
+import { Stream } from "node:stream";
 
 export class GetNextOperationIdCommand extends RavenCommand<number> {
 
@@ -20,7 +20,7 @@ export class GetNextOperationIdCommand extends RavenCommand<number> {
         return { uri };
     }
 
-    public async setResponseAsync(bodyStream: stream.Stream, fromCache: boolean): Promise<string> {
+    public async setResponseAsync(bodyStream: Stream, fromCache: boolean): Promise<string> {
         let body: string = null;
         const results = await this._defaultPipeline(_ => body = _).process(bodyStream);
         const id = results["id"];

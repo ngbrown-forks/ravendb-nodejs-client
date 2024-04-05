@@ -10,7 +10,7 @@ import {
 } from "../Mapping/Json/Conventions";
 import { CasingConvention } from "../Utility/ObjectUtil";
 import * as StreamUtil from "../Utility/StreamUtil";
-import * as stream from "readable-stream";
+import { Stream, Transform, Readable, Writable, pipeline } from "node:stream";
 import {
     CollectResultStream,
     CollectResultStreamOptions,
@@ -29,12 +29,12 @@ export interface RavenCommandResponsePipelineOptions<TResult> {
         filters: any[];
     };
     jsonlAsync?: {
-        transforms: stream.Transform[];
+        transforms: Transform[];
     };
     jsonSync?: boolean;
     streamKeyCaseTransform?: ObjectKeyCaseTransformStreamOptions;
     collectResult: CollectResultStreamOptions<TResult>;
-    transform?: stream.Stream;
+    transform?: Stream;
 }
 
 export class RavenCommandResponsePipeline<TStreamResult> extends EventEmitter {
@@ -65,9 +65,9 @@ export class RavenCommandResponsePipeline<TStreamResult> extends EventEmitter {
      * @param type Type of object to extract from objects stream - use Raw to skip extraction.
      * @param options
      */
-    public parseJsonlAsync(valueExtractor: (obj: any) => any, options: { transforms?: stream.Transform[] } = {}) {
+    public parseJsonlAsync(valueExtractor: (obj: any) => any, options: { transforms?: Transform[] } = {}) {
         const transforms = options?.transforms ?? [];
-        const extractItemTransform = new stream.Transform({
+        const extractItemTransform = new Transform({
             objectMode: true,
             transform(chunk, encoding, callback) {
                 const value = valueExtractor(chunk["value"]);
@@ -132,28 +132,28 @@ export class RavenCommandResponsePipeline<TStreamResult> extends EventEmitter {
         return this;
     }
 
-    public stream(src: stream.Stream): stream.Readable;
-    public stream(src: stream.Stream, dst: stream.Writable, callback: ErrorFirstCallback<void>): stream.Stream;
-    public stream(src: stream.Stream, dst?: stream.Writable, callback?: ErrorFirstCallback<void>): stream.Stream {
+    public stream(src: Stream): Readable;
+    public stream(src: Stream, dst: Writable, callback: ErrorFirstCallback<void>): Stream;
+    public stream(src: Stream, dst?: Writable, callback?: ErrorFirstCallback<void>): Stream {
         const streams = this._buildUp(src);
         if (dst) {
             streams.push(dst);
         }
 
-        return (stream.pipeline as any)(...streams, TypeUtil.NOOP) as stream.Stream; //TODO: remove noop?
+        return (pipeline as any)(...streams, TypeUtil.NOOP) as Stream; //TODO: remove noop?
     }
 
     private _appendBody(s: Buffer | string): void {
         this._body.append(s.toString());
     }
 
-    private _buildUp(src: stream.Stream) {
+    private _buildUp(src: Stream) {
         if (!src) {
             throwError("MappingError", "Body stream cannot be null.");
         }
 
         const opts = this._opts;
-        const streams: stream.Stream[] = [src];
+        const streams: Stream[] = [src];
         if (opts.collectBody) {
             src.on("data", (chunk: Buffer | string) => this._appendBody(chunk));
         }
@@ -173,7 +173,7 @@ export class RavenCommandResponsePipeline<TStreamResult> extends EventEmitter {
             }
         } else if (opts.jsonSync) {
             const bytesChunks = [];
-            const parseJsonSyncTransform = new stream.Transform({
+            const parseJsonSyncTransform = new Transform({
                 readableObjectMode: true,
                 transform(chunk, enc, callback) {
                     bytesChunks.push(chunk);
@@ -208,7 +208,7 @@ export class RavenCommandResponsePipeline<TStreamResult> extends EventEmitter {
         return streams;
     }
 
-    public process(src: stream.Stream): Promise<TStreamResult> {
+    public process(src: Stream): Promise<TStreamResult> {
         const streams = this._buildUp(src);
         const opts = this._opts;
         let resultPromise: Promise<TStreamResult>;

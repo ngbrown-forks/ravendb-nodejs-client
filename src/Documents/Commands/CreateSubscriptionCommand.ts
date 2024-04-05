@@ -2,7 +2,7 @@ import { RavenCommand } from "../../Http/RavenCommand";
 import { CreateSubscriptionResult } from "../Subscriptions/CreateSubscriptionResult";
 import { SubscriptionCreationOptions } from "../Subscriptions/SubscriptionCreationOptions";
 import { HttpRequestParameters } from "../../Primitives/Http";
-import * as stream from "readable-stream";
+import { Stream } from "node:stream";
 import { ServerNode } from "../../Http/ServerNode";
 import { IRaftCommand } from "../../Http/IRaftCommand";
 import { RaftIdGenerator } from "../../Utility/RaftIdGenerator";
@@ -37,7 +37,7 @@ export class CreateSubscriptionCommand extends RavenCommand<CreateSubscriptionRe
         };
     }
 
-    public async setResponseAsync(bodyStream: stream.Stream, fromCache: boolean): Promise<string> {
+    public async setResponseAsync(bodyStream: Stream, fromCache: boolean): Promise<string> {
         return this._parseResponseDefaultAsync(bodyStream);
     }
 

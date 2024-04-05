@@ -2,7 +2,7 @@ import { IMaintenanceOperation, OperationResultType } from "../OperationAbstract
 import { ConfigureTimeSeriesOperationResult } from "./ConfigureTimeSeriesOperationResult";
 import { throwError } from "../../../Exceptions";
 import { HttpRequestParameters } from "../../../Primitives/Http";
-import * as stream from "readable-stream";
+import { Stream } from "node:stream";
 import { RaftIdGenerator } from "../../../Utility/RaftIdGenerator";
 import { StringUtil } from "../../../Utility/StringUtil";
 import { DocumentConventions } from "../../Conventions/DocumentConventions";
@@ -68,7 +68,7 @@ class ConfigureTimeSeriesValueNamesCommand extends RavenCommand<ConfigureTimeSer
         };
     }
 
-    async setResponseAsync(bodyStream: stream.Stream, fromCache: boolean): Promise<string> {
+    async setResponseAsync(bodyStream: Stream, fromCache: boolean): Promise<string> {
         if (!bodyStream) {
             this._throwInvalidResponse();
         }

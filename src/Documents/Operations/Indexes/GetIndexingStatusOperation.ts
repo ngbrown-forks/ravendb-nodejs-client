@@ -4,7 +4,7 @@ import { RavenCommand } from "../../../Http/RavenCommand";
 import { HttpRequestParameters } from "../../../Primitives/Http";
 import { ServerNode } from "../../../Http/ServerNode";
 import { IndexingStatus } from "../../Indexes/IndexingStatus";
-import * as stream from "readable-stream";
+import { Stream } from "node:stream";
 
 export class GetIndexingStatusOperation implements IMaintenanceOperation<IndexingStatus> {
 
@@ -25,7 +25,7 @@ export class GetIndexingStatusCommand extends RavenCommand<IndexingStatus> {
         return { uri };
     }
 
-    public async setResponseAsync(bodyStream: stream.Stream, fromCache: boolean): Promise<string> {
+    public async setResponseAsync(bodyStream: Stream, fromCache: boolean): Promise<string> {
         if (!bodyStream) {
             this._throwInvalidResponse();
         }

@@ -1,4 +1,4 @@
-import * as stream from "readable-stream";
+import { Stream } from "node:stream";
 import { RavenCommand } from "../../../Http/RavenCommand";
 import { GetResponse } from "./GetResponse";
 import { HttpCache, ReleaseCacheItem } from "../../../Http/HttpCache";
@@ -148,7 +148,7 @@ export class MultiGetCommand extends RavenCommand<GetResponse[]> implements IDis
         return readAllFromCache;
     }
 
-    public async setResponseAsync(bodyStream: stream.Stream, fromCache: boolean): Promise<string> {
+    public async setResponseAsync(bodyStream: Stream, fromCache: boolean): Promise<string> {
         if (!bodyStream) {
             this._throwInvalidResponse();
         }

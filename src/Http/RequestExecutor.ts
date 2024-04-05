@@ -1,6 +1,6 @@
 import * as os from "node:os";
 import * as semaphore from "semaphore";
-import * as stream from "readable-stream";
+import { Readable } from "node:stream";
 import { acquireSemaphore, SemaphoreAcquisitionContext } from "../Utility/SemaphoreUtil";
 import { getLogger, ILogger } from "../Utility/LogUtil";
 import { Timer } from "../Primitives/Timer";
@@ -77,9 +77,9 @@ export interface IRequestExecutorOptions {
 class IndexAndResponse {
     public readonly index: number;
     public readonly response: HttpResponse;
-    public readonly bodyStream: stream.Readable
+    public readonly bodyStream: Readable
 
-    public constructor(index: number, response: HttpResponse, bodyStream: stream.Readable) {
+    public constructor(index: number, response: HttpResponse, bodyStream: Readable) {
         this.index = index;
         this.response = response;
         this.bodyStream = bodyStream;
@@ -1149,8 +1149,8 @@ export class RequestExecutor implements IDisposable {
         }
     }
 
-    private async _send<TResult>(chosenNode: ServerNode, command: RavenCommand<TResult>, sessionInfo: SessionInfo, request: HttpRequestParameters): Promise<{ response: HttpResponse, bodyStream: stream.Readable }> {
-        let responseAndStream: { response: HttpResponse, bodyStream: stream.Readable };
+    private async _send<TResult>(chosenNode: ServerNode, command: RavenCommand<TResult>, sessionInfo: SessionInfo, request: HttpRequestParameters): Promise<{ response: HttpResponse, bodyStream: Readable }> {
+        let responseAndStream: { response: HttpResponse, bodyStream: Readable };
 
         if (this._shouldExecuteOnAll(chosenNode, command)) {
             responseAndStream = await this._executeOnAllToFigureOutTheFastest(chosenNode, command);
@@ -1304,7 +1304,7 @@ export class RequestExecutor implements IDisposable {
 
     private _executeOnAllToFigureOutTheFastest<TResult>(
         chosenNode: ServerNode,
-        command: RavenCommand<TResult>): Promise<{ response: HttpResponse, bodyStream: stream.Readable }> {
+        command: RavenCommand<TResult>): Promise<{ response: HttpResponse, bodyStream: Readable }> {
         let preferredTask: Promise<IndexAndResponse> = null;
 
         const nodes = this._nodeSelector.getTopology().nodes;
@@ -1430,7 +1430,7 @@ export class RequestExecutor implements IDisposable {
         command: RavenCommand<TResult>,
         req: HttpRequestParameters,
         response: HttpResponse,
-        responseBodyStream: stream.Readable,
+        responseBodyStream: Readable,
         url: string,
         sessionInfo: SessionInfo,
         shouldRetry: boolean): Promise<boolean> {

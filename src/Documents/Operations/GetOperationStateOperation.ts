@@ -2,7 +2,7 @@ import { ServerNode } from "../../Http/ServerNode";
 import { HttpRequestParameters } from "../../Primitives/Http";
 import { RavenCommand, IRavenResponse } from "../../Http/RavenCommand";
 import { IMaintenanceOperation, OperationResultType } from "./OperationAbstractions";
-import * as stream from "readable-stream";
+import { Stream } from "node:stream";
 import { DocumentConventions } from "../Conventions/DocumentConventions";
 
 export class GetOperationStateOperation implements IMaintenanceOperation<IRavenResponse> {
@@ -46,7 +46,7 @@ export class GetOperationStateCommand extends RavenCommand<IRavenResponse> {
         return { uri };
     }
 
-    public async setResponseAsync(bodyStream: stream.Stream, fromCache: boolean): Promise<string> {
+    public async setResponseAsync(bodyStream: Stream, fromCache: boolean): Promise<string> {
         if (!bodyStream) {
             return;
         }

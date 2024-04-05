@@ -4,7 +4,7 @@ import { throwError } from "../../../Exceptions";
 import { RavenCommand } from "../../../Http/RavenCommand";
 import { DocumentConventions } from "../../Conventions/DocumentConventions";
 import { HttpRequestParameters } from "../../../Primitives/Http";
-import * as stream from "readable-stream";
+import { Stream } from "node:stream";
 import { ServerNode } from "../../../Http/ServerNode";
 
 export class GetIndexStatisticsOperation implements IMaintenanceOperation<IndexStats> {
@@ -49,7 +49,7 @@ export class GetIndexStatisticsCommand extends RavenCommand<IndexStats> {
         return { uri };
     }
 
-    public async setResponseAsync(bodyStream: stream.Stream, fromCache: boolean): Promise<string> {
+    public async setResponseAsync(bodyStream: Stream, fromCache: boolean): Promise<string> {
         if (!bodyStream) {
             this._throwInvalidResponse();
         }

@@ -1,5 +1,5 @@
 import { HttpRequestParameters } from "../../../Primitives/Http";
-import * as stream from "readable-stream";
+import { Stream } from "node:stream";
 import { RavenCommand } from "../../../Http/RavenCommand";
 import { DocumentConventions } from "../../Conventions/DocumentConventions";
 import { IMaintenanceOperation, OperationResultType } from "../OperationAbstractions";
@@ -50,7 +50,7 @@ export class RemoveConnectionStringCommand<T extends ConnectionString>
         }
     }
 
-    async setResponseAsync(bodyStream: stream.Stream, fromCache: boolean): Promise<string> {
+    async setResponseAsync(bodyStream: Stream, fromCache: boolean): Promise<string> {
         if (!bodyStream) {
             this._throwInvalidResponse();
         }

@@ -1,4 +1,4 @@
-import * as stream from "readable-stream";
+import { Writable } from "node:stream";
 
 export interface CollectResultStreamOptions<TResult> {
     reduceResults: (
@@ -16,7 +16,7 @@ export function lastChunk(_: object, chunk: object) {
     return chunk;
 }
 
-export class CollectResultStream<TResult = object> extends stream.Writable {
+export class CollectResultStream<TResult = object> extends Writable {
 
     private _resultIndex = 0;
     private _result: TResult;

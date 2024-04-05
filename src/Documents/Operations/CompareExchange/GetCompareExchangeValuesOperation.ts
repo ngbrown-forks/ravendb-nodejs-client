@@ -9,7 +9,7 @@ import { HttpCache } from "../../../Http/HttpCache";
 import { RavenCommand } from "../../../Http/RavenCommand";
 import { ServerNode } from "../../../Http/ServerNode";
 import { CompareExchangeValueResultParser, GetCompareExchangeValuesResponse } from "./CompareExchangeValueResultParser";
-import * as stream from "readable-stream";
+import { Stream } from "node:stream";
 import { StringBuilder } from "../../../Utility/StringBuilder";
 import { TypeUtil } from "../../../Utility/TypeUtil";
 
@@ -134,7 +134,7 @@ export class GetCompareExchangeValuesCommand<T> extends RavenCommand<{ [key: str
         return { uri };
     }
 
-    public async setResponseAsync(bodyStream: stream.Stream, fromCache: boolean): Promise<string> {
+    public async setResponseAsync(bodyStream: Stream, fromCache: boolean): Promise<string> {
         let body: string = null;
 
         if (!bodyStream) {

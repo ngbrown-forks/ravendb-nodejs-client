@@ -2,7 +2,7 @@ import { IServerOperation, OperationResultType } from "../../Documents/Operation
 import { RavenCommand } from "../../Http/RavenCommand";
 import { ServerNode } from "../../Http/ServerNode";
 import { HttpRequestParameters } from "../../Primitives/Http";
-import * as stream from "readable-stream";
+import { Stream } from "node:stream";
 import { DocumentConventions } from "../../Documents/Conventions/DocumentConventions";
 
 export class GetDatabaseNamesOperation implements IServerOperation<string[]> {
@@ -44,7 +44,7 @@ export class GetDatabaseNamesCommand extends RavenCommand<string[]> {
         return { uri };
     }
 
-    public async setResponseAsync(bodyStream: stream.Stream, fromCache: boolean): Promise<string> {
+    public async setResponseAsync(bodyStream: Stream, fromCache: boolean): Promise<string> {
         if (!bodyStream) {
             this._throwInvalidResponse();
             return;

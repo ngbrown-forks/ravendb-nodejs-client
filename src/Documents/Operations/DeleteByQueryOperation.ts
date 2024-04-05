@@ -9,7 +9,7 @@ import { RavenCommand } from "../../Http/RavenCommand";
 import { ServerNode } from "../../Http/ServerNode";
 import { TypeUtil } from "../../Utility/TypeUtil";
 import { QueryOperationOptions } from "../Queries/QueryOperationOptions";
-import * as stream from "readable-stream";
+import { Stream } from "node:stream";
 import { StringBuilder } from "../../Utility/StringBuilder";
 
 export class DeleteByQueryOperation implements IOperation<OperationIdResult> {
@@ -91,7 +91,7 @@ export class DeleteByIndexCommand extends RavenCommand<OperationIdResult> {
         };
     }
 
-    public async setResponseAsync(bodyStream: stream.Stream, fromCache: boolean): Promise<string> {
+    public async setResponseAsync(bodyStream: Stream, fromCache: boolean): Promise<string> {
         if (!bodyStream) {
             this._throwInvalidResponse();
         }

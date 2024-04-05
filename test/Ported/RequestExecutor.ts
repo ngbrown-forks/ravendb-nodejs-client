@@ -2,7 +2,7 @@ import { DocumentStore, EntityToJson, IDocumentStore, PutDocumentCommand } from 
 import { ClusterTestContext, disposeTestDocumentStore, RavenTestContext, testContext } from "../Utils/TestUtil";
 import { throwError } from "../../src/Exceptions";
 import { HttpRequestParameters, HttpResponse } from "../../src/Primitives/Http";
-import * as stream from "readable-stream";
+import { Readable } from "node:stream";
 import * as http from "node:http";
 import { User } from "../Assets/Entities";
 import { assertThat } from "../Utils/AssertExtensions";
@@ -126,7 +126,7 @@ class FirstFailCommand extends PutDocumentCommand {
         this._timeToFail = timeToFail;
     }
 
-    send(agent: http.Agent, requestOptions: HttpRequestParameters): Promise<{ response: HttpResponse; bodyStream: stream.Readable }> {
+    send(agent: http.Agent, requestOptions: HttpRequestParameters): Promise<{ response: HttpResponse; bodyStream: Readable }> {
         this._timeToFail--;
         if (this._timeToFail < 0) {
             return super.send(agent, requestOptions);

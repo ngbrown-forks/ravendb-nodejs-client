@@ -4,7 +4,7 @@ import { RavenCommand } from "../../Http/RavenCommand";
 import { DocumentConventions } from "../Conventions/DocumentConventions";
 import { HttpRequestParameters } from "../../Primitives/Http";
 import { ServerNode } from "../../Http/ServerNode";
-import * as stream from "readable-stream";
+import { Stream } from "node:stream";
 
 export class GetDetailedCollectionStatisticsOperation implements IMaintenanceOperation<DetailedCollectionStatistics> {
     getCommand(conventions: DocumentConventions): RavenCommand<DetailedCollectionStatistics> {
@@ -31,7 +31,7 @@ class GetDetailedCollectionStatisticsCommand extends RavenCommand<DetailedCollec
         }
     }
 
-    async setResponseAsync(bodyStream: stream.Stream, fromCache: boolean): Promise<string> {
+    async setResponseAsync(bodyStream: Stream, fromCache: boolean): Promise<string> {
         if (!bodyStream) {
             this._throwInvalidResponse();
         }

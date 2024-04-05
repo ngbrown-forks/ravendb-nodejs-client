@@ -1,4 +1,4 @@
-import * as stream from "readable-stream";
+import { Readable } from "node:stream";
 import { InMemoryDocumentSessionOperations } from "../InMemoryDocumentSessionOperations";
 import { QueryStreamCommand } from "../../Commands/QueryStreamCommand";
 import { IndexQuery } from "../../Queries/IndexQuery";
@@ -85,7 +85,7 @@ export class StreamOperation {
         return new StreamCommand(sb.toString());
     }
 
-    public setResult(response: StreamResultResponse): stream.Readable {
+    public setResult(response: StreamResultResponse): Readable {
         if (!response) {
             throwError("IndexDoesNotExistException", "The index does not exists, failed to stream results.");
         }

@@ -11,7 +11,7 @@ import * as semaphore from "semaphore";
 import * as WebSocket from "ws";
 import { StringUtil } from "../../Utility/StringUtil";
 import { EventEmitter } from "node:events";
-import * as PromiseUtil from "../../Utility/PromiseUtil";
+import { defer } from "../../Utility/PromiseUtil";
 import { IDefer } from "../../Utility/PromiseUtil";
 import { acquireSemaphore } from "../../Utility/SemaphoreUtil";
 import { Certificate } from "../../Auth/Certificate";
@@ -58,7 +58,7 @@ export class DatabaseChanges implements IDatabaseChanges {
         this._conventions = requestExecutor.conventions;
         this._database = databaseName;
 
-        this._tcs = PromiseUtil.defer<IDatabaseChanges>();
+        this._tcs = defer<IDatabaseChanges>();
         this._onDispose = onDispose;
         this._onConnectionStatusChangedWrapped = () => this._onConnectionStatusChanged();
         this._emitter.on("connectionStatus", this._onConnectionStatusChangedWrapped);
@@ -89,7 +89,7 @@ export class DatabaseChanges implements IDatabaseChanges {
             }
 
             if (this._tcs.isFulfilled) {
-                this._tcs = PromiseUtil.defer<IDatabaseChanges>();
+                this._tcs = defer<IDatabaseChanges>();
             }
         } finally {
             acquiredSemContext.dispose();

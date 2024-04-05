@@ -3,7 +3,7 @@ import { TimeSeriesStatistics } from "./TimeSeriesStatistics";
 import { IDocumentStore } from "../../IDocumentStore";
 import { HttpCache } from "../../../Http/HttpCache";
 import { HttpRequestParameters } from "../../../Primitives/Http";
-import * as stream from "readable-stream";
+import { Stream } from "node:stream";
 import { RavenCommand } from "../../../Http/RavenCommand";
 import { ServerNode } from "../../../Http/ServerNode";
 import { DocumentConventions } from "../../Conventions/DocumentConventions";
@@ -53,7 +53,7 @@ class GetTimeSeriesStatisticsCommand extends RavenCommand<TimeSeriesStatistics> 
         }
     }
 
-    async setResponseAsync(bodyStream: stream.Stream, fromCache: boolean): Promise<string> {
+    async setResponseAsync(bodyStream: Stream, fromCache: boolean): Promise<string> {
         let body: string = null;
         const results = await this._defaultPipeline<ServerResponse<TimeSeriesStatistics>>(_ => body = _).process(bodyStream);
 

@@ -2,7 +2,7 @@ import { HttpRequestParameters } from "../../Primitives/Http";
 import { IServerOperation, OperationResultType } from "../../Documents/Operations/OperationAbstractions";
 import { RavenCommand, IRavenResponse } from "../../Http/RavenCommand";
 import { ServerNode } from "../../Http/ServerNode";
-import * as stream from "readable-stream";
+import { Stream } from "node:stream";
 import { DocumentConventions } from "../../Documents/Conventions/DocumentConventions";
 
 export class GetServerWideOperationStateOperation implements IServerOperation<IRavenResponse> {
@@ -47,7 +47,7 @@ export class GetServerWideOperationStateCommand extends RavenCommand<IRavenRespo
         return true;
     }
 
-    public async setResponseAsync(bodyStream: stream.Stream, fromCache: boolean): Promise<string> {
+    public async setResponseAsync(bodyStream: Stream, fromCache: boolean): Promise<string> {
         if (!bodyStream) {
             this._throwInvalidResponse();
         }

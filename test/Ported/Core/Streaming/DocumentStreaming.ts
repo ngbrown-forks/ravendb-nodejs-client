@@ -60,11 +60,10 @@ describe("document streaming", function () {
                 const queryStream = await session.advanced.stream<User>("users/");
 
                 const items = [];
-                queryStream.on("data", item => {
-                    items.push(item);
-                });
 
-                await StreamUtil.finishedAsync(queryStream);
+                for await (const item of queryStream) {
+                    items.push(item);
+                }
 
                 assert.strictEqual(items.length, 200);
                 for (const item of items) {

@@ -14,7 +14,7 @@ import { JsonSerializer } from "../../../Mapping/Json/Serializer";
 import { ServerNode } from "../../../Http/ServerNode";
 import { LengthUnawareFormData } from "../../../Utility/LengthUnawareFormData";
 import { RavenCommandResponsePipeline } from "../../../Http/RavenCommandResponsePipeline";
-import * as stream from "readable-stream";
+import { Stream } from "node:stream";
 import { TimeUtil } from "../../../Utility/TimeUtil";
 import { PutAttachmentCommandHelper } from "./PutAttachmentCommandHelper";
 import { TypeUtil } from "../../../Utility/TypeUtil";
@@ -130,7 +130,7 @@ export class SingleNodeBatchCommand extends RavenCommand<BatchCommandResult> imp
         return request;
     }
 
-    public async setResponseAsync(bodyStream: stream.Stream, fromCache: boolean): Promise<string> {
+    public async setResponseAsync(bodyStream: Stream, fromCache: boolean): Promise<string> {
         if (!bodyStream) {
             throwError("InvalidOperationException",
                 "Got null response from the server after doing a batch,"

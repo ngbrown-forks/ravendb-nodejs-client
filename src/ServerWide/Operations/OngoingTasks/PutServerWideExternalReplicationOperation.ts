@@ -8,7 +8,7 @@ import { IRaftCommand } from "../../../Http/IRaftCommand";
 import { RaftIdGenerator } from "../../../Utility/RaftIdGenerator";
 import { ServerNode } from "../../../Http/ServerNode";
 import { HttpRequestParameters } from "../../../Primitives/Http";
-import * as stream from "readable-stream";
+import { Stream } from "node:stream";
 
 export class PutServerWideExternalReplicationOperation implements IServerOperation<ServerWideExternalReplicationResponse> {
     private readonly _configuration: ServerWideExternalReplication;
@@ -65,7 +65,7 @@ class PutServerWideExternalReplicationCommand extends RavenCommand<ServerWideExt
         }
     }
 
-    async setResponseAsync(bodyStream: stream.Stream, fromCache: boolean): Promise<string> {
+    async setResponseAsync(bodyStream: Stream, fromCache: boolean): Promise<string> {
         return this._parseResponseDefaultAsync(bodyStream);
     }
 }

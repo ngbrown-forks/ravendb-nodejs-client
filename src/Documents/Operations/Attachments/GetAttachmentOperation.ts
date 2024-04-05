@@ -10,7 +10,7 @@ import { DocumentConventions } from "../../Conventions/DocumentConventions";
 import { throwError } from "../../../Exceptions";
 import { StringUtil } from "../../../Utility/StringUtil";
 import { ServerNode } from "../../../Http/ServerNode";
-import * as stream from "readable-stream";
+import { Readable } from "node:stream";
 
 export class GetAttachmentOperation implements IOperation<AttachmentResult> {
     private readonly _documentId: string;
@@ -84,7 +84,7 @@ export class GetAttachmentCommand extends RavenCommand<AttachmentResult> {
     public async processResponse(
         cache: HttpCache,
         response: HttpResponse,
-        bodyStream: stream.Readable,
+        bodyStream: Readable,
         url: string): Promise<ResponseDisposeHandling> {
         const contentType = response.headers.get("content-type");
         const changeVector = getEtagHeader(response);

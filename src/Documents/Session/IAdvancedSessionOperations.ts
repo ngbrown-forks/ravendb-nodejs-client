@@ -19,7 +19,7 @@ import { SessionInfo, SessionLoadStartingWithOptions } from "./IDocumentSession"
 import { IDocumentQuery } from "./IDocumentQuery";
 import { JavaScriptArray } from "./JavaScriptArray";
 import { DocumentResultStream } from "./DocumentResultStream";
-import * as stream from "readable-stream";
+import { Writable } from "node:stream";
 import { IDocumentQueryBuilder } from "./IDocumentQueryBuilder";
 import { IGraphDocumentQuery } from "./IGraphDocumentQuery";
 import { JavaScriptMap } from "./JavaScriptMap";
@@ -114,23 +114,23 @@ export interface IAdvancedSessionOperations extends IAdvancedDocumentSessionOper
     /**
      *  Returns the results of a query directly into stream
      */
-    streamInto<T extends object>(query: IDocumentQuery<T>, writable: stream.Writable): Promise<void>;
+    streamInto<T extends object>(query: IDocumentQuery<T>, writable: Writable): Promise<void>;
 
     /**
      * Returns the results of a query directly into stream
      */
-    streamInto<T extends object>(query: IRawDocumentQuery<T>, writable: stream.Writable): Promise<void>;
+    streamInto<T extends object>(query: IRawDocumentQuery<T>, writable: Writable): Promise<void>;
 
     loadIntoStream(
-        ids: string[], writable: stream.Writable): Promise<void>;
+        ids: string[], writable: Writable): Promise<void>;
 
     loadStartingWithIntoStream<TEntity extends object>(
         idPrefix: string,
-        writable: stream.Writable): Promise<void>;
+        writable: Writable): Promise<void>;
 
     loadStartingWithIntoStream<TEntity extends object>(
         idPrefix: string,
-        writable: stream.Writable,
+        writable: Writable,
         opts: SessionLoadStartingWithOptions<TEntity>): Promise<void>;
 
     /**

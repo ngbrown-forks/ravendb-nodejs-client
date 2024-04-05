@@ -2,9 +2,9 @@ name: tests/node
 
 on:
   push:
-    branches: [ v5.4 ]
+    branches: [ v6.0 ]
   pull_request:
-    branches: [ v5.4 ]
+    branches: [ v6.0 ]
   schedule:
     - cron: '0 10 * * *'
   workflow_dispatch:
@@ -31,7 +31,7 @@ jobs:
 
     strategy:
       matrix:
-        node-version: [16.x, 18.x, 20.x]
+        node-version: [18.x, 20.x]
         serverVersion: ["5.4", "6.0"]
       fail-fast: false
 

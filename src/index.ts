@@ -1,7 +1,5 @@
 import "./Utility/Polyfills";
 
-import "./Types/readable-stream";
-
 export { DocumentConventions } from "./Documents/Conventions/DocumentConventions";
 export { BulkInsertConventions } from "./Documents/Conventions/BulkInsertConventions";
 export { RavenErrorType } from "./Exceptions";

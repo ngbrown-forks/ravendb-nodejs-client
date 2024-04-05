@@ -8,7 +8,7 @@ import { RavenCommand } from "../../../Http/RavenCommand";
 import { GetRevisionsCommand } from "../../Commands/GetRevisionsCommand";
 import { ServerNode } from "../../../Http/ServerNode";
 import { HttpRequestParameters } from "../../../Primitives/Http";
-import * as stream from "readable-stream";
+import { Stream } from "node:stream";
 
 export class GetRevisionsOperation<T extends object> implements IOperation<RevisionsResult<T>> {
     private readonly _parameters: GetRevisionsParameters<T>;
@@ -50,7 +50,7 @@ class GetRevisionsResultCommand<T extends object> extends RavenCommand<Revisions
         return this._cmd.createRequest(node);
     }
 
-    async setResponseAsync(bodyStream: stream.Stream, fromCache: boolean): Promise<string> {
+    async setResponseAsync(bodyStream: Stream, fromCache: boolean): Promise<string> {
         if (!bodyStream) {
             return ;
         }

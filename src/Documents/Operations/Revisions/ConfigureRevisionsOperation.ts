@@ -2,7 +2,7 @@ import { IMaintenanceOperation, OperationResultType } from "../OperationAbstract
 import { RevisionsConfiguration } from "../RevisionsConfiguration";
 import { RavenCommand } from "../../../Http/RavenCommand";
 import { HttpRequestParameters } from "../../../Primitives/Http";
-import * as stream from "readable-stream";
+import { Stream } from "node:stream";
 import { DocumentConventions } from "../../Conventions/DocumentConventions";
 import { ServerNode } from "../../../Http/ServerNode";
 import { IRaftCommand } from "../../../Http/IRaftCommand";
@@ -51,7 +51,7 @@ export class ConfigureRevisionsCommand extends RavenCommand<ConfigureRevisionsOp
         };
     }
 
-    public async setResponseAsync(bodyStream: stream.Stream, fromCache: boolean): Promise<string> {
+    public async setResponseAsync(bodyStream: Stream, fromCache: boolean): Promise<string> {
         if (!bodyStream) {
             this._throwInvalidResponse();
         }

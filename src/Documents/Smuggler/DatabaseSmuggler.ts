@@ -18,6 +18,7 @@ import { GetNextOperationIdCommand } from "../Commands/GetNextOperationIdCommand
 import { RavenCommand, ResponseDisposeHandling } from "../../Http/RavenCommand";
 import { DocumentConventions } from "../Conventions/DocumentConventions";
 import { ServerNode } from "../../Http/ServerNode";
+import { Readable } from "node:stream";
 
 export class DatabaseSmuggler {
     private readonly _store: IDocumentStore;
@@ -66,7 +67,7 @@ export class DatabaseSmuggler {
         }
     }
 
-    private async _export(options: DatabaseSmugglerExportOptions, handleStreamResponse: (stream: NodeJS.ReadableStream) => Promise<void>) {
+    private async _export(options: DatabaseSmugglerExportOptions, handleStreamResponse: (stream: Readable) => Promise<void>) {
         if (!options) {
             throwError("InvalidArgumentException", "Options cannot be null");
         }
@@ -123,8 +124,8 @@ export class DatabaseSmuggler {
     }
 
     public async import(options: DatabaseSmugglerImportOptions, fromFile: string): Promise<OperationCompletionAwaiter>
-    public async import(options: DatabaseSmugglerImportOptions, stream: NodeJS.ReadableStream): Promise<OperationCompletionAwaiter>
-    public async import(options: DatabaseSmugglerImportOptions, fileOrStream: string | NodeJS.ReadableStream): Promise<OperationCompletionAwaiter> {
+    public async import(options: DatabaseSmugglerImportOptions, stream: Readable): Promise<OperationCompletionAwaiter>
+    public async import(options: DatabaseSmugglerImportOptions, fileOrStream: string | Readable): Promise<OperationCompletionAwaiter> {
         if (typeof fileOrStream === "string") {
             let countOfFileParts = 0;
 
@@ -146,7 +147,7 @@ export class DatabaseSmuggler {
         }
     }
 
-    private async _import(options: DatabaseSmugglerImportOptions, stream: NodeJS.ReadableStream): Promise<OperationCompletionAwaiter> {
+    private async _import(options: DatabaseSmugglerImportOptions, stream: Readable): Promise<OperationCompletionAwaiter> {
         if (!options) {
             throwError("InvalidArgumentException", "Options cannot be null");
         }
@@ -174,11 +175,11 @@ export class DatabaseSmuggler {
 
 class ExportCommand extends RavenCommand<void> {
     private readonly _options: object;
-    private readonly _handleStreamResponse: (stream: NodeJS.ReadableStream) => Promise<void>;
+    private readonly _handleStreamResponse: (stream: Readable) => Promise<void>;
     private readonly _operationId: number;
 
     public constructor(conventions: DocumentConventions, options: DatabaseSmugglerExportOptions,
-                       handleStreamResponse: (stream: NodeJS.ReadableStream) => Promise<void>, operationId: number, nodeTag: string) {
+                       handleStreamResponse: (stream: Readable) => Promise<void>, operationId: number, nodeTag: string) {
         super();
         if (!conventions) {
             throwError("InvalidArgumentException", "Conventions cannot be null");
@@ -222,7 +223,7 @@ class ExportCommand extends RavenCommand<void> {
         };
     }
 
-    async processResponse(cache: HttpCache, response: HttpResponse, bodyStream: NodeJS.ReadableStream, url: string): Promise<ResponseDisposeHandling> {
+    async processResponse(cache: HttpCache, response: HttpResponse, bodyStream: Readable, url: string): Promise<ResponseDisposeHandling> {
         await this._handleStreamResponse(bodyStream);
 
         return "Automatic";
@@ -231,7 +232,7 @@ class ExportCommand extends RavenCommand<void> {
 
 class ImportCommand extends RavenCommand<void> {
     private readonly _options: object;
-    private readonly _stream: NodeJS.ReadableStream;
+    private readonly _stream: Readable;
     private readonly _operationId: number;
 
     get isReadRequest(): boolean {
@@ -240,7 +241,7 @@ class ImportCommand extends RavenCommand<void> {
 
     public constructor(conventions: DocumentConventions,
                        options: DatabaseSmugglerImportOptions,
-                       stream: NodeJS.ReadableStream,
+                       stream: Readable,
                        operationId: number,
                        nodeTag: string) {
         super();

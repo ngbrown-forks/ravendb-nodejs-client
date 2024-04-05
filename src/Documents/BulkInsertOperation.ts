@@ -1,5 +1,5 @@
 import { GenerateEntityIdOnTheClient } from "./Identity/GenerateEntityIdOnTheClient";
-import * as stream from "readable-stream";
+import { Readable, PassThrough, Stream } from "node:stream";
 import { RavenCommand } from "../Http/RavenCommand";
 import { HttpRequestParameters } from "../Primitives/Http";
 import { IMetadataDictionary } from "./Session/IMetadataDictionary";
@@ -57,8 +57,8 @@ export class BulkInsertOperation {
     private _bulkInsertAborted: Promise<void>;
     private _abortReject: (error: Error) => void;
     private _aborted: boolean;
-    private _currentWriter: stream.Readable;
-    private _requestBodyStream: stream.PassThrough;
+    private _currentWriter: Readable;
+    private _requestBodyStream: PassThrough;
     private _pipelineFinished: Promise<void>;
 
     private _unsubscribeChanges: IDisposable;
@@ -429,9 +429,9 @@ export class BulkInsertOperation {
 
     private async _ensureStream() {
         try {
-            this._currentWriter = new stream.PassThrough();
+            this._currentWriter = new PassThrough();
 
-            this._requestBodyStream = new stream.PassThrough();
+            this._requestBodyStream = new PassThrough();
             const bulkCommand =
                 new BulkInsertCommand(this._operationId, this._requestBodyStream, this._nodeTag, this._options.skipOverwriteIfUnchanged);
             bulkCommand.useCompression = this._useCompression;
@@ -928,12 +928,12 @@ export class BulkInsertCommand extends RavenCommand<void> {
         return false;
     }
 
-    private readonly _stream: stream.Readable;
+    private readonly _stream: Readable;
     private _skipOverwriteIfUnchanged: boolean;
     private readonly _id: number;
     public useCompression: boolean;
 
-    public constructor(id: number, stream: stream.Readable, nodeTag: string, skipOverwriteIfUnchanged: boolean) {
+    public constructor(id: number, stream: Readable, nodeTag: string, skipOverwriteIfUnchanged: boolean) {
         super();
 
         this._stream = stream;
@@ -958,7 +958,7 @@ export class BulkInsertCommand extends RavenCommand<void> {
         };
     }
 
-    public async setResponseAsync(bodyStream: stream.Stream, fromCache: boolean): Promise<string> {
+    public async setResponseAsync(bodyStream: Stream, fromCache: boolean): Promise<string> {
         return throwError("NotImplementedException", "Not implemented");
     }
 

@@ -1,13 +1,13 @@
-import * as stream from "readable-stream";
+import { finished, pipeline, Stream, Readable } from "node:stream";
 import { promisify } from "node:util";
 
 export const finishedAsync: (src: any) => Promise<any> =
-    promisify(stream.finished);
-export const pipelineAsync: (...src: stream.Stream[]) => Promise<any> =
-    promisify(stream.pipeline);
+    promisify(finished);
+export const pipelineAsync: (...src: Stream[]) => Promise<any> =
+    promisify(pipeline) as any;
 
 
-export async function readToBuffer(stream: stream.Stream): Promise<Buffer> {
+export async function readToBuffer(stream: Stream): Promise<Buffer> {
     const chunks: Uint8Array[] = [];
     stream
         .on("data", data => chunks.push(data));
@@ -17,7 +17,7 @@ export async function readToBuffer(stream: stream.Stream): Promise<Buffer> {
     return Buffer.concat(chunks);
 }
 
-export async function readToEnd(readable: stream.Readable | stream.Stream): Promise<string> {
+export async function readToEnd(readable: Readable | Stream): Promise<string> {
     const chunks = [];
     readable.on("data", chunk => chunks.push(chunk));
 
@@ -26,14 +26,14 @@ export async function readToEnd(readable: stream.Readable | stream.Stream): Prom
 }
 
 export function bufferToReadable(b: Buffer) {
-    const result = new stream.Readable();
+    const result = new Readable();
     result.push(b);
     result.push(null);
     return result;
 }
 
 export function stringToReadable(s: string) {
-    const result = new stream.Readable();
+    const result = new Readable();
     result.push(s);
     result.push(null);
     return result;

@@ -2,7 +2,7 @@ import { RavenCommand } from "../../Http/RavenCommand";
 import { throwError } from "../../Exceptions";
 import { ServerNode } from "../../Http/ServerNode";
 import { HttpRequestParameters } from "../../Primitives/Http";
-import * as stream from "readable-stream";
+import { Stream } from "node:stream";
 import { IRaftCommand } from "../../Http/IRaftCommand";
 import { IBroadcast } from "../../Http/IBroadcast";
 import { RaftIdGenerator } from "../../Utility/RaftIdGenerator";
@@ -37,7 +37,7 @@ export class NextIdentityForCommand extends RavenCommand<number> implements IRaf
         };
     }
 
-    public async setResponseAsync(bodyStream: stream.Stream, fromCache: boolean): Promise<string> {
+    public async setResponseAsync(bodyStream: Stream, fromCache: boolean): Promise<string> {
         if (!bodyStream) {
             this._throwInvalidResponse();
         }

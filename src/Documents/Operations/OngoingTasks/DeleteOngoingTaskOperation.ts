@@ -1,7 +1,7 @@
 import { IMaintenanceOperation, OperationResultType } from "../OperationAbstractions";
 import { OngoingTaskType } from "./OngoingTaskType";
 import { HttpRequestParameters } from "../../../Primitives/Http";
-import * as stream from "readable-stream";
+import { Stream } from "node:stream";
 import { ModifyOngoingTaskResult } from "../../../ServerWide/ModifyOnGoingTaskResult";
 import { DocumentConventions } from "../../Conventions/DocumentConventions";
 import { RavenCommand } from "../../../Http/RavenCommand";
@@ -47,7 +47,7 @@ class DeleteOngoingTaskCommand extends RavenCommand<ModifyOngoingTaskResult> imp
         }
     }
 
-    async setResponseAsync(bodyStream: stream.Stream, fromCache: boolean): Promise<string> {
+    async setResponseAsync(bodyStream: Stream, fromCache: boolean): Promise<string> {
         if (!bodyStream) {
             this._throwInvalidResponse();
         }

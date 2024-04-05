@@ -9,7 +9,7 @@ import { throwError } from "../../../Exceptions";
 import { ServerNode } from "../../../Http/ServerNode";
 import { CompareExchangeResultClass, ServerCasing, ServerResponse } from "../../../Types";
 import { CompareExchangeValueResultParser, GetCompareExchangeValuesResponse } from "./CompareExchangeValueResultParser";
-import * as stream from "readable-stream";
+import { Stream } from "node:stream";
 import { GetCompareExchangeValuesCommand } from "./GetCompareExchangeValuesOperation";
 
 export class GetCompareExchangeValueOperation<T> implements IOperation<CompareExchangeValue<T>> {
@@ -64,7 +64,7 @@ export class GetCompareExchangeValueCommand<T> extends RavenCommand<CompareExcha
         return {uri};
     }
 
-    public async setResponseAsync(bodyStream: stream.Stream, fromCache: boolean): Promise<string> {
+    public async setResponseAsync(bodyStream: Stream, fromCache: boolean): Promise<string> {
         if (!bodyStream) {
             return null;
         }

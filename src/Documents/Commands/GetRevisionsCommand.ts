@@ -1,7 +1,7 @@
 import { TypeUtil } from "../../Utility/TypeUtil";
 import { HttpRequestParameters } from "../../Primitives/Http";
 import { DateUtil } from "../../Utility/DateUtil";
-import * as stream from "readable-stream";
+import { Stream } from "node:stream";
 import { GetDocumentsCommand } from "./GetDocumentsCommand";
 import { RavenCommand } from "../../Http/RavenCommand";
 import { IRavenArrayResult } from "../../Types";
@@ -121,7 +121,7 @@ export class GetRevisionsCommand extends RavenCommand<IRavenArrayResult> {
         return true;
     }
 
-    public async setResponseAsync(bodyStream: stream.Stream, fromCache: boolean): Promise<string> {
+    public async setResponseAsync(bodyStream: Stream, fromCache: boolean): Promise<string> {
         if (!bodyStream) {
             this.result = null;
             return;

@@ -3,7 +3,7 @@ import { RavenCommand } from "../../src/Http/RavenCommand";
 import { HttpRequestParameters } from "../../src/Primitives/Http";
 import { DocumentConventions } from "../../src/Documents/Conventions/DocumentConventions";
 import { ServerNode } from "../../src/Http/ServerNode";
-import * as stream from "readable-stream";
+import { Stream } from "node:stream";
 
 export class AdminJsConsoleOperation implements IServerOperation<any> {
     private readonly _script: string;
@@ -49,7 +49,7 @@ class AdminJsConsoleCommand extends RavenCommand<any> {
         return false;
     }
 
-    async setResponseAsync(bodyStream: stream.Stream, fromCache: boolean): Promise<string> {
+    async setResponseAsync(bodyStream: Stream, fromCache: boolean): Promise<string> {
         return this._parseResponseDefaultAsync(bodyStream);
     }
 }
