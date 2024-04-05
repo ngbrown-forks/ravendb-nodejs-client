@@ -7,7 +7,7 @@ import {
     ObjectLiteralDescriptor,
     ClassConstructor, EntityConstructor, Field
 } from "../../Types";
-import * as pluralize from "pluralize";
+import { plural } from "pluralize";
 import { ClientConfiguration } from "../Operations/Configuration/ClientConfiguration";
 import { ReadBalanceBehavior } from "../../Http/ReadBalanceBehavior";
 import { throwError } from "../../Exceptions";
@@ -634,9 +634,9 @@ export class DocumentConventions {
         }
 
         if (typeof (ctorOrTypeChecker) === "string") {
-            result = pluralize.plural(ctorOrTypeChecker);
+            result = plural(ctorOrTypeChecker);
         } else {
-            result = pluralize.plural(ctorOrTypeChecker.name);
+            result = plural(ctorOrTypeChecker.name);
         }
 
         this._cachedDefaultTypeCollectionNames.set(ctorOrTypeChecker, result);

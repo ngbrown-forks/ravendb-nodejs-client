@@ -1,5 +1,5 @@
 import { pipeline, Writable, Transform, TransformCallback, Readable } from "node:stream";
-import * as os from "node:os";
+import { EOL } from "node:os";
 import { DocumentQuery } from "./DocumentQuery";
 import { MultiLoaderWithInclude } from "./Loaders/MultiLoaderWithInclude";
 import { BatchOperation } from "./Operations/BatchOperation";
@@ -866,7 +866,7 @@ export class DocumentSession extends InMemoryDocumentSessionOperations
                 if (response.requestHasErrors()) {
                     throwError(
                         "InvalidOperationException",
-                        "Got an error from server, status code: " + response.statusCode + os.EOL + response.result);
+                        "Got an error from server, status code: " + response.statusCode + EOL + response.result);
                 }
 
                 await this._pendingLazyOperations[i].handleResponseAsync(response);

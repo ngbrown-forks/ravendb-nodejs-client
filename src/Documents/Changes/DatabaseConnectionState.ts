@@ -3,7 +3,7 @@ import { ChangesType, IChangesConnectionState } from "./IChangesConnectionState"
 import { EventEmitter } from "node:events";
 import { getError } from "../../Exceptions";
 import { IDefer } from "../../Utility/PromiseUtil";
-import * as PromiseUtil from "../../Utility/PromiseUtil";
+import { defer } from "../../Utility/PromiseUtil";
 import { TypeUtil } from "../../Utility/TypeUtil";
 
 export class DatabaseConnectionState implements IChangesConnectionState<DatabaseChange> {
@@ -84,7 +84,7 @@ export class DatabaseConnectionState implements IChangesConnectionState<Database
         this._value = 0;
         this._emitter.setMaxListeners(50);
 
-        this._firstSet = PromiseUtil.defer<void>();
+        this._firstSet = defer<void>();
     }
 
     public addOnChangeNotification(type: ChangesType, handler: (change: DatabaseChange) => void): void {

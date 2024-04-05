@@ -8,7 +8,7 @@ import { CONSTANTS, HEADERS } from "../Constants";
 import { getError, throwError } from "../Exceptions";
 import { GetOperationStateCommand } from "./Operations/GetOperationStateOperation";
 import { StringUtil } from "../Utility/StringUtil";
-import * as StreamUtil from "../Utility/StreamUtil";
+import { pipelineAsync } from "../Utility/StreamUtil";
 import { JsonSerializer } from "../Mapping/Json/Serializer";
 import { RequestExecutor } from "../Http/RequestExecutor";
 import { IDocumentStore } from "./IDocumentStore";
@@ -438,7 +438,7 @@ export class BulkInsertOperation {
 
             const bulkCommandPromise = this._requestExecutor.execute(bulkCommand);
 
-            this._pipelineFinished = StreamUtil.pipelineAsync(this._currentWriter, this._requestBodyStream);
+            this._pipelineFinished = pipelineAsync(this._currentWriter, this._requestBodyStream);
             this._currentWriter.push("[");
 
             this._bulkInsertExecuteTask = Promise.all([

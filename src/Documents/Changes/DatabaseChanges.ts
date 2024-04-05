@@ -8,7 +8,7 @@ import { DatabaseConnectionState } from "./DatabaseConnectionState";
 import { ChangesObservable } from "./ChangesObservable";
 import { throwError } from "../../Exceptions";
 import * as semaphore from "semaphore";
-import * as WebSocket from "ws";
+import { WebSocket, ClientOptions, Data } from "ws";
 import { StringUtil } from "../../Utility/StringUtil";
 import { EventEmitter } from "node:events";
 import { defer } from "../../Utility/PromiseUtil";
@@ -67,7 +67,7 @@ export class DatabaseChanges implements IDatabaseChanges {
 
     public static createClientWebSocket(requestExecutor: RequestExecutor, url: string): WebSocket {
         const authOptions = requestExecutor.getAuthOptions();
-        let options = undefined as WebSocket.ClientOptions;
+        let options = undefined as ClientOptions;
 
         if (authOptions) {
             const certificate = Certificate.createFromOptions(authOptions);
@@ -390,7 +390,7 @@ export class DatabaseChanges implements IDatabaseChanges {
                 this._confirmations.clear();
             });
 
-            this._client.on("message", async (data: WebSocket.Data) => {
+            this._client.on("message", async (data: Data) => {
                 await this._processChanges(data as string);
             });
         }

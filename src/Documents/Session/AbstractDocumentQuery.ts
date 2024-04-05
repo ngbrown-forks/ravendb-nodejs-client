@@ -76,7 +76,7 @@ import { QueryHighlightings } from "../Queries/Highlighting/QueryHighlightings";
 import { ExplanationOptions } from "../Queries/Explanation/ExplanationOptions";
 import { CountersByDocId } from "./CounterInternalTypes";
 import { IncludeBuilderBase } from "./Loaders/IncludeBuilderBase";
-import * as os from "node:os";
+import { EOL } from "node:os";
 import { GraphQueryToken } from "./Tokens/GraphQueryToken";
 import { IncludesUtil } from "./IncludesUtil";
 import { TimeSeriesIncludesToken } from "./Tokens/TimeSeriesIncludesToken";
@@ -1570,7 +1570,7 @@ export abstract class AbstractDocumentQuery<T extends object, TSelf extends Abst
     private _buildWith(queryText: StringBuilder) {
         for (const withToken of this._withTokens) {
             withToken.writeTo(queryText);
-            queryText.append(os.EOL);
+            queryText.append(EOL);
         }
     }
 

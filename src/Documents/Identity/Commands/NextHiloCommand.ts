@@ -1,4 +1,4 @@
-import * as qs from "qs";
+import { stringify } from "qs";
 import { ServerNode } from "../../../Http/ServerNode";
 import { DateUtil } from "../../../Utility/DateUtil";
 import { RavenCommand } from "../../../Http/RavenCommand";
@@ -55,7 +55,7 @@ export class NextHiloCommand extends RavenCommand<HiLoResult> {
             ? DateUtil.default.stringify(this._lastRangeAt)
             : "";
 
-        const queryString = qs.stringify({
+        const queryString = stringify({
             tag: this._tag,
             lastBatchSize: this._lastBatchSize,
             lastRangeAt,

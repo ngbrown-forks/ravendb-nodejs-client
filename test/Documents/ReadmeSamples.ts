@@ -526,21 +526,13 @@ describe("Readme samples", function () {
             const result: any = [];
 
             const userStream = await session.advanced.stream<User>("users/");
-            userStream.on("data", user => {
+
+            for await (const user of userStream) {
                 result.push(user);
                 print(user);
-                // ...
-            });
+            }
 
-            userStream.on("end", () => {
-                assert.ok(result.length);
-            });
-
-            await new Promise<void>((resolve, reject) => {
-                finished(userStream, err => {
-                    err ? reject(err) : resolve();
-                });
-            });
+            assert.ok(result.length);
         });
 
         it("can stream query and get stats", async () => {
