@@ -1,5 +1,5 @@
 import { throwError } from "../Exceptions";
-import * as url from "url";
+import * as url from "node:url";
 
 export function isValidUri(uriString: string): boolean {
     const parsed = url.parse(uriString);

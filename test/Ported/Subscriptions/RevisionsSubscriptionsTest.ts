@@ -7,7 +7,7 @@ import DocumentStore, {
     RevisionsConfiguration,
     ConfigureRevisionsOperation
 } from "../../../src";
-import * as assert from "assert";
+import * as assert from "node:assert";
 
 // skipped for the time being
 // subscriptions are not working with server version 4.1
@@ -78,7 +78,7 @@ import * as assert from "assert";
 
                 sub.on("batch", (batch, callback) => {
                     try {
-                        batch.items.forEach(item => {
+                        for (const item of batch.items) {
                             const result = item.result;
                             names.add(
                                 (result.current ? result.current.name : null)
@@ -87,7 +87,7 @@ import * as assert from "assert";
                             if (names.size === 100) {
                                 resolve();
                             }
-                        });
+                        }
                     } catch (err) {
                         callback(err);
                         return;
@@ -153,7 +153,7 @@ import * as assert from "assert";
                 let maxAge = -1;
 
                 sub.on("batch", (batch, callback) => {
-                    batch.items.forEach(item => {
+                    for (const item of batch.items) {
                         const x = item.result;
 
                         if (x.current.age > maxAge && x.current.age  > (x.previous ? x.previous.age : -1)) {
@@ -166,7 +166,7 @@ import * as assert from "assert";
                         if (names.size === 10) {
                             resolve();
                         }
-                    });
+                    }
 
                     callback();
                 });

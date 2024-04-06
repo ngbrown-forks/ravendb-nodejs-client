@@ -73,10 +73,12 @@ export class CompareExchangeSessionValue {
                 return value;
             }
             case "Missing":
-            case "Deleted":
+            case "Deleted": {
                 return null;
-            default:
+            }
+            default: {
                 throwError("NotSupportedException", "Not supported state: " + this._state);
+            }
 
         }
     }
@@ -105,13 +107,16 @@ export class CompareExchangeSessionValue {
     private _assertState() {
         switch (this._state) {
             case "None":
-            case "Missing":
+            case "Missing": {
                 return;
-            case "Created":
+            }
+            case "Created": {
                 throwError("InvalidOperationException", "The compare exchange value with key '" + this._key + "' was already stored.");
                 break;
-            case "Deleted":
+            }
+            case "Deleted": {
                 throwError("InvalidOperationException", "The compare exchange value with key '" + this._key + "' was already deleted.");
+            }
         }
     }
 
@@ -152,12 +157,15 @@ export class CompareExchangeSessionValue {
 
                 return new PutCompareExchangeCommandData(newValue.key, entityToInsert, newValue.index);
             }
-            case "Deleted":
+            case "Deleted": {
                 return new DeleteCompareExchangeCommandData(this._key, this._index);
-            case "Missing":
+            }
+            case "Missing": {
                 return null;
-            default:
+            }
+            default: {
                 throwError("InvalidOperationException", "Not supported state: " + this._state);
+            }
         }
     }
 

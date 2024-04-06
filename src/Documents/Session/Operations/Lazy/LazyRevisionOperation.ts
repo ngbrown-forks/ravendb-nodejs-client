@@ -74,20 +74,25 @@ export class LazyRevisionOperation<T extends object> implements ILazyOperation {
         this._getRevisionOperation.result = jsonArrayResult;
 
         switch (this._mode) {
-            case "Single":
+            case "Single": {
                 this._result = this._getRevisionOperation.getRevision(this._clazz);
                 break;
-            case "Multi":
+            }
+            case "Multi": {
                 this._result = this._getRevisionOperation.getRevisionsFor(this._clazz);
                 break;
-            case "Map":
+            }
+            case "Map": {
                 this._result = this._getRevisionOperation.getRevisions(this._clazz);
                 break;
-            case "ListOfMetadata":
+            }
+            case "ListOfMetadata": {
                 this._result = this._getRevisionOperation.getRevisionsMetadataFor();
                 break;
-            default:
+            }
+            default: {
                 throwError("InvalidArgumentException", "Invalid mode: " + this._mode);
+            }
         }
     }
 }

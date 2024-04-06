@@ -1,4 +1,4 @@
-import { EventEmitter } from "events";
+import { EventEmitter } from "node:events";
 import * as Parser from "stream-json/Parser";
 import {
     ObjectKeyCaseTransformStreamOptions,
@@ -104,12 +104,9 @@ export class RavenCommandResponsePipeline<TStreamResult> extends EventEmitter {
                 "Cannot use key case transform without doing parseJson() or parseJsonAsync() first.");
         }
 
-        if (!optsOrTransform || typeof optsOrTransform === "string") {
-            this._opts.streamKeyCaseTransform =
-                getObjectKeyCaseTransformProfile(optsOrTransform as CasingConvention, profile);
-        } else {
-            this._opts.streamKeyCaseTransform = optsOrTransform;
-        }
+        this._opts.streamKeyCaseTransform = !optsOrTransform || typeof optsOrTransform === "string"
+            ? getObjectKeyCaseTransformProfile(optsOrTransform as CasingConvention, profile)
+            : optsOrTransform;
 
         if (this._opts.jsonAsync) {
             this._opts.streamKeyCaseTransform.handleKeyValue = true;
@@ -185,7 +182,7 @@ export class RavenCommandResponsePipeline<TStreamResult> extends EventEmitter {
                 flush(callback) {
                     let str = null;
                     try {
-                        str = Buffer.concat(bytesChunks).toString('utf-8');
+                        str = Buffer.concat(bytesChunks).toString("utf8");
                     } catch(err){
                         callback(
                             getError("InvalidDataException", `Failed to concat / decode server response`, err));
@@ -216,7 +213,7 @@ export class RavenCommandResponsePipeline<TStreamResult> extends EventEmitter {
         const opts = this._opts;
         let resultPromise: Promise<TStreamResult>;
         if (opts.jsonAsync) {
-            const asm = Asm.connectTo(streams[streams.length - 1] as any);
+            const asm = Asm.connectTo(streams.at(-1) as any);
             resultPromise = new Promise(resolve => {
                 asm.on("done", asm => resolve(asm.current));
             });

@@ -28,9 +28,11 @@ export function getObjectKeyCaseTransformProfile(
     defaultTransform: CasingConvention, profile?: ObjectKeyCaseTransformProfile): ObjectKeyCaseTransformStreamOptions {
     switch (profile) {
         case "DOCUMENT_LOAD":
-        case "DOCUMENT_QUERY":
+        case "DOCUMENT_QUERY": {
             return Object.assign({ defaultTransform }, DOCUMENT_LOAD_KEY_CASE_TRANSFORM_PROFILE);
-        default:
+        }
+        default: {
             return { defaultTransform };
+        }
     }
 }

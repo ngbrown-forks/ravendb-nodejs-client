@@ -1,9 +1,9 @@
 import * as stream from "readable-stream";
-import * as path from "path";
-import * as fs from "fs";
-import * as assert from "assert";
+import * as path from "node:path";
+import * as fs from "node:fs";
+import * as assert from "node:assert";
 import { testContext, disposeTestDocumentStore } from "../Utils/TestUtil";
-import * as util from "util";
+import * as util from "node:util";
 
 import DocumentStore, {
     IDocumentStore,
@@ -333,7 +333,7 @@ describe("Readme samples", function () {
                 print("// RQL");
                 print("// " + query.getIndexQuery().query);
                 print("// ", query.getIndexQuery().queryParameters);
-                results.forEach(x => delete x["@metadata"]);
+                for (const x of results) delete x["@metadata"];
                 print("// " + util.inspect(results));
             }
         });

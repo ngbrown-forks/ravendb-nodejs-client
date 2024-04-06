@@ -1,9 +1,9 @@
-import * as fs from "fs";
-import * as path from "path";
-import * as url from "url";
+import * as fs from "node:fs";
+import * as path from "node:path";
+import * as url from "node:url";
 import { MultiError, VError } from "verror";
-import * as http from "http";
-import * as https from "https";
+import * as http from "node:http";
+import * as https from "node:https";
 import "source-map-support/register";
 import { IDisposable } from "../../src/Types/Contracts";
 import { RavenTestDriver } from "../TestDriver";
@@ -11,7 +11,7 @@ import { RavenServerLocator } from "../TestDriver/RavenServerLocator";
 import { IDocumentStore } from "../../src/Documents/IDocumentStore";
 import { getError, throwError } from "../../src/Exceptions";
 import { IAuthOptions } from "../../src/Auth/AuthOptions";
-import * as os from "os";
+import * as os from "node:os";
 import "../../src/Utility/Polyfills";
 import {
     CreateDatabaseOperation,
@@ -21,7 +21,7 @@ import {
     IDocumentSession, ServerNode
 } from "../../src";
 import * as rimraf from "rimraf";
-import { ChildProcess } from "child_process";
+import { ChildProcess } from "node:child_process";
 import { TypeUtil } from "../../src/Utility/TypeUtil";
 import { getLogger } from "../../src/Utility/LogUtil";
 import { AdminJsConsoleOperation } from "./AdminJsConsoleOperation";
@@ -124,9 +124,9 @@ class TestSecuredServiceLocator extends RavenServerLocator {
 
         return {
             type: "pem",
-            certificate: fs.readFileSync(clientCertPath, "utf-8"),
+            certificate: fs.readFileSync(clientCertPath, "utf8"),
             password: clientCertPass,
-            ca: fs.readFileSync(serverCaCertPath, "utf-8"),
+            ca: fs.readFileSync(serverCaCertPath, "utf8"),
         };
     }
 }

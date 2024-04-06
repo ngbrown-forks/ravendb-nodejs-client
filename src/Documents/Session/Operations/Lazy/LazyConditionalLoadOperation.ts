@@ -59,19 +59,21 @@ export class LazyConditionalLoadOperation<T extends object> implements ILazyOper
         }
 
         switch (response.statusCode) {
-            case StatusCodes.NotModified:
+            case StatusCodes.NotModified: {
                 this._result = {
                     entity: null,
                     changeVector: this._changeVector
                 } as ConditionalLoadResult<any>;
                 return;
-            case StatusCodes.NotFound:
+            }
+            case StatusCodes.NotFound: {
                 this._session.registerMissing(this._id);
                 this._result = {
                     entity: null,
                     changeVector: null
                 } as ConditionalLoadResult<any>;
                 return;
+            }
         }
 
         if (response.result) {

@@ -57,6 +57,7 @@ export class LazySessionOperations implements ILazySessionOperations {
         idPrefix: string,
         opts?: SessionLoadStartingWithOptions<TEntity>):
         Lazy<EntitiesCollectionObject<TEntity>> {
+        // eslint-disable-next-line unicorn/prefer-default-parameters
         opts = opts || null;
         opts = Object.assign({}, LoadStartingWithOperation.DEFAULT, opts);
         const operation = new LazyStartsWithOperation<TEntity>(idPrefix, opts, this._delegate);

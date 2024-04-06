@@ -1,5 +1,5 @@
-import { ChildProcess } from "child_process";
-import * as os from "os";
+import { ChildProcess } from "node:child_process";
+import * as os from "node:os";
 
 import { CONSTANTS } from "../../src/Constants";
 import { DocumentStore } from "../../src/Documents/DocumentStore";
@@ -19,7 +19,7 @@ import {
 import { Dog, Entity, Genre, Movie, Rating, User } from "../Assets/Graph";
 import { RequestExecutor } from "../../src/Http/RequestExecutor";
 import * as proxyAgent from "http-proxy-agent";
-import * as http from "http";
+import * as http from "node:http";
 import { Stopwatch } from "../../src/Utility/Stopwatch";
 import { delay, wrapWithTimeout } from "../../src/Utility/PromiseUtil";
 import { ClusterTestContext } from "../Utils/TestUtil";
@@ -120,6 +120,7 @@ export abstract class RavenTestDriver {
 
             try {
                 const url = await wrapWithTimeout(result, 5_000);
+                // eslint-disable-next-line no-console
                 console.log("DEBUG: RavenDB server URL", url);
                 return url;
             } catch (err) {

@@ -1,4 +1,4 @@
-import * as assert from "assert";
+import * as assert from "node:assert";
 import { testContext, disposeTestDocumentStore } from "../Utils/TestUtil";
 
 import {
@@ -159,7 +159,7 @@ describe("HttpsTest", function () {
             const names = certificateDefinitions.map(x => x.name);
             assertThat(names)
                 .contains("cert3-newName");
-            assertThat(!!names.find(x => x === "cert3"))
+            assertThat(names.includes("cert3"))
                 .isFalse();
 
             const certificateMetadata = await store.maintenance.server.send(new GetCertificateMetadataOperation(cert1Thumbprint));
@@ -224,7 +224,7 @@ describe("HttpsTest", function () {
 
     it("canUseServerGeneratedCertificate", async () => {
         const certificateRawData = await store.maintenance.server.send(
-            new CreateClientCertificateOperation("users-auth-test", { }, "Operator"));
+            new CreateClientCertificateOperation("users-auth-test", { /* empty */ }, "Operator"));
 
         const pfx = await extractPfx(certificateRawData);
 
@@ -277,7 +277,7 @@ async function extractCertificate(certificateRawData: CertificateRawData) {
         if (entry.path.endsWith(".crt")) {
             const entryText = await readToEnd(entry);
             const lines = entryText.split(/\r?\n/);
-            cert = lines.slice(1, lines.length - 2).join("\r\n");
+            cert = lines.slice(1, - 2).join("\r\n");
             break;
         } else {
             entry.autodrain();

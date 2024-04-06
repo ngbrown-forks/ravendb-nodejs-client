@@ -19,7 +19,7 @@ class SymbolPrice {
 }
 
 class MarketSymbol {
-
+    // empty
 }
 
 describe("RDBC-501", function () {

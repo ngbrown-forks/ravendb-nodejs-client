@@ -42,7 +42,7 @@ export class StringUtil {
         return s.replace(
             /\{([\d]+)\}/g,
             (match: string, placeholder: string): string => {
-                const value: any = inputVars[parseInt(placeholder, 10)];
+                const value: any = inputVars[Number.parseInt(placeholder, 10)];
 
                 return (TypeUtil.isNullOrUndefined(value) ? "" : value).toString();
             });
@@ -69,7 +69,7 @@ export class StringUtil {
             const c: string = field[i];
 
             if (i === 0) {
-                if (!this.isLetter(c) && ["_", "@"].indexOf(c) === -1) {
+                if (!this.isLetter(c) && !["_", "@"].includes(c)) {
                     escape = true;
                     break;
                 }
@@ -77,7 +77,7 @@ export class StringUtil {
                 continue;
             }
 
-            if (!this.isLetterOrDigit(c) && ["_", "@", ".", "[", "]"].indexOf(c) === -1) {
+            if (!this.isLetterOrDigit(c) && !["_", "@", ".", "[", "]"].includes(c)) {
                 escape = true;
                 break;
             }
@@ -91,11 +91,11 @@ export class StringUtil {
     }
 
     public static capitalize(s: string): string {
-        return s.charAt(0).toUpperCase() + s.substring(1);
+        return s.charAt(0).toUpperCase() + s.slice(1);
     }
 
     public static uncapitalize(s: string): string {
-        return s.charAt(0).toLowerCase() + s.substring(1);
+        return s.charAt(0).toLowerCase() + s.slice(1);
     }
 
     public static isCharacter(character: string): boolean {

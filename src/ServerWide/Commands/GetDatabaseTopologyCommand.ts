@@ -32,7 +32,7 @@ export class GetDatabaseTopologyCommand extends RavenCommand<Topology> {
     public createRequest(node: ServerNode): HttpRequestParameters {
         let uri = `${node.url}/topology?name=${node.database}`;
 
-        if (node.url.toLowerCase().indexOf(".fiddler") !== -1) {
+        if (node.url.toLowerCase().includes(".fiddler")) {
             // we want to keep the '.fiddler' stuff there so we'll keep tracking request
             // so we are going to ask the server to respect it
             uri += "&localUrl=" + encodeURIComponent(node.url);

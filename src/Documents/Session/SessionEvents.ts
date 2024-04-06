@@ -96,6 +96,7 @@ export class SessionBeforeQueryEventArgs {
     constructor(
         public session: InMemoryDocumentSessionOperations,
         public queryCustomization: IDocumentQueryCustomization) {
+        // empty
     }
 }
 

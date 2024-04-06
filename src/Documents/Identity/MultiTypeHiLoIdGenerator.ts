@@ -33,7 +33,7 @@ export class MultiTypeHiLoIdGenerator {
             : this._conventions.getCollectionNameForEntity(entity);
 
         if (!typeTagName) {
-            return Promise.resolve(null);
+            return null;
         }
 
         const tag = await this._conventions.transformClassCollectionNameToDocumentIdPrefix(typeTagName);

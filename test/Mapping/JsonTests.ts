@@ -1,4 +1,4 @@
-import * as assert from "assert";
+import * as assert from "node:assert";
 import {
     pascalCaseReplacer,
     camelCaseReplacer,
@@ -96,7 +96,7 @@ describe("Json module", () => {
         it("can skip objects", () => {
             const transformRules: ReviverTransformRule[] = [
                 {
-                    contextMatcher: (context) => context.currentPath.indexOf(".") === -1,
+                    contextMatcher: (context) => !context.currentPath.includes("."),
                     reviver: camelCaseReviver
                 }
             ];

@@ -172,7 +172,7 @@ export class SessionTimeSeriesBase {
             const metadataTimeSeries = document.metadata[CONSTANTS.Documents.Metadata.TIME_SERIES] as string[];
             if (metadataTimeSeries && TypeUtil.isArray(metadataTimeSeries)) {
 
-                if (!metadataTimeSeries.find(x => StringUtil.equalsIgnoreCase(x, this.name))) {
+                if (!metadataTimeSeries.some(x => StringUtil.equalsIgnoreCase(x, this.name))) {
                     // the document is loaded in the session, but the metadata says that there is no such timeseries
                     return [];
                 }
@@ -315,7 +315,7 @@ export class SessionTimeSeriesBase {
 
             rangesToGetFromServer.push({
                 name: this.name,
-                from: ranges[ranges.length - 1].to,
+                from: ranges.at(-1).to,
                 to
             });
         }
@@ -352,11 +352,11 @@ export class SessionTimeSeriesBase {
             if (fromDates.length) {
                 from = fromDates[0].date;
 
-                fromDates.forEach(d => {
+                for (const d of fromDates) {
                     if (DatesComparator.compare(d, leftDate(from)) < 0) {
                         from = d.date;
                     }
-                });
+                }
             } else {
                 from = null;
             }
@@ -366,11 +366,11 @@ export class SessionTimeSeriesBase {
 
             if (toDates.length) {
                 to = toDates[0].date;
-                toDates.forEach(d => {
+                for (const d of toDates) {
                     if (DatesComparator.compare(d, rightDate(to)) > 0) {
                         to = d.date;
                     }
-                })
+                }
             } else {
                 to = null;
             }
@@ -460,7 +460,7 @@ export class SessionTimeSeriesBase {
 
             let shouldSkip = false;
             if (mergedValues.length > 0) {
-                shouldSkip = ranges[i].entries[0].timestamp.getTime() === mergedValues[mergedValues.length - 1].timestamp.getTime();
+                shouldSkip = ranges[i].entries[0].timestamp.getTime() === mergedValues.at(-1).timestamp.getTime();
             }
 
             const toAdd = ranges[i].entries.slice(!shouldSkip ? 0 : 1);
@@ -543,7 +543,7 @@ export class SessionTimeSeriesBase {
 
         return ranges.length === 0
             || DatesComparator.compare(leftDate(ranges[0].from), rightDate(to)) > 0
-            || DatesComparator.compare(rightDate(ranges[ranges.length - 1].to), leftDate(from)) < 0;
+            || DatesComparator.compare(rightDate(ranges.at(-1).to), leftDate(from)) < 0;
     }
 }
 

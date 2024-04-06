@@ -23,20 +23,25 @@ export abstract class SpatialCriteria {
         let whereOperator: WhereOperator;
 
         switch (this._relation) {
-            case "Within":
+            case "Within": {
                 whereOperator = "SpatialWithin";
                 break;
-            case "Contains":
+            }
+            case "Contains": {
                 whereOperator = "SpatialContains";
                 break;
-            case "Disjoint":
+            }
+            case "Disjoint": {
                 whereOperator = "SpatialDisjoint";
                 break;
-            case "Intersects":
+            }
+            case "Intersects": {
                 whereOperator = "SpatialIntersects";
                 break;
-            default:
+            }
+            default: {
                 throwError("InvalidArgumentException");
+            }
         }
 
         return WhereToken.create(whereOperator, fieldName, null, new WhereOptions({

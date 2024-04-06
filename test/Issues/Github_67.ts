@@ -1,4 +1,4 @@
-import * as assert from "assert";
+import * as assert from "node:assert";
 import { testContext, disposeTestDocumentStore } from "../Utils/TestUtil";
 
 import {
@@ -19,7 +19,7 @@ describe("Issue #67", function () {
 
     it("can pass a url with a trailing slash", async () => {
         const url = store.urls[0] + "/";
-        assert.strictEqual(url[url.length - 1], "/");
+        assert.strictEqual(url.at(-1), "/");
         // add a trailing slash to our store's URL
 
         let testStore: DocumentStore;

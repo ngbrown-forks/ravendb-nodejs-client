@@ -63,12 +63,14 @@ export class TimeSeriesIncludesToken extends QueryToken {
 
     private static _writeTimeRangeTo(writer: StringBuilder, range: TimeSeriesTimeRange) {
         switch (range.type) {
-            case "Last":
+            case "Last": {
                 writer
                     .append("last(");
                 break;
-            default:
+            }
+            default: {
                 throwError("InvalidArgumentException", "Not supported time range type: " + range.type);
+            }
         }
 
         writer
@@ -80,12 +82,14 @@ export class TimeSeriesIncludesToken extends QueryToken {
 
     private static _writeCountRangeTo(writer: StringBuilder, range: TimeSeriesCountRange) {
         switch (range.type) {
-            case "Last":
+            case "Last": {
                 writer
                     .append("last(");
                 break;
-            default:
+            }
+            default: {
                 throwError("InvalidArgumentException", "Not supported time range type: " + range.type);
+            }
         }
 
         writer

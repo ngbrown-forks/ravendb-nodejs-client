@@ -60,13 +60,13 @@ describe("DatabaseSettingsOperationTest", function () {
     async function checkIfOurValuesGotSaved(store: IDocumentStore, data: Record<string, string>) {
         const settings = await getConfigurationSettings(store);
 
-        Object.keys(data).forEach(key => {
+        for (const key of Object.keys(data)) {
             const configurationValue = settings.settings[key];
             assertThat(configurationValue)
                 .isNotNull();
             assertThat(configurationValue)
                 .isEqualTo(data[key]);
-        })
+        }
     }
 
 });

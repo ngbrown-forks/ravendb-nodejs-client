@@ -209,11 +209,11 @@ import {
             const session = store.openSession();
             const ts = await session.timeSeriesFor("users/karmel", "Heartrate").get();
 
-            const tsMillis = ts[ts.length - 1].timestamp.getTime() - ts[0].timestamp.getTime();
+            const tsMillis = ts.at(-1).timestamp.getTime() - ts[0].timestamp.getTime();
 
             const ts1 = await session.timeSeriesFor("users/karmel", p1.getTimeSeriesName("Heartrate")).get();
 
-            const ts1Millis = ts1[ts1.length - 1].timestamp.getTime() - ts1[0].timestamp.getTime();
+            const ts1Millis = ts1.at(-1).timestamp.getTime() - ts1[0].timestamp.getTime();
 
             assertThat(ts1Millis)
                 .isEqualTo(tsMillis - 600);

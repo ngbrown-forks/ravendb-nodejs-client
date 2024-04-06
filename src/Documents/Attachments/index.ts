@@ -29,6 +29,7 @@ export class AttachmentResult {
         public data: stream.Readable,
         public details: AttachmentDetails,
         private _response: HttpResponse) {
+        // empty
     }
 
     public dispose() {

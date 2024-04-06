@@ -1,4 +1,4 @@
-import * as assert from "assert";
+import * as assert from "node:assert";
 import { testContext, disposeTestDocumentStore } from "../../Utils/TestUtil";
 
 import {
@@ -33,7 +33,7 @@ describe("Attachments Session", function () {
         const profileStream = Buffer.from([1, 2, 3]);
         const backgroundStream = Buffer.from([10, 20, 30, 40, 50]);
         const fileStream = new stream.Readable();
-        [1, 2, 3, 4, 5].forEach(x => fileStream.push(Buffer.from(x.toString())));
+        for (const x of [1, 2, 3, 4, 5]) fileStream.push(Buffer.from(x.toString()));
         fileStream.push(null);
 
         {

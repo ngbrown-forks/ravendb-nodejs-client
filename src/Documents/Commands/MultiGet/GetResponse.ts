@@ -90,10 +90,12 @@ export class GetResponse {
             case StatusCodes.NonAuthoritativeInformation:
             case StatusCodes.NoContent:
             case StatusCodes.NotModified:
-            case StatusCodes.NotFound:
+            case StatusCodes.NotFound: {
                 return false;
-            default:
+            }
+            default: {
                 return true;
+            }
         }
     }
 }

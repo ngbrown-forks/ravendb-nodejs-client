@@ -145,9 +145,9 @@ export class QueryCommand extends RavenCommand<QueryResult> {
         mapped.durationInMs = timings.DurationInMs;
         mapped.timings = timings.Timings ? {} : undefined;
         if (timings.Timings) {
-            Object.keys(timings.Timings).forEach(time => {
+            for (const time of Object.keys(timings.Timings)) {
                 mapped.timings[StringUtil.uncapitalize(time)] = QueryCommand._mapTimingsToLocalObject(timings.Timings[time]);
-            });
+            }
         }
         return mapped;
     }

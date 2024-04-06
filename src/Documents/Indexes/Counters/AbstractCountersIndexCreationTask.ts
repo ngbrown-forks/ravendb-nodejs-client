@@ -4,5 +4,5 @@ import { AbstractCsharpCountersIndexCreationTask } from "./AbstractCsharpCounter
  * @deprecated Use AbstractCsharpCountersIndexCreationTask
  */
 export abstract class AbstractCountersIndexCreationTask extends AbstractCsharpCountersIndexCreationTask {
-
+    // empty
 }

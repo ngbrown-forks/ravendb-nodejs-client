@@ -1,6 +1,6 @@
 import {AbstractJavaScriptIndexCreationTask, IDocumentStore, IndexQuery } from "../../../src";
 import { disposeTestDocumentStore, testContext } from "../../Utils/TestUtil";
-import * as assert from "assert";
+import * as assert from "node:assert";
 
 describe("IDocumentQueryCustomizationMethodsTest", function () {
 
@@ -22,11 +22,12 @@ describe("IDocumentQueryCustomizationMethodsTest", function () {
             this.map(BlogPost, b => {
                 const result: TagResult[] = [];
 
+                // eslint-disable-next-line unicorn/no-array-for-each
                 b.tags.forEach(item => {
                     result.push({
                         tag: item
                     });
-                });
+                })
                 
                 return result;
             })

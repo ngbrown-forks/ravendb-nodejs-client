@@ -7,10 +7,10 @@ import { DatabaseSmugglerExportOptions } from "./DatabaseSmugglerExportOptions";
 import { HttpCache } from "../../Http/HttpCache";
 import { HeadersBuilder } from "../../Utility/HttpUtil";
 import { DatabaseSmugglerOptions } from "./DatabaseSmugglerOptions";
-import * as fs from "fs";
+import * as fs from "node:fs";
 import * as StreamUtil from "../../Utility/StreamUtil";
 import { LengthUnawareFormData } from "../../Utility/LengthUnawareFormData";
-import * as path from "path";
+import * as path from "node:path";
 import { BackupUtils } from "./BackupUtils";
 import { RequestExecutor } from "../../Http/RequestExecutor";
 import { OperationCompletionAwaiter } from "../Operations/OperationCompletionAwaiter";
@@ -105,7 +105,7 @@ export class DatabaseSmuggler {
 
         options.operateOnTypes = oldOperateOnTypes;
 
-        const lastFile = files.slice(-1).pop();
+        const lastFile = files.at(-1);
         await this.import(options, path.resolve(lastFile));
     }
 

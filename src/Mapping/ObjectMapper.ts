@@ -85,8 +85,9 @@ export class TypesAwareObjectMapper implements ITypesAwareObjectMapper {
                 .split(/[!.]/g);
             const fieldContext = this._getFieldContext(obj, objPathSegments);
             const fieldContexts = Array.isArray(fieldContext) ? fieldContext : [fieldContext];
-            fieldContexts.forEach(
-                (c, i) => this._applyTypeToNestedProperty(typeName, c, knownTypes));
+            for (const [i, c] of fieldContexts.entries()) {
+                this._applyTypeToNestedProperty(typeName, c, knownTypes);
+            }
         }
 
         return obj;
@@ -315,14 +316,14 @@ export class TypesAwareObjectMapper implements ITypesAwareObjectMapper {
         }
 
         if (Array.isArray(fieldVal)) {
-            fieldVal.forEach((item, i) => {
+            for (const [i, item] of fieldVal.entries()) {
                 this._applyTypeToNestedProperty(fieldTypeName, {
                     field: i.toString(),
                     parent: fieldVal,
                     getValue: () => fieldVal[i],
                     setValue: (val) => fieldVal[i] = val
                 }, knownTypes);
-            });
+            }
 
             return;
         }

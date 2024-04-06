@@ -1,5 +1,5 @@
 import { Company, Order, User } from "../../Assets/Entities";
-import * as assert from "assert";
+import * as assert from "node:assert";
 import { testContext, disposeTestDocumentStore } from "../../Utils/TestUtil";
 
 import DocumentStore, {
@@ -182,8 +182,8 @@ describe("SubscriptionsBasicTest", function () {
 
             subscription.on("batch", (batch, callback) => {
                 try {
-                    batch.items.forEach(x => keys.push(x.id));
-                    batch.items.forEach(x => ages.push(x.rawResult.age));
+                    for (const x of batch.items) keys.push(x.id);
+                    for (const x of batch.items) ages.push(x.rawResult.age);
                     callback();
                 } catch (err) {
                     callback(err);
@@ -229,9 +229,9 @@ describe("SubscriptionsBasicTest", function () {
         }
 
         subscription.on("batch", (batch, callback) => {
-            batch.items.forEach(x => {
+            for (const x of batch.items) {
                 orders.push(x.result);
-            });
+            }
             callback();
         });
 
@@ -271,9 +271,9 @@ describe("SubscriptionsBasicTest", function () {
         }
 
         subscription.on("batch", (batch, callback) => {
-            batch.items.forEach(x => {
+            for (const x of batch.items) {
                 names.push(x.result.name);
-            });
+            }
             callback();
         });
 
@@ -593,7 +593,7 @@ describe("SubscriptionsBasicTest", function () {
             }
 
             subscription.on("batch", (batch, callback) => {
-                batch.items.forEach(i => docs.push(i.result));
+                for (const i of batch.items) docs.push(i.result);
                 callback();
             });
 
@@ -665,7 +665,7 @@ describe("SubscriptionsBasicTest", function () {
             });
 
             subscription.on("batch", (batch, callback) => {
-                batch.items.forEach(i => docs.push(i.result));
+                for (const i of batch.items) docs.push(i.result);
                 callback(getError("InvalidOperationException", "Fake exception"));
             });
 
@@ -700,7 +700,7 @@ describe("SubscriptionsBasicTest", function () {
             const docs = new AsyncQueue<User>();
 
             subscription.on("batch", (batch, callback) => {
-                batch.items.forEach(i => docs.push(i.result));
+                for (const i of batch.items) docs.push(i.result);
                 callback();
             });
 
@@ -765,7 +765,7 @@ describe("SubscriptionsBasicTest", function () {
             }
 
             subscription.on("batch", (batch, callback) => {
-                batch.items.forEach(i => users.push(i.result));
+                for (const i of batch.items) users.push(i.result);
                 callback();
             });
 
@@ -810,7 +810,7 @@ describe("SubscriptionsBasicTest", function () {
             });
             const items1 = new AsyncQueue<User>();
             subscription1.on("batch", (batch, callback) => {
-                batch.items.forEach(i => items1.push(i.result));
+                for (const i of batch.items) items1.push(i.result);
                 callback();
             });
 
@@ -820,7 +820,7 @@ describe("SubscriptionsBasicTest", function () {
             });
             const items2 = new AsyncQueue<User>();
             subscription2.on("batch", (batch, callback) => {
-                batch.items.forEach(i => items2.push(i.result));
+                for (const i of batch.items) items2.push(i.result);
                 callback();
             });
 
@@ -1416,7 +1416,7 @@ describe("SubscriptionsBasicTest", function () {
 
         try {
             subscription.on("batch", (batch, callback) => {
-                batch.items.forEach(x => keys.push(x.result.name));
+                for (const x of batch.items) keys.push(x.result.name);
                 callback();
             });
 

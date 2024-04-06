@@ -173,20 +173,25 @@ export class FacetToken extends QueryToken {
             for (const value of aggregationValue) {
                 let aggregationToken: FacetAggregationToken;
                 switch (aggregationKey) {
-                    case "Max":
+                    case "Max": {
                         aggregationToken = FacetAggregationToken.max(value.name, value.displayName);
                         break;
-                    case "Min":
+                    }
+                    case "Min": {
                         aggregationToken = FacetAggregationToken.min(value.name, value.displayName);
                         break;
-                    case "Average":
+                    }
+                    case "Average": {
                         aggregationToken = FacetAggregationToken.average(value.name, value.displayName);
                         break;
-                    case "Sum":
+                    }
+                    case "Sum": {
                         aggregationToken = FacetAggregationToken.sum(value.name, value.displayName);
                         break;
-                    default :
+                    }
+                    default : {
                         throwError("NotImplementedException", "Unsupported aggregation method: " + aggregationKey);
+                    }
                 }
 
                 token._aggregations.push(aggregationToken);
@@ -218,32 +223,37 @@ export class FacetAggregationToken extends QueryToken {
 
     public writeTo(writer: StringBuilder): void {
         switch (this._aggregation) {
-            case "Max":
+            case "Max": {
                 writer
                     .append("max(")
                     .append(this._fieldName)
                     .append(")");
                 break;
-            case "Min":
+            }
+            case "Min": {
                 writer
                     .append("min(")
                     .append(this._fieldName)
                     .append(")");
                 break;
-            case "Average":
+            }
+            case "Average": {
                 writer
                     .append("avg(")
                     .append(this._fieldName)
                     .append(")");
                 break;
-            case "Sum":
+            }
+            case "Sum": {
                 writer
                     .append("sum(")
                     .append(this._fieldName)
                     .append(")");
                 break;
-            default:
+            }
+            default: {
                 throwError("InvalidArgumentException", "Invalid aggregation mode: " + this._aggregation);
+            }
         }
 
         if (StringUtil.isNullOrWhitespace(this._fieldDisplayName)) {

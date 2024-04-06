@@ -3,7 +3,7 @@ import { ClusterTestContext, disposeTestDocumentStore, RavenTestContext, testCon
 import { throwError } from "../../src/Exceptions";
 import { HttpRequestParameters, HttpResponse } from "../../src/Primitives/Http";
 import * as stream from "readable-stream";
-import * as http from "http";
+import * as http from "node:http";
 import { User } from "../Assets/Entities";
 import { assertThat } from "../Utils/AssertExtensions";
 
@@ -49,21 +49,21 @@ async function onBeforeAfterAndFailRequestInternal(failCount: number, clusterSiz
             const store = new DocumentStore(leader.url, databaseName);
             try {
                 store.addSessionListener("beforeRequest", e => {
-                    if (!e.url.match(urlRegex)) {
+                    if (!urlRegex.test(e.url)) {
                         return;
                     }
                     sessionActual.push("OnBeforeRequest");
                 });
 
                 store.addSessionListener("succeedRequest", e => {
-                    if (!e.url.match(urlRegex)) {
+                    if (!urlRegex.test(e.url)) {
                         return;
                     }
                     sessionActual.push("OnAfterRequests");
                 });
 
                 store.addSessionListener("failedRequest", e => {
-                    if (!e.url.match(urlRegex)) {
+                    if (!urlRegex.test(e.url)) {
                         return;
                     }
                     sessionActual.push("OnFailedRequest");
@@ -74,21 +74,21 @@ async function onBeforeAfterAndFailRequestInternal(failCount: number, clusterSiz
                 const requestExecutor = store.getRequestExecutor();
 
                 requestExecutor.on("beforeRequest", e => {
-                    if (!e.url.match(urlRegex)) {
+                    if (!urlRegex.test(e.url)) {
                         return;
                     }
                     actual.push("OnBeforeRequest");
                 });
 
                 requestExecutor.on("succeedRequest", e => {
-                    if (!e.url.match(urlRegex)) {
+                    if (!urlRegex.test(e.url)) {
                         return;
                     }
                     actual.push("OnAfterRequests");
                 });
 
                 requestExecutor.on("failedRequest", e => {
-                    if (!e.url.match(urlRegex)) {
+                    if (!urlRegex.test(e.url)) {
                         return;
                     }
                     actual.push("OnFailedRequest");
@@ -98,7 +98,7 @@ async function onBeforeAfterAndFailRequestInternal(failCount: number, clusterSiz
                 const command = new FirstFailCommand("User/1", null, documentJson, failCount);
                 try {
                     await requestExecutor.execute(command);
-                } catch (e) {
+                } catch {
                     // ignored
                 }
 

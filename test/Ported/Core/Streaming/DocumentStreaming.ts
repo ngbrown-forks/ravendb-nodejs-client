@@ -5,7 +5,7 @@ import {
     IDocumentStore,
     StreamResult,
 } from "../../../../src";
-import * as assert from "assert";
+import * as assert from "node:assert";
 import * as StreamUtil from "../../../../src/Utility/StreamUtil";
 import { User } from "../../../Assets/Entities";
 import { CONSTANTS } from "../../../../src/Constants";
@@ -67,13 +67,13 @@ describe("document streaming", function () {
                 await StreamUtil.finishedAsync(queryStream);
 
                 assert.strictEqual(items.length, 200);
-                items.forEach(item => {
+                for (const item of items) {
                     assertStreamResultEntry(item, (doc: any) => {
                         assert.ok(doc);
                         assert.ok(doc.name);
                         assert.ok(doc.lastName);
                     });
-                });
+                }
             }
         } finally {
             newStore.dispose();

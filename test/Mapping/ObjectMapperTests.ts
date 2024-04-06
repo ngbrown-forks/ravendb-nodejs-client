@@ -1,4 +1,4 @@
-import * as assert from "assert";
+import * as assert from "node:assert";
 
 import {
     TypesAwareObjectMapper,
@@ -26,6 +26,7 @@ describe("ObjectMapper", function () {
 
     class Person {
         constructor(public name: string) {
+            // empty
         }
 
         public sayHello() {
@@ -38,16 +39,19 @@ describe("ObjectMapper", function () {
             public name: string,
             public releasedAt: Date
         ) {
+            // empty
         }
     }
 
     class Tree {
         constructor(public name: string) {
+            // empty
         }
     }
 
     class Order {
         constructor(public orderId: number, public isSent: false) {
+            // empty
         }
     }
 
@@ -459,7 +463,7 @@ describe("ObjectMapper", function () {
             for (const item of resultSet) {
                 assert.strictEqual(item.constructor, Tree);
                 assert.ok(testObj.treeSpecies
-                    .map(x => x.name).some(x => x === item.name));
+                    .map(x => x.name).includes(item.name));
             }
 
             assert.strictEqual(resultSet.size, 2);
@@ -503,7 +507,7 @@ describe("ObjectMapper", function () {
 
         // eslint-disable-next-line @typescript-eslint/no-empty-function
         it.skip("can handle map having objects for keys", () => {
-
+            // empty
         });
     });
 

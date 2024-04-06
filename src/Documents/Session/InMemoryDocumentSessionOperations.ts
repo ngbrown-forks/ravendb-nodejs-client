@@ -38,7 +38,7 @@ import { DocumentType } from "../DocumentAbstractions";
 import { IdTypeAndName } from "../IdTypeAndName";
 import { BatchOptions } from "../Commands/Batches/BatchOptions";
 import { DocumentsChanges } from "./DocumentsChanges";
-import { EventEmitter } from "events";
+import { EventEmitter } from "node:events";
 import { JsonOperation } from "../../Mapping/JsonOperation";
 import { IRavenObject } from "../../Types/IRavenObject";
 import { GetDocumentsCommand } from "../Commands/GetDocumentsCommand";
@@ -343,8 +343,8 @@ export abstract class InMemoryDocumentSessionOperations
 
     protected _assertNoNonUniqueInstance(entity: object, id: string): void {
         if (!id
-            || id[id.length - 1] === "|"
-            || id[id.length - 1] === this.conventions.identityPartsSeparator) {
+            || id.at(-1) === "|"
+            || id.at(-1) === this.conventions.identityPartsSeparator) {
             return;
         }
 
@@ -957,7 +957,7 @@ export abstract class InMemoryDocumentSessionOperations
         }
 
         if (DatesComparator.compare(leftDate(localRanges[0].from), rightDate(newRange.to)) > 0
-            || DatesComparator.compare(rightDate(localRanges[localRanges.length - 1].to), leftDate(newRange.from)) < 0) {
+            || DatesComparator.compare(rightDate(localRanges.at(-1).to), leftDate(newRange.from)) < 0) {
             // the entire range [from, to] is out of cache bounds
 
             const index = DatesComparator.compare(leftDate(localRanges[0].from), rightDate(newRange.to)) > 0 ? 0 : localRanges.length;
@@ -1240,13 +1240,13 @@ export abstract class InMemoryDocumentSessionOperations
 
         newValues.push(...newRange.entries);
 
-        localRange.entries.forEach(item => {
+        for (const item of localRange.entries) {
             if (item.timestamp.getTime() <= newRange.to.getTime()) {
-                return;
+                continue;
             }
 
             newValues.push(item);
-        });
+        }
 
         localRange.entries = newValues;
     }
@@ -1516,7 +1516,7 @@ export abstract class InMemoryDocumentSessionOperations
         for (const commandData of result.sessionCommands) {
             switch (commandData.type) {
                 case "PUT":
-                case "DELETE":
+                case "DELETE": {
                     if (commandData.changeVector) {
                         throwError(
                             "InvalidOperationException",
@@ -1524,13 +1524,16 @@ export abstract class InMemoryDocumentSessionOperations
                             + commandData.id + " is not supported when using a cluster transaction.");
                     }
                     break;
+                }
                 case "CompareExchangeDELETE":
-                case "CompareExchangePUT":
+                case "CompareExchangePUT": {
                     break;
-                default:
+                }
+                default: {
                     throwError(
                         "InvalidOperationException",
                         "The command '" + commandData.type + "' is not supported in a cluster session.");
+                }
             }
         }
     }

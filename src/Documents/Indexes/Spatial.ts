@@ -98,13 +98,11 @@ export class GeographySpatialOptionsFactory {
     /**
      * Defines a Geohash Prefix Tree index using a default Max Tree Level {@link SpatialOptions}
      */
-    public defaultOptions(circleRadiusUnits?: SpatialUnits): SpatialOptions {
-        circleRadiusUnits = circleRadiusUnits || "Kilometers";
+    public defaultOptions(circleRadiusUnits: SpatialUnits = "Kilometers"): SpatialOptions {
         return this.geohashPrefixTreeIndex(0, circleRadiusUnits);
     }
 
-    public boundingBoxIndex(circleRadiusUnits?: SpatialUnits): SpatialOptions {
-        circleRadiusUnits = circleRadiusUnits || "Kilometers";
+    public boundingBoxIndex(circleRadiusUnits: SpatialUnits = "Kilometers"): SpatialOptions {
         const ops = new SpatialOptions();
         ops.type = "Geography";
         ops.strategy = "BoundingBox";
@@ -112,8 +110,7 @@ export class GeographySpatialOptionsFactory {
         return ops;
     }
 
-    public geohashPrefixTreeIndex(maxTreeLevel: number, circleRadiusUnits?: SpatialUnits): SpatialOptions {
-        circleRadiusUnits = circleRadiusUnits || "Kilometers";
+    public geohashPrefixTreeIndex(maxTreeLevel: number, circleRadiusUnits: SpatialUnits = "Kilometers"): SpatialOptions {
         if (maxTreeLevel === 0) {
             maxTreeLevel = DEFAULT_GEOHASH_LEVEL;
         }
@@ -126,8 +123,7 @@ export class GeographySpatialOptionsFactory {
         return opts;
     }
 
-    public quadPrefixTreeIndex(maxTreeLevel: number, circleRadiusUnits: SpatialUnits): SpatialOptions {
-        circleRadiusUnits = circleRadiusUnits || "Kilometers";
+    public quadPrefixTreeIndex(maxTreeLevel: number, circleRadiusUnits: SpatialUnits = "Kilometers"): SpatialOptions {
         if (maxTreeLevel === 0) {
             maxTreeLevel = DEFAULT_QUAD_TREE_LEVEL;
         }

@@ -1,5 +1,5 @@
 import { User } from "../../Assets/Entities";
-import * as assert from "assert";
+import * as assert from "node:assert";
 import { testContext, disposeTestDocumentStore } from "../../Utils/TestUtil";
 
 import {
@@ -54,8 +54,8 @@ describe("SecuredSubscriptionsBasicTest", function () {
         const ages = new AsyncQueue<number>();
 
         subscription.on("batch", (batch, callback) => {
-            batch.items.forEach(x => keys.push(x.id));
-            batch.items.forEach(x => ages.push(x.result.age));
+            for (const x of batch.items) keys.push(x.id);
+            for (const x of batch.items) ages.push(x.result.age);
             callback();
         });
 
@@ -109,9 +109,9 @@ describe("SecuredSubscriptionsBasicTest", function () {
             }
 
             subscription.on("batch", (batch, callback) => {
-                batch.items.forEach(x => {
+                for (const x of batch.items) {
                     names.push(x.result.name);
-                });
+                }
                 callback();
             });
 

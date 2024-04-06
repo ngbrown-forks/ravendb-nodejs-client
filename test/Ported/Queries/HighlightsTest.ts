@@ -1,4 +1,4 @@
-import * as assert from "assert";
+import * as assert from "node:assert";
 import { testContext, disposeTestDocumentStore } from "../../Utils/TestUtil";
 
 import {
@@ -121,7 +121,7 @@ describe("HighlightsTest", function () {
             assert.strictEqual(contentHighlighting.fieldName, "content");
             const fragments = contentHighlighting.getFragments(eventItem.id);
             assert.strictEqual(fragments.length, 1);
-            assert.ok(fragments[0].indexOf(`<span style='background: yellow'>session</span>`) !== -1);
+            assert.ok(fragments[0].includes(`<span style='background: yellow'>session</span>`));
 
             const orderedResults = [];
             for (const searchable of results) {

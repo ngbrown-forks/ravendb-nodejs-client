@@ -71,7 +71,7 @@ export class HiloIdGenerator {
                 if (range !== this._range) {
                     continue;
                 }
-            } catch (e) {
+            } catch {
                 // previous task was faulted, we will try to replace it
             }
 
@@ -91,7 +91,7 @@ export class HiloIdGenerator {
             try {
                 // failed to replace, let's wait on the previous task
                 await this._nextRangeTask.getValue();
-            } catch (e) {
+            } catch {
                 // previous task was faulted, we will try again
             }
         }

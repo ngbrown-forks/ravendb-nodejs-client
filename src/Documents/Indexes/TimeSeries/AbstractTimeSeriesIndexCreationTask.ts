@@ -4,4 +4,5 @@ import { AbstractCsharpCountersIndexCreationTask } from "../Counters/AbstractCsh
  * @deprecated use AbstractCsharpCountersIndexCreationTask
  */
 export abstract class AbstractTimeSeriesIndexCreationTask extends AbstractCsharpCountersIndexCreationTask {
+    // empty
 }

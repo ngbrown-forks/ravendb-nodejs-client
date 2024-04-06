@@ -283,9 +283,9 @@ export class GetDocumentsCommand extends RavenCommand<GetDocumentsResult> {
 
         let newUri = request.uri;
         if (isGet) {
-            uniqueIds.forEach(x => {
+            for (const x of uniqueIds) {
                 newUri += `&id=${encodeURIComponent(x || "")}`;
-            });
+            }
 
             return { method: "GET", uri: newUri };
         } else {

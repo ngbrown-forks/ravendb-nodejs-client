@@ -60,9 +60,9 @@ export abstract class AbstractIndexDefinitionBuilder<TIndexDefinition extends In
             indexDefinition.patternForOutputReduceToCollectionReferences = this.patternForOutputReduceToCollectionReferences;
             indexDefinition.patternReferencesCollectionName = this.patternReferencesCollectionName;
 
-            const suggestions: { [suggestionOption: string]: boolean } = Array.from(this.suggestionsOptions)
-                .reduce((result, item) =>
-                    Object.assign(result, { [item]: true }), {});
+            const suggestions: { [suggestionOption: string]: boolean } = Object.fromEntries(Array.from(this.suggestionsOptions)
+                .map(( item) =>
+                    [item, true]));
 
             this._applyValues(indexDefinition, this.indexesStrings,
                 (options, value) => options.indexing = value);

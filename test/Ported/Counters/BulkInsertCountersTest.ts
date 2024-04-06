@@ -206,7 +206,7 @@ describe("BulkInsertCountersTest", function () {
 
         for (const counter of counters) {
             assertThat(counter.totalValue)
-                .isEqualTo(parseInt(counter.counterName, 10));
+                .isEqualTo(Number.parseInt(counter.counterName, 10));
         }
     });
 });

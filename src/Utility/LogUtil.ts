@@ -1,4 +1,4 @@
-import { debuglog } from "util";
+import { debuglog } from "node:util";
 import { printError } from "../Exceptions";
 
 const isDebug = !!process.env.NODE_DEBUG;
@@ -16,6 +16,7 @@ export function getLogger({ name = "ravendb", module = "" }): ILogger {
     if (!isDebug) {
         // eslint-disable-next-line @typescript-eslint/no-empty-function
         const noop = (msg: string) => {
+            // empty
         };
         return {
             error: noop,

@@ -33,7 +33,7 @@ export class TimeSeriesValuesHelper {
                         throwError("InvalidOperationException", "Invalid field mapping. Expected string or { field: string, name: string } object. Got: " + value);
                     }
 
-                    const nameAlreadyUsed = !!mapping.find(x => x.field === field || x.name === name);
+                    const nameAlreadyUsed = mapping.some(x => x.field === field || x.name === name);
                     if (nameAlreadyUsed) {
                         throwError("InvalidOperationException", "All fields and names must be unique.");
                     }

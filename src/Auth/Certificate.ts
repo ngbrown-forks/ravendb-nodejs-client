@@ -1,7 +1,7 @@
 import { IAuthOptions } from "./AuthOptions";
 import { StringUtil } from "../Utility/StringUtil";
 import { throwError } from "../Exceptions";
-import { AgentOptions } from "https";
+import { AgentOptions } from "node:https";
 import WebSocket = require("ws");
 
 export type CertificateType = "pem" | "pfx";
@@ -32,15 +32,17 @@ export abstract class Certificate implements ICertificate {
         }
 
         switch (options.type) {
-            case Certificate.PEM:
+            case Certificate.PEM: {
                 certificate = this.createPem(options.certificate, options.password, options.ca);
                 break;
-            case Certificate.PFX:
-
+            }
+            case Certificate.PFX: {
                 certificate = this.createPfx(options.certificate, options.password, options.ca);
                 break;
-            default:
+            }
+            default: {
                 throwError("InvalidArgumentException", "Unsupported authOptions type: " + options.type);
+            }
         }
 
         return certificate;

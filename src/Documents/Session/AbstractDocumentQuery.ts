@@ -38,7 +38,7 @@ import { CounterIncludesToken } from "./Tokens/CounterIncludesToken";
 import { QueryResult } from "../Queries/QueryResult";
 import { DocumentType } from "../DocumentAbstractions";
 import { QueryEventsEmitter } from "./QueryEvents";
-import { EventEmitter } from "events";
+import { EventEmitter } from "node:events";
 import { StringUtil } from "../../Utility/StringUtil";
 import { IntersectMarkerToken } from "./Tokens/IntersectMarkerToken";
 import { DocumentConventions } from "../Conventions/DocumentConventions";
@@ -76,7 +76,7 @@ import { QueryHighlightings } from "../Queries/Highlighting/QueryHighlightings";
 import { ExplanationOptions } from "../Queries/Explanation/ExplanationOptions";
 import { CountersByDocId } from "./CounterInternalTypes";
 import { IncludeBuilderBase } from "./Loaders/IncludeBuilderBase";
-import * as os from "os";
+import * as os from "node:os";
 import { GraphQueryToken } from "./Tokens/GraphQueryToken";
 import { IncludesUtil } from "./IncludesUtil";
 import { TimeSeriesIncludesToken } from "./Tokens/TimeSeriesIncludesToken";
@@ -340,7 +340,7 @@ export abstract class AbstractDocumentQuery<T extends object, TSelf extends Abst
             throwError("InvalidOperationException",
                 "Cannot get MoreLikeThisToken because there are no where token specified.");
         }
-        const lastToken = this._whereTokens[this._whereTokens.length - 1];
+        const lastToken = this._whereTokens.at(-1);
 
         if (lastToken instanceof MoreLikeThisToken) {
             return lastToken.whereTokens;
@@ -374,7 +374,7 @@ export abstract class AbstractDocumentQuery<T extends object, TSelf extends Abst
             return;
         }
 
-        const lastToken = tokens[tokens.length - 1];
+        const lastToken = tokens.at(-1);
         if (!(lastToken instanceof WhereToken) && !(lastToken instanceof CloseSubclauseToken)) {
             return;
         }
@@ -425,7 +425,7 @@ export abstract class AbstractDocumentQuery<T extends object, TSelf extends Abst
 
         this._negate = false;
 
-        if (!tokens || !tokens.length || tokens[tokens.length - 1] instanceof OpenSubclauseToken) {
+        if (!tokens || !tokens.length || tokens.at(-1) instanceof OpenSubclauseToken) {
             if (fieldName) {
                 this._whereExists(fieldName);
             } else {
@@ -567,7 +567,7 @@ export abstract class AbstractDocumentQuery<T extends object, TSelf extends Abst
             return;
         }
 
-        if (!queryData.loadTokens.find(x => x.alias === possibleAlias)) {
+        if (!queryData.loadTokens.some(x => x.alias === possibleAlias)) {
             return;
         }
 
@@ -608,7 +608,7 @@ export abstract class AbstractDocumentQuery<T extends object, TSelf extends Abst
             this._selectTokens.push(fieldsToFetch);
         } else {
             const fetchToken = [...this._selectTokens]
-                .filter(x => x instanceof FieldsToFetchToken)[0];
+                .find(x => x instanceof FieldsToFetchToken);
 
             if (fetchToken) {
                 const idx = this._selectTokens.indexOf(fetchToken);
@@ -694,7 +694,7 @@ export abstract class AbstractDocumentQuery<T extends object, TSelf extends Abst
 
     public addParameter(name: string, value: any): void {
         name = name.replace(/^\$/, "");
-        if (Object.keys(this._queryParameters).indexOf(name) !== -1) {
+        if (Object.keys(this._queryParameters).includes(name)) {
             throwError("InvalidOperationException",
                 "The parameter " + name + " was already added");
         }
@@ -1250,7 +1250,7 @@ export abstract class AbstractDocumentQuery<T extends object, TSelf extends Abst
             return;
         }
 
-        if (tokens[tokens.length - 1] instanceof QueryOperatorToken) {
+        if (tokens.at(-1) instanceof QueryOperatorToken) {
             throwError("InvalidOperationException",
                 "Cannot add AND, previous token was already an operator token.");
         }
@@ -1273,7 +1273,7 @@ export abstract class AbstractDocumentQuery<T extends object, TSelf extends Abst
             return;
         }
 
-        if (tokens[tokens.length - 1] instanceof QueryOperatorToken) {
+        if (tokens.at(-1) instanceof QueryOperatorToken) {
             throwError("InvalidOperationException",
                 "Cannot add OR, previous token was already an operator token.");
         }
@@ -1307,7 +1307,7 @@ export abstract class AbstractDocumentQuery<T extends object, TSelf extends Abst
 
         const tokens = this._getCurrentWhereTokens();
 
-        let last = tokens.length ? tokens[tokens.length - 1] : null;
+        let last = tokens.length ? tokens.at(-1) : null;
 
         if (last instanceof WhereToken) {
             last.options.boost = boost;
@@ -1354,7 +1354,7 @@ export abstract class AbstractDocumentQuery<T extends object, TSelf extends Abst
             throwError("InvalidOperationException", "Fuzzy can only be used right after where clause.");
         }
 
-        const whereToken = tokens[tokens.length - 1];
+        const whereToken = tokens.at(-1);
         if (!(whereToken instanceof WhereToken)) {
             throwError("InvalidOperationException", "Fuzzy can only be used right after where clause.");
         }
@@ -1383,7 +1383,7 @@ export abstract class AbstractDocumentQuery<T extends object, TSelf extends Abst
             throwError("InvalidOperationException", "Proximity can only be used right after search clause.");
         }
 
-        const whereToken = tokens[tokens.length - 1];
+        const whereToken = tokens.at(-1);
         if (!(whereToken instanceof WhereToken)) {
             throwError("InvalidOperationException", "Proximity can only be used right after search clause.");
         }
@@ -1668,7 +1668,7 @@ export abstract class AbstractDocumentQuery<T extends object, TSelf extends Abst
     public _intersect(): void {
         const tokens = this._getCurrentWhereTokens();
         if (tokens.length > 0) {
-            const last = tokens[tokens.length - 1];
+            const last = tokens.at(-1);
             if (last instanceof WhereToken || last instanceof CloseSubclauseToken) {
                 this._isIntersect = true;
 
@@ -1993,20 +1993,25 @@ export abstract class AbstractDocumentQuery<T extends object, TSelf extends Abst
 
         let whereOperator: WhereOperator;
         switch (relation) {
-            case "Within":
+            case "Within": {
                 whereOperator = "SpatialWithin";
                 break;
-            case "Contains":
+            }
+            case "Contains": {
                 whereOperator = "SpatialContains";
                 break;
-            case "Disjoint":
+            }
+            case "Disjoint": {
                 whereOperator = "SpatialDisjoint";
                 break;
-            case "Intersects":
+            }
+            case "Intersects": {
                 whereOperator = "SpatialIntersects";
                 break;
-            default:
+            }
+            default: {
                 throwError("InvalidArgumentException", `relation: ${relation}.`);
+            }
         }
 
         tokens.push(WhereToken.create(
@@ -2340,7 +2345,7 @@ export abstract class AbstractDocumentQuery<T extends object, TSelf extends Abst
         }
 
         if (this._selectTokens.length) {
-            const lastToken = this._selectTokens[this._selectTokens.length - 1];
+            const lastToken = this._selectTokens.at(-1);
             if (lastToken instanceof SuggestToken) {
                 if (lastToken.fieldName === suggestion.field) {
                     throwError("InvalidOperationException", "Cannot add suggest for the same field again.");

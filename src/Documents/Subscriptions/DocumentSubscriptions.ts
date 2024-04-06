@@ -16,7 +16,7 @@ import { DropSubscriptionConnectionCommand } from "../Commands/DropSubscriptionC
 import { GetSubscriptionsCommand } from "../Commands/GetSubscriptionsCommand";
 import { ToggleOngoingTaskStateOperation } from "../Operations/OngoingTasks/ToggleOngoingTaskStateOperation";
 import { SubscriptionIncludeBuilder } from "../Session/Loaders/SubscriptionIncludeBuilder";
-import * as os from "os";
+import * as os from "node:os";
 import { IncludesUtil } from "../Session/IncludesUtil";
 import { StringBuilder } from "../../Utility/StringBuilder";
 import { SubscriptionUpdateOptions } from "./SubscriptionUpdateOptions";
@@ -412,7 +412,7 @@ export class DocumentSubscriptions implements IDisposable {
             return;
         }
 
-        this._subscriptions.forEach(((value, key) => key.dispose()));
+        for (const [key, value] of this._subscriptions.entries()) key.dispose();
     }
 
     public async dropSubscriptionWorker<T extends object>(worker: SubscriptionWorker<T>, database: string = null) {

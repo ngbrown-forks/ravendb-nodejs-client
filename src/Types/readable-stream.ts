@@ -2,7 +2,7 @@
 declare module "readable-stream";
 
 declare module "readable-stream" {
-    import * as events from "events";
+    import * as events from "node:events";
 
     class pipeable extends events.EventEmitter {
         public pipe<T extends NodeJS.WritableStream>(destination: T, options?: { end?: boolean; }): T;
@@ -11,6 +11,7 @@ declare module "readable-stream" {
     // eslint-disable-next-line @typescript-eslint/no-namespace
     namespace pipeable {
         export class Stream extends pipeable {
+            // empty
         }
 
         export interface ReadableOptions {
@@ -272,6 +273,7 @@ declare module "readable-stream" {
         }
 
         export class PassThrough extends Transform {
+            // empty
         }
 
         export function pipeline<T extends NodeJS.WritableStream>(stream1: NodeJS.ReadableStream, stream2: T, callback?: (err: NodeJS.ErrnoException) => void): T;

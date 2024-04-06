@@ -1,11 +1,12 @@
 import { CONSTANTS } from "../../Constants";
 import { StringUtil } from "../../Utility/StringUtil";
-import * as path from "path";
-import * as fs from "fs";
+import * as path from "node:path";
+import * as fs from "node:fs";
 
 export class BackupUtils {
     // eslint-disable-next-line @typescript-eslint/no-empty-function
     private constructor() {
+        // empty
     }
 
     private static readonly LEGACY_INCREMENTAL_BACKUP_EXTENSION = ".ravendb-incremental-dump";

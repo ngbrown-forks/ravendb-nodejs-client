@@ -1,5 +1,5 @@
 import { getLogger } from "../../Utility/LogUtil";
-import { Socket } from "net";
+import { Socket } from "node:net";
 import { TcpNegotiateParameters } from "./TcpNegotiateParameters";
 import {
     DROP_BASE_LINE,

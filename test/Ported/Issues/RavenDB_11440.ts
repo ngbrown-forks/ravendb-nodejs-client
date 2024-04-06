@@ -25,17 +25,21 @@ describe("RavenDB_11440", function () {
             let modeToSet: LogMode;
 
             switch (configuration.currentMode) {
-                case "None":
+                case "None": {
                     modeToSet = "Information";
                     break;
-                case "Operations":
+                }
+                case "Operations": {
                     modeToSet = "Information";
                     break;
-                case "Information":
+                }
+                case "Information": {
                     modeToSet = "None";
                     break;
-                default:
+                }
+                default: {
                     throwError("InvalidOperationException", "Invalid mode: " + configuration.currentMode);
+                }
             }
 
             const time = 1000 * 24 * 3600 * 1000;

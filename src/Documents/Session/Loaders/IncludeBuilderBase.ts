@@ -225,10 +225,11 @@ export class IncludeBuilderBase {
 
     private static _assertValidType(type: TimeSeriesRangeType, time: TimeValue): void {
         switch (type) {
-            case "None":
+            case "None": {
                 throwError("InvalidArgumentException", "Time range type cannot be set to 'None' when time is specified.");
                 break;
-            case "Last":
+            }
+            case "Last": {
                 if (time) {
                     if (time.value <= 0) {
                         throwError("InvalidArgumentException", "Time range type cannot be set to 'Last' when time is negative or zero.");
@@ -238,8 +239,10 @@ export class IncludeBuilderBase {
                 }
                 throwError("InvalidArgumentException", "Time range type cannot be set to 'Last' when time is not specified.");
                 break;
-            default:
+            }
+            default: {
                 throwError("NotSupportedException", "Not supported time range type: " + type);
+            }
         }
     }
 
@@ -268,16 +271,19 @@ export class IncludeBuilderBase {
 
     private static _assertValidTypeAndCount(type: TimeSeriesRangeType, count: number): void {
         switch (type) {
-            case "None":
+            case "None": {
                 throwError("InvalidArgumentException", "Time range type cannot be set to 'None' when count is specified.");
                 break;
-            case "Last":
+            }
+            case "Last": {
                 if (count <= 0) {
                     throwError("InvalidArgumentException", "Count have to be positive.");
                 }
                 break;
-            default:
+            }
+            default: {
                 throwError("NotSupportedException", "Not supported time range type: " + type);
+            }
         }
     }
 
@@ -313,7 +319,7 @@ export class IncludeBuilderBase {
                     throwError("InvalidArgumentException", "IIncludeBuilder: Cannot use 'includeAllTimeSeries' after using 'includeTimeSeries' or 'includeAllTimeSeries'.");
                 }
 
-                if (hashSet2.find(x => x.name === TIME_SERIES.ALL)) {
+                if (hashSet2.some(x => x.name === TIME_SERIES.ALL)) {
                     throwError("InvalidArgumentException", "IIncludeBuilder: Cannot use 'includeTimeSeries' or 'includeAllTimeSeries' after using 'includeAllTimeSeries'.");
                 }
             }

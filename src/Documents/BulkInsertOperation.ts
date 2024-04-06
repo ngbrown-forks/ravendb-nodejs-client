@@ -27,7 +27,7 @@ import { ClassConstructor, EntityConstructor } from "../Types";
 import { TimeSeriesOperations } from "./TimeSeries/TimeSeriesOperations";
 import { TimeSeriesValuesHelper } from "./Session/TimeSeries/TimeSeriesValuesHelper";
 import { Timer } from "../Primitives/Timer";
-import { EventEmitter } from "events";
+import { EventEmitter } from "node:events";
 import { BulkInsertOnProgressEventArgs } from "./Session/SessionEvents";
 
 export class BulkInsertOperation {
@@ -111,7 +111,7 @@ export class BulkInsertOperation {
     }
 
     private async sendHeartBeat(): Promise<void> {
-        if (new Date().getTime() - this._lastWriteToStream.getTime() < this._heartbeatCheckInterval) {
+        if (Date.now() - this._lastWriteToStream.getTime() < this._heartbeatCheckInterval) {
             return;
         }
 
@@ -133,10 +133,10 @@ export class BulkInsertOperation {
     private static _checkServerVersion(serverVersion: string): boolean {
         if (serverVersion) {
             const versionParsed = serverVersion.split(".");
-            const major = parseInt(versionParsed[0], 10);
-            const minor = versionParsed.length > 1 ? parseInt(versionParsed[1]) : 0;
-            const build = versionParsed.length> 2 ? parseInt(versionParsed[2]) : 0;
-            if (isNaN(major) || isNaN(minor)) {
+            const major = Number.parseInt(versionParsed[0], 10);
+            const minor = versionParsed.length > 1 ? Number.parseInt(versionParsed[1]) : 0;
+            const build = versionParsed.length> 2 ? Number.parseInt(versionParsed[2]) : 0;
+            if (Number.isNaN(major) || Number.isNaN(minor)) {
                 return false;
             }
 
@@ -169,7 +169,7 @@ export class BulkInsertOperation {
         let errorFromServer: Error;
         try {
             errorFromServer = await this._getExceptionFromOperation();
-        } catch (ee) {
+        } catch {
             // server is probably down, will propagate the original exception
         }
 

@@ -238,18 +238,22 @@ export function getOperationTcpVersion(operationType: OperationTypes, index: num
     // we don't check the if the index go out of range, since this is expected and means that we don't have
     switch (operationType) {
         case "Ping":
-        case "None":
+        case "None": {
             return -1;
-        case "Drop":
+        }
+        case "Drop": {
             return -2;
+        }
         case "Subscription":
         case "Replication":
         case "Cluster":
         case "Heartbeats":
-        case "TestConnection":
+        case "TestConnection": {
             return operationsToSupportedProtocolVersions.get(operationType)[index];
-        default:
+        }
+        default: {
             throwError("InvalidArgumentException", "Invalid operation type: " + operationType);
+        }
     }
 }
 

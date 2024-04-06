@@ -43,7 +43,7 @@ export class GenerateEntityIdOnTheClient {
             }
             resultCallback(null);
             return false;
-        } catch (e) {
+        } catch {
             throwError("InvalidOperationException", "Error trying to get ID from instance.");
         }
     }

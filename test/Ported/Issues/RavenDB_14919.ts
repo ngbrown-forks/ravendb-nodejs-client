@@ -43,7 +43,7 @@ describe("RavenDB_14919", function () {
                 .isEqualTo(1);
         }
 
-        assertThat(vals.counters[vals.counters.length - 1])
+        assertThat(vals.counters.at(-1))
             .isNull();
 
         // test with returnFullResults = true
@@ -57,7 +57,7 @@ describe("RavenDB_14919", function () {
                 .hasSize(1);
         }
 
-        assertThat(vals.counters[vals.counters.length - 1])
+        assertThat(vals.counters.at(-1))
             .isNull();
     });
 
@@ -89,7 +89,7 @@ describe("RavenDB_14919", function () {
                 .isEqualTo(i);
         }
 
-        assertThat(vals.counters[vals.counters.length - 1])
+        assertThat(vals.counters.at(-1))
             .isNull();
 
         // test with returnFullResults = true
@@ -103,7 +103,7 @@ describe("RavenDB_14919", function () {
                 .isEqualTo(i);
         }
 
-        assertThat(vals.counters[vals.counters.length - 1])
+        assertThat(vals.counters.at(-1))
             .isNull();
     });
 
@@ -131,7 +131,7 @@ describe("RavenDB_14919", function () {
 
         assertThat(command.result.results)
             .hasSize(101);
-        assertThat(command.result.results[command.result.results.length - 1])
+        assertThat(command.result.results.at(-1))
             .isNull();
     });
 
@@ -161,7 +161,7 @@ describe("RavenDB_14919", function () {
         assertThat(command.result.results)
             .hasSize(1001);
 
-        assertThat(command.result.results[command.result.results.length - 1])
+        assertThat(command.result.results.at(-1))
             .isNull();
     })
 });

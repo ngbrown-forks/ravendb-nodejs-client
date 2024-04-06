@@ -1,4 +1,4 @@
-import * as assert from "assert";
+import * as assert from "node:assert";
 import { testContext, disposeTestDocumentStore } from "../../Utils/TestUtil";
 
 import {
@@ -40,6 +40,7 @@ describe("Index operations", function () {
 
     class User {
         constructor(public name: string, public age?: number) {
+            // empty
         }
     }
 

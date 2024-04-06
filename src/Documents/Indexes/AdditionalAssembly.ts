@@ -11,8 +11,8 @@ export class AdditionalAssembly {
     public packageSourceUrl: string;
     public usings: string[];
 
-    // eslint-disable-next-line @typescript-eslint/no-empty-function
     private constructor() {
+        // empty
     }
 
     public static onlyUsings(usings: string[]) {

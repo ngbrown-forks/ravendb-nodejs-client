@@ -1,4 +1,4 @@
-import { EventEmitter } from "events";
+import { EventEmitter } from "node:events";
 
 export interface TypedEventEmitter<TEvents> extends EventEmitter {
     addListener(event: string | keyof TEvents | symbol, listener: (...args: any[]) => void): this;
