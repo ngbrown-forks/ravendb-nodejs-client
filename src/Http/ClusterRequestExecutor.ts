@@ -86,7 +86,7 @@ export class ClusterRequestExecutor extends RequestExecutor {
 
         const executor = new ClusterRequestExecutor(
             authOptions,
-            documentConventions ? documentConventions : DocumentConventions.defaultConventions);
+            documentConventions ?? DocumentConventions.defaultConventions);
 
         executor._disableClientConfigurationUpdates = true;
         executor.firstTopologyUpdatePromise = executor._firstTopologyUpdate(initialUrls, null);
@@ -104,11 +104,11 @@ export class ClusterRequestExecutor extends RequestExecutor {
 
     public async updateTopology(parameters: UpdateTopologyParameters): Promise<boolean> {
         if (this._disposed) {
-            return Promise.resolve(false);
+            return false;
         }
 
         if (this._disableTopologyUpdates) {
-            return Promise.resolve(false);
+            return false;
         }
 
         const acquiredSemContext = acquireSemaphore(this._clusterTopologySemaphore, { timeout: parameters.timeoutInMs });
@@ -159,6 +159,7 @@ export class ClusterRequestExecutor extends RequestExecutor {
     public dispose(): void {
         // eslint-disable-next-line @typescript-eslint/no-empty-function
         this._clusterTopologySemaphore.take(() => {
+            // empty
         });
         super.dispose();
     }

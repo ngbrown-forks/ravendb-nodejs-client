@@ -22,6 +22,6 @@ describe("GetNextOperationIdCommand", function () {
         await store.getRequestExecutor().execute(command);
         assert.ok(command.result);
         assert.ok(typeof command.result === "number");
-        assert.ok(!isNaN(command.result));
+        assert.ok(!Number.isNaN(command.result));
     });
 });

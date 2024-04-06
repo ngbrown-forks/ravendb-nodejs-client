@@ -294,16 +294,18 @@ async function waitForTopologyStabilization(context: ClusterTestContext, s: stri
             let rehab = 0;
             let members = 0;
 
-            topo.nodes.forEach(n => {
+            for (const n of topo.nodes) {
                 switch (n.serverRole) {
-                    case "Rehab":
+                    case "Rehab": {
                         rehab++;
                         break;
-                    case "Member":
+                    }
+                    case "Member": {
                         members++;
                         break;
+                    }
                 }
-            });
+            }
 
             return [rehab, members];
         }, [rehabCount, memberCount], {

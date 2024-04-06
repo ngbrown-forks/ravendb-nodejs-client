@@ -40,6 +40,7 @@ describe("Index operations", function () {
 
     class User {
         constructor(public name: string, public age?: number) {
+            // empty
         }
     }
 

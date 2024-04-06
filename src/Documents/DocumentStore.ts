@@ -104,7 +104,9 @@ export class DocumentStore extends DocumentStoreBase {
 
                 value.Value.Dispose();
             }*/
-        this._databaseChanges.forEach(change => change.dispose());
+        for (const change of this._databaseChanges.values()) {
+            change.dispose();
+        }
 
         /* TODO
             // try to wait until all the async disposables are completed
@@ -151,13 +153,13 @@ export class DocumentStore extends DocumentStoreBase {
             })
             .then(() => {
                 this._log.info(`Disposing request executors ${this._requestExecutors.size}`);
-                this._requestExecutors.forEach((executor, db) => {
+                for (const [db, executor] of this._requestExecutors.entries()) {
                     try {
                         executor.dispose();
                     } catch (err) {
                         this._log.warn(err, `Error disposing request executor.`);
                     }
-                });
+                }
             })
             .finally(() => this.emit("executorsDisposed"));
     }

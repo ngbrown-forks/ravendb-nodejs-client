@@ -67,13 +67,13 @@ describe("document streaming", function () {
                 await StreamUtil.finishedAsync(queryStream);
 
                 assert.strictEqual(items.length, 200);
-                items.forEach(item => {
+                for (const item of items) {
                     assertStreamResultEntry(item, (doc: any) => {
                         assert.ok(doc);
                         assert.ok(doc.name);
                         assert.ok(doc.lastName);
                     });
-                });
+                }
             }
         } finally {
             newStore.dispose();

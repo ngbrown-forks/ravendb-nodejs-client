@@ -320,7 +320,7 @@ export abstract class DocumentStoreBase
     ): void;
     public removeSessionListener(eventName: any, eventHandler: (eventArgs: any) => void): void {
         const toRemove = this._eventHandlers
-            .filter(x => x[0] === eventName && x[1] === eventHandler)[0];
+            .find(x => x[0] === eventName && x[1] === eventHandler);
         if (toRemove) {
             this._eventHandlers.splice(this._eventHandlers.indexOf(toRemove), 1);
         }
@@ -329,7 +329,7 @@ export abstract class DocumentStoreBase
     public registerEvents(requestExecutor: RequestExecutor): void;
     public registerEvents(session: DocumentSession): void;
     public registerEvents(requestExecutorOrSession: RequestExecutor | DocumentSession): void {
-        this._eventHandlers.forEach(([eventName, eventHandler]) => {
+        for (const [eventName, eventHandler] of this._eventHandlers) {
             if (eventName === "failedRequest"
                 || eventName === "topologyUpdated"
                 || eventName === "beforeRequest"
@@ -338,7 +338,7 @@ export abstract class DocumentStoreBase
             } else {
                 (requestExecutorOrSession as DocumentSession).on(eventName, eventHandler);
             }
-        });
+        }
     }
 
     public abstract maintenance: MaintenanceOperationExecutor;

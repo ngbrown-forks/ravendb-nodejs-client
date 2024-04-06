@@ -224,7 +224,7 @@ describe("HttpsTest", function () {
 
     it("canUseServerGeneratedCertificate", async () => {
         const certificateRawData = await store.maintenance.server.send(
-            new CreateClientCertificateOperation("users-auth-test", { }, "Operator"));
+            new CreateClientCertificateOperation("users-auth-test", { /* empty */ }, "Operator"));
 
         const pfx = await extractPfx(certificateRawData);
 
@@ -277,7 +277,7 @@ async function extractCertificate(certificateRawData: CertificateRawData) {
         if (entry.path.endsWith(".crt")) {
             const entryText = await readToEnd(entry);
             const lines = entryText.split(/\r?\n/);
-            cert = lines.slice(1, lines.length - 2).join("\r\n");
+            cert = lines.slice(1, - 2).join("\r\n");
             break;
         } else {
             entry.autodrain();

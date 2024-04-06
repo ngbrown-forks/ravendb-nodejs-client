@@ -5,7 +5,7 @@ import { assertThat } from "../Utils/AssertExtensions";
 describe("CustomEntityName", function () {
 
     const getChars = () => {
-        const basicChars = [...Array(31).keys()].map(x => {
+        const basicChars = [...new Array(31).keys()].map(x => {
             return String.fromCodePoint(x + 1);
         });
 

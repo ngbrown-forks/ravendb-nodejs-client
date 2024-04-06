@@ -60,7 +60,7 @@ describe("stream-json parser and stringer", function () {
     });
 
     it("stringer for query result response with negative result etag", (done) => {
-        const content = fs.readFileSync(path.join(__dirname, "../Assets/queryResult.json"), "utf-8");
+        const content = fs.readFileSync(path.join(__dirname, "../Assets/queryResult.json"), "utf8");
         const readable = new stream.Readable();
         readable.push(content);
         readable.push(null);

@@ -60,7 +60,7 @@ export class MultiLoaderWithInclude implements ILoaderWithInclude {
         });
 
         return singleResult ?
-            Object.keys(results).map(x => results[x]).filter(x => x)[0] as TResult :
+            Object.keys(results).map(x => results[x]).find(x => x) as TResult :
             results;
     }
 

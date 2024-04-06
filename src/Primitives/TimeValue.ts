@@ -131,8 +131,9 @@ export class TimeValue {
                 }
                 break;
             }
-            default:
+            default: {
                 throwError("InvalidArgumentException", "Not supported unit: " + this._unit);
+            }
         }
 
         return str.toString().trim();
@@ -188,8 +189,9 @@ export class TimeValue {
 
     private static _getBoundsInSeconds(time: TimeValue): [number, number] {
         switch (time._unit) {
-            case "Second":
+            case "Second": {
                 return [time._value, time._value];
+            }
             case "Month": {
                 const years = Math.floor(time._value / 12);
                 let upperBound = years * TimeValue.SECONDS_IN_366_DAYS;
@@ -202,8 +204,9 @@ export class TimeValue {
 
                 return [lowerBound, upperBound];
             }
-            default:
+            default: {
                 throwError("InvalidArgumentException", "Not supported time value unit: " + time._unit);
+            }
         }
     }
 

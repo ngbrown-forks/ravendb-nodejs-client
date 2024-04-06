@@ -7,7 +7,7 @@ function validateKey(key) {
         return;
     }
 
-    throw Error("Key must be a string.");
+    throw new Error("Key must be a string.");
 }
 
 export class CaseInsensitiveKeysMap {

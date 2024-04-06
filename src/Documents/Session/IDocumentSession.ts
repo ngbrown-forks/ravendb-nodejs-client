@@ -100,17 +100,21 @@ export class SessionInfo {
         }
 
         switch (requestExecutor.conventions.readBalanceBehavior) {
-            case "None":
+            case "None": {
                 result = await requestExecutor.getPreferredNode();
                 break;
-            case "RoundRobin":
+            }
+            case "RoundRobin": {
                 result = await requestExecutor.getNodeBySessionId(this.getSessionId());
                 break;
-            case "FastestNode":
+            }
+            case "FastestNode": {
                 result = await requestExecutor.getFastestNode();
                 break;
-            default:
+            }
+            default: {
                 throwError("InvalidArgumentException", requestExecutor.conventions.readBalanceBehavior);
+            }
         }
 
         return result.currentNode;

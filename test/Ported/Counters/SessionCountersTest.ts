@@ -46,14 +46,14 @@ describe("SessionCountersTest", function () {
                 new GetCountersOperation("users/1-A", ["likes", "downloads"]))).counters;
             assert.strictEqual(counters.length, 2);
             assert.strictEqual(
-                counters.filter(x => x.counterName === "likes")[0].totalValue, 100);
+                counters.find(x => x.counterName === "likes").totalValue, 100);
             assert.strictEqual(
-                counters.filter(x => x.counterName === "downloads")[0].totalValue, 500);
+                counters.find(x => x.counterName === "downloads").totalValue, 500);
             
             counters = (await store.operations.send(new GetCountersOperation("users/2-A", ["votes"]))).counters;
             assert.strictEqual(counters.length, 1);
             assert.strictEqual(
-                counters.filter(x => x.counterName === "votes")[0].totalValue, 1000);
+                counters.find(x => x.counterName === "votes").totalValue, 1000);
         }
     });
 

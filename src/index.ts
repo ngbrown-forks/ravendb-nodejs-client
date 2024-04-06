@@ -745,13 +745,10 @@ export * from "./ServerWide/Operations/ModifyDatabaseTopologyResult";
 // MAPPING
 export { TypesAwareObjectMapper } from "./Mapping/ObjectMapper";
 export { Mapping } from "./Mapping";
-import * as Json from "./Mapping/Json";
+
 
 // CONSTANTS
 export { CONSTANTS } from "./Constants";
 
-export { Json };
-
-import { DocumentStore } from "./Documents/DocumentStore";
-
-export default DocumentStore;
+export * as Json from "./Mapping/Json";
+export { DocumentStore as default } from "./Documents/DocumentStore";

@@ -194,5 +194,6 @@ export class SingleNodeBatchCommand extends RavenCommand<BatchCommandResult> imp
 
     // eslint-disable-next-line @typescript-eslint/no-empty-function
     public dispose(): void {
+        // empty
     }
 }

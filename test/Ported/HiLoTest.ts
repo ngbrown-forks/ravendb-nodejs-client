@@ -42,7 +42,7 @@ describe("HiLo", function () {
 
         for (const numericPart of userIds
             .map(id => id.split("/")[1])) {
-                assert.ok(parseInt(numericPart, 10) < 33,
+                assert.ok(Number.parseInt(numericPart, 10) < 33,
                     "Obtained ids should be less than 33, though they are:" + users.map(x => x.id).toString());
             }
 
@@ -196,9 +196,9 @@ describe("HiLo", function () {
 
     it("does not get another range when doing parallel requests", async () => {
         const parallelLevel = 32;
-        const users = Array.from(Array(parallelLevel).keys()).map(x => new User());
+        const users = Array.from(new Array(parallelLevel).keys()).map(x => new User());
 
-        const tasks = Array.from(Array(parallelLevel).keys()).map(async i => {
+        const tasks = Array.from(new Array(parallelLevel).keys()).map(async i => {
             const user = users[i];
             const session = store.openSession();
             await session.store(user);
@@ -212,15 +212,15 @@ describe("HiLo", function () {
             .map(id => id.split("/")[1])
             .map(x => x.split("-")[0])) {
                 assert.ok(numericPart);
-                assert.ok(parseInt(numericPart, 10) < 33);
+                assert.ok(Number.parseInt(numericPart, 10) < 33);
             }
     });
 
     it("does get another range when gets over max and leaves no gaps", async () => {
         const parallelLevel = 40;
-        const users = Array.from(Array(parallelLevel).keys()).map(x => new User());
+        const users = Array.from(new Array(parallelLevel).keys()).map(x => new User());
 
-        const tasks = Array.from(Array(parallelLevel).keys()).map(async i => {
+        const tasks = Array.from(new Array(parallelLevel).keys()).map(async i => {
             const user = users[i];
             const session = store.openSession();
             await session.store(user);
@@ -232,7 +232,7 @@ describe("HiLo", function () {
         const idNumbers = users
             .map(x => x.id)
             .map(id => id.split("/")[1])
-            .map(x => parseInt(x.split("-")[0], 10));
+            .map(x => Number.parseInt(x.split("-")[0], 10));
         
         assert.strictEqual(idNumbers.length, 40);
 

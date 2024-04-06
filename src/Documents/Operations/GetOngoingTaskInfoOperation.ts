@@ -84,48 +84,56 @@ class GetOngoingTaskInfoCommand extends RavenCommand<OngoingTask> {
         let nestedTypes: NestedTypes = {};
 
         switch (this._type) {
-            case "Replication":
+            case "Replication": {
                 // nothing to do
                 break;
-            case "RavenEtl":
+            }
+            case "RavenEtl": {
                 nestedTypes = {
                     configuration: "RavenEtlConfiguration",
                     "configuration.transforms": "Transformation"
                 };
                 break;
-            case "SqlEtl":
+            }
+            case "SqlEtl": {
                 nestedTypes = {
                     configuration: "SqlEtlConfiguration",
                     "configuration.transforms": "Transformation"
                 };
                 break;
-            case "Subscription":
+            }
+            case "Subscription": {
                 nestedTypes = {
                     lastBatchAckTime: "date",
                     lastClientConnectionTime: "date"
                 }
                 break;
-            case "OlapEtl":
+            }
+            case "OlapEtl": {
                 nestedTypes = {
                     configuration: "OlapEtlConfiguration",
                     "configuration.transforms": "Transformation"
                 }
                 break;
-            case "ElasticSearchEtl":
+            }
+            case "ElasticSearchEtl": {
                 nestedTypes = {
                     configuration: "ElasticSearchEtlConfiguration",
                     "configuration.transforms": "Transformation"
                 }
                 break;
-            case "QueueEtl":
+            }
+            case "QueueEtl": {
                 nestedTypes = {
                     configuration: "QueueEtlConfiguration",
                     "configuration.transforms": "Transformation"
                 }
                 break;
-            case "PullReplicationAsSink":
+            }
+            case "PullReplicationAsSink": {
                 break;
-            case "Backup":
+            }
+            case "Backup": {
                 nestedTypes = {
                     lastFullBackup: "date",
                     delayUntil: "date",
@@ -136,6 +144,7 @@ class GetOngoingTaskInfoCommand extends RavenCommand<OngoingTask> {
                     "nextBackup.originalBackupTime": "date",
                 }
                 break;
+            }
         }
 
         this.result = this._reviveResultTypes<OngoingTask>(

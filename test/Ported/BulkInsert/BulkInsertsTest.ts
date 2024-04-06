@@ -92,7 +92,7 @@ describe("bulk insert", function () {
         } finally {
             try {
                 await bulkInsert.finish();
-            } catch (e) {
+            } catch {
                 // ignore
             }
         }
@@ -128,7 +128,7 @@ describe("bulk insert", function () {
         } finally {
             try {
                 await bulkInsert.finish();
-            } catch (e) {
+            } catch {
                 //ignore
             }
         }
@@ -287,6 +287,7 @@ describe("BulkInsertOperation._typeCheckStoreArgs() properly parses arguments", 
     const typeCheckStoreArgs = BulkInsertOperation["_typeCheckStoreArgs"];
     // eslint-disable-next-line @typescript-eslint/no-empty-function
     const expectedCallback = () => {
+        // empty
     };
     const expectedId = "id";
     const expectedMetadata = {} as IMetadataDictionary;

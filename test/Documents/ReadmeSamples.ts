@@ -333,7 +333,7 @@ describe("Readme samples", function () {
                 print("// RQL");
                 print("// " + query.getIndexQuery().query);
                 print("// ", query.getIndexQuery().queryParameters);
-                results.forEach(x => delete x["@metadata"]);
+                for (const x of results) delete x["@metadata"];
                 print("// " + util.inspect(results));
             }
         });

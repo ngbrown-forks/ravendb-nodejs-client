@@ -53,12 +53,14 @@ export class OperationCompletionAwaiter {
                 .then((operationStatusResult) => {
                     const operationStatus = operationStatusResult.status as OperationStatus;
                     switch (operationStatus) {
-                        case "Completed":
+                        case "Completed": {
                             return;
-                        case "Canceled":
+                        }
+                        case "Canceled": {
                             throwError("OperationCanceledException",
                                 `Operation of ID ${this._id} has been canceled.`);
                             break;
+                        }
                         case "Faulted": {
                             const faultResult: OperationExceptionResult = operationStatusResult.result;
                             const errorSchema = Object.assign({}, faultResult, {url: this._requestExecutor.getUrl()});

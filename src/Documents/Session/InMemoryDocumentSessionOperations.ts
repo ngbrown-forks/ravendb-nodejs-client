@@ -1240,13 +1240,13 @@ export abstract class InMemoryDocumentSessionOperations
 
         newValues.push(...newRange.entries);
 
-        localRange.entries.forEach(item => {
+        for (const item of localRange.entries) {
             if (item.timestamp.getTime() <= newRange.to.getTime()) {
-                return;
+                continue;
             }
 
             newValues.push(item);
-        });
+        }
 
         localRange.entries = newValues;
     }
@@ -1516,7 +1516,7 @@ export abstract class InMemoryDocumentSessionOperations
         for (const commandData of result.sessionCommands) {
             switch (commandData.type) {
                 case "PUT":
-                case "DELETE":
+                case "DELETE": {
                     if (commandData.changeVector) {
                         throwError(
                             "InvalidOperationException",
@@ -1524,13 +1524,16 @@ export abstract class InMemoryDocumentSessionOperations
                             + commandData.id + " is not supported when using a cluster transaction.");
                     }
                     break;
+                }
                 case "CompareExchangeDELETE":
-                case "CompareExchangePUT":
+                case "CompareExchangePUT": {
                     break;
-                default:
+                }
+                default: {
                     throwError(
                         "InvalidOperationException",
                         "The command '" + commandData.type + "' is not supported in a cluster session.");
+                }
             }
         }
     }

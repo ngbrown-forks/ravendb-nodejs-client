@@ -252,7 +252,7 @@ export class DatabaseChanges implements IDatabaseChanges {
                         if (this.connected) {
                             await this._send(unwatchCommand, value, values);
                         }
-                    } catch (e) {
+                    } catch {
                         // if we are not connected then we unsubscribed already
                         // because connections drops with all subscriptions
                     }
@@ -476,24 +476,42 @@ export class DatabaseChanges implements IDatabaseChanges {
 
     private _notifySubscribers(type: string, value: any): void {
         switch (type) {
-            case "AggressiveCacheChange":
-                this._counters.forEach(state => state.send("AggressiveCache", AggressiveCacheChange.INSTANCE));
+            case "AggressiveCacheChange": {
+                for (const state of this._counters.values()) {
+                    state.send("AggressiveCache", AggressiveCacheChange.INSTANCE);
+                }
                 break;
-            case "DocumentChange":
-                this._counters.forEach(state => state.send("Document", value));
+            }
+            case "DocumentChange": {
+                for (const state of this._counters.values()) {
+                    state.send("Document", value);
+                }
                 break;
-            case "CounterChange":
-                this._counters.forEach(state => state.send("Counter", value));
+            }
+            case "CounterChange": {
+                for (const state of this._counters.values()) {
+                    state.send("Counter", value);
+                }
                 break;
-            case "TimeSeriesChange":
-                this._counters.forEach(state => state.send("TimeSeries", value));
+            }
+            case "TimeSeriesChange": {
+                for (const state of this._counters.values()) {
+                    state.send("TimeSeries", value);
+                }
                 break;
-            case "IndexChange":
-                this._counters.forEach(state => state.send("Index", value));
+            }
+            case "IndexChange": {
+                for (const state of this._counters.values()) {
+                    state.send("Index", value);
+                }
                 break;
-            case "OperationStatusChange":
-                this._counters.forEach(state => state.send("Operation", value));
+            }
+            case "OperationStatusChange": {
+                for (const state of this._counters.values()) {
+                    state.send("Operation", value);
+                }
                 break;
+            }
             case "TopologyChange": {
                 const topologyChange = value as TopologyChange;
                 const requestExecutor = this._requestExecutor;
@@ -513,8 +531,9 @@ export class DatabaseChanges implements IDatabaseChanges {
                 }
                 break;
             }
-            default:
+            default: {
                 throwError("NotSupportedException");
+            }
         }
     }
 

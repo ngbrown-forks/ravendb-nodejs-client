@@ -40,8 +40,8 @@ export class JsonOperation {
         const newJsonProps: string[] = Object.keys(newJson);
         const oldJsonProps: string[] = Object.keys(originalJson);
 
-        const newFields = newJsonProps.filter(x => !oldJsonProps.find(y => y === x));
-        const removedFields = oldJsonProps.filter(x => !newJsonProps.find(y => y === x));
+        const newFields = new Set(newJsonProps.filter(x => !oldJsonProps.includes(x)));
+        const removedFields = oldJsonProps.filter(x => !newJsonProps.includes(x));
 
         for (const field of removedFields) {
             if (!changes) {
@@ -61,7 +61,7 @@ export class JsonOperation {
                 continue;
             }
 
-            if (newFields.find(x => x === prop)) {
+            if (newFields.has(prop)) {
                 if (!changes) {
                     return true;
                 }

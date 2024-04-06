@@ -412,7 +412,7 @@ export class DocumentSubscriptions implements IDisposable {
             return;
         }
 
-        this._subscriptions.forEach(((value, key) => key.dispose()));
+        for (const [key, value] of this._subscriptions.entries()) key.dispose();
     }
 
     public async dropSubscriptionWorker<T extends object>(worker: SubscriptionWorker<T>, database: string = null) {

@@ -664,14 +664,18 @@ export class RequestExecutor implements IDisposable {
         }
 
         switch (this.conventions.readBalanceBehavior) {
-            case "None":
+            case "None": {
                 return this._nodeSelector.getPreferredNode();
-            case "RoundRobin":
+            }
+            case "RoundRobin": {
                 return this._nodeSelector.getNodeBySessionId(sessionInfo ? sessionInfo.getSessionId() : 0);
-            case "FastestNode":
+            }
+            case "FastestNode": {
                 return this._nodeSelector.getFastestNode();
-            default:
+            }
+            default: {
                 throwError("NotSupportedException", `Invalid read balance behavior: ${this.conventions.readBalanceBehavior}`);
+            }
         }
     }
 
@@ -884,7 +888,7 @@ export class RequestExecutor implements IDisposable {
     }
 
     public static validateUrls(initialUrls: string[], authOptions: IAuthOptions) {
-        const cleanUrls = [...Array(initialUrls.length)];
+        const cleanUrls = new Array(initialUrls.length);
         let requireHttps = !!authOptions?.certificate;
         for (let index = 0; index < initialUrls.length; index++) {
             const url = initialUrls[index];
@@ -923,12 +927,8 @@ export class RequestExecutor implements IDisposable {
         this._log.info("Initialize update topology timer.");
 
         const minInMs = 60 * 1000;
-        // eslint-disable-next-line @typescript-eslint/no-this-alias
-        const that = this;
         this._updateTopologyTimer =
-            new Timer(function timerActionUpdateTopology() {
-                return that._updateTopologyCallback();
-            }, minInMs, minInMs);
+            new Timer(() => this._updateTopologyCallback(), minInMs, minInMs);
     }
 
     private async _executeOnSpecificNode<TResult>( // this method is called `execute` in c# and java code
@@ -1327,7 +1327,7 @@ export class RequestExecutor implements IDisposable {
                 .then(commandResult => new IndexAndResponse(taskNumber, commandResult.response, commandResult.bodyStream))
                 .catch(err => {
                     tasks[taskNumber] = null;
-                    return Promise.reject(err);
+                    throw err;
                 });
 
             if (nodes[i].clusterTag === chosenNode.clusterTag) {
@@ -1437,19 +1437,23 @@ export class RequestExecutor implements IDisposable {
         responseBodyStream.resume();
         const readBody = () => StreamUtil.readToEnd(responseBodyStream);
         switch (response.status) {
-            case StatusCodes.NotFound:
+            case StatusCodes.NotFound: {
                 this._cache.setNotFound(url);
                 switch (command.responseType) {
-                    case "Empty":
-                        return Promise.resolve(true);
-                    case "Object":
+                    case "Empty": {
+                        return true;
+                    }
+                    case "Object": {
                         return command.setResponseAsync(null, false)
                             .then(() => true);
-                    default:
+                    }
+                    default: {
                         command.setResponseRaw(response, null);
                         break;
+                    }
                 }
                 return true;
+            }
 
             case StatusCodes.Forbidden: {
                 const msg = await readBody();
@@ -1510,12 +1514,14 @@ export class RequestExecutor implements IDisposable {
             case StatusCodes.GatewayTimeout:
             case StatusCodes.RequestTimeout:
             case StatusCodes.BadGateway:
-            case StatusCodes.ServiceUnavailable:
+            case StatusCodes.ServiceUnavailable: {
                 return this._handleServerDown(
                     url, chosenNode, nodeIndex, command, req, response, await readBody(), null, sessionInfo, shouldRetry);
-            case StatusCodes.Conflict:
+            }
+            case StatusCodes.Conflict: {
                 RequestExecutor._handleConflict(response, await readBody());
                 break;
+            }
             case StatusCodes.TooEarly: {
                 if (!shouldRetry) {
                     return false;
@@ -1543,9 +1549,10 @@ export class RequestExecutor implements IDisposable {
 
                 return true;
             }
-            default:
+            default: {
                 command.onResponseFailure(response);
                 ExceptionDispatcher.throwException(response, await readBody());
+            }
         }
     }
 

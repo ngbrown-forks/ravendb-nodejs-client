@@ -306,7 +306,7 @@ export class DocumentSession extends InMemoryDocumentSessionOperations
         }
 
         if (this._knownMissingIds.has(id)) {
-            return Promise.resolve(false);
+            return false;
         }
 
         if (this.documentsById.getValue(id)) {
@@ -663,13 +663,13 @@ export class DocumentSession extends InMemoryDocumentSessionOperations
         const newScript = oldPatch.patch.script + "\n" + patchRequest.script;
         const newVals = {};
 
-        Object.keys(oldPatch.patch.values).forEach(key => {
+        for (const key of Object.keys(oldPatch.patch.values)) {
             newVals[key] = oldPatch.patch.values[key];
-        });
+        }
 
-        Object.keys(patchRequest.values).forEach(key => {
+        for (const key of Object.keys(patchRequest.values)) {
             newVals[key] = patchRequest.values[key];
-        });
+        }
 
         const newPatchRequest = new PatchRequest();
         newPatchRequest.script = newScript;
@@ -856,7 +856,7 @@ export class DocumentSession extends InMemoryDocumentSessionOperations
                 const response = responses[i];
                 const tempReqTime = response.headers[HEADERS.REQUEST_TIME];
                 response.elapsed = sw.elapsed;
-                const totalTime = tempReqTime ? parseInt(tempReqTime, 10) : 0;
+                const totalTime = tempReqTime ? Number.parseInt(tempReqTime, 10) : 0;
                 const timeItem = {
                     url: requests[i].urlAndQuery,
                     duration: totalTime
@@ -1174,17 +1174,19 @@ export class DocumentSession extends InMemoryDocumentSessionOperations
         await this.advanced.requestExecutor.execute(cmd);
 
         switch (cmd.statusCode) {
-            case StatusCodes.NotModified:
+            case StatusCodes.NotModified: {
                 return {
                     entity: null, // value not changed
                     changeVector
                 }
-            case StatusCodes.NotFound:
+            }
+            case StatusCodes.NotFound: {
                 this.registerMissing(id);
                 return {
                     entity: null,
                     changeVector: null // value is missing
                 }
+            }
         }
 
         const documentInfo = DocumentInfo.getNewDocumentInfo(cmd.result.results[0]);

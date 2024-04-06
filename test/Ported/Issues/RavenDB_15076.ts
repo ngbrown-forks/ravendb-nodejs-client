@@ -60,8 +60,8 @@ import { ReplicationTestContext } from "../../Utils/ReplicationTestContext";
                         s.timeSeriesFor("users/ayende", HeartRateMeasure)
                             .append(today.toDate(), heartRateMeasure2, "test/things/out");
 
-                        s.advanced.attachments.store("users/ayende", "test.bin", Buffer.from("hello", "utf-8"));
-                        s.advanced.attachments.store("users/pheobe", "test.bin", Buffer.from("hello", "utf-8"));
+                        s.advanced.attachments.store("users/ayende", "test.bin", Buffer.from("hello", "utf8"));
+                        s.advanced.attachments.store("users/pheobe", "test.bin", Buffer.from("hello", "utf8"));
 
                         s.advanced.revisions.forceRevisionCreationFor("users/ayende", "None");
                         s.advanced.revisions.forceRevisionCreationFor("users/pheobe", "None");

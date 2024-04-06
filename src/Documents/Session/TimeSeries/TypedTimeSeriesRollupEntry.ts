@@ -90,7 +90,7 @@ export class TypedTimeSeriesRollupEntry<TValues extends object> {
 
         for (let i = 0; i < valuesCount; i++) {
             if (!counts[i]) {
-                averages[i] = NaN;
+                averages[i] = Number.NaN;
             } else {
                 averages[i] = sums[i] / counts[i];
             }

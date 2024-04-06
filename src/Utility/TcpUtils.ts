@@ -16,7 +16,7 @@ export class TcpUtils {
         clientCertificate: IAuthOptions): Promise<Socket> {
         const url = new URL(urlString);
         const host = url.hostname;
-        const port = parseInt(url.port, 10);
+        const port = Number.parseInt(url.port, 10);
 
         if (serverCertificate && clientCertificate) {
             return new Promise<Socket>((resolve, reject) => {
@@ -85,10 +85,12 @@ export class TcpUtils {
 
     private static _invokeNegotiation(info: TcpConnectionInfo, operationType: OperationTypes, negotiationCallback: NegotiationCallback, url: string, socket: Socket) {
         switch (operationType) {
-            case "Subscription":
+            case "Subscription": {
                 return negotiationCallback(url, info, socket);
-            default:
+            }
+            default: {
                 throwError("NotSupportedException", "Operation type '" + operationType + "' not supported");
+            }
         }
     }
 }

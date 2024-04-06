@@ -9,8 +9,8 @@ export class SpatialCriteriaFactory {
 
     public static INSTANCE = new SpatialCriteriaFactory();
 
-    // eslint-disable-next-line @typescript-eslint/no-empty-function
     private constructor() {
+        // empty
     }
 
     public relatesToShape(shapeWkt: string, relation: SpatialRelation): SpatialCriteria;

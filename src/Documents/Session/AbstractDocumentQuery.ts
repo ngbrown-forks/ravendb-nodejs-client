@@ -567,7 +567,7 @@ export abstract class AbstractDocumentQuery<T extends object, TSelf extends Abst
             return;
         }
 
-        if (!queryData.loadTokens.find(x => x.alias === possibleAlias)) {
+        if (!queryData.loadTokens.some(x => x.alias === possibleAlias)) {
             return;
         }
 
@@ -608,7 +608,7 @@ export abstract class AbstractDocumentQuery<T extends object, TSelf extends Abst
             this._selectTokens.push(fieldsToFetch);
         } else {
             const fetchToken = [...this._selectTokens]
-                .filter(x => x instanceof FieldsToFetchToken)[0];
+                .find(x => x instanceof FieldsToFetchToken);
 
             if (fetchToken) {
                 const idx = this._selectTokens.indexOf(fetchToken);
@@ -1993,20 +1993,25 @@ export abstract class AbstractDocumentQuery<T extends object, TSelf extends Abst
 
         let whereOperator: WhereOperator;
         switch (relation) {
-            case "Within":
+            case "Within": {
                 whereOperator = "SpatialWithin";
                 break;
-            case "Contains":
+            }
+            case "Contains": {
                 whereOperator = "SpatialContains";
                 break;
-            case "Disjoint":
+            }
+            case "Disjoint": {
                 whereOperator = "SpatialDisjoint";
                 break;
-            case "Intersects":
+            }
+            case "Intersects": {
                 whereOperator = "SpatialIntersects";
                 break;
-            default:
+            }
+            default: {
                 throwError("InvalidArgumentException", `relation: ${relation}.`);
+            }
         }
 
         tokens.push(WhereToken.create(

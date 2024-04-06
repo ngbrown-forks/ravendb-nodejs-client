@@ -41,7 +41,7 @@ describe("Request executor", function () {
                     try {
                         const cmd = new GetNextOperationIdCommand();
                         await executor.execute(cmd);
-                    } catch (err) {
+                    } catch {
                         errorsCount++;
                     }
                 }

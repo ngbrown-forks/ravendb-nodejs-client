@@ -203,7 +203,7 @@ export abstract class RavenCommand<TResult> {
 
         try {
             if (this._responseType === "Object") {
-                const contentLength: number = parseInt(response.headers.get("content-length"), 10);
+                const contentLength: number = Number.parseInt(response.headers.get("content-length"), 10);
                 if (contentLength === 0) {
                     closeHttpResponse(response);
                     return "Automatic";
@@ -284,8 +284,8 @@ export abstract class RavenCommand<TResult> {
         throwError("InvalidOperationException", "Response is invalid: " + cause.message, cause);
     }
 
-    // eslint-disable-next-line @typescript-eslint/no-empty-function
     public onResponseFailure(response: HttpResponse): void {
+        // empty
     }
 
     protected _pipeline<TPipelineResult>() {

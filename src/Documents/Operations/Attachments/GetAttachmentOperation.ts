@@ -92,7 +92,7 @@ export class GetAttachmentCommand extends RavenCommand<AttachmentResult> {
         let size = 0;
         const sizeHeader = response.headers.get("attachment-size") as string;
         if (sizeHeader) {
-            size = parseInt(sizeHeader, 10);
+            size = Number.parseInt(sizeHeader, 10);
         }
 
         const details: AttachmentDetails = {

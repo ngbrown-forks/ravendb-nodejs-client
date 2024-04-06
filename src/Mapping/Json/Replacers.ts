@@ -3,7 +3,7 @@ export function pascalCaseReplacer(key, value) {
         const replacement = {};
         for (const k in value) {
             if (Object.hasOwnProperty.call(value, k)) {
-                replacement[k && k.charAt(0).toUpperCase() + k.substring(1)] = value[k];
+                replacement[k && k.charAt(0).toUpperCase() + k.slice(1)] = value[k];
             }
         }
         return replacement;
@@ -17,7 +17,7 @@ export function camelCaseReplacer(key, value) {
         const replacement = {};
         for (const k in value) {
             if (Object.hasOwnProperty.call(value, k)) {
-                replacement[k && k.charAt(0).toLowerCase() + k.substring(1)] = value[k];
+                replacement[k && k.charAt(0).toLowerCase() + k.slice(1)] = value[k];
             }
         }
 

@@ -16,6 +16,7 @@ export function getLogger({ name = "ravendb", module = "" }): ILogger {
     if (!isDebug) {
         // eslint-disable-next-line @typescript-eslint/no-empty-function
         const noop = (msg: string) => {
+            // empty
         };
         return {
             error: noop,

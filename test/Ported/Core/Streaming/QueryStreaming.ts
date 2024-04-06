@@ -142,7 +142,7 @@ describe("query streaming", function () {
     it("can stream query results with query statistics", async () => {
         await Promise.all([
             prepareData(store, 100),
-            await usersByNameIndex.execute(store)
+            usersByNameIndex.execute(store)
         ]);
 
         await testContext.waitForIndexing(store);
@@ -183,18 +183,18 @@ describe("query streaming", function () {
             assertStats(statsFromCallback);
             assert.equal(statsFromCallback, statsFromEvent);
 
-            items.forEach(x => assertStreamResultEntry<User>(x, doc => {
+            for (const x of items) assertStreamResultEntry<User>(x, doc => {
                 assert.ok(doc instanceof User);
                 assert.ok(doc.name);
                 assert.ok(doc.lastName);
-            }));
+            });
         }
     });
 
     it("can stream raw query results", async () => {
         await Promise.all([
             prepareData(store, 200),
-            await usersByNameIndex.execute(store)
+            usersByNameIndex.execute(store)
         ]);
 
         await testContext.waitForIndexing(store);
@@ -240,7 +240,7 @@ describe("query streaming", function () {
         try {
             await Promise.all([
                 prepareData(newStore, 100),
-                await indexToUse.execute(store)
+                indexToUse.execute(store)
             ]);
 
             await testContext.waitForIndexing(store);
@@ -295,7 +295,7 @@ describe("query streaming", function () {
     it("can stream raw query into stream", async () => {
         await Promise.all([
             prepareData(store, 10),
-            await usersByNameIndex.execute(store)
+            usersByNameIndex.execute(store)
         ]);
 
         await testContext.waitForIndexing(store);

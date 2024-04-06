@@ -91,23 +91,29 @@ export class BatchOperation {
             const type = getCommandType(batchResult);
 
             switch (type) {
-                case "PUT":
+                case "PUT": {
                     this._handlePut(i, batchResult, false);
                     break;
-                case "ForceRevisionCreation":
+                }
+                case "ForceRevisionCreation": {
                     this._handleForceRevisionCreation(batchResult);
                     break;
-                case "DELETE":
+                }
+                case "DELETE": {
                     this._handleDelete(batchResult);
                     break;
-                case "CompareExchangePUT":
+                }
+                case "CompareExchangePUT": {
                     this._handleCompareExchangePut(batchResult);
                     break;
-                case "CompareExchangeDELETE":
+                }
+                case "CompareExchangeDELETE": {
                     this._handleCompareExchangeDelete(batchResult);
                     break;
-                default:
+                }
+                default: {
                     throwError("InvalidOperationException", `Command '${type}' is not supported.`);
+                }
             }
         }
 
@@ -119,44 +125,57 @@ export class BatchOperation {
 
             const type = getCommandType(batchResult);
             switch (type) {
-                case "PUT":
+                case "PUT": {
                     this._handlePut(i, batchResult, true);
                     break;
-                case "DELETE":
+                }
+                case "DELETE": {
                     this._handleDelete(batchResult);
                     break;
-                case "PATCH":
+                }
+                case "PATCH": {
                     this._handlePatch(batchResult);
                     break;
-                case "AttachmentPUT":
+                }
+                case "AttachmentPUT": {
                     this._handleAttachmentPut(batchResult);
                     break;
-                case "AttachmentDELETE":
+                }
+                case "AttachmentDELETE": {
                     this._handleAttachmentDelete(batchResult);
                     break;
-                case "AttachmentMOVE":
+                }
+                case "AttachmentMOVE": {
                     this._handleAttachmentMove(batchResult);
                     break;
-                case "AttachmentCOPY":
+                }
+                case "AttachmentCOPY": {
                     this._handleAttachmentCopy(batchResult);
                     break;
+                }
                 case "CompareExchangePUT":
                 case "CompareExchangeDELETE":
-                case "ForceRevisionCreation":
+                case "ForceRevisionCreation": {
                     break;
-                case "Counters":
+                }
+                case "Counters": {
                     this._handleCounters(batchResult);
                     break;
+                }
                 case "TimeSeries":
-                case "TimeSeriesWithIncrements":
+                case "TimeSeriesWithIncrements": {
                     //TODO: RavenDB-13474 add to time series cache
                     break;
-                case "TimeSeriesCopy":
+                }
+                case "TimeSeriesCopy": {
                     break;
-                case "BatchPATCH":
+                }
+                case "BatchPATCH": {
                     break;
-                default:
+                }
+                default: {
                     throwError("InvalidOperationException", `Command '${type}' is not supported.`);
+                }
             }
         }
 

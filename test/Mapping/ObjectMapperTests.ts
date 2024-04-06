@@ -26,6 +26,7 @@ describe("ObjectMapper", function () {
 
     class Person {
         constructor(public name: string) {
+            // empty
         }
 
         public sayHello() {
@@ -38,16 +39,19 @@ describe("ObjectMapper", function () {
             public name: string,
             public releasedAt: Date
         ) {
+            // empty
         }
     }
 
     class Tree {
         constructor(public name: string) {
+            // empty
         }
     }
 
     class Order {
         constructor(public orderId: number, public isSent: false) {
+            // empty
         }
     }
 
@@ -503,7 +507,7 @@ describe("ObjectMapper", function () {
 
         // eslint-disable-next-line @typescript-eslint/no-empty-function
         it.skip("can handle map having objects for keys", () => {
-
+            // empty
         });
     });
 

@@ -591,7 +591,7 @@ class FanoutByPaymentsWithReduce extends AbstractJavaScriptIndexCreationTask<Cus
 
                 res.push({
                     amount: sum / i,
-                    date: lastPayment.toISOString().substr(0, 10)
+                    date: lastPayment.toISOString().slice(0, 10)
                 });
             }
             return res;
@@ -691,12 +691,13 @@ class FanoutByNumbers extends AbstractJavaScriptIndexCreationTask<Fanout> {
 
         this.map(Fanout, f => {
             const result: FanoutByNumbersResult[] = [];
-            for (const item of f.numbers) {
+            // eslint-disable-next-line unicorn/no-array-for-each
+            f.numbers.forEach(item => {
                 result.push({
                     foo: f.foo,
                     sum: item
                 });
-            }
+            })
             return result;
         })
     }
@@ -858,8 +859,9 @@ class ProductsWarrenty extends AbstractJavaScriptIndexCreationTask<Product, Prod
             }
 
             switch (prod.type) {
-                case 1:
+                case 1: {
                     return null;
+                }
             }
 
             if (prod.manufacturer === "ACME") {

@@ -27,7 +27,7 @@ export class AsyncQueue<T> {
 
         // keep reference to resolve function - if timeout finishes first, we don't want to wait for value!
         // eslint-disable-next-line @typescript-eslint/ban-types
-        let resolveToDelete: Function;
+        let resolveToDelete: valueResolver<T>;
 
         let timeoutHandle: ReturnType<typeof setTimeout>;
         const timeoutErr = getError(

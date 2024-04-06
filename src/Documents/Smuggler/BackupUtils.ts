@@ -6,6 +6,7 @@ import * as fs from "node:fs";
 export class BackupUtils {
     // eslint-disable-next-line @typescript-eslint/no-empty-function
     private constructor() {
+        // empty
     }
 
     private static readonly LEGACY_INCREMENTAL_BACKUP_EXTENSION = ".ravendb-incremental-dump";

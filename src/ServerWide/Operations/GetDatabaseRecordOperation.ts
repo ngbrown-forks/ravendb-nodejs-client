@@ -71,11 +71,11 @@ export class GetDatabaseRecordCommand extends RavenCommand<DatabaseRecordWithEta
         const dateUtil = this._conventions.dateUtil;
 
         if (this.result.rollingIndexes) {
-            Object.values(this.result.rollingIndexes).forEach(index => {
+            for (const index of Object.values(this.result.rollingIndexes)) {
                 if (index.activeDeployments) {
                     index.activeDeployments = GetDatabaseRecordCommand.mapRollingDeployment(dateUtil, index.activeDeployments as any);
                 }
-            });
+            }
         }
 
         const history = this.result.indexesHistory;

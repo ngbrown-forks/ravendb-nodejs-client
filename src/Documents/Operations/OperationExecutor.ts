@@ -26,7 +26,7 @@ export class OperationExecutor {
     public constructor(store: IDocumentStore, databaseName?: string);
     public constructor(store: DocumentStoreBase, databaseName?: string) {
         this._store = store;
-        this._databaseName = databaseName ? databaseName : store.database;
+        this._databaseName = databaseName ?? store.database;
         if (!StringUtil.isNullOrWhitespace(this._databaseName)) {
             this._requestExecutor = store.getRequestExecutor(this._databaseName);
         } else {
