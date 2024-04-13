@@ -1,7 +1,6 @@
 import { GetClusterTopologyCommand } from "../ServerWide/Commands/GetClusterTopologyCommand";
 import { NodeSelector } from "./NodeSelector";
 import { EOL } from "node:os";
-import * as semaphore from "semaphore";
 import { getLogger } from "../Utility/LogUtil";
 import { RequestExecutor, IRequestExecutorOptions } from "./RequestExecutor";
 import { throwError } from "../Exceptions";
@@ -13,12 +12,13 @@ import { acquireSemaphore } from "../Utility/SemaphoreUtil";
 import { DocumentConventions } from "../Documents/Conventions/DocumentConventions";
 import { UpdateTopologyParameters } from "./UpdateTopologyParameters";
 import { HEADERS } from "../Constants";
+import { Semaphore } from "../Utility/Semaphore";
 
 const log = getLogger({ module: "ClusterRequestExecutor" });
 
 export class ClusterRequestExecutor extends RequestExecutor {
 
-    private _clusterTopologySemaphore = semaphore();
+    private _clusterTopologySemaphore = new Semaphore();
 
     protected constructor(authOptions: IAuthOptions, conventions: DocumentConventions) {
         super(null, authOptions, conventions);

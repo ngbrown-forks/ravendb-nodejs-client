@@ -7,7 +7,6 @@ import { OperationStatusChange } from "./OperationStatusChange";
 import { DatabaseConnectionState } from "./DatabaseConnectionState";
 import { ChangesObservable } from "./ChangesObservable";
 import { throwError } from "../../Exceptions";
-import * as semaphore from "semaphore";
 import { WebSocket, ClientOptions, Data } from "ws";
 import { StringUtil } from "../../Utility/StringUtil";
 import { EventEmitter } from "node:events";
@@ -25,6 +24,7 @@ import { UpdateTopologyParameters } from "../../Http/UpdateTopologyParameters";
 import { TypeUtil } from "../../Utility/TypeUtil";
 import { TimeSeriesChange } from "./TimeSeriesChange";
 import { AggressiveCacheChange } from "./AggressiveCacheChange";
+import { Semaphore } from "../../Utility/Semaphore";
 
 export class DatabaseChanges implements IDatabaseChanges {
 
@@ -32,7 +32,7 @@ export class DatabaseChanges implements IDatabaseChanges {
     private _commandId: number = 0;
     private readonly _onConnectionStatusChangedWrapped: () => void;
 
-    private _semaphore = semaphore();
+    private _semaphore = new Semaphore();
 
     private readonly _requestExecutor: RequestExecutor;
     private readonly _conventions: DocumentConventions;

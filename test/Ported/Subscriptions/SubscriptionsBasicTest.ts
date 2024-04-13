@@ -10,7 +10,6 @@ import DocumentStore, {
     SubscriptionWorker, ToggleOngoingTaskStateOperation, SubscriptionUpdateOptions, Lazy
 } from "../../../src";
 import { AsyncQueue } from "../../Utils/AsyncQueue";
-import * as semaphore from "semaphore";
 import { acquireSemaphore } from "../../../src/Utility/SemaphoreUtil";
 import { getError, throwError } from "../../../src/Exceptions";
 import { TypeUtil } from "../../../src/Utility/TypeUtil";
@@ -18,6 +17,7 @@ import { GetOngoingTaskInfoOperation } from "../../../src/Documents/Operations/G
 import { OngoingTaskSubscription } from "../../../src/Documents/Operations/OngoingTasks/OngoingTask";
 import { assertThat, assertThrows } from "../../Utils/AssertExtensions";
 import { TimeValue } from "../../../src/Primitives/TimeValue";
+import { Semaphore } from "../../../src/Utility/Semaphore";
 
 describe("SubscriptionsBasicTest", function () {
     const _reasonableWaitTime = 15 * 1000;
@@ -432,7 +432,7 @@ describe("SubscriptionsBasicTest", function () {
 
         const allSubscription = store.subscriptions.getSubscriptionWorker(allId);
         try {
-            const allSemaphore = semaphore();
+            const allSemaphore = new Semaphore();
             allSemaphore.take(TypeUtil.NOOP);
 
             let allCounter = 0;
@@ -504,7 +504,7 @@ describe("SubscriptionsBasicTest", function () {
 
             subscriptionWorker = store.subscriptions.getSubscriptionWorker(options1);
 
-            const mre = semaphore(1);
+            const mre = new Semaphore(1);
             mre.take(TypeUtil.NOOP); // block by default
 
             await putUserDoc(store);

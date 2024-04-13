@@ -1,5 +1,4 @@
 import { EOL } from "node:os";
-import * as semaphore from "semaphore";
 import { Readable } from "node:stream";
 import { acquireSemaphore, SemaphoreAcquisitionContext } from "../Utility/SemaphoreUtil";
 import { getLogger, ILogger } from "../Utility/LogUtil";
@@ -49,6 +48,7 @@ import { UpdateTopologyParameters } from "./UpdateTopologyParameters";
 import { randomUUID } from "node:crypto";
 import { DatabaseHealthCheckOperation } from "../Documents/Operations/DatabaseHealthCheckOperation";
 import { GetNodeInfoCommand } from "../ServerWide/Commands/GetNodeInfoCommand";
+import { Semaphore } from "../Utility/Semaphore";
 
 const DEFAULT_REQUEST_OPTIONS = {};
 
@@ -152,8 +152,8 @@ export class RequestExecutor implements IDisposable {
 
     public static readonly CLIENT_VERSION = "6.0.0";
 
-    private _updateDatabaseTopologySemaphore = semaphore();
-    private _updateClientConfigurationSemaphore = semaphore();
+    private _updateDatabaseTopologySemaphore = new Semaphore();
+    private _updateClientConfigurationSemaphore = new Semaphore();
 
     private static _backwardCompatibilityFailureCheckOperation = new GetStatisticsOperation("failure=check");
     private static readonly _failureCheckOperation = new DatabaseHealthCheckOperation();

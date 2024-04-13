@@ -1,14 +1,14 @@
 import * as assert from "node:assert";
 import * as SemaphoreUtil from "../../src/Utility/SemaphoreUtil";
-import * as semaphore from "semaphore";
 import { delay } from "../../src/Utility/PromiseUtil";
+import { Semaphore } from "../../src/Utility/Semaphore";
 
 describe("SemaphoreUtil", function () {
 
-    let sem: semaphore.Semaphore;
+    let sem: Semaphore;
 
     beforeEach(function () {
-        sem = semaphore();
+        sem = new Semaphore();
     });
 
     it("should be able to acquire and release semaphore ", async () => {

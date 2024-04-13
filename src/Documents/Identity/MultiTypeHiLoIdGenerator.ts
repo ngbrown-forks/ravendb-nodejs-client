@@ -1,13 +1,13 @@
 import { HiloIdGenerator } from "./HiloIdGenerator";
-import * as semaphore from "semaphore";
 import { acquireSemaphore } from "../../Utility/SemaphoreUtil";
 import { IRavenObject } from "../../Types/IRavenObject";
 import { DocumentStore } from "../DocumentStore";
 import { DocumentConventions } from "../Conventions/DocumentConventions";
 import { DefaultHiLoIdGenerator } from "./DefaultHiLoIdGenerator";
+import { Semaphore } from "../../Utility/Semaphore";
 
 export class MultiTypeHiLoIdGenerator {
-    private readonly _sem: semaphore.Semaphore;
+    private readonly _sem: Semaphore;
     protected _idGeneratorsByTag: IRavenObject<HiloIdGenerator> = {};
     protected readonly _store: DocumentStore;
     protected readonly _dbName: string;
@@ -17,7 +17,7 @@ export class MultiTypeHiLoIdGenerator {
     constructor(store: DocumentStore, dbName?: string) {
         this._store = store;
         this._dbName = dbName;
-        this._sem = semaphore();
+        this._sem = new Semaphore();
         this._conventions = store.getRequestExecutor(dbName).conventions;
         this._identityPartsSeparator = this._conventions.identityPartsSeparator;
     }
