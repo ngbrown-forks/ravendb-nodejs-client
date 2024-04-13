@@ -1,7 +1,6 @@
 import * as fs from "node:fs";
 import * as path from "node:path";
 import * as url from "node:url";
-import { MultiError, VError } from "verror";
 import * as http from "node:http";
 import * as https from "node:https";
 import "source-map-support/register";
@@ -404,7 +403,7 @@ export class RavenTestContext extends RavenTestDriver implements IDisposable {
             .then((errors) => {
                 const anyErrors = errors.filter(x => x) as Error[];
                 if (anyErrors.length) {
-                    throw new MultiError(anyErrors);
+                    throw getError("AggregateException", "Error", null, { errors: anyErrors });
                 }
             })
             .then(() => {
@@ -770,7 +769,7 @@ function setupRavenDbTestContext() {
     afterEach(function () {
         if (this.currentTest && this.currentTest.state === "failed") {
             // eslint-disable-next-line no-console
-            console.error(VError.fullStack(this.currentTest.err));
+            console.error(this.currentTest.err);
         }
     });
 

@@ -1,4 +1,3 @@
-import * as XRegExp from "xregexp";
 import { TypeUtil } from "./TypeUtil";
 import { throwError } from "../Exceptions";
 import * as changeCase from "change-case";
@@ -6,7 +5,7 @@ import { CasingConvention } from "./ObjectUtil";
 import { StringBuilder } from "./StringBuilder";
 
 export class StringUtil {
-    private static readonly letterRe: RegExp = XRegExp("^\\p{L}$") as RegExp;
+    private static readonly letterRe: RegExp = new RegExp(/^\p{L}/,'u');
     private static readonly digitRe: RegExp = /\d/;
 
     public static leftPad(s: string, length: number, char: string) {
