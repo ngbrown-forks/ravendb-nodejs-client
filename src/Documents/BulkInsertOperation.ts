@@ -31,6 +31,147 @@ import { EventEmitter } from "node:events";
 import { BulkInsertOnProgressEventArgs } from "./Session/SessionEvents";
 
 export class BulkInsertOperation {
+
+    private static _countersBulkInsertOperationClass = class CountersBulkInsertOperation {
+        private readonly _operation: BulkInsertOperation;
+        private _id: string;
+        private _first: boolean = true;
+        private static readonly MAX_COUNTERS_IN_BATCH = 1024;
+        private _countersInBatch = 0;
+
+        public constructor(bulkInsertOperation: BulkInsertOperation) {
+            this._operation = bulkInsertOperation;
+        }
+
+        public async increment(id: string, name: string);
+        public async increment(id: string, name: string, delta: number);
+        public async increment(id: string, name: string, delta: number = 1) {
+            const check = this._operation._concurrencyCheck();
+
+            try {
+
+                await this._operation._executeBeforeStore();
+
+                if (this._operation._inProgressCommand === "TimeSeries") {
+                    BulkInsertOperation.throwAlreadyRunningTimeSeries();
+                }
+
+                try {
+                    const isFirst = !this._id;
+
+                    if (isFirst || !StringUtil.equalsIgnoreCase(this._id, id)) {
+                        if (!isFirst) {
+                            //we need to end the command for the previous document id
+                            this._operation._currentWriter.push("]}},");
+                        } else if (!this._operation._first) {
+                            this._operation._writeComma();
+                        }
+
+                        this._operation._first = false;
+
+                        this._id = id;
+                        this._operation._inProgressCommand = "Counters";
+
+                        this._writePrefixForNewCommand();
+                    }
+
+                    if (this._countersInBatch >= CountersBulkInsertOperation.MAX_COUNTERS_IN_BATCH) {
+                        this._operation._currentWriter.push("]}},");
+
+                        this._writePrefixForNewCommand();
+                    }
+
+                    this._countersInBatch++;
+
+                    if (!this._first) {
+                        this._operation._writeComma();
+                    }
+
+                    this._first = false;
+
+                    this._operation._currentWriter.push(`{"Type":"Increment","CounterName":"`);
+                    this._operation._writeString(name);
+                    this._operation._currentWriter.push(`","Delta":`);
+                    this._operation._currentWriter.push(delta.toString());
+                    this._operation._currentWriter.push("}");
+
+                } catch (e) {
+                    this._operation._handleErrors(this._id, e);
+                }
+            } finally {
+                check.dispose();
+            }
+        }
+
+        public endPreviousCommandIfNeeded() {
+            if (!this._id) {
+                return;
+            }
+
+            this._operation._currentWriter.push("]}}");
+            this._id = null;
+        }
+
+        private _writePrefixForNewCommand() {
+            this._first = true;
+            this._countersInBatch = 0;
+
+            this._operation._currentWriter.push(`{"Id":"`);
+            this._operation._writeString(this._id);
+            this._operation._currentWriter.push(`","Type":"Counters","Counters":{"DocumentId":"`);
+            this._operation._writeString(this._id);
+            this._operation._currentWriter.push(`","Operations":[`);
+        }
+    }
+
+    private static _attachmentsBulkInsertOperationClass = class AttachmentsBulkInsertOperation {
+        private readonly _operation: BulkInsertOperation;
+
+        public constructor(operation: BulkInsertOperation) {
+            this._operation = operation;
+        }
+
+        public async store(id: string, name: string, bytes: Buffer): Promise<void>;
+        public async store(id: string, name: string, bytes: Buffer, contentType: string): Promise<void>;
+        public async store(id: string, name: string, bytes: Buffer, contentType?: string): Promise<void> {
+            const check = this._operation._concurrencyCheck();
+
+            try {
+                this._operation._lastWriteToStream = new Date();
+                this._operation._endPreviousCommandIfNeeded();
+
+                await this._operation._executeBeforeStore();
+
+                try {
+                    if (!this._operation._first) {
+                        this._operation._writeComma();
+                    }
+
+                    this._operation._currentWriter.push(`{"Id":"`);
+                    this._operation._writeString(id);
+                    this._operation._currentWriter.push(`","Type":"AttachmentPUT","Name":"`);
+                    this._operation._writeString(name);
+
+                    if (contentType) {
+                        this._operation._currentWriter.push(`","ContentType":"`);
+                        this._operation._writeString(contentType);
+                    }
+
+                    this._operation._currentWriter.push(`","ContentLength":`);
+                    this._operation._currentWriter.push(bytes.length.toString());
+                    this._operation._currentWriter.push("}");
+
+                    this._operation._currentWriter.push(bytes);
+                } catch (e) {
+                    this._operation._handleErrors(id, e);
+                }
+            } finally {
+                check.dispose();
+            }
+        }
+    }
+
+
     private _emitter = new EventEmitter();
 
     private _options: BulkInsertOptions;
@@ -606,97 +747,6 @@ export class BulkInsertOperation {
         }
     }
 
-    private static _countersBulkInsertOperationClass = class CountersBulkInsertOperation {
-        private readonly _operation: BulkInsertOperation;
-        private _id: string;
-        private _first: boolean = true;
-        private static readonly MAX_COUNTERS_IN_BATCH = 1024;
-        private _countersInBatch = 0;
-
-        public constructor(bulkInsertOperation: BulkInsertOperation) {
-            this._operation = bulkInsertOperation;
-        }
-
-        public async increment(id: string, name: string);
-        public async increment(id: string, name: string, delta: number);
-        public async increment(id: string, name: string, delta: number = 1) {
-            const check = this._operation._concurrencyCheck();
-
-            try {
-
-                await this._operation._executeBeforeStore();
-
-                if (this._operation._inProgressCommand === "TimeSeries") {
-                    BulkInsertOperation.throwAlreadyRunningTimeSeries();
-                }
-
-                try {
-                    const isFirst = !this._id;
-
-                    if (isFirst || !StringUtil.equalsIgnoreCase(this._id, id)) {
-                        if (!isFirst) {
-                            //we need to end the command for the previous document id
-                            this._operation._currentWriter.push("]}},");
-                        } else if (!this._operation._first) {
-                            this._operation._writeComma();
-                        }
-
-                        this._operation._first = false;
-
-                        this._id = id;
-                        this._operation._inProgressCommand = "Counters";
-
-                        this._writePrefixForNewCommand();
-                    }
-
-                    if (this._countersInBatch >= CountersBulkInsertOperation.MAX_COUNTERS_IN_BATCH) {
-                        this._operation._currentWriter.push("]}},");
-
-                        this._writePrefixForNewCommand();
-                    }
-
-                    this._countersInBatch++;
-
-                    if (!this._first) {
-                        this._operation._writeComma();
-                    }
-
-                    this._first = false;
-
-                    this._operation._currentWriter.push(`{"Type":"Increment","CounterName":"`);
-                    this._operation._writeString(name);
-                    this._operation._currentWriter.push(`","Delta":`);
-                    this._operation._currentWriter.push(delta.toString());
-                    this._operation._currentWriter.push("}");
-
-                } catch (e) {
-                    this._operation._handleErrors(this._id, e);
-                }
-            } finally {
-                check.dispose();
-            }
-        }
-
-        public endPreviousCommandIfNeeded() {
-            if (!this._id) {
-                return;
-            }
-
-            this._operation._currentWriter.push("]}}");
-            this._id = null;
-        }
-
-        private _writePrefixForNewCommand() {
-            this._first = true;
-            this._countersInBatch = 0;
-
-            this._operation._currentWriter.push(`{"Id":"`);
-            this._operation._writeString(this._id);
-            this._operation._currentWriter.push(`","Type":"Counters","Counters":{"DocumentId":"`);
-            this._operation._writeString(this._id);
-            this._operation._currentWriter.push(`","Operations":[`);
-        }
-    }
 
     private static _timeSeriesBulkInsertBaseClass = class TimeSeriesBulkInsertBase implements IDisposable {
         private readonly _operation: BulkInsertOperation;
@@ -852,52 +902,6 @@ export class BulkInsertOperation {
         }
     }
 
-    private static _attachmentsBulkInsertOperationClass = class AttachmentsBulkInsertOperation {
-        private readonly _operation: BulkInsertOperation;
-
-        public constructor(operation: BulkInsertOperation) {
-            this._operation = operation;
-        }
-
-        public async store(id: string, name: string, bytes: Buffer): Promise<void>;
-        public async store(id: string, name: string, bytes: Buffer, contentType: string): Promise<void>;
-        public async store(id: string, name: string, bytes: Buffer, contentType?: string): Promise<void> {
-            const check = this._operation._concurrencyCheck();
-
-            try {
-                this._operation._lastWriteToStream = new Date();
-                this._operation._endPreviousCommandIfNeeded();
-
-                await this._operation._executeBeforeStore();
-
-                try {
-                    if (!this._operation._first) {
-                        this._operation._writeComma();
-                    }
-
-                    this._operation._currentWriter.push(`{"Id":"`);
-                    this._operation._writeString(id);
-                    this._operation._currentWriter.push(`","Type":"AttachmentPUT","Name":"`);
-                    this._operation._writeString(name);
-
-                    if (contentType) {
-                        this._operation._currentWriter.push(`","ContentType":"`);
-                        this._operation._writeString(contentType);
-                    }
-
-                    this._operation._currentWriter.push(`","ContentLength":`);
-                    this._operation._currentWriter.push(bytes.length.toString());
-                    this._operation._currentWriter.push("}");
-
-                    this._operation._currentWriter.push(bytes);
-                } catch (e) {
-                    this._operation._handleErrors(id, e);
-                }
-            } finally {
-                check.dispose();
-            }
-        }
-    }
 }
 
 export interface ICountersBulkInsert {

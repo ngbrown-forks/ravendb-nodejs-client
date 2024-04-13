@@ -34,7 +34,7 @@ function createServerDefaults() {
 export class DocumentConventions {
 
     private static _defaults: DocumentConventions = new DocumentConventions();
-    public static defaultForServerConventions = createServerDefaults();
+    public static defaultForServerConventions: DocumentConventions;
 
     public static get defaultConventions() {
         return this._defaults;
@@ -1011,6 +1011,8 @@ export class DocumentConventions {
         }
     }
 }
+
+DocumentConventions.defaultForServerConventions = createServerDefaults();
 
 
 DocumentConventions.defaultConventions.freeze();
