@@ -9,7 +9,7 @@
     "removeComments": true,
     "sourceMap": true,
     "pretty": true,
-    "lib": [ "ES2020" ],
+    "lib": [ "ES2022" ],
     "typeRoots": [
       "node_modules/@types",
       "node_modules/moment",

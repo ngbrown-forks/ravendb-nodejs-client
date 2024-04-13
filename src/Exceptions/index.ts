@@ -1,13 +1,8 @@
-import { VError } from "verror";
 import { closeHttpResponse } from "../Utility/HttpUtil";
 import { StatusCodes } from "../Http/StatusCode";
 import { HttpResponse } from "../Primitives/Http";
 import { JsonSerializer } from "../Mapping/Json/Serializer";
 import { EOL } from "node:os";
-
-export function printError(err: Error): string {
-    return VError.fullStack(err);
-}
 
 export function throwError(errName: RavenErrorType): never;
 export function throwError(errName: RavenErrorType, message: string): never;
@@ -37,11 +32,14 @@ export function getError(
     message: string = "",
     errCause?: Error,
     info?: { [key: string]: any }): Error {
-    const error = new VError({
-        name: errName,
-        cause: errCause,
-        info
-    }, message.replace(/%/g, "%%"));
+    const error = new Error(errName + ": " + message, { cause: errCause });
+
+    if (info) {
+        for (const value of Object.entries(info)) {
+            error[value[0]] = value[1];
+        }
+    }
+
     return error;
 }
 
