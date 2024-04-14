@@ -2,12 +2,14 @@
   "version": "2.9.2",
   "compilerOptions": {
     "target": "ES2022",
-    "module": "commonjs",
+    "module": "es2022",
     "moduleResolution": "node",
+    "declarationMap": true,
     "outDir": "dist",
     "declaration": true,
     "removeComments": true,
     "sourceMap": true,
+    "noEmit": true,
     "pretty": true,
     "lib": [ "ES2022" ],
     "typeRoots": [

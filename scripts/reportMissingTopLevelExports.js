@@ -1,7 +1,7 @@
-const glob = require("glob");
-const fs = require("fs");
-const path = require("path");
-const os = require("os");
+import { glob } from "glob";
+import fs from "node:fs";
+import path from "node:path";
+import os from "node:os";
 
 const IGNORE_MODULES = [
     "**/*.d.ts",
@@ -87,33 +87,35 @@ const IGNORE_MODULES = [
     "Documents/Smuggler/BackupUtils*"
 ];
 
-function main() {
-    return glob.glob("**/*.ts", {
+import * as url from 'url';
+const __dirname = url.fileURLToPath(new URL('.', import.meta.url));
+
+async function main() {
+    const modules = await glob.glob("**/*.ts", {
         cwd: path.join(__dirname, "../src"),
         ignore: IGNORE_MODULES
-    })
-    .then(modules => {
-        modules = modules.map(x => x.replace(/\/index\.ts$/, "")
-            .replace(/\.ts$/, ""));
-
-        const topLevelExports = fs.readFileSync(path.join(__dirname, "../src/index.ts"));
-        const modulesNotExported = modules.filter(m => !topLevelExports.includes(m));
-
-        if (modulesNotExported.length) {
-            console.error(`${ modulesNotExported.length } modules not exported at the top level:`)
-            console.error(modulesNotExported.join(os.EOL));
-            return false;
-        }
-
-        console.log("All required modules exported at the top level.");
-
-        return true;
     });
+    const mappedModules = modules.map(x => x.replace(/\/index\.ts$/, "")
+        .replace(/\.ts$/, ""));
+
+    const topLevelExports = fs.readFileSync(path.join(__dirname, "../src/index.ts"));
+    const modulesNotExported = mappedModules.filter(m => !topLevelExports.includes(m));
+
+    if (modulesNotExported.length) {
+        console.error(`${ modulesNotExported.length } modules not exported at the top level:`)
+        console.error(modulesNotExported.join(os.EOL));
+        return false;
+    }
+
+    console.log("All required modules exported at the top level.");
+
+    return true;
 }
 
-main()
-.then(result => process.exit(result ? 0 : 1))
-.catch(err => {
-    console.log(err);
+try {
+    const result = main();
+    process.exit(result ? 0 : 1);
+} catch (error) {
+    console.log(error);
     process.exit(-1);
-})
+}

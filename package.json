@@ -3,11 +3,21 @@
   "version": "6.0.0",
   "description": "RavenDB client for Node.js",
   "files": [
-    "dist/"
+    "dist",
+    "src"
   ],
+  "type": "module",
   "homepage": "https://ravendb.net",
-  "main": "dist/index.js",
-  "types": "dist/index.d.ts",
+  "main": "./dist/cjs/ravendb.cjs",
+  "types": "dist/ravendb.d.ts",
+  "exports": {
+    "./package.json": "./package.json",
+    ".": {
+      "types": "./dist/ravendb.d.ts",
+      "import": "./dist/ravendb.js",
+      "require": "./dist/cjs/ravendb.cjs"
+    }
+  },
   "scripts": {
     "test": "cross-os _test ",
     "_test": {
@@ -15,7 +25,7 @@
       "linux": "tsc -p tsconfig.test.json && cp test/Assets/* .test/test/Assets && mocha .test/test",
       "darwin": "tsc -p tsconfig.test.json && cp test/Assets/* .test/test/Assets && mocha .test/test"
     },
-    "build": "tsc",
+    "build": "tsup",
     "build:test": "tsc -p tsconfig.test.json",
     "watch": "tsc --watch",
     "watch:test": "tsc && tsc --watch -p tsconfig.test.json",
@@ -54,12 +64,11 @@
   "author": "Hibernating Rhinos",
   "license": "MIT",
   "devDependencies": {
+    "@eslint/js": "^9.0.0",
     "@types/mocha": "^10.0.3",
     "@types/rimraf": "^4.0.5",
     "@types/sinon": "^17.0.3",
     "@types/unzipper": "^0.10.5",
-    "@typescript-eslint/eslint-plugin": "^7.5.0",
-    "@typescript-eslint/parser": "^7.5.0",
     "cross-os": "^1.5.0",
     "eslint": "^8.57.0",
     "eslint-plugin-unicorn": "^52.0.0",
@@ -73,7 +82,9 @@
     "sinon": "^17.0.0",
     "source-map-support": "^0.5.21",
     "ts-node": "^10.9.1",
-    "typescript": "^5.2.2",
+    "tsup": "^8.0.2",
+    "typescript": "^5.4.4",
+    "typescript-eslint": "^7.5.0",
     "unzipper": "^0.10.11"
   },
   "dependencies": {
@@ -82,13 +93,13 @@
     "@types/pluralize": "^0.0.33",
     "@types/stream-json": "^1.7.2",
     "@types/ws": "^8.5.10",
-    "change-case": "^3.1.0",
+    "change-case": "^5.4.4",
     "form-data": "^4.0.0",
     "moment": "^2.29.4",
     "node-fetch": "^2.6.7",
     "pluralize": "^8.0.0",
     "safe-memory-cache": "^2.0.0",
-    "stream-json": "^1.7.4",
+    "stream-json": "^1.8.0",
     "ws": "^8.16.0"
   }
 }
