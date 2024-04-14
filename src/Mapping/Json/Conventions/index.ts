@@ -16,9 +16,6 @@ export const DOCUMENT_LOAD_KEY_CASE_TRANSFORM_PROFILE: ObjectKeyCaseTransformStr
     ]
 };
 
-export const MULTI_GET_KEY_CASE_TRANSFORM_PROFILE: ObjectKeyCaseTransformStreamOptionsBase = {
-    ignorePaths: [/^headers\./i]
-};
 
 export type ObjectKeyCaseTransformProfile =
     "DOCUMENT_LOAD"

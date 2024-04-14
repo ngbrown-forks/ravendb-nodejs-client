@@ -4,7 +4,7 @@ import { CreateSampleDataOperation } from "../../Utils/CreateSampleDataOperation
 
 import { GetStatisticsCommand, GetStatisticsOperation, IDocumentStore, } from "../../../src";
 import { User } from "../../Assets/Entities";
-import * as moment from "moment";
+import moment from "moment";
 import { assertThat } from "../../Utils/AssertExtensions";
 
 describe("GetStatisticsCommand()", function () {

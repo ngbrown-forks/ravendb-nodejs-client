@@ -1,9 +1,6 @@
 {
   "slow": 1000,
   "timeout": 40000,
-  "recursive": true,
-  "spec": ["test/**/*.ts"],
-  "require": ["ts-node/register"],
   "node-option": [
     "experimental-specifier-resolution=node",
     "loader=ts-node/esm"
