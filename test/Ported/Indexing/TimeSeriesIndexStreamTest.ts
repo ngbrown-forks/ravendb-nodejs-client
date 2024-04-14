@@ -2,7 +2,7 @@ import { AbstractTimeSeriesIndexCreationTask, IDocumentStore, StreamResult } fro
 import { disposeTestDocumentStore, testContext } from "../../Utils/TestUtil";
 import moment = require("moment");
 import { Company } from "../../Assets/Orders";
-import * as StreamUtil from "../../../src/Utility/StreamUtil";
+import { finishedAsync } from "../../../src/Utility/StreamUtil";
 import { assertThat } from "../../Utils/AssertExtensions";
 
 describe("TimeSeriesIndexStreamTest", function () {
@@ -58,7 +58,7 @@ describe("TimeSeriesIndexStreamTest", function () {
                 i++;
             });
 
-            await StreamUtil.finishedAsync(queryStream);
+            await finishedAsync(queryStream);
 
             assertThat(i)
                 .isEqualTo(10);

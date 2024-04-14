@@ -3,7 +3,7 @@ import { disposeTestDocumentStore, testContext } from "../../Utils/TestUtil";
 import { assertThat } from "../../Utils/AssertExtensions";
 import { QueryData } from "../../../src/Documents/Queries/QueryData";
 import { DocumentResultStream } from "../../../src/Documents/Session/DocumentResultStream";
-import * as StreamUtil from "../../../src/Utility/StreamUtil";
+import { finishedAsync } from "../../../src/Utility/StreamUtil";
 import { StreamResult } from "../../../src/Documents/Commands/StreamResult";
 
 describe("RavenDB_14272", function () {
@@ -107,7 +107,7 @@ describe("RavenDB_14272", function () {
                 }
             });
 
-            await StreamUtil.finishedAsync(queryStream);
+            await finishedAsync(queryStream);
 
             assertThat(items)
                 .hasSize(1);

@@ -1,7 +1,6 @@
 import { disposeTestDocumentStore, testContext } from "../../Utils/TestUtil";
 import { IDocumentStore, InMemoryDocumentSessionOperations } from "../../../src";
 import { User } from "../../Assets/Entities";
-import moment = require("moment");
 import { assertThat } from "../../Utils/AssertExtensions";
 
 describe("TimeSeriesRangesCacheTest", function () {

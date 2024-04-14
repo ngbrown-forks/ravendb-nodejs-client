@@ -4,7 +4,6 @@ import moment = require("moment");
 import { Company, Order } from "../../Assets/Entities";
 import { assertThat, assertThrows } from "../../Utils/AssertExtensions";
 import { TimeValue } from "../../../src/Primitives/TimeValue";
-import { DateUtil } from "../../../src/Utility/DateUtil";
 
 describe("TimeSeriesIncludesTest", function () {
 

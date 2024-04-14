@@ -1,10 +1,10 @@
 import { Stream, Transform, Writable } from "node:stream";
 import { RavenCommandResponsePipeline } from "../../../Http/RavenCommandResponsePipeline";
 import { DocumentConventions } from "../../../Documents/Conventions/DocumentConventions";
-import { stringer as jsonlStringer } from "stream-json/jsonl/Stringer";
-import { stringer } from "stream-json/Stringer";
-import { pick } from "stream-json/filters/Pick";
-import { streamArray } from "stream-json/streamers/StreamArray";
+import * as JsonlStringer from "stream-json/jsonl/Stringer.js";
+import * as Stringer from "stream-json/Stringer.js";
+import * as Pick from "stream-json/filters/Pick.js";
+import * as StreamArray from "stream-json/streamers/StreamArray.js";
 import { ObjectUtil } from "../../../Utility/ObjectUtil";
 
 export function getDocumentResultsAsObjects(
@@ -34,8 +34,8 @@ export function getDocumentResultsAsObjects(
             transforms: [keysTransform]
         })
         : pipeline.parseJsonAsync([
-            pick({ filter: "Results" }),
-            streamArray(),
+            new Pick({ filter: "Results" }),
+            new StreamArray(),
             keysTransform
         ]);
 }
@@ -48,12 +48,12 @@ export function getDocumentStreamResultsIntoStreamPipeline(
     return conventions.useJsonlStreaming
         ? pipeline.parseJsonlAsync(x => x["Item"], {
             transforms: [
-                jsonlStringer({ replacer: (key, value) => key === '' ? value.value : value }),
+                new JsonlStringer({ replacer: (key, value) => key === '' ? value.value : value }),
             ]
         })
         : pipeline
             .parseJsonAsync([
-                stringer({ useValues: true })
+                new Stringer({ useValues: true })
             ]);
 }
 

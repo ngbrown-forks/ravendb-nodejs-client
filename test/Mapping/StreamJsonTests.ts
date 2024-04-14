@@ -2,9 +2,9 @@ import * as fs from "node:fs";
 import * as path from "node:path";
 import { Readable,pipeline } from "node:stream";
 import * as assert from "node:assert";
-import * as Parser from "stream-json/Parser";
-import * as StreamValues from "stream-json/streamers/StreamValues";
-import { stringer } from "stream-json/Stringer";
+import * as Parser from "stream-json/Parser.js";
+import * as StreamValues from "stream-json/streamers/StreamValues.js";
+import Stringer from "stream-json/Stringer.js";
 
 describe("stream-json parser and stringer", function () {
 
@@ -22,7 +22,7 @@ describe("stream-json parser and stringer", function () {
         let hasNumberChunk = false;
         parser.on("data", x => hasNumberChunk = hasNumberChunk || x.name === "numberChunk");
 
-        const stringerInstance = stringer({ useValues: true });
+        const stringerInstance = new Stringer({ useValues: true });
         let output = "";
         stringerInstance.on("data", data => output += data.toString());
 
@@ -69,7 +69,7 @@ describe("stream-json parser and stringer", function () {
             streamValues: false
         });
 
-        const stringerInstance = stringer({ useValues: true });
+        const stringerInstance = new Stringer({ useValues: true });
         let output = "";
         stringerInstance.on("data", data => output += data.toString());
 

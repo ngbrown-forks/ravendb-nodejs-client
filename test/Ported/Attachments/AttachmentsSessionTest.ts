@@ -10,7 +10,7 @@ import {
 import { Readable, Writable } from "node:stream";
 import { User } from "../../Assets/Entities";
 import { CONSTANTS } from "../../../src/Constants";
-import * as StreamUtil from "../../../src/Utility/StreamUtil";
+import { finishedAsync } from "../../../src/Utility/StreamUtil";
 
 describe("Attachments Session", function () {
 
@@ -196,7 +196,7 @@ describe("Attachments Session", function () {
                 }
             }));
 
-            await StreamUtil.finishedAsync(result.data);
+            await finishedAsync(result.data);
             result.dispose();
             assert.ok(Buffer.compare(bufResult, stream1) === 0);
         }

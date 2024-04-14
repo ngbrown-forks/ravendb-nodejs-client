@@ -9,7 +9,6 @@ import {
 import { disposeTestDocumentStore, testContext } from "../../Utils/TestUtil";
 import { User } from "../../Assets/Entities";
 import { AppendOperation, DeleteOperation } from "../../../src/Documents/Operations/TimeSeries/TimeSeriesOperation";
-import moment = require("moment");
 import { assertThat, assertThrows } from "../../Utils/AssertExtensions";
 import { RawQueryResult } from "./TimeSeriesRawQuery";
 

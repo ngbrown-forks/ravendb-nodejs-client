@@ -8,7 +8,7 @@ import {
 } from "../../../../src";
 import * as assert from "node:assert";
 import { User } from "../../../Assets/Entities";
-import * as StreamUtil from "../../../../src/Utility/StreamUtil";
+import { finishedAsync } from "../../../../src/Utility/StreamUtil";
 import { CONSTANTS } from "../../../../src/Constants";
 import { parseJsonStreamVerbose, parseJsonVerbose } from "../../../Utils/Json";
 import { getStringWritable } from "../../../Utils/Streams";
@@ -100,7 +100,7 @@ describe("query streaming", function () {
                 });
             });
 
-            await StreamUtil.finishedAsync(queryStream);
+            await finishedAsync(queryStream);
 
             assert.strictEqual(items.length, 200);
         }
@@ -133,7 +133,7 @@ describe("query streaming", function () {
                 items.push(item);
             });
 
-            await StreamUtil.finishedAsync(queryStream);
+            await finishedAsync(queryStream);
 
             assert.strictEqual(items.length, 200);
         }
@@ -166,7 +166,7 @@ describe("query streaming", function () {
             let statsFromEvent: StreamQueryStatistics;
             reader.on("stats", s => statsFromEvent = s);
 
-            await StreamUtil.finishedAsync(reader);
+            await finishedAsync(reader);
 
             assert.strictEqual(items.length, 100);
 
@@ -214,7 +214,7 @@ describe("query streaming", function () {
                 });
             });
 
-            await StreamUtil.finishedAsync(queryStream);
+            await finishedAsync(queryStream);
             assert.strictEqual(items.length, 200);
         }
 
@@ -262,7 +262,7 @@ describe("query streaming", function () {
                     });
                 });
 
-                await StreamUtil.finishedAsync(queryStream);
+                await finishedAsync(queryStream);
                 assert.strictEqual(items.length, 100);
 
                 assert.ok(stats);
@@ -306,7 +306,7 @@ describe("query streaming", function () {
 
             const targetStream = getStringWritable();
             session.advanced.streamInto(query, targetStream);
-            await StreamUtil.finishedAsync(targetStream);
+            await finishedAsync(targetStream);
 
             const result: string = targetStream["string"];
             assert.ok(result);

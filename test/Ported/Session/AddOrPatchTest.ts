@@ -1,7 +1,6 @@
 import { IDocumentStore } from "../../../src";
 import { disposeTestDocumentStore, testContext } from "../../Utils/TestUtil";
 import { assertThat } from "../../Utils/AssertExtensions";
-import moment = require("moment");
 
 describe("AddOrPatchTest", function () {
 

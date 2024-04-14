@@ -1,7 +1,7 @@
 import { IDocumentStore } from "../../../src/Documents/IDocumentStore";
 import { disposeTestDocumentStore, testContext } from "../../Utils/TestUtil";
 import { Company } from "../../Assets/Orders";
-import * as StreamUtil from "../../../src/Utility/StreamUtil";
+import { finishedAsync } from "../../../src/Utility/StreamUtil";
 import { StreamQueryStatistics } from "../../../src/Documents/Session/StreamQueryStatistics";
 import { assertThat } from "../../Utils/AssertExtensions";
 
@@ -40,7 +40,7 @@ describe("RavenDB_14109Test", function () {
                 items.push(item);
             });
 
-            await StreamUtil.finishedAsync(queryStream);
+            await finishedAsync(queryStream);
 
             assertThat(items)
                 .hasSize(stats.totalResults);

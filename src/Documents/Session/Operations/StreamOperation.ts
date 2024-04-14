@@ -11,8 +11,8 @@ import { getDocumentResultsAsObjects } from "../../../Mapping/Json/Streams/Pipel
 import { StringBuilder } from "../../../Utility/StringBuilder";
 import { ObjectUtil } from "../../../Utility/ObjectUtil";
 import { RavenCommandResponsePipeline } from "../../../Http/RavenCommandResponsePipeline";
-import { ignore } from "stream-json/filters/Ignore";
-import { streamValues } from "stream-json/streamers/StreamValues";
+import * as Ignore from "stream-json/filters/Ignore.js";
+import * as StreamValues from "stream-json/streamers/StreamValues.js";
 
 export class StreamOperation {
     private readonly _session: InMemoryDocumentSessionOperations;
@@ -99,8 +99,8 @@ export class StreamOperation {
             this._session.conventions.useJsonlStreaming
                 ? pipeline.parseJsonlAsync(x => x["Stats"])
                 : pipeline.parseJsonAsync([
-                    ignore({ filter: /^Results|Includes$/ }),
-                    streamValues()
+                    new Ignore({ filter: /^Results|Includes$/ }),
+                    new StreamValues()
                 ]);
 
                 pipeline.stream(response.stream)

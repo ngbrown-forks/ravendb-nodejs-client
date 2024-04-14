@@ -1,7 +1,6 @@
 import { IDocumentStore, TimeSeriesAggregationResult, TimeSeriesValue } from "../../src";
 import { disposeTestDocumentStore, testContext } from "../Utils/TestUtil";
 
-import moment = require("moment");
 import { assertThat } from "../Utils/AssertExtensions";
  
 class SymbolPrice {

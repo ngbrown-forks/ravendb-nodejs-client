@@ -1,8 +1,8 @@
 import { Readable, pipeline } from "node:stream";
 import * as assert from "node:assert";
-import { parser } from "stream-json/Parser";
-import { pick } from "stream-json/filters/Pick";
-import { streamArray } from "stream-json/streamers/StreamArray";
+import Parser from "stream-json/Parser.js";
+import Pick from "stream-json/filters/Pick.js";
+import StreamArray from "stream-json/streamers/StreamArray.js";
 
 describe("streaming tryouts", function () {
 
@@ -13,9 +13,9 @@ describe("streaming tryouts", function () {
 
         pipeline([
             readable,
-            parser(),
-            pick({ filter: "Results" }),
-            streamArray()
+            new Parser(),
+            new Pick({ filter: "Results" }),
+            new StreamArray()
         ], (err: NodeJS.ErrnoException) => {
             if (err) {
                 done(err);

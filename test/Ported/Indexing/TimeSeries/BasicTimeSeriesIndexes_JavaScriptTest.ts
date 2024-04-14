@@ -1,9 +1,11 @@
 import { AbstractRawJavaScriptIndexCreationTask, GetTermsOperation, IDocumentStore } from "../../../../src";
 import { disposeTestDocumentStore, testContext } from "../../../Utils/TestUtil";
 import moment = require("moment");
-import { AbstractRawJavaScriptTimeSeriesIndexCreationTask } from "../../../../src/Documents/Indexes/TimeSeries/AbstractRawJavaScriptTimeSeriesIndexCreationTask";
+import {
+    AbstractRawJavaScriptTimeSeriesIndexCreationTask
+} from "../../../../src/Documents/Indexes/TimeSeries/AbstractRawJavaScriptTimeSeriesIndexCreationTask";
 import { Employee } from "../../../Assets/Orders";
-import { Company, User, Address } from "../../../Assets/Entities";
+import { Address, Company, User } from "../../../Assets/Entities";
 import { assertThat } from "../../../Utils/AssertExtensions";
 import { RavenTestHelper } from "../../../Utils/RavenTestHelper";
 

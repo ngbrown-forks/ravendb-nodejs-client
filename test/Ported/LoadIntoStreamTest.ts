@@ -7,7 +7,7 @@ import * as assert from "node:assert";
 import { getStringWritable } from "../Utils/Streams";
 import { parseJsonVerbose } from "../Utils/Json";
 import { Writable } from "node:stream";
-import * as StreamUtil from "../../src/Utility/StreamUtil";
+import { finishedAsync } from "../../src/Utility/StreamUtil";
 
 class Employee {
     public firstName: string;
@@ -34,7 +34,7 @@ describe("load into stream", function () {
 
             const targetStream: Writable = getStringWritable();
             session.advanced.loadIntoStream(ids, targetStream);
-            await StreamUtil.finishedAsync(targetStream);
+            await finishedAsync(targetStream);
 
             const result = targetStream["string"];
             assert.ok(result);
@@ -58,7 +58,7 @@ describe("load into stream", function () {
             const session = store.openSession();
             const targetStream = getStringWritable();
             session.advanced.loadStartingWithIntoStream("employees/", targetStream);
-            await StreamUtil.finishedAsync(targetStream);
+            await finishedAsync(targetStream);
             const result = targetStream["string"];
             assert.ok(result);
             assert.ok(!targetStream.writable);

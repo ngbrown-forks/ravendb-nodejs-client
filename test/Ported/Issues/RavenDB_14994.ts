@@ -2,7 +2,6 @@ import { GetTimeSeriesOperation, IDocumentStore } from "../../../src";
 import { disposeTestDocumentStore, testContext } from "../../Utils/TestUtil";
 import { User } from "../../Assets/Entities";
 import { assertThat } from "../../Utils/AssertExtensions";
-import moment = require("moment");
 
 describe("RavenDB_14994", function () {
 

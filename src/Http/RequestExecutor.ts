@@ -356,10 +356,7 @@ export class RequestExecutor implements IDisposable {
             if (RequestExecutor.HTTPS_AGENT_CACHE.has(cacheKey)) {
                 return RequestExecutor.HTTPS_AGENT_CACHE.get(cacheKey);
             } else {
-                // eslint-disable-next-line @typescript-eslint/no-var-requires
-                const https = require("node:https");
-
-                const agent = new https.Agent({
+                const agent = new httpsAgent({
                     keepAlive: true,
                     ...agentOptions
                 });
@@ -375,10 +372,7 @@ export class RequestExecutor implements IDisposable {
 
     private static assertKeepAliveAgent() {
         if (!RequestExecutor.KEEP_ALIVE_HTTP_AGENT) {
-            // eslint-disable-next-line @typescript-eslint/no-var-requires
-            const http = require("node:http");
-
-            RequestExecutor.KEEP_ALIVE_HTTP_AGENT = new http.Agent({
+            RequestExecutor.KEEP_ALIVE_HTTP_AGENT = new httpAgent({
                 keepAlive: true
             });
         }

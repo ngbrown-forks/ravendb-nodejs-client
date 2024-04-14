@@ -5,7 +5,6 @@ import {
     UpdateExternalReplicationOperation
 } from "../../../src";
 import { RavenTestContext, testContext } from "../../Utils/TestUtil";
-import moment = require("moment");
 import { User } from "../../Assets/Entities";
 import { HeartRateMeasure } from "../TimeSeries/TimeSeriesTypedSession";
 import { assertThat } from "../../Utils/AssertExtensions";

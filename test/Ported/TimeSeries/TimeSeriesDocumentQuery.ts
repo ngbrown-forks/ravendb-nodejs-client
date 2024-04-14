@@ -1,6 +1,5 @@
 import { disposeTestDocumentStore, testContext } from "../../Utils/TestUtil";
 import { IDocumentStore } from "../../../src";
-import moment = require("moment");
 import { User } from "../../Assets/Entities";
 import { TimeSeriesAggregationResult } from "../../../src/Documents/Queries/TimeSeries/TimeSeriesAggregationResult";
 import { assertThat } from "../../Utils/AssertExtensions";

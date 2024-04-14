@@ -23,8 +23,8 @@ import { ObjectUtil } from "../../Utility/ObjectUtil";
 import { SubscriptionConnectionServerMessage } from "./SubscriptionConnectionServerMessage";
 import { EmptyCallback } from "../../Types/Callbacks";
 import { delay, wrapWithTimeout } from "../../Utility/PromiseUtil";
-import { parser } from "stream-json/Parser";
-import { streamValues } from "stream-json/streamers/StreamValues";
+import * as Parser from "stream-json/Parser.js";
+import * as StreamValues from "stream-json/streamers/StreamValues.js";
 import { BatchFromServer, CounterIncludeItem } from "./BatchFromServer";
 import { ServerNode } from "../../Http/ServerNode";
 import { RequestExecutor } from "../../Http/RequestExecutor";
@@ -280,8 +280,8 @@ export class SubscriptionWorker<T extends object> implements IDisposable {
 
         this._parser = pipeline([
             socket,
-            parser({ jsonStreaming: true, streamValues: false }),
-            streamValues(),
+            new Parser({ jsonStreaming: true, streamValues: false }),
+            new StreamValues(),
             keysTransform
         ], err => {
             if (err && !socket.destroyed) {
