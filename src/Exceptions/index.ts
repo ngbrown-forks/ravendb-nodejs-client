@@ -32,7 +32,7 @@ export function getError(
     message: string = "",
     errCause?: Error,
     info?: { [key: string]: any }): Error {
-    const error = new Error(message, { cause: errCause });
+    const error = new Error(message + (errCause ? ": " + errCause.message : ""), { cause: errCause });
     error.name = errName;
 
     if (info) {

@@ -37,8 +37,8 @@ export class JsonOperation {
         newJson: object,
         changes: { [id: string]: DocumentsChanges[] },
         docChanges: DocumentsChanges[]): boolean {
-        const newJsonProps: string[] = Object.keys(newJson);
-        const oldJsonProps: string[] = Object.keys(originalJson);
+        const newJsonProps: string[] = Object.entries(newJson).filter(([_, value]) => typeof value !== "undefined").map(x => x[0]);
+        const oldJsonProps: string[] = Object.entries(originalJson).filter(([_, value]) => typeof value !== "undefined").map(x => x[0]);
 
         const newFields = new Set(newJsonProps.filter(x => !oldJsonProps.includes(x)));
         const removedFields = oldJsonProps.filter(x => !newJsonProps.includes(x));
