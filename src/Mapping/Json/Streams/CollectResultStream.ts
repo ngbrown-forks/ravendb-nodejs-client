@@ -25,9 +25,7 @@ export class CollectResultStream<TResult = object> extends Writable {
         next: object,
         index?: number) => TResult;
 
-    private _resultPromise = new Promise((resolve, reject) => {
-        this._resolver = { resolve, reject };
-    });
+    private _resultPromise: Promise<unknown>;
 
     private _resolver: { resolve: (result: any) => void, reject: (error?: any) => void };
 
@@ -37,6 +35,10 @@ export class CollectResultStream<TResult = object> extends Writable {
 
     constructor(opts: CollectResultStreamOptions<TResult>) {
         super({ objectMode: true });
+
+        this._resultPromise = new Promise((resolve, reject) => {
+            this._resolver = { resolve, reject };
+        });
 
         super.once("finish", () => {
             this._resolver.resolve(this._result);

@@ -1013,6 +1013,4 @@ export class DocumentConventions {
 }
 
 DocumentConventions.defaultForServerConventions = createServerDefaults();
-
-
 DocumentConventions.defaultConventions.freeze();
