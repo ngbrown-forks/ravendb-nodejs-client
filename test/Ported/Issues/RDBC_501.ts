@@ -1,6 +1,6 @@
 import { IDocumentStore, TimeSeriesAggregationResult, TimeSeriesValue } from "../../../src";
 import { disposeTestDocumentStore, testContext } from "../../Utils/TestUtil";
-import moment = require("moment");
+import * as moment from "moment";
 import { assertThat } from "../../Utils/AssertExtensions";
 
 describe("RDBC_501Test", function () {

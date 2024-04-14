@@ -12,7 +12,6 @@ import { TimeValue } from "../../../src/Primitives/TimeValue";
 import { TimeSeriesPolicy } from "../../../src/Documents/Operations/TimeSeries/TimeSeriesPolicy";
 import { RawTimeSeriesPolicy } from "../../../src/Documents/Operations/TimeSeries/RawTimeSeriesPolicy";
 import { assertThat, assertThrows } from "../../Utils/AssertExtensions";
-import moment = require("moment");
 import { User } from "../../Assets/Entities";
 import { delay } from "../../../src/Utility/PromiseUtil";
 import {

@@ -14,9 +14,16 @@ import * as os from "node:os";
 import {
     CreateDatabaseOperation,
     DatabaseRecord,
-    DeleteDatabasesOperation, DocumentConventions, DocumentSession,
-    DocumentStore, DocumentType, getAllNodesFromTopology, GetClusterTopologyCommand, GetDatabaseRecordOperation,
-    IDocumentSession, ServerNode
+    DeleteDatabasesOperation,
+    DocumentConventions,
+    DocumentSession,
+    DocumentStore,
+    DocumentType,
+    getAllNodesFromTopology,
+    GetClusterTopologyCommand,
+    GetDatabaseRecordOperation,
+    IDocumentSession,
+    ServerNode
 } from "../../src";
 import * as rimraf from "rimraf";
 import { ChildProcess } from "node:child_process";
@@ -25,7 +32,7 @@ import { getLogger } from "../../src/Utility/LogUtil";
 import { AdminJsConsoleOperation } from "./AdminJsConsoleOperation";
 import { Stopwatch } from "../../src/Utility/Stopwatch";
 import { delay, wrapWithTimeout } from "../../src/Utility/PromiseUtil";
-import moment = require("moment");
+import * as moment from "moment";
 import { INDEXES } from "../../src/Constants";
 
 const log = getLogger({ module: "TestDriver" });

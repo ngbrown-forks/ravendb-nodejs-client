@@ -12,10 +12,12 @@ import {
     UpdatePullReplicationAsSinkOperation
 } from "../../../../src";
 import { ReplicationTestContext } from "../../../Utils/ReplicationTestContext";
-import moment = require("moment");
+import * as moment from "moment";
 import { GenerateCertificateOperation } from "../../../Infrastructure/GenerateCertificateOperation";
 import { ReplicationHubAccess } from "../../../../src/Documents/Operations/Replication/ReplicationHubAccess";
-import { RegisterReplicationHubAccessOperation } from "../../../../src/Documents/Operations/Replication/RegisterReplicationHubAccessOperation";
+import {
+    RegisterReplicationHubAccessOperation
+} from "../../../../src/Documents/Operations/Replication/RegisterReplicationHubAccessOperation";
 import { assertThat } from "../../../Utils/AssertExtensions";
 import { delay } from "../../../../src/Utility/PromiseUtil";
 

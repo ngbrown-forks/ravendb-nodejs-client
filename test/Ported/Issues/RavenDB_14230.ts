@@ -4,7 +4,7 @@ import { AsyncQueue } from "../../Utils/AsyncQueue";
 import { throwError } from "../../../src/Exceptions";
 import { User } from "../../Assets/Entities";
 import { assertThat, assertThrows } from "../../Utils/AssertExtensions";
-import moment = require("moment");
+import * as moment from "moment";
 
 describe("RavenDB_14230", function () {
 

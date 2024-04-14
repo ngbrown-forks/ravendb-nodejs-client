@@ -1,7 +1,7 @@
 import { IDocumentStore } from "../../../src/Documents/IDocumentStore";
 import { disposeTestDocumentStore, RavenTestContext, testContext } from "../../Utils/TestUtil";
 import { assertThat } from "../../Utils/AssertExtensions";
-import moment = require("moment");
+import * as moment from "moment";
 import { DateUtil } from "../../../src/Utility/DateUtil";
 
 (RavenTestContext.is60Server ? describe.skip : describe)("ClientGraphQueriesTest", function () {

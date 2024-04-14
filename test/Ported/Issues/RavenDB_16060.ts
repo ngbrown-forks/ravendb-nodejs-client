@@ -2,12 +2,14 @@ import {
     ConfigureTimeSeriesOperation,
     IDocumentStore,
     InMemoryDocumentSessionOperations,
-    RawTimeSeriesPolicy, SessionTimeSeriesBase, TimeSeriesCollectionConfiguration, TimeSeriesConfiguration,
+    RawTimeSeriesPolicy,
+    TimeSeriesCollectionConfiguration,
+    TimeSeriesConfiguration,
     TimeSeriesPolicy,
     TimeSeriesValue
 } from "../../../src";
 import { disposeTestDocumentStore, RavenTestContext, testContext } from "../../Utils/TestUtil";
-import moment = require("moment");
+import * as moment from "moment";
 import { User } from "../../Assets/Entities";
 import { assertThat } from "../../Utils/AssertExtensions";
 import { TimeValue } from "../../../src/Primitives/TimeValue";

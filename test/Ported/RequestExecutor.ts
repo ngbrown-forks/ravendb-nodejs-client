@@ -3,7 +3,7 @@ import { ClusterTestContext, disposeTestDocumentStore, RavenTestContext, testCon
 import { throwError } from "../../src/Exceptions";
 import { HttpRequestParameters, HttpResponse } from "../../src/Primitives/Http";
 import { Readable } from "node:stream";
-import * as http from "node:http";
+import { Agent } from "node:http";
 import { User } from "../Assets/Entities";
 import { assertThat } from "../Utils/AssertExtensions";
 
@@ -126,7 +126,7 @@ class FirstFailCommand extends PutDocumentCommand {
         this._timeToFail = timeToFail;
     }
 
-    send(agent: http.Agent, requestOptions: HttpRequestParameters): Promise<{ response: HttpResponse; bodyStream: Readable }> {
+    send(agent: Agent, requestOptions: HttpRequestParameters): Promise<{ response: HttpResponse; bodyStream: Readable }> {
         this._timeToFail--;
         if (this._timeToFail < 0) {
             return super.send(agent, requestOptions);

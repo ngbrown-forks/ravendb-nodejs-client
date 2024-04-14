@@ -1,6 +1,6 @@
 import { IDocumentStore, InMemoryDocumentSessionOperations } from "../../../src";
 import { disposeTestDocumentStore, testContext } from "../../Utils/TestUtil";
-import moment = require("moment");
+import * as moment from "moment";
 import { Company, Order } from "../../Assets/Entities";
 import { assertThat, assertThrows } from "../../Utils/AssertExtensions";
 import { TimeValue } from "../../../src/Primitives/TimeValue";

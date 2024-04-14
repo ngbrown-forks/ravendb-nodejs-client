@@ -1,4 +1,4 @@
-import * as moment from "moment";
+import moment from "moment";
 import { safeMemoryCache } from "safe-memory-cache";
 import { IDisposable } from "../Types/Contracts";
 

@@ -1,11 +1,9 @@
-import { CONSTANTS, GetCountersOperation, IDocumentStore, TimeSeriesEntry } from "../../../src";
+import { GetCountersOperation, IDocumentStore, TimeSeriesEntry } from "../../../src";
 import { disposeTestDocumentStore, testContext } from "../../Utils/TestUtil";
-import moment = require("moment");
 import { User } from "../../Assets/Entities";
 import { assertThat, assertThrows } from "../../Utils/AssertExtensions";
 import { IAttachmentsBulkInsert } from "../../../src/Documents/BulkInsertOperation";
 import { readToBuffer } from "../../../src/Utility/StreamUtil";
-import { RavenTestHelper } from "../../Utils/RavenTestHelper";
 import { HEADERS } from "../../../src/Constants";
 
 describe("TimeSeriesBulkInsertTest", function () {

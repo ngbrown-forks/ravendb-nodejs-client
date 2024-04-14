@@ -3,17 +3,23 @@ import { GetDatabaseRecordOperation, IDocumentStore } from "../../../src";
 import { TimeSeriesValue } from "../../../src/Documents/Session/TimeSeries/TimeSeriesValue";
 import { User } from "../../Assets/Entities";
 import { assertThat } from "../../Utils/AssertExtensions";
-import moment = require("moment");
+import * as moment from "moment";
 import { TimeSeriesAggregationResult } from "../../../src/Documents/Queries/TimeSeries/TimeSeriesAggregationResult";
 import { TimeSeriesRawResult } from "../../../src/Documents/Queries/TimeSeries/TimeSeriesRawResult";
 import { RawTimeSeriesPolicy } from "../../../src/Documents/Operations/TimeSeries/RawTimeSeriesPolicy";
 import { TimeValue } from "../../../src/Primitives/TimeValue";
 import { TimeSeriesPolicy } from "../../../src/Documents/Operations/TimeSeries/TimeSeriesPolicy";
 import { TimeSeriesConfiguration } from "../../../src/Documents/Operations/TimeSeries/TimeSeriesConfiguration";
-import { TimeSeriesCollectionConfiguration } from "../../../src/Documents/Operations/TimeSeries/TimeSeriesCollectionConfiguration";
-import { ConfigureTimeSeriesOperation } from "../../../src/Documents/Operations/TimeSeries/ConfigureTimeSeriesOperation";
+import {
+    TimeSeriesCollectionConfiguration
+} from "../../../src/Documents/Operations/TimeSeries/TimeSeriesCollectionConfiguration";
+import {
+    ConfigureTimeSeriesOperation
+} from "../../../src/Documents/Operations/TimeSeries/ConfigureTimeSeriesOperation";
 import { delay } from "../../../src/Utility/PromiseUtil";
-import { ISessionDocumentRollupTypedTimeSeries } from "../../../src/Documents/Session/ISessionDocumentRollupTypedTimeSeries";
+import {
+    ISessionDocumentRollupTypedTimeSeries
+} from "../../../src/Documents/Session/ISessionDocumentRollupTypedTimeSeries";
 import { TypedTimeSeriesRollupEntry } from "../../../src/Documents/Session/TimeSeries/TypedTimeSeriesRollupEntry";
 
 (RavenTestContext.isPullRequest ? describe.skip : describe)("TimeSeriesTypedSessionTest", function () {
