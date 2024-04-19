@@ -981,42 +981,40 @@ export class DocumentConventions {
         return docTypeOrTypeName as ObjectTypeDescriptor<T>;
     }
 
-    public transformObjectKeysToRemoteFieldNameConvention(obj: object, opts?: ObjectChangeCaseOptions) {
+    public transformObjectKeysToRemoteFieldNameConvention(obj: object) {
         if (!this._localToServerFieldNameConverter) {
             return obj;
         }
 
-        const options: any = opts || {
+        const options = {
             recursive: true,
             arrayRecursive: true,
-
+            defaultTransform: this._localToServerFieldNameConverter,
             ignorePaths: [
                 CONSTANTS.Documents.Metadata.IGNORE_CASE_TRANSFORM_REGEX,
             ]
         };
-        options.defaultTransform = this._localToServerFieldNameConverter;
 
         return ObjectUtil.transformObjectKeys(obj, options);
     }
 
     public transformObjectKeysToLocalFieldNameConvention(
-        obj: object, opts?: ObjectChangeCaseOptions) {
+        obj: object) {
         if (!this._serverToLocalFieldNameConverter) {
             return obj as object;
         }
 
-        const options = opts || {
+        const options: ObjectChangeCaseOptions = {
             recursive: true,
             arrayRecursive: true,
             ignorePaths: [
                 CONSTANTS.Documents.Metadata.IGNORE_CASE_TRANSFORM_REGEX,
                 /@projection/
-            ]
-        } as any;
+            ],
+            defaultTransform: this._serverToLocalFieldNameConverter
+        };
 
-        options.defaultTransform = this._serverToLocalFieldNameConverter;
-
-        return ObjectUtil.transformObjectKeys(obj, options as ObjectChangeCaseOptions);
+        return ObjectUtil.transformObjectKeys(obj, options);
     }
 
     public validate() {

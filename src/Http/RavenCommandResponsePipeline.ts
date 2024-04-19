@@ -4,10 +4,6 @@ import {
     ObjectKeyCaseTransformStreamOptions,
     ObjectKeyCaseTransformStream
 } from "../Mapping/Json/Streams/ObjectKeyCaseTransformStream";
-import {
-    ObjectKeyCaseTransformProfile,
-    getObjectKeyCaseTransformProfile
-} from "../Mapping/Json/Conventions";
 import { pipelineAsync } from "../Utility/StreamUtil";
 import { Stream, Transform, Readable, Writable, pipeline } from "node:stream";
 import {
@@ -91,11 +87,10 @@ export class RavenCommandResponsePipeline<TStreamResult> extends EventEmitter {
         return this;
     }
 
-    public objectKeysTransform(defaultTransform: FieldNameConversion, profile?: ObjectKeyCaseTransformProfile): this;
+    public objectKeysTransform(defaultTransform: FieldNameConversion): this;
     public objectKeysTransform(opts: ObjectKeyCaseTransformStreamOptions): this;
     public objectKeysTransform(
-        optsOrTransform: FieldNameConversion | ObjectKeyCaseTransformStreamOptions,
-        profile?: ObjectKeyCaseTransformProfile): this {
+        optsOrTransform: FieldNameConversion | ObjectKeyCaseTransformStreamOptions): this {
 
         if (!this._opts.jsonAsync && !this._opts.jsonSync) {
             throwError("InvalidOperationException",
@@ -103,7 +98,7 @@ export class RavenCommandResponsePipeline<TStreamResult> extends EventEmitter {
         }
 
         this._opts.streamKeyCaseTransform = !optsOrTransform || typeof optsOrTransform === "function" //TODO:
-            ? getObjectKeyCaseTransformProfile(optsOrTransform as FieldNameConversion, profile)
+            ? { defaultTransform: optsOrTransform as FieldNameConversion }
             : optsOrTransform;
 
         if (this._opts.jsonAsync) {

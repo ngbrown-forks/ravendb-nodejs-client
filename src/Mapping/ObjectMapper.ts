@@ -469,7 +469,7 @@ interface ObjectPropertyContext {
     parent: any;
     field: string;
 
-    getValue();
+    getValue(): any;
 
-    setValue(val: any);
+    setValue(val: any): void;
 }
