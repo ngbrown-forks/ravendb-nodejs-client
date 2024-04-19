@@ -12,7 +12,7 @@ import {
     UpdatePullReplicationAsSinkOperation
 } from "../../../../src";
 import { ReplicationTestContext } from "../../../Utils/ReplicationTestContext";
-import * as moment from "moment";
+import moment from "moment";
 import { GenerateCertificateOperation } from "../../../Infrastructure/GenerateCertificateOperation";
 import { ReplicationHubAccess } from "../../../../src/Documents/Operations/Replication/ReplicationHubAccess";
 import {

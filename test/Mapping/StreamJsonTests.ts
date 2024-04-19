@@ -1,9 +1,9 @@
 import * as fs from "node:fs";
-import * as path from "node:path";
+import * as url from 'node:url';
 import { Readable,pipeline } from "node:stream";
 import * as assert from "node:assert";
-import * as Parser from "stream-json/Parser.js";
-import * as StreamValues from "stream-json/streamers/StreamValues.js";
+import Parser from "stream-json/Parser.js";
+import StreamValues from "stream-json/streamers/StreamValues.js";
 import Stringer from "stream-json/Stringer.js";
 
 describe("stream-json parser and stringer", function () {
@@ -60,7 +60,8 @@ describe("stream-json parser and stringer", function () {
     });
 
     it("stringer for query result response with negative result etag", (done) => {
-        const content = fs.readFileSync(path.join(__dirname, "../Assets/queryResult.json"), "utf8");
+        const contentLocation = url.fileURLToPath(url.resolve(import.meta.url, "../Assets/queryResult.json"));
+        const content = fs.readFileSync(contentLocation, "utf8");
         const readable = new Readable();
         readable.push(content);
         readable.push(null);

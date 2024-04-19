@@ -1,6 +1,6 @@
 import { AbstractRawJavaScriptIndexCreationTask, GetTermsOperation, IDocumentStore } from "../../../../src";
 import { disposeTestDocumentStore, testContext } from "../../../Utils/TestUtil";
-import * as moment from "moment";
+import moment from "moment";
 import {
     AbstractRawJavaScriptTimeSeriesIndexCreationTask
 } from "../../../../src/Documents/Indexes/TimeSeries/AbstractRawJavaScriptTimeSeriesIndexCreationTask";

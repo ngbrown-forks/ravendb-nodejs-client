@@ -3,7 +3,7 @@ import { disposeTestDocumentStore, RavenTestContext, testContext } from "../../U
 import { RefreshConfiguration } from "../../../src/Documents/Operations/Refresh/RefreshConfiguration";
 import { ConfigureRefreshOperation } from "../../../src/Documents/Operations/Refresh/ConfigureRefreshOperation";
 import { User } from "../../Assets/Entities";
-import * as moment from "moment";
+import moment from "moment";
 import { Stopwatch } from "../../../src/Utility/Stopwatch";
 import { throwError } from "../../../src/Exceptions/index";
 import { assertThat } from "../../Utils/AssertExtensions";

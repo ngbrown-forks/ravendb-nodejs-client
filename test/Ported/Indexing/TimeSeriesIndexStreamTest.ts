@@ -1,6 +1,6 @@
 import { AbstractTimeSeriesIndexCreationTask, IDocumentStore, StreamResult } from "../../../src";
 import { disposeTestDocumentStore, testContext } from "../../Utils/TestUtil";
-import * as moment from "moment";
+import moment from "moment";
 import { Company } from "../../Assets/Orders";
 import { finishedAsync } from "../../../src/Utility/StreamUtil";
 import { assertThat } from "../../Utils/AssertExtensions";

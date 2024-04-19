@@ -1,5 +1,5 @@
 import * as assert from "node:assert";
-import * as moment from "moment";
+import moment from "moment";
 import { testContext, disposeTestDocumentStore } from "../Utils/TestUtil";
 
 import {

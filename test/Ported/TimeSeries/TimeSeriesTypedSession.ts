@@ -3,7 +3,7 @@ import { GetDatabaseRecordOperation, IDocumentStore } from "../../../src";
 import { TimeSeriesValue } from "../../../src/Documents/Session/TimeSeries/TimeSeriesValue";
 import { User } from "../../Assets/Entities";
 import { assertThat } from "../../Utils/AssertExtensions";
-import * as moment from "moment";
+import moment from "moment";
 import { TimeSeriesAggregationResult } from "../../../src/Documents/Queries/TimeSeries/TimeSeriesAggregationResult";
 import { TimeSeriesRawResult } from "../../../src/Documents/Queries/TimeSeries/TimeSeriesRawResult";
 import { RawTimeSeriesPolicy } from "../../../src/Documents/Operations/TimeSeries/RawTimeSeriesPolicy";

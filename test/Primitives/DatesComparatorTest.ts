@@ -1,4 +1,4 @@
-import * as moment from "moment";
+import moment from "moment";
 import { assertThat } from "../Utils/AssertExtensions";
 import { DatesComparator, leftDate, rightDate } from "../../src/Primitives/DatesComparator";
 

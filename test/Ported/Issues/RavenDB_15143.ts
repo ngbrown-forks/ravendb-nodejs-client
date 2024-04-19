@@ -2,7 +2,7 @@ import { IDocumentStore, SessionOptions } from "../../../src";
 import { disposeTestDocumentStore, testContext } from "../../Utils/TestUtil";
 import { assertThat } from "../../Utils/AssertExtensions";
 import { DateUtil } from "../../../src/Utility/DateUtil";
-import * as moment from "moment";
+import moment from "moment";
 
 describe("RavenDB_15143", function () {
 

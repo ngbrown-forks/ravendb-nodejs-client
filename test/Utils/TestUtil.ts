@@ -32,7 +32,7 @@ import { getLogger } from "../../src/Utility/LogUtil";
 import { AdminJsConsoleOperation } from "./AdminJsConsoleOperation";
 import { Stopwatch } from "../../src/Utility/Stopwatch";
 import { delay, wrapWithTimeout } from "../../src/Utility/PromiseUtil";
-import * as moment from "moment";
+import moment from "moment";
 import { INDEXES } from "../../src/Constants";
 
 const log = getLogger({ module: "TestDriver" });

@@ -1,6 +1,6 @@
 import { IDocumentStore, TypedTimeSeriesEntry } from "../../../src";
 import { disposeTestDocumentStore, testContext } from "../../Utils/TestUtil";
-import * as moment from "moment";
+import moment from "moment";
 import { User } from "../../Assets/Entities";
 import { assertThat } from "../../Utils/AssertExtensions";
 import { HeartRateMeasure } from "../FilteredReplicationTest";
