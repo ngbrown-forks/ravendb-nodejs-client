@@ -1,6 +1,6 @@
-import fs from "node:fs";
+import { unlinkSync, closeSync, openSync } from "node:fs";
 // regexp to check: from "(../)*\.\."
 
-fs.unlinkSync("./src/index.ts");
-fs.closeSync(fs.openSync("./src/index.ts", 'w'));
+unlinkSync("./src/index.ts");
+closeSync(openSync("./src/index.ts", 'w'));
 
