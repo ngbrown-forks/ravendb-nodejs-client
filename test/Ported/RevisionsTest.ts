@@ -19,6 +19,7 @@ import {
 } from "../../src/Documents/Operations/Revisions/GetRevisionsOperation";
 import { RevisionsResult } from "../../src/Documents/Operations/Revisions/RevisionsResult";
 import { delay } from "../../src/Utility/PromiseUtil";
+import { ObjectUtil } from "../../src/Utility/ObjectUtil";
 
 
 (RavenTestContext.is60Server ? describe.skip : describe)("RevisionsTest", function () {
@@ -90,8 +91,8 @@ import { delay } from "../../src/Utility/PromiseUtil";
         let customStore: DocumentStore;
         try {
             customStore = new DocumentStore(store.urls, store.database);
-            customStore.conventions.entityFieldNameConvention = "pascal";
-            customStore.conventions.remoteEntityFieldNameConvention = "camel";
+            customStore.conventions.serverToLocalFieldNameConverter = ObjectUtil.pascal;
+            customStore.conventions.localToServerFieldNameConverter = ObjectUtil.camel;
             customStore.initialize();
 
             const session = store.openSession();

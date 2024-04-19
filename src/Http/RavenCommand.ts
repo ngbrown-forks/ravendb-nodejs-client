@@ -16,6 +16,7 @@ import { Agent } from "node:http";
 import { ObjectTypeDescriptor } from "../Types";
 import { ReadableWebToNodeStream } from "../Utility/ReadableWebToNodeStream";
 import { LengthUnawareFormData } from "../Utility/LengthUnawareFormData";
+import { ObjectUtil } from "../Utility/ObjectUtil";
 
 const log = getLogger({ module: "RavenCommand" });
 
@@ -105,7 +106,7 @@ export abstract class RavenCommand<TResult> {
         return this._pipeline<T>()
             .parseJsonSync()
             .collectBody(bodyCallback)
-            .objectKeysTransform("camel");
+            .objectKeysTransform(ObjectUtil.camel);
     }
 
     public async setResponseAsync(bodyStream: Stream, fromCache: boolean): Promise<string> {

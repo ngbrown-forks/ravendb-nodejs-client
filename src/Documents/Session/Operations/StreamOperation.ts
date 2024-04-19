@@ -107,7 +107,7 @@ export class StreamOperation {
                 .on("error", err => result.emit("error", err))
                 .on("data", data => {
                     const rawWithCamel = ObjectUtil.transformObjectKeys(data["value"], {
-                        defaultTransform: "camel"
+                        defaultTransform: ObjectUtil.camel
                     });
 
                     const statsResult =

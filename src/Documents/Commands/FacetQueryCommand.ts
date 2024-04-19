@@ -45,14 +45,14 @@ export class FacetQueryCommand extends QueryCommand {
         const { Results, Includes, IndexTimestamp, LastQueryTime, ...rest } = json;
 
         const restMapped = ObjectUtil.transformObjectKeys(rest, {
-            defaultTransform: "camel"
+            defaultTransform: ObjectUtil.camel
         }) as any;
 
         return {
             ...restMapped,
             indexTimestamp: conventions.dateUtil.parse(IndexTimestamp),
             lastQueryTime: conventions.dateUtil.parse(LastQueryTime),
-            results: Results.map(x => ObjectUtil.transformObjectKeys(x, { defaultTransform: "camel" })),
+            results: Results.map(x => ObjectUtil.transformObjectKeys(x, { defaultTransform: ObjectUtil.camel })),
             includes: ObjectUtil.mapIncludesToLocalObject(json.Includes, conventions)
         };
     }

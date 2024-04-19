@@ -57,10 +57,10 @@ export class CompareExchangeResult<T> {
             let rawValue = val;
             // val comes here with proper key case already
             const entityType = conventions.getJsTypeByDocumentType(clazz as DocumentType);
-            if (conventions.entityFieldNameConvention) {
+            if (conventions.serverToLocalFieldNameConverter) {
                 rawValue = ObjectUtil.transformObjectKeys(
                     rawValue, {
-                        defaultTransform: conventions.entityFieldNameConvention,
+                        defaultTransform: conventions.serverToLocalFieldNameConverter,
                         recursive: true,
                         arrayRecursive: true
                     });

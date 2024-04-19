@@ -18,6 +18,7 @@ import { Stream } from "node:stream";
 import { TimeUtil } from "../../../Utility/TimeUtil";
 import { PutAttachmentCommandHelper } from "./PutAttachmentCommandHelper";
 import { TypeUtil } from "../../../Utility/TypeUtil";
+import { ObjectUtil } from "../../../Utility/ObjectUtil";
 
 export class SingleNodeBatchCommand extends RavenCommand<BatchCommandResult> implements IDisposable {
     private _supportsAtomicWrites: boolean | null;
@@ -142,7 +143,7 @@ export class SingleNodeBatchCommand extends RavenCommand<BatchCommandResult> imp
             .collectBody(_ => body = _)
             .parseJsonSync() // TODO: consider parseJsonAsync()
             .objectKeysTransform({
-                defaultTransform: "camel",
+                defaultTransform: ObjectUtil.camel,
                 ignoreKeys: [/^@/],
                 ignorePaths: [/results\.\[\]\.modifiedDocument\./i],
             })

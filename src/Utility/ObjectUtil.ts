@@ -27,7 +27,7 @@ export class ObjectUtil {
 
     static camelCase = (input: string, locale?: string) => locale ? input[0].toLocaleUpperCase(locale)  + input.slice(1) : input[0].toLowerCase() + input.slice(1);
     static camel = ObjectUtil.camelCase;
-    static pascalCase = (input: string, locale?: string) => locale ? input[0].toLocaleLowerCase(locale) + input.slice(1) : input[0].toUpperCase() + input.slice(1); 
+    static pascalCase = (input: string, locale?: string) => locale ? input[0].toLocaleLowerCase(locale) + input.slice(1) : input[0].toUpperCase() + input.slice(1);
     static pascal = ObjectUtil.pascalCase;
 
     public static deepJsonClone(o) {
@@ -90,7 +90,7 @@ export class ObjectUtil {
         const hasMetadata = CONSTANTS.Documents.Metadata.KEY in obj;
         const transformedMetadata = hasMetadata ? ObjectUtil.transformMetadataKeys(metadata, conventions) : null;
 
-        if (!conventions.entityFieldNameConvention) {
+        if (!conventions.serverToLocalFieldNameConverter) {
             // fast path - no need to transform entity - transform metadata only
             if (hasMetadata) {
                 return {
@@ -103,7 +103,7 @@ export class ObjectUtil {
         }
 
         const transformed = ObjectUtil.transformObjectKeys(obj, {
-            defaultTransform: conventions.entityFieldNameConvention
+            defaultTransform: conventions.serverToLocalFieldNameConverter
         });
 
         if (hasMetadata) {
@@ -121,7 +121,7 @@ export class ObjectUtil {
         let result: MetadataObject = {};
 
         const userMetadataFieldsToTransform: any = {};
-        const needsCaseTransformation = !!conventions.entityFieldNameConvention;
+        const needsCaseTransformation = !!conventions.serverToLocalFieldNameConverter;
 
         for (const [key, value] of Object.entries(metadata)) {
             if (key === CONSTANTS.Documents.Metadata.ATTACHMENTS) {
@@ -139,7 +139,7 @@ export class ObjectUtil {
 
         if (Object.keys(userMetadataFieldsToTransform)) {
             const transformedUserFields = ObjectUtil.transformObjectKeys(userMetadataFieldsToTransform, {
-                defaultTransform: conventions.entityFieldNameConvention
+                defaultTransform: conventions.serverToLocalFieldNameConverter
             });
 
             result = Object.assign(result, transformedUserFields);
@@ -250,22 +250,18 @@ export class ObjectUtil {
     This code is a modified version of https://github.com/claudetech/js-change-object-case
 */
 
-export type CasingConvention =
-    "camel" |
-    "camelCase" |
-    "pascal" |
-    "pascalCase";
+export type FieldNameConversion = (fieldName: string) => string;
 
 export interface ObjectChangeCaseOptionsBase {
     recursive?: boolean;
     arrayRecursive?: boolean;
     ignoreKeys?: (string | RegExp)[];
     ignorePaths?: (string | RegExp)[];
-    paths?: { transform: CasingConvention, path?: RegExp }[];
+    paths?: { transform: FieldNameConversion, path?: RegExp }[];
 }
 
 export interface ObjectChangeCaseOptions extends ObjectChangeCaseOptionsBase {
-    defaultTransform: CasingConvention;
+    defaultTransform: FieldNameConversion;
 }
 
 interface InternalObjectChangeCaseOptions extends ObjectChangeCaseOptions {
@@ -359,18 +355,14 @@ function getTransformFunc(key, currentPath, opts: InternalObjectChangeCaseOption
     if (opts.paths) {
         for (const p of opts.paths) {
             if (!p.path) {
-                return ObjectUtil[p.transform];
+                return p.transform;
             } else if (p.path.test(currentPath)) {
-                return p.transform ? ObjectUtil[p.transform] : iden;
+                return p.transform ?? iden;
             }
         }
     }
 
-    if (!opts.defaultTransform) {
-        return iden;
-    }
-
-    return ObjectUtil[opts.defaultTransform];
+    return opts.defaultTransform ?? iden;
 }
 
 function transformObjectKeys(object, options: InternalObjectChangeCaseOptions, stack) {

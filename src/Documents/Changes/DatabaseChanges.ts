@@ -450,7 +450,7 @@ export class DatabaseChanges implements IDatabaseChanges {
                     }
                     default: {
                         const value = message.Value;
-                        let transformedValue = ObjectUtil.transformObjectKeys(value, {defaultTransform: "camel"});
+                        let transformedValue = ObjectUtil.transformObjectKeys(value, { defaultTransform: ObjectUtil.camel });
                         if (type === "TimeSeriesChange") {
                             const dateUtil = this._conventions.dateUtil;
 

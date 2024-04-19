@@ -211,7 +211,6 @@ export class QueryOperation {
         timeSeriesFields?: string[]
     ) {
         const { conventions } = session;
-        const { entityFieldNameConvention } = conventions;
         const projection = metadata["@projection"];
         if (TypeUtil.isNullOrUndefined(projection) || projection === false) {
             const entityType = conventions.getJsTypeByDocumentType(clazz);
@@ -239,8 +238,8 @@ export class QueryOperation {
                     projectionField = projectionField.substring(1, projectionField.length - 1);
                 }
             }
-            if (entityFieldNameConvention) {
-                projectionField = StringUtil.changeCase(entityFieldNameConvention, projectionField);
+            if (conventions.serverToLocalFieldNameConverter) {
+                projectionField = conventions.serverToLocalFieldNameConverter(projectionField);
             }
 
             const jsonNode = document[projectionField];
@@ -283,8 +282,8 @@ export class QueryOperation {
             Object.assign(result, QueryOperation._reviveTimeSeriesRawResult(raw, conventions));
         } else {
             if (fieldsToFetch && fieldsToFetch.projections && fieldsToFetch.projections.length) {
-                const keys = conventions.entityFieldNameConvention
-                    ? fieldsToFetch.projections.map(x => StringUtil.changeCase(conventions.entityFieldNameConvention, x))
+                const keys = conventions.serverToLocalFieldNameConverter
+                    ? fieldsToFetch.projections.map(x => conventions.serverToLocalFieldNameConverter(x))
                     : fieldsToFetch.projections;
 
                 const nestedTypes = raw[NESTED_OBJECT_TYPES_PROJECTION_FIELD];
@@ -299,8 +298,7 @@ export class QueryOperation {
                     result[key] = mapped[key];
                 }
             } else {
-                Object.assign(result, !entityFieldNameConvention
-                    ? raw : conventions.transformObjectKeysToLocalFieldNameConvention(raw));
+                Object.assign(result, conventions.transformObjectKeysToLocalFieldNameConvention(raw));
             }
         }
 
@@ -335,7 +333,7 @@ export class QueryOperation {
     }
 
     private static _reviveTimeSeriesAggregationResult(raw: object, conventions: DocumentConventions) {
-        const rawLower = ObjectUtil.transformObjectKeys(raw, { defaultTransform: "camel" }) as any;
+        const rawLower = ObjectUtil.transformObjectKeys(raw, { defaultTransform: ObjectUtil.camel }) as any;
 
         const { results, ...otherProps } = rawLower;
 
@@ -357,7 +355,7 @@ export class QueryOperation {
     }
 
     private static _reviveTimeSeriesRawResult(raw: object, conventions: DocumentConventions) {
-        const rawLower = ObjectUtil.transformObjectKeys(raw, { defaultTransform: "camel" }) as any;
+        const rawLower = ObjectUtil.transformObjectKeys(raw, { defaultTransform: ObjectUtil.camel }) as any;
 
         const { results, ...otherProps } = rawLower;
 

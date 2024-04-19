@@ -10,6 +10,6 @@ export class RevisionsCollectionConfiguration extends SetupDocumentBase {
     public maximumRevisionsToDeleteUponDocumentUpdate?: number;
 
     public toRemoteFieldNames() {
-        return ObjectUtil.transformObjectKeys(this, { defaultTransform: "pascal" });
+        return ObjectUtil.transformObjectKeys(this, { defaultTransform: ObjectUtil.pascal });
     }
 }

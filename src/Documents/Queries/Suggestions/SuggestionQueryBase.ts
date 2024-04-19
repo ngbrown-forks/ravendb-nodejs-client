@@ -38,7 +38,7 @@ export abstract class SuggestionQueryBase {
         for (const result of queryResult.results) {
 
             const transformedResult = ObjectUtil.transformObjectKeys(result, {
-                defaultTransform: "camel"
+                defaultTransform: ObjectUtil.camel
             }) as SuggestionResult;
 
             results[transformedResult.name] = transformedResult;

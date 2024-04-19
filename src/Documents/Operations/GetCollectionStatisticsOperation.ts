@@ -6,6 +6,7 @@ import { DocumentConventions } from "../Conventions/DocumentConventions";
 import { ServerNode } from "../../Http/ServerNode";
 import { JsonSerializer } from "../../Mapping/Json/Serializer";
 import { Stream } from "node:stream";
+import { ObjectUtil } from "../../Utility/ObjectUtil";
 
 export class GetCollectionStatisticsOperation implements IMaintenanceOperation<CollectionStatistics> {
 
@@ -47,7 +48,7 @@ export class GetCollectionStatisticsCommand extends RavenCommand<CollectionStati
         this.result = await this._defaultPipeline(_ => body = _)
             .collectBody()
             .objectKeysTransform({
-                defaultTransform: "camel",
+                defaultTransform: ObjectUtil.camel,
                 ignorePaths: [/^collections\./i]
             })
             .process(bodyStream);

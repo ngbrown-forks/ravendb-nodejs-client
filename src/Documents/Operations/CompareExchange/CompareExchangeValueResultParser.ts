@@ -101,10 +101,10 @@ export class CompareExchangeValueResultParser {
                 return new CompareExchangeValue(key, index, null, cv, metadata);
             } else {
                 const entityType = conventions.getJsTypeByDocumentType(clazz as EntityConstructor);
-                if (conventions.entityFieldNameConvention) {
+                if (conventions.serverToLocalFieldNameConverter) {
                     rawValue = ObjectUtil.transformObjectKeys(
                         rawValue, {
-                            defaultTransform: conventions.entityFieldNameConvention,
+                            defaultTransform: conventions.serverToLocalFieldNameConverter,
                             recursive: true,
                             arrayRecursive: true
                         });

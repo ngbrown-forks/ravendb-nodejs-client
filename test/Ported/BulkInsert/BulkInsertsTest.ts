@@ -8,6 +8,7 @@ import { createMetadataDictionary } from "../../../src/Mapping/MetadataAsDiction
 import { CONSTANTS } from "../../../src/Constants";
 import { DateUtil } from "../../../src/Utility/DateUtil";
 import { delay } from "../../../src/Utility/PromiseUtil";
+import { ObjectUtil } from "../../../src/Utility/ObjectUtil";
 
 describe("bulk insert", function () {
 
@@ -237,8 +238,8 @@ describe("bulk insert", function () {
 
     it("can handle custom entity naming conventions + object literals when findCollectionNameForObjectLiteral is specified", async () => {
         const store2 = new DocumentStore(store.urls, store.database);
-        store2.conventions.entityFieldNameConvention = "camel";
-        store2.conventions.remoteEntityFieldNameConvention = "pascal";
+        store2.conventions.serverToLocalFieldNameConverter = ObjectUtil.camel;
+        store2.conventions.localToServerFieldNameConverter = ObjectUtil.pascal;
         store2.conventions.findCollectionNameForObjectLiteral = () => "test";
 
         store2.initialize();

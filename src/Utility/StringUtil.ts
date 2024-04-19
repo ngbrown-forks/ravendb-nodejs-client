@@ -1,6 +1,5 @@
 import { TypeUtil } from "./TypeUtil";
 import { throwError } from "../Exceptions";
-import { CasingConvention, ObjectUtil } from "./ObjectUtil";
 import { StringBuilder } from "./StringBuilder";
 
 export class StringUtil {
@@ -121,10 +120,6 @@ export class StringUtil {
 
     public static isNullOrWhitespace(s?: string): boolean {
         return !(s || "").trim().length;
-    }
-
-    public static changeCase(transformName: CasingConvention, s: string) {
-        return ObjectUtil[transformName](s);
     }
 
     public static equalsIgnoreCase(s1: string, s2: string) {

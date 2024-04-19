@@ -8,7 +8,6 @@ import {
     ObjectKeyCaseTransformProfile,
     getObjectKeyCaseTransformProfile
 } from "../Mapping/Json/Conventions";
-import { CasingConvention } from "../Utility/ObjectUtil";
 import { pipelineAsync } from "../Utility/StreamUtil";
 import { Stream, Transform, Readable, Writable, pipeline } from "node:stream";
 import {
@@ -22,6 +21,7 @@ import Assembler from "stream-json/Assembler.js";
 import { ErrorFirstCallback } from "../Types/Callbacks";
 import { StringBuilder } from "../Utility/StringBuilder";
 import JsonlParser  from "stream-json/jsonl/Parser.js";
+import { FieldNameConversion } from "../Utility/ObjectUtil";
 
 export interface RavenCommandResponsePipelineOptions<TResult> {
     collectBody?: boolean | ((body: string) => void);
@@ -93,10 +93,10 @@ export class RavenCommandResponsePipeline<TStreamResult> extends EventEmitter {
         return this;
     }
 
-    public objectKeysTransform(defaultTransform: CasingConvention, profile?: ObjectKeyCaseTransformProfile): this;
+    public objectKeysTransform(defaultTransform: FieldNameConversion, profile?: ObjectKeyCaseTransformProfile): this;
     public objectKeysTransform(opts: ObjectKeyCaseTransformStreamOptions): this;
     public objectKeysTransform(
-        optsOrTransform: CasingConvention | ObjectKeyCaseTransformStreamOptions,
+        optsOrTransform: FieldNameConversion | ObjectKeyCaseTransformStreamOptions,
         profile?: ObjectKeyCaseTransformProfile): this {
 
         if (!this._opts.jsonAsync && !this._opts.jsonSync) {
@@ -104,8 +104,8 @@ export class RavenCommandResponsePipeline<TStreamResult> extends EventEmitter {
                 "Cannot use key case transform without doing parseJson() or parseJsonAsync() first.");
         }
 
-        this._opts.streamKeyCaseTransform = !optsOrTransform || typeof optsOrTransform === "string"
-            ? getObjectKeyCaseTransformProfile(optsOrTransform as CasingConvention, profile)
+        this._opts.streamKeyCaseTransform = !optsOrTransform || typeof optsOrTransform === "function" //TODO:
+            ? getObjectKeyCaseTransformProfile(optsOrTransform as FieldNameConversion, profile)
             : optsOrTransform;
 
         if (this._opts.jsonAsync) {

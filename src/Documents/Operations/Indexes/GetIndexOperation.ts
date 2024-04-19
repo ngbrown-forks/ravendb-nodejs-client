@@ -6,6 +6,7 @@ import { DocumentConventions } from "../../Conventions/DocumentConventions";
 import { HttpRequestParameters } from "../../../Primitives/Http";
 import { ServerNode } from "../../../Http/ServerNode";
 import { Stream } from "node:stream";
+import { ObjectUtil } from "../../../Utility/ObjectUtil";
 
 export class GetIndexOperation implements IMaintenanceOperation<IndexDefinition> {
 
@@ -60,7 +61,7 @@ export class GetIndexCommand extends RavenCommand<IndexDefinition> {
             .collectBody(b => body = b)
             .parseJsonSync()
             .objectKeysTransform({
-                defaultTransform: "camel",
+                defaultTransform: ObjectUtil.camel,
                 ignorePaths: [/fields\.[^.]+$/i]
             })
             .process(bodyStream);

@@ -8,6 +8,7 @@ import {
 import assert from "node:assert"
 import { User } from "../../../Assets/Entities";
 import { CONSTANTS } from "../../../../src/Constants";
+import { ObjectUtil } from "../../../../src/Utility/ObjectUtil";
 
 describe("document streaming", function () {
 
@@ -42,8 +43,8 @@ describe("document streaming", function () {
 
         if (remoteCasing === "pascal") {
             newStore.conventions.findCollectionNameForObjectLiteral = (o) => o["collection"];
-            newStore.conventions.entityFieldNameConvention = "camel";
-            newStore.conventions.remoteEntityFieldNameConvention = "pascal";
+            newStore.conventions.serverToLocalFieldNameConverter = ObjectUtil.camel;
+            newStore.conventions.localToServerFieldNameConverter = ObjectUtil.pascal;
             newStore.conventions.identityProperty = "Id";
             newStore.conventions.registerEntityIdPropertyName(Object, "Id");
         }

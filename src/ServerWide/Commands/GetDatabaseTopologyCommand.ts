@@ -3,6 +3,7 @@ import { RavenCommand } from "../../Http/RavenCommand";
 import { ServerNode } from "../../Http/ServerNode";
 import { Topology } from "../../Http/Topology";
 import { HttpRequestParameters } from "../../Primitives/Http";
+import { ObjectUtil } from "../../Utility/ObjectUtil";
 
 interface ServerNodeDto {
     database: string;
@@ -58,7 +59,7 @@ export class GetDatabaseTopologyCommand extends RavenCommand<Topology> {
         const rawTpl = await this._pipeline<TopologyDto>()
             .collectBody(_ => body = _)
             .parseJsonSync()
-            .objectKeysTransform("camel")
+            .objectKeysTransform(ObjectUtil.camel)
             .process(bodyStream);
 
         const nodes = rawTpl.nodes

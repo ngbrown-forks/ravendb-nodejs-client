@@ -1,4 +1,3 @@
-import { CasingConvention } from "./../../src/Utility/ObjectUtil";
 import { ObjectChangeCaseOptions } from "./../../src/Utility/ObjectUtil";
 import assert from "node:assert"
 import { ObjectUtil } from "../../src/Utility/ObjectUtil";
@@ -12,7 +11,7 @@ describe("ObjectUtil", function () {
             recursive: true,
             arrayRecursive: true,
             ignoreKeys: [/^@/],
-            defaultTransform: "camel" as CasingConvention
+            defaultTransform: ObjectUtil.camel
         };
         const transformed = ObjectUtil.transformObjectKeys(o, opts);
         assert.strictEqual("users/1", transformed["results"][0]["@id"]);
@@ -25,7 +24,7 @@ describe("ObjectUtil", function () {
             recursive: true,
             arrayRecursive: true,
             ignorePaths: [/results\.\[\]\.@/i],
-            defaultTransform: "camel" as CasingConvention
+            defaultTransform: ObjectUtil.camel
         };
         const transformed = ObjectUtil.transformObjectKeys(o, opts);
         assert.strictEqual("users/1", transformed["results"][0]["@id"]);
@@ -37,11 +36,11 @@ describe("ObjectUtil", function () {
             arrayRecursive: true,
             ignoreKeys: [/^@/],
             ignorePaths: [/@metadata\.(@collection)/],
-            defaultTransform: "pascal",
+            defaultTransform: ObjectUtil.pascal,
             paths: [
                 {
                     path: /@metadata\.@attachments\./,
-                    transform: "camel"
+                    transform: ObjectUtil.camel
                 },
             ]
         } as ObjectChangeCaseOptions;

@@ -157,9 +157,9 @@ export class TypesAwareObjectMapper implements ITypesAwareObjectMapper {
             field = field.replace(/\$MAP$/g, "");
         }
 
-        const fieldNameConvention = this._conventions.entityFieldNameConvention;
+        const fieldNameConvention = this._conventions.serverToLocalFieldNameConverter;
         if (fieldNameConvention) {
-            field = StringUtil.changeCase(fieldNameConvention, field);
+            field = fieldNameConvention(field);
         }
 
         let fieldVal = parent[field];
@@ -441,8 +441,8 @@ export class TypesAwareObjectMapper implements ITypesAwareObjectMapper {
             return Object.keys(obj)
                 .reduce((result, key) => {
                     let nestedTypeInfoKey = key;
-                    if (this._conventions.remoteEntityFieldNameConvention) {
-                        nestedTypeInfoKey = ObjectUtil[this._conventions.remoteEntityFieldNameConvention](key);
+                    if (this._conventions.localToServerFieldNameConverter) {
+                        nestedTypeInfoKey = this._conventions.localToServerFieldNameConverter(key);
                     }
 
                     let innerSkipTypes = skipTypes

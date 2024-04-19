@@ -125,10 +125,10 @@ export class PatchCommand extends RavenCommand<PatchResult> {
         this._patch = ObjectUtil.transformObjectKeys(
             conventions.objectMapper.toObjectLiteral({ patch, patchIfMissing }),
             {
-                defaultTransform: "pascal",
+                defaultTransform: ObjectUtil.pascal,
                 paths: [
                     {
-                        transform: conventions.remoteEntityFieldNameConvention,
+                        transform: conventions.localToServerFieldNameConverter,
                         path: /Values/i
                     }
                 ]

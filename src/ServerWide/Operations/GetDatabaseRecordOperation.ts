@@ -9,6 +9,7 @@ import { TimeSeriesConfiguration } from "../../Documents/Operations/TimeSeries/T
 import { ServerResponse } from "../../Types";
 import { RollingIndexDeployment } from "../../Documents/Indexes/RollingIndexDeployment";
 import { DateUtil } from "../../Utility/DateUtil";
+import { ObjectUtil } from "../../Utility/ObjectUtil";
 
 export class GetDatabaseRecordOperation implements IServerOperation<DatabaseRecordWithEtag> {
     private readonly _database: string;
@@ -58,7 +59,7 @@ export class GetDatabaseRecordCommand extends RavenCommand<DatabaseRecordWithEta
         this.result = await this._defaultPipeline(_ => body = _)
             .collectBody()
             .objectKeysTransform({
-                defaultTransform: "camel",
+                defaultTransform: ObjectUtil.camel,
                 ignorePaths: [
                     /^(indexes|sorters|autoIndexes|settings|indexesHistory|ravenConnectionStrings|sqlConnectionStrings|rollingIndexes)\.[^.]+$/i,
                     /^rollingIndexes\.[^.]+\.activeDeployments\.[^.]+$/i,

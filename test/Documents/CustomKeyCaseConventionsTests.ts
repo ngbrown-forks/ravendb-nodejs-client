@@ -4,6 +4,7 @@ import DocumentStore, {
     IDocumentStore, PatchCommandData, PatchRequest,
 } from "../../src";
 import { assertThat } from "../Utils/AssertExtensions";
+import { ObjectUtil } from "../../src/Utility/ObjectUtil";
 
 describe("With custom key case conventions set", function () {
 
@@ -127,8 +128,8 @@ describe("With custom key case conventions set", function () {
         try {
             store = getStoreWithCustomConventions((s) => {
                 s.conventions.findCollectionNameForObjectLiteral = (o) => o["collection"];
-                s.conventions.entityFieldNameConvention = "camel";
-                s.conventions.remoteEntityFieldNameConvention = "pascal";
+                s.conventions.serverToLocalFieldNameConverter = ObjectUtil.camel;
+                s.conventions.localToServerFieldNameConverter = ObjectUtil.pascal;
                 s.conventions.identityProperty = "Id";
                 s.conventions.registerEntityIdPropertyName(Object, "Id");
             });
@@ -177,8 +178,8 @@ describe("With custom key case conventions set", function () {
         try {
             customCaseStore = getStoreWithCustomConventions((s) => {
                 s.conventions.findCollectionNameForObjectLiteral = (o) => o["collection"];
-                s.conventions.entityFieldNameConvention = "camel";
-                s.conventions.remoteEntityFieldNameConvention = "pascal";
+                s.conventions.serverToLocalFieldNameConverter = ObjectUtil.camel;
+                s.conventions.localToServerFieldNameConverter = ObjectUtil.pascal;
                 s.conventions.identityProperty = "Id";
                 s.conventions.registerEntityIdPropertyName(Object, "Id");
             });
@@ -220,7 +221,7 @@ describe("With custom key case conventions set", function () {
     it("should throw error if only one key case convention is set", async () => {
         try {
             getStoreWithCustomConventions(store => {
-                store.conventions.remoteEntityFieldNameConvention = "pascal";
+                store.conventions.localToServerFieldNameConverter = ObjectUtil.pascal;
             });
             assert.fail("should have thrown");
         } catch (err) {
@@ -243,8 +244,8 @@ describe("With custom key case conventions set", function () {
         try {
             store = getStoreWithCustomConventions((s) => {
                 s.conventions.findCollectionNameForObjectLiteral = (o) => o["collection"];
-                s.conventions.entityFieldNameConvention = "camel";
-                s.conventions.remoteEntityFieldNameConvention = "pascal";
+                s.conventions.serverToLocalFieldNameConverter = ObjectUtil.camel;
+                s.conventions.localToServerFieldNameConverter = ObjectUtil.pascal;
                 s.conventions.identityProperty = "Id";
                 s.conventions.registerEntityIdPropertyName(Object, "Id");
             });
@@ -296,8 +297,8 @@ describe("With custom key case conventions set", function () {
         try {
             store = getStoreWithCustomConventions((s) => {
                 s.conventions.findCollectionNameForObjectLiteral = (o) => o["collection"];
-                s.conventions.entityFieldNameConvention = "camel";
-                s.conventions.remoteEntityFieldNameConvention = "pascal";
+                s.conventions.serverToLocalFieldNameConverter = ObjectUtil.camel;
+                s.conventions.localToServerFieldNameConverter = ObjectUtil.pascal;
                 s.conventions.identityProperty = "Id";
                 s.conventions.registerEntityIdPropertyName(Object, "Id");
             });
@@ -345,8 +346,8 @@ describe("With custom key case conventions set", function () {
         try {
             store = getStoreWithCustomConventions((s) => {
                 s.conventions.findCollectionNameForObjectLiteral = (o) => o["collection"];
-                s.conventions.entityFieldNameConvention = "camel";
-                s.conventions.remoteEntityFieldNameConvention = "pascal";
+                s.conventions.serverToLocalFieldNameConverter = ObjectUtil.camel;
+                s.conventions.localToServerFieldNameConverter = ObjectUtil.pascal;
             });
 
             const session = store.openSession({
@@ -368,8 +369,8 @@ describe("With custom key case conventions set", function () {
         try {
             customCaseStore = getStoreWithCustomConventions((s) => {
                 s.conventions.findCollectionNameForObjectLiteral = (o) => o["collection"];
-                s.conventions.entityFieldNameConvention = "camel";
-                s.conventions.remoteEntityFieldNameConvention = "pascal";
+                s.conventions.serverToLocalFieldNameConverter = ObjectUtil.camel;
+                s.conventions.localToServerFieldNameConverter = ObjectUtil.pascal;
             });
 
             {

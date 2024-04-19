@@ -14,7 +14,7 @@ import { throwError } from "../../Exceptions";
 import { CONSTANTS } from "../../Constants";
 import { TypeUtil } from "../../Utility/TypeUtil";
 import { DateUtil, DateUtilOpts } from "../../Utility/DateUtil";
-import { CasingConvention, ObjectUtil, ObjectChangeCaseOptions } from "../../Utility/ObjectUtil";
+import { ObjectUtil, ObjectChangeCaseOptions, FieldNameConversion } from "../../Utility/ObjectUtil";
 import { LoadBalanceBehavior } from "../../Http/LoadBalanceBehavior";
 import { BulkInsertConventions } from "./BulkInsertConventions";
 import { InMemoryDocumentSessionOperations } from "../Session/InMemoryDocumentSessionOperations";
@@ -31,7 +31,6 @@ function createServerDefaults() {
     conventions.freeze();
     return conventions;
 }
-
 
 export class DocumentConventions {
 
@@ -94,8 +93,8 @@ export class DocumentConventions {
 
     private readonly _knownEntityTypes: Map<string, ObjectTypeDescriptor>;
 
-    private _localEntityFieldNameConvention: CasingConvention;
-    private _remoteEntityFieldNameConvention: CasingConvention;
+    private _localToServerFieldNameConverter?: FieldNameConversion;
+    private _serverToLocalFieldNameConverter?: FieldNameConversion;
 
     private _objectMapper: TypesAwareObjectMapper;
     private _customFetch: any;
@@ -365,25 +364,41 @@ export class DocumentConventions {
         this._loadBalancerPerSessionContextSelector = selector;
     }
 
-    public get entityFieldNameConvention(): CasingConvention {
-        return this._localEntityFieldNameConvention;
+    /**
+     * Optional field name casing converter
+     * This one is applied on local object before sending request to server
+     */
+    public get localToServerFieldNameConverter() {
+        return this._localToServerFieldNameConverter;
     }
 
-    public set entityFieldNameConvention(val) {
+    /**
+     * Optional field name casing converter
+     * This one is applied on local object before sending request to server
+     */
+    public set localToServerFieldNameConverter(converter: FieldNameConversion) {
         this._assertNotFrozen();
-        this._localEntityFieldNameConvention = val;
+        this._localToServerFieldNameConverter = converter;
     }
 
-    public get remoteEntityFieldNameConvention() {
-        return this._remoteEntityFieldNameConvention;
+    /**
+     * Optional field name casing converter
+     * This one is applied on server object before returning result to the user
+     */
+    public get serverToLocalFieldNameConverter() {
+        return this._serverToLocalFieldNameConverter;
     }
 
-    public set remoteEntityFieldNameConvention(val) {
+    /**
+     * Optional field name casing converter
+     * This one is applied on server object before returning result to the user
+     */
+    public set serverToLocalFieldNameConverter(converter: FieldNameConversion) {
         this._assertNotFrozen();
-        this._remoteEntityFieldNameConvention = val;
+        this._serverToLocalFieldNameConverter = converter;
     }
 
-    public set useOptimisticConcurrency(val) {
+    public set useOptimisticConcurrency(val: boolean) {
         this._assertNotFrozen();
         this._useOptimisticConcurrency = val;
     }
@@ -967,7 +982,7 @@ export class DocumentConventions {
     }
 
     public transformObjectKeysToRemoteFieldNameConvention(obj: object, opts?: ObjectChangeCaseOptions) {
-        if (!this._remoteEntityFieldNameConvention) {
+        if (!this._localToServerFieldNameConverter) {
             return obj;
         }
 
@@ -979,14 +994,14 @@ export class DocumentConventions {
                 CONSTANTS.Documents.Metadata.IGNORE_CASE_TRANSFORM_REGEX,
             ]
         };
-        options.defaultTransform = this._remoteEntityFieldNameConvention;
+        options.defaultTransform = this._localToServerFieldNameConverter;
 
         return ObjectUtil.transformObjectKeys(obj, options);
     }
 
     public transformObjectKeysToLocalFieldNameConvention(
         obj: object, opts?: ObjectChangeCaseOptions) {
-        if (!this._localEntityFieldNameConvention) {
+        if (!this._serverToLocalFieldNameConverter) {
             return obj as object;
         }
 
@@ -999,17 +1014,17 @@ export class DocumentConventions {
             ]
         } as any;
 
-        options.defaultTransform = this._localEntityFieldNameConvention;
+        options.defaultTransform = this._serverToLocalFieldNameConverter;
 
         return ObjectUtil.transformObjectKeys(obj, options as ObjectChangeCaseOptions);
     }
 
     public validate() {
-        if ((this._remoteEntityFieldNameConvention && !this._localEntityFieldNameConvention)
-            || (!this._remoteEntityFieldNameConvention && this._localEntityFieldNameConvention)) {
+        if ((this._localToServerFieldNameConverter && !this._serverToLocalFieldNameConverter)
+            || (!this._localToServerFieldNameConverter && this._serverToLocalFieldNameConverter)) {
             throwError("ConfigurationException",
                 "When configuring field name conventions, "
-                + "one has to configure both local and remote field name convention.");
+                + "one has to configure both localToServer and serverToLocal field name converters.");
         }
     }
 }

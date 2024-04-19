@@ -13,6 +13,7 @@ import { CONSTANTS } from "../../../../src/Constants";
 import { parseJsonStreamVerbose, parseJsonVerbose } from "../../../Utils/Json";
 import { getStringWritable } from "../../../Utils/Streams";
 import { assertThat } from "../../../Utils/AssertExtensions";
+import { ObjectUtil } from "../../../../src/Utility/ObjectUtil";
 
 describe("query streaming", function () {
 
@@ -226,8 +227,8 @@ describe("query streaming", function () {
 
         if (remoteCasing === "pascal") {
             newStore.conventions.findCollectionNameForObjectLiteral = (o) => o["collection"];
-            newStore.conventions.entityFieldNameConvention = "camel";
-            newStore.conventions.remoteEntityFieldNameConvention = "pascal";
+            newStore.conventions.serverToLocalFieldNameConverter = ObjectUtil.camel;
+            newStore.conventions.localToServerFieldNameConverter = ObjectUtil.pascal;
             newStore.conventions.identityProperty = "Id";
             newStore.conventions.registerEntityIdPropertyName(Object, "Id");
         }

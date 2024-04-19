@@ -4,6 +4,7 @@ import { Employee} from "../../Assets/Orders";
 import {assertThat, assertThrows} from "../../Utils/AssertExtensions";
 import DocumentStore from "../../../src";
 import {CreateSampleDataOperation} from "../../Utils/CreateSampleDataOperation";
+import { ObjectUtil } from "../../../src/Utility/ObjectUtil";
 
 describe("RDBC_751", function () {
     let regularStore: IDocumentStore;
@@ -28,8 +29,8 @@ describe("RDBC_751", function () {
         try {
             store = getStoreWithCustomConventions((s) => {
                 s.conventions.findCollectionNameForObjectLiteral = (o) => o["collection"];
-                s.conventions.entityFieldNameConvention = "camel";
-                s.conventions.remoteEntityFieldNameConvention = "pascal";
+                s.conventions.serverToLocalFieldNameConverter = ObjectUtil.camel;
+                s.conventions.localToServerFieldNameConverter = ObjectUtil.pascal;
                 s.conventions.identityProperty = "id";
                 s.conventions.registerEntityIdPropertyName(Object, "id");
             });

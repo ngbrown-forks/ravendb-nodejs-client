@@ -8,6 +8,7 @@ import DocumentStore, {
     ConfigureRevisionsOperation
 } from "../../../src";
 import assert from "node:assert"
+import { ObjectUtil } from "../../../src/Utility/ObjectUtil";
 
 // skipped for the time being
 // subscriptions are not working with server version 4.1
@@ -180,8 +181,8 @@ import assert from "node:assert"
         const store2 = new DocumentStore(store.urls, store.database);
         try {
             store2.conventions.findCollectionNameForObjectLiteral = () => "test";
-            store2.conventions.entityFieldNameConvention = "camel";
-            store2.conventions.remoteEntityFieldNameConvention = "pascal";
+            store2.conventions.serverToLocalFieldNameConverter = ObjectUtil.camel;
+            store2.conventions.localToServerFieldNameConverter = ObjectUtil.pascal;
             store2.initialize();
             const subscriptionId = await store2.subscriptions.createForRevisions({
                 documentType: User

@@ -26,7 +26,7 @@ export class MoreLikeThisScope implements IDisposable {
             return;
         }
 
-        const optionsAsJson = ObjectUtil.transformObjectKeys(options, { defaultTransform: "pascal" });
+        const optionsAsJson = ObjectUtil.transformObjectKeys(options, { defaultTransform: ObjectUtil.pascal });
         this._token.optionsParameterName = this._addQueryParameter(optionsAsJson);
     }
 

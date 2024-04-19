@@ -18,6 +18,7 @@ import { OngoingTaskSubscription } from "../../../src/Documents/Operations/Ongoi
 import { assertThat, assertThrows } from "../../Utils/AssertExtensions";
 import { TimeValue } from "../../../src/Primitives/TimeValue";
 import { Semaphore } from "../../../src/Utility/Semaphore";
+import { ObjectUtil } from "../../../src/Utility/ObjectUtil";
 
 describe("SubscriptionsBasicTest", function () {
     const _reasonableWaitTime = 15 * 1000;
@@ -870,8 +871,8 @@ describe("SubscriptionsBasicTest", function () {
         const store2 = new DocumentStore(store.urls, store.database);
         try {
             store2.conventions.findCollectionNameForObjectLiteral = () => "test";
-            store2.conventions.entityFieldNameConvention = "camel";
-            store2.conventions.remoteEntityFieldNameConvention = "pascal";
+            store2.conventions.serverToLocalFieldNameConverter = ObjectUtil.camel;
+            store2.conventions.localToServerFieldNameConverter = ObjectUtil.pascal;
             store2.initialize();
 
             {

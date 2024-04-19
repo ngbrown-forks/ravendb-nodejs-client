@@ -2,14 +2,13 @@ import { Transform } from "node:stream";
 import {
     ObjectUtil,
     ObjectChangeCaseOptions,
-    ObjectChangeCaseOptionsBase,
-    CasingConvention
+    ObjectChangeCaseOptionsBase, FieldNameConversion
 } from "../../../Utility/ObjectUtil";
 import { TypeUtil } from "../../../Utility/TypeUtil";
 
 export interface ObjectKeyCaseTransformStreamOptionsBase extends ObjectChangeCaseOptionsBase {
     extractIgnorePaths?: ((entry: object) => (string | RegExp)[]);
-    defaultTransform?: CasingConvention;
+    defaultTransform?: FieldNameConversion;
 }
 
 export interface ObjectKeyCaseTransformStreamOptions
@@ -34,7 +33,6 @@ export class ObjectKeyCaseTransformStream extends Transform {
         super({ objectMode: true });
 
         this._opts = Object.assign({}, DEFAULT_OBJECT_KEY_CASE_TRANSFORM_OPTS, this._opts);
-        ObjectKeyCaseTransformStream._validateOpts(_opts);
 
         if (typeof _opts.extractIgnorePaths === "function") {
             this._getIgnorePaths = _opts.extractIgnorePaths;
@@ -60,11 +58,5 @@ export class ObjectKeyCaseTransformStream extends Transform {
             ? { key, value: entry }
             : entry;
         callback(null, data);
-    }
-
-    private static _validateOpts(opts: ObjectKeyCaseTransformStreamOptions) {
-        if (opts.defaultTransform && !ObjectUtil[opts.defaultTransform]) {
-            throw new Error(`Unknown key casing convention: ${opts.defaultTransform}`);
-        }
     }
 }

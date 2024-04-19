@@ -10,7 +10,7 @@ export class FacetSetup extends SetupDocumentBase {
 
     public toRemoteFieldNames() {
         return ObjectUtil.transformObjectKeys(this, {
-            defaultTransform: "pascal"
+            defaultTransform: ObjectUtil.pascal
         });
     }
 }

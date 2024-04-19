@@ -4,6 +4,7 @@ import { HttpRequestParameters } from "../../Primitives/Http";
 import { ServerNode, ServerNodeRole } from "../../Http/ServerNode";
 import { Stream } from "node:stream";
 import { NodeStatus } from "../../Http/RequestExecutor";
+import { ObjectUtil } from "../../Utility/ObjectUtil";
 
 export class ClusterTopologyResponse {
     public leader: string;
@@ -44,7 +45,7 @@ export class GetClusterTopologyCommand extends RavenCommand<ClusterTopologyRespo
             .collectBody(b => body = b)
             .parseJsonSync()
             .objectKeysTransform({
-                defaultTransform: "camel",
+                defaultTransform: ObjectUtil.camel,
                 ignorePaths: [/topology\.(members|promotables|watchers|allNodes)\./i]
             })
             .process(bodyStream);

@@ -343,7 +343,7 @@ export class SubscriptionWorker<T extends object> implements IDisposable {
         } as TcpConnectionHeaderMessage;
 
         const payload = ObjectUtil.transformObjectKeys(dropMsg, {
-            defaultTransform: "pascal"
+            defaultTransform: ObjectUtil.pascal
         });
 
         return new Promise<void>(resolve => {
@@ -902,7 +902,7 @@ export class SubscriptionWorker<T extends object> implements IDisposable {
 
         return {
             ...ObjectUtil.transformObjectKeys(rest, {
-                defaultTransform: "camel"
+                defaultTransform: ObjectUtil.camel
             }),
             data,
             includes: ObjectUtil.mapIncludesToLocalObject(Includes, conventions),

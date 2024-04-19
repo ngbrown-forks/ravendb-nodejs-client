@@ -5,6 +5,7 @@ import { IndexDefinition } from "../../Indexes/IndexDefinition";
 import { IMaintenanceOperation, OperationResultType } from "../OperationAbstractions";
 import { DocumentConventions } from "../../Conventions/DocumentConventions";
 import { Stream } from "node:stream";
+import { ObjectUtil } from "../../../Utility/ObjectUtil";
 
 export class GetIndexesOperation implements IMaintenanceOperation<IndexDefinition[]> {
 
@@ -62,7 +63,7 @@ export class GetIndexesCommand extends RavenCommand<IndexDefinition[]> {
             .collectBody(b => body = b)
             .parseJsonSync()
             .objectKeysTransform({
-                defaultTransform: "camel",
+                defaultTransform: ObjectUtil.camel,
                 ignorePaths: [/fields\.[^.]+$/i, /results\.\[]\.configuration\./i]
             })
             .process(bodyStream);
