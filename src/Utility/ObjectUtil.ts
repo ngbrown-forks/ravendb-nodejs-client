@@ -1,4 +1,3 @@
-import { camelCase, pascalCase, kebabCase, snakeCase } from "change-case";
 import { TypeUtil } from "./TypeUtil";
 import { DocumentConventions } from "../Documents/Conventions/DocumentConventions";
 import { CONSTANTS } from "../Constants";
@@ -26,14 +25,10 @@ export class ObjectUtil {
         return JSON.parse(JSON.stringify(o));
     }
 
-    static camelCase = camelCase;
-    static camel = camelCase;
-    static pascalCase = pascalCase;
-    static pascal = pascalCase;
-    static kebabCase = kebabCase;
-    static kebab = kebabCase;
-    static snakeCase = snakeCase;
-    static snake = snakeCase;
+    static camelCase = (input: string, locale?: string) => locale ? input[0].toLocaleUpperCase(locale)  + input.slice(1) : input[0].toLowerCase() + input.slice(1);
+    static camel = ObjectUtil.camelCase;
+    static pascalCase = (input: string, locale?: string) => locale ? input[0].toLocaleLowerCase(locale) + input.slice(1) : input[0].toUpperCase() + input.slice(1); 
+    static pascal = ObjectUtil.pascalCase;
 
     public static deepJsonClone(o) {
         return JSON.parse(JSON.stringify(o));
@@ -256,34 +251,10 @@ export class ObjectUtil {
 */
 
 export type CasingConvention =
-    "upper" |
-    "upperCase" |
-    "ucFirst" |
-    "upperCaseFirst" |
-    "lcFirst" |
-    "lowerCaseFirst" |
-    "lower" |
-    "lowerCase" |
-    "sentence" |
-    "sentenceCase" |
-    "title" |
-    "titleCase" |
     "camel" |
     "camelCase" |
     "pascal" |
-    "pascalCase" |
-    "snake" |
-    "snakeCase" |
-    "param" |
-    "paramCase" |
-    "dot" |
-    "dotCase" |
-    "path" |
-    "pathCase" |
-    "constant" |
-    "constantCase" |
-    "swap" |
-    "swapCase";
+    "pascalCase";
 
 export interface ObjectChangeCaseOptionsBase {
     recursive?: boolean;
@@ -416,7 +387,7 @@ function transformObjectKeys(object, options: InternalObjectChangeCaseOptions, s
             const currentPath = makeKeyPath(stack);
             if (shouldTransformKey(key, currentPath, options)) {
                 const f = getTransformFunc(key, currentPath, options);
-                newKey = f(key, { locale: options.locale ?? undefined });
+                newKey = f(key, options.locale ?? undefined);
             }
 
             // eslint-disable-next-line no-prototype-builtins

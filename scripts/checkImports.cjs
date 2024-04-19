@@ -1,4 +1,4 @@
-const { DocumentStore } = require("../dist/cjs/ravendb.cjs");
-import assert from "node:assert";
+const RavenDB = require("../dist/cjs/ravendb.cjs");
+const assert = require("node:assert");
 
-assert.ok(DocumentStore);
+assert.ok(RavenDB.DocumentStore);

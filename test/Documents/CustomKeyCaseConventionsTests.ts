@@ -220,7 +220,7 @@ describe("With custom key case conventions set", function () {
     it("should throw error if only one key case convention is set", async () => {
         try {
             getStoreWithCustomConventions(store => {
-                store.conventions.remoteEntityFieldNameConvention = "dot";
+                store.conventions.remoteEntityFieldNameConvention = "pascal";
             });
             assert.fail("should have thrown");
         } catch (err) {

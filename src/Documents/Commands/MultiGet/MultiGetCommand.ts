@@ -14,8 +14,8 @@ import { RequestExecutor } from "../../../Http/RequestExecutor";
 import { AggressiveCacheOptions } from "../../../Http/AggressiveCacheOptions";
 import { HEADERS } from "../../../Constants";
 import { ServerCasing, ServerResponse } from "../../../Types";
-import { camelCase } from "change-case";
 import { SessionInfo } from "../../Session/IDocumentSession";
+import { ObjectUtil } from "../../../Utility/ObjectUtil";
 
 export class MultiGetCommand extends RavenCommand<GetResponse[]> implements IDisposable {
     private readonly _requestExecutor: RequestExecutor;
@@ -241,7 +241,7 @@ export class MultiGetCommand extends RavenCommand<GetResponse[]> implements IDis
         // convert from Pascal to camel on top level only
         const item: any = {};
         for (const [key, value] of Object.entries(json)) {
-            item[camelCase(key)] = value;
+            item[ObjectUtil.camelCase(key)] = value;
         }
 
         item.result = item.result ? JSON.stringify(item.result) : null;
