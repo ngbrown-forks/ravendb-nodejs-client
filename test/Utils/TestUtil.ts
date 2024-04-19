@@ -3,7 +3,6 @@ import * as path from "node:path";
 import * as url from "node:url";
 import * as http from "node:http";
 import * as https from "node:https";
-import "source-map-support/register";
 import { IDisposable } from "../../src/Types/Contracts";
 import { RavenTestDriver } from "../TestDriver";
 import { RavenServerLocator } from "../TestDriver/RavenServerLocator";
@@ -25,7 +24,7 @@ import {
     IDocumentSession,
     ServerNode
 } from "../../src";
-import * as rimraf from "rimraf";
+import { sync } from "rimraf";
 import { ChildProcess } from "node:child_process";
 import { TypeUtil } from "../../src/Utility/TypeUtil";
 import { getLogger } from "../../src/Utility/LogUtil";
@@ -809,6 +808,6 @@ export class TemporaryDirContext implements IDisposable {
     }
 
     dispose(): void {
-        rimraf.sync(this.tempDir);
+        sync(this.tempDir);
     }
 }

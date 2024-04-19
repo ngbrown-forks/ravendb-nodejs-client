@@ -1,4 +1,4 @@
-import * as changeCase from "change-case";
+import { camelCase, pascalCase, kebabCase, snakeCase } from "change-case";
 import { TypeUtil } from "./TypeUtil";
 import { DocumentConventions } from "../Documents/Conventions/DocumentConventions";
 import { CONSTANTS } from "../Constants";
@@ -25,6 +25,15 @@ export class ObjectUtil {
     public static clone(o) {
         return JSON.parse(JSON.stringify(o));
     }
+
+    static camelCase = camelCase;
+    static camel = camelCase;
+    static pascalCase = pascalCase;
+    static pascal = pascalCase;
+    static kebabCase = kebabCase;
+    static kebab = kebabCase;
+    static snakeCase = snakeCase;
+    static snake = snakeCase;
 
     public static deepJsonClone(o) {
         return JSON.parse(JSON.stringify(o));
@@ -379,9 +388,9 @@ function getTransformFunc(key, currentPath, opts: InternalObjectChangeCaseOption
     if (opts.paths) {
         for (const p of opts.paths) {
             if (!p.path) {
-                return changeCase[p.transform];
+                return ObjectUtil[p.transform];
             } else if (p.path.test(currentPath)) {
-                return p.transform ? changeCase[p.transform] : iden;
+                return p.transform ? ObjectUtil[p.transform] : iden;
             }
         }
     }
@@ -390,7 +399,7 @@ function getTransformFunc(key, currentPath, opts: InternalObjectChangeCaseOption
         return iden;
     }
 
-    return changeCase[opts.defaultTransform];
+    return ObjectUtil[opts.defaultTransform];
 }
 
 function transformObjectKeys(object, options: InternalObjectChangeCaseOptions, stack) {
@@ -407,7 +416,7 @@ function transformObjectKeys(object, options: InternalObjectChangeCaseOptions, s
             const currentPath = makeKeyPath(stack);
             if (shouldTransformKey(key, currentPath, options)) {
                 const f = getTransformFunc(key, currentPath, options);
-                newKey = f(key, options.locale);
+                newKey = f(key, { locale: options.locale ?? undefined });
             }
 
             // eslint-disable-next-line no-prototype-builtins
@@ -423,10 +432,3 @@ function transformObjectKeys(object, options: InternalObjectChangeCaseOptions, s
     return result;
 }
 
-// reexport all functions exported by `changeCase`
-for (const i in changeCase) {
-    // eslint-disable-next-line no-prototype-builtins
-    if (changeCase.hasOwnProperty(i)) {
-        ObjectUtil[i] = changeCase[i];
-    }
-}

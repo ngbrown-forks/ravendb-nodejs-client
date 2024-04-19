@@ -1,7 +1,7 @@
 import { TypeUtil } from "./TypeUtil";
 import { throwError } from "../Exceptions";
 import * as changeCase from "change-case";
-import { CasingConvention } from "./ObjectUtil";
+import { CasingConvention, ObjectUtil } from "./ObjectUtil";
 import { StringBuilder } from "./StringBuilder";
 
 export class StringUtil {
@@ -125,7 +125,7 @@ export class StringUtil {
     }
 
     public static changeCase(transformName: CasingConvention, s: string) {
-        return changeCase[transformName](s);
+        return ObjectUtil[transformName](s);
     }
 
     public static equalsIgnoreCase(s1: string, s2: string) {

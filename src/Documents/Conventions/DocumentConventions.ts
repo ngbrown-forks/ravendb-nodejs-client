@@ -7,7 +7,7 @@ import {
     ObjectLiteralDescriptor,
     ClassConstructor, EntityConstructor, Field
 } from "../../Types";
-import * as Pluralize from "pluralize";
+import Pluralize from "pluralize";
 import { ClientConfiguration } from "../Operations/Configuration/ClientConfiguration";
 import { ReadBalanceBehavior } from "../../Http/ReadBalanceBehavior";
 import { throwError } from "../../Exceptions";
