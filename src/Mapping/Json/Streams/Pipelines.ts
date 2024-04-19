@@ -27,8 +27,8 @@ export function getDocumentResultsAsObjects(
     });
 
     return pipeline.parseJsonlAsync(queryStream ? x => x["Item"] : x => x, {
-            transforms: [keysTransform]
-        });
+        transforms: [keysTransform]
+    });
 }
 
 export function getDocumentStreamResultsIntoStreamPipeline(
