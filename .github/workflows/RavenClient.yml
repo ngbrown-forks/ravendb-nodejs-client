@@ -79,8 +79,11 @@ jobs:
     - name: Build
       run: npm run build
 
-    - name: Check imports
-      run: node -e "require('./dist').DocumentStore"
+    - name: Check imports CommonJS
+      run: node scripts/checkImports.cjs
+
+    - name: Check imports ESM
+      run: node scripts/checkImports.mjs
 
     - name: Check imports
       run: npm run check-imports
