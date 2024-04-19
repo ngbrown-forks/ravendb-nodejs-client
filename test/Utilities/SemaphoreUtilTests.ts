@@ -1,4 +1,4 @@
-import * as assert from "node:assert";
+import assert from "node:assert"
 import * as SemaphoreUtil from "../../src/Utility/SemaphoreUtil";
 import { delay } from "../../src/Utility/PromiseUtil";
 import { Semaphore } from "../../src/Utility/Semaphore";

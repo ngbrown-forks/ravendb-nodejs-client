@@ -1,6 +1,6 @@
 import * as sinon from "sinon";
 import { User, GeekPerson } from "../Assets/Entities";
-import * as assert from "node:assert";
+import assert from "node:assert"
 import { testContext, disposeTestDocumentStore } from "../Utils/TestUtil";
 
 import {

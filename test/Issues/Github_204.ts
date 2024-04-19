@@ -3,7 +3,7 @@ import { testContext, disposeTestDocumentStore } from "../Utils/TestUtil";
 import {
     IDocumentStore,
 } from "../../src";
-import * as assert from "node:assert";
+import assert from "node:assert"
 
 describe("GitHub-204", function () {
 

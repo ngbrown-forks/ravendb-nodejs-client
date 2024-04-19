@@ -1,5 +1,5 @@
 import { testContext, disposeTestDocumentStore } from "../Utils/TestUtil";
-import * as assert from "node:assert";
+import assert from "node:assert"
 import DocumentStore, {
     IDocumentStore, PatchCommandData, PatchRequest,
 } from "../../src";

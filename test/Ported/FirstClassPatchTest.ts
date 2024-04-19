@@ -1,4 +1,4 @@
-import * as assert from "node:assert";
+import assert from "node:assert"
 import { IDocumentStore, InMemoryDocumentSessionOperations } from "../../src";
 import { disposeTestDocumentStore, testContext } from "../Utils/TestUtil";
 

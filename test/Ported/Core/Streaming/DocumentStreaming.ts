@@ -5,7 +5,7 @@ import {
     IDocumentStore,
     StreamResult,
 } from "../../../../src";
-import * as assert from "node:assert";
+import assert from "node:assert"
 import { User } from "../../../Assets/Entities";
 import { CONSTANTS } from "../../../../src/Constants";
 

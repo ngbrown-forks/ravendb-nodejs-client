@@ -1,4 +1,4 @@
-import * as assert from "node:assert";
+import assert from "node:assert"
 import * as sinon from "sinon";
 import { testContext, disposeTestDocumentStore } from "../Utils/TestUtil";
 

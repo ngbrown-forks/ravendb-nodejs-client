@@ -1,5 +1,5 @@
 import { Readable, pipeline } from "node:stream";
-import * as assert from "node:assert";
+import assert from "node:assert"
 import Parser from "stream-json/Parser.js";
 import Pick from "stream-json/filters/Pick.js";
 import StreamArray from "stream-json/streamers/StreamArray.js";

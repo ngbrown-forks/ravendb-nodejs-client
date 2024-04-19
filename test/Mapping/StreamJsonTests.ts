@@ -1,7 +1,7 @@
 import * as fs from "node:fs";
 import * as url from 'node:url';
 import { Readable,pipeline } from "node:stream";
-import * as assert from "node:assert";
+import assert from "node:assert"
 import Parser from "stream-json/Parser.js";
 import StreamValues from "stream-json/streamers/StreamValues.js";
 import Stringer from "stream-json/Stringer.js";

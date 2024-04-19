@@ -1,4 +1,4 @@
-import * as assert from "node:assert";
+import assert from "node:assert"
 import { createMetadataDictionary } from "../../src/Mapping/MetadataAsDictionary";
 
 describe("MetadataAsDictionary", function () {

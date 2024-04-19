@@ -1,4 +1,4 @@
-import * as assert from "node:assert";
+import assert from "node:assert"
 
 // eslint-disable-next-line @typescript-eslint/ban-types
 export async function assertThrows(func: Function, errAssert?: (err: Error) => void) {

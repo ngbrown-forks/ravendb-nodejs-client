@@ -2,7 +2,7 @@ import { EntitiesCollectionObject, IDocumentStore } from "../../../src";
 import { disposeTestDocumentStore, testContext } from "../../Utils/TestUtil";
 import { Company, User } from "../../Assets/Entities";
 import { Lazy } from "../../../src/Documents/Lazy";
-import * as assert from "node:assert";
+import assert from "node:assert"
 import { assertThat } from "../../Utils/AssertExtensions";
 
 describe("LazyTest", function () {

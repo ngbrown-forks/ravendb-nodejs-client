@@ -7,7 +7,7 @@ import DocumentStore, {
     RevisionsConfiguration,
     ConfigureRevisionsOperation
 } from "../../../src";
-import * as assert from "node:assert";
+import assert from "node:assert"
 
 // skipped for the time being
 // subscriptions are not working with server version 4.1

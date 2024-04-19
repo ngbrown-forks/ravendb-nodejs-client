@@ -1,4 +1,4 @@
-import * as assert from "node:assert";
+import assert from "node:assert"
 
 import { HashCalculator } from "../../../src/Documents/Queries/HashCalculator";
 import { TypesAwareObjectMapper } from "../../../src";

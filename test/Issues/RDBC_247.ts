@@ -1,4 +1,4 @@
-import * as assert from "node:assert";
+import assert from "node:assert"
 import { User } from "../Assets/Entities";
 import { assertThrows } from "../Utils/AssertExtensions";
 import { testContext, disposeTestDocumentStore } from "../Utils/TestUtil";

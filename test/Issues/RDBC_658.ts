@@ -1,5 +1,5 @@
 import {ClusterTestContext, disposeTestDocumentStore, RavenTestContext} from "../Utils/TestUtil";
-import * as assert from "node:assert";
+import assert from "node:assert"
 import {assertThat} from "../Utils/AssertExtensions";
 import {
     AddDatabaseNodeOperation,

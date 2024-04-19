@@ -1,4 +1,4 @@
-import * as assert from "node:assert";
+import assert from "node:assert"
 import { EntitiesCollectionObject, IDocumentStore } from "../../../src";
 import { disposeTestDocumentStore, testContext } from "../../Utils/TestUtil";
 import { Lazy } from "../../../src/Documents/Lazy";

@@ -1,5 +1,5 @@
 import { Company, Order, User } from "../../Assets/Entities";
-import * as assert from "node:assert";
+import assert from "node:assert"
 import { testContext, disposeTestDocumentStore } from "../../Utils/TestUtil";
 
 import DocumentStore, {
