@@ -1,18 +1,7 @@
 import { Writable } from "node:stream";
 
-export interface CollectResultStreamOptions<TResult> {
-    reduceResults: (
-        result: TResult,
-        next: object,
-        index?: number) => TResult;
-    initResult?: TResult;
-}
 
-export function lastValue(_: object, chunk: object) {
-    return chunk["value"];
-}
-
-export function lastChunk(_: object, chunk: object) {
+export function lastChunk<T>(_: object, chunk: T): T {
     return chunk;
 }
 
@@ -33,7 +22,10 @@ export class CollectResultStream<TResult = object> extends Writable {
         return this._resultPromise as Promise<TResult>;
     }
 
-    constructor(opts: CollectResultStreamOptions<TResult>) {
+    constructor(reduceResult: (
+        result: TResult,
+        next: object,
+        index?: number) => TResult) {
         super({ objectMode: true });
 
         this._resultPromise = new Promise((resolve, reject) => {
@@ -44,18 +36,9 @@ export class CollectResultStream<TResult = object> extends Writable {
             this._resolver.resolve(this._result);
         });
 
-        this._reduceResults = opts.reduceResults;
-        this._result = opts.initResult || null;
+        this._reduceResults = reduceResult;
     }
-
-    public static collectArray<TItem>(handleEmitPath?: boolean): CollectResultStreamOptions<TItem[]> {
-        return {
-            initResult: [] as TItem[],
-            reduceResults: (result: TItem[], n: object) =>
-                [...result, handleEmitPath ? (n as any).value : n]
-        };
-    }
-
+    
     public _write(chunk, enc, callback) {
         this._result = this._reduceResults(this._result, chunk, this._resultIndex);
         this._resultIndex++;

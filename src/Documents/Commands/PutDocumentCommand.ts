@@ -33,18 +33,12 @@ export class PutDocumentCommand extends RavenCommand<PutResult> {
         this._document = document;
     }
 
-    protected get _serializer(): JsonSerializer {
-        const serializer = super._serializer;
-        serializer.replacerRules.length = 0;
-        return serializer;
-    }
-
     public createRequest(node: ServerNode): HttpRequestParameters {
         const uri = `${node.url}/databases/${node.database}/docs?id=${encodeURIComponent(this._id)}`;
 
         // we don't use conventions here on purpose
         // doc that's got here should already have proper casing
-        const body = this._serializer.serialize(this._document);
+        const body = JSON.stringify(this._document);
         const req = {
             uri,
             method: "PUT",

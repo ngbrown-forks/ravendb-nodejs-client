@@ -1,4 +1,4 @@
-export function camelCaseReviver(key, value) {
+export function camelCaseReviver(key: string, value: unknown) {
     if (key && !Array.isArray(this)) {
         const newKey = key.charAt(0).toLowerCase() + key.slice(1);
         if (key !== newKey) {
@@ -11,7 +11,7 @@ export function camelCaseReviver(key, value) {
     }
 }
 
-export function pascalCaseReviver(key, value) {
+export function pascalCaseReviver(key: string, value: unknown) {
     if (key && !Array.isArray(this)) {
         const newKey = key.charAt(0).toUpperCase() + key.slice(1);
         if (key !== newKey) {

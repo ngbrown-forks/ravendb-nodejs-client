@@ -5,6 +5,7 @@ import { TypeUtil } from "../../Utility/TypeUtil";
 import { DocumentConventions } from "../Conventions/DocumentConventions";
 import { JsonSerializer } from "../../Mapping/Json/Serializer";
 import { TypesAwareObjectMapper } from "../../Mapping/ObjectMapper";
+import { ServerCasing } from "../../Types";
 
 export interface IndexQueryParameters {
     [key: string]: object;
@@ -45,40 +46,40 @@ export class IndexQuery extends IndexQueryWithParameters<IndexQueryParameters> {
 export function writeIndexQuery(conventions: DocumentConventions, indexQuery: IndexQuery): string {
     const result = {
         Query: indexQuery.query
-    };
+    } as ServerCasing<IndexQuery>;
 
     if (indexQuery.pageSizeSet && indexQuery.pageSize >= 0) {
-        result["PageSize"] = indexQuery.pageSize;
+        result.PageSize = indexQuery.pageSize;
     }
 
     if (indexQuery.waitForNonStaleResults) {
-        result["WaitForNonStaleResults"] = indexQuery.waitForNonStaleResults;
+        result.WaitForNonStaleResults = indexQuery.waitForNonStaleResults;
     }
 
     if (indexQuery.start > 0) {
-        result["Start"] = indexQuery.start;
+        result.Start = indexQuery.start;
     }
 
     if (!TypeUtil.isNullOrUndefined(indexQuery.waitForNonStaleResultsTimeout)) {
-        result["WaitForNonStaleResultsTimeout"] = indexQuery.waitForNonStaleResultsTimeout;
+        result.WaitForNonStaleResultsTimeout = indexQuery.waitForNonStaleResultsTimeout;
     }
 
     if (indexQuery.disableCaching) {
-        result["DisableCaching"] = indexQuery.disableCaching;
+        result.DisableCaching = indexQuery.disableCaching;
     }
 
     if (indexQuery.skipDuplicateChecking) {
-        result["SkipDuplicateChecking"] = indexQuery.skipDuplicateChecking;
+        result.SkipDuplicateChecking = indexQuery.skipDuplicateChecking;
     }
 
     if (!indexQuery.queryParameters) {
-        result["QueryParameters"] = null;
+        result.QueryParameters = null;
     } else {
-        result["QueryParameters"] = indexQuery.queryParameters;
+        result.QueryParameters = indexQuery.queryParameters;
     }
 
     if (indexQuery.projectionBehavior && indexQuery.projectionBehavior !== "Default") {
-        result["ProjectionBehavior"] = indexQuery.projectionBehavior;
+        result.ProjectionBehavior = indexQuery.projectionBehavior;
     }
 
     return JsonSerializer.getDefault().serialize(result);

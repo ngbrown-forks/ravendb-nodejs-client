@@ -6,12 +6,12 @@ import { DocumentConventions } from "../../Conventions/DocumentConventions";
 import { RavenCommand } from "../../../Http/RavenCommand";
 import { HttpRequestParameters } from "../../../Primitives/Http";
 import { HeadersBuilder } from "../../../Utility/HttpUtil";
-import { ReplacerContext } from "../../../Mapping/Json/ReplacerFactory";
 import { IndexTypeExtensions } from "../../Indexes/IndexTypeExtensions";
 import { Stream } from "node:stream";
 import { ServerNode } from "../../../Http/ServerNode";
 import { IRaftCommand } from "../../../Http/IRaftCommand";
 import { RaftIdGenerator } from "../../../Utility/RaftIdGenerator";
+import { ObjectUtil } from "../../../Utility/ObjectUtil";
 
 export interface PutIndexResult {
     index: string;
@@ -73,24 +73,27 @@ export class PutIndexesCommand extends RavenCommand<PutIndexResult[]> implements
         }, []);
     }
 
-    protected get _serializer(): JsonSerializer {
-        const INDEX_DEF_FIELDS_REGEX = /^Indexes\.(\d+)\.Fields$/;
-        const serializer = super._serializer;
-        serializer.replacerRules[0].contextMatcher = (context: ReplacerContext) => {
-            // fields are case-sensitive, so we need to skip PascalCasing their names
-            const m = context.currentPath.match(INDEX_DEF_FIELDS_REGEX);
-            return !m;
-        };
-
-        return serializer;
-    }
-
     public createRequest(node: ServerNode): HttpRequestParameters {
         const uri = node.url + "/databases/" + node.database 
             + (this._allJavaScriptIndexes ? "/indexes" : "/admin/indexes");
 
-        const body = this._serializer
-            .serialize({ Indexes: this._indexToAdd });
+        const INDEX_DEF_FIELDS_REGEX = /^Indexes\.\[]\.Fields$/;
+
+        const bodyJson = ObjectUtil.transformObjectKeys({
+            Indexes: this._indexToAdd
+        }, {
+            recursive: true,
+            defaultTransform: ObjectUtil.pascal,
+            paths: [
+                {
+                    path: INDEX_DEF_FIELDS_REGEX,
+                    transform: x => x
+                }
+            ]
+        });
+
+        const body = JsonSerializer.getDefault()
+            .serialize(bodyJson);
 
         const headers = HeadersBuilder
             .create()

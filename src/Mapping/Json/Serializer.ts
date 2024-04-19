@@ -1,74 +1,34 @@
 import { pascalCaseReplacer } from "./Replacers";
 import { camelCaseReviver } from "./Revivers";
-import { ReplacerTransformRule, RuleBasedReplacerFactory } from "./ReplacerFactory";
-import { ReviverTransformRule, RuleBasedReviverFactory } from "./ReviverFactory";
 
-export type JsonTransformFunction = (key, value) => any;
 
-export interface JsonSerializerSettings {
-    replacerRules?: ReplacerTransformRule[];
-    reviverRules?: ReviverTransformRule[];
-}
+export type ReviverFunction = (key: string, value: any) => any;
+export type ReplacerFunction = (key: string, value: any) => any;
+
 
 export class JsonSerializer {
 
-    private _reviverRules: ReviverTransformRule[];
-    private _replacerRules: ReplacerTransformRule[];
+    private readonly _reviver?: ReviverFunction;
+    private readonly _replacer?: ReplacerFunction;
 
-    public get reviverRules(): ReviverTransformRule[] {
-        return this._reviverRules;
-    }
-
-    public set reviverRules(value: ReviverTransformRule[]) {
-        this._reviverRules = value;
-    }
-
-    public get replacerRules(): ReplacerTransformRule[] {
-        return this._replacerRules;
-    }
-
-    public set replacerRules(value: ReplacerTransformRule[]) {
-        this._replacerRules = value;
-    }
-
-    constructor(opts?: JsonSerializerSettings) {
-        opts = opts || {};
-        this._reviverRules = opts.reviverRules || [];
-        this._replacerRules = opts.replacerRules || [];
+    constructor(reviver: ReviverFunction, replacer: ReplacerFunction) {
+        this._reviver = reviver;
+        this._replacer = replacer;
     }
 
     public deserialize<TResult = object>(jsonString: string) {
-        const reviver = RuleBasedReviverFactory.build(this._reviverRules);
-        return JSON.parse(jsonString, reviver) as TResult;
+        return JSON.parse(jsonString, this._reviver) as TResult;
     }
 
     public serialize(obj: object): string {
-        const replacer = RuleBasedReplacerFactory.build(this._replacerRules);
-        return JSON.stringify(obj, replacer);
+        return JSON.stringify(obj, this._replacer);
     }
 
     public static getDefault(): JsonSerializer {
-        return new JsonSerializer();
+        return new JsonSerializer(undefined, undefined);
     }
 
     public static getDefaultForCommandPayload(): JsonSerializer {
-        return new JsonSerializer({
-            reviverRules: [
-                {
-                    contextMatcher: () => true,
-                    reviver: camelCaseReviver
-                }
-            ],
-            replacerRules: [
-                {
-                    contextMatcher: () => true,
-                    replacer: pascalCaseReplacer
-                }
-            ]
-        });
-    }
-
-    public static getDefaultForEntities() {
-        return new JsonSerializer();
+        return new JsonSerializer(camelCaseReviver, pascalCaseReplacer);
     }
 }

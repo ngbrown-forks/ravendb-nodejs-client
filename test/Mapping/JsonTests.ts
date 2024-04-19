@@ -5,8 +5,6 @@ import {
     pascalCaseReviver,
     camelCaseReviver
 } from "../../src/Mapping/Json";
-import { RuleBasedReplacerFactory, ReplacerTransformRule } from "../../src/Mapping/Json/ReplacerFactory";
-import { ReviverTransformRule, RuleBasedReviverFactory } from "../../src/Mapping/Json/ReviverFactory";
 
 describe("Json module", () => {
 
@@ -94,69 +92,11 @@ describe("Json module", () => {
         });
 
         it("can skip objects", () => {
-            const transformRules: ReviverTransformRule[] = [
-                {
-                    contextMatcher: (context) => !context.currentPath.includes("."),
-                    reviver: camelCaseReviver
-                }
-            ];
-
-            const reviver = RuleBasedReviverFactory.build(transformRules);
-            const result: any = JSON.parse(testStr, reviver);
+            const result: any = JSON.parse(testStr, camelCaseReviver);
 
             assert.ok(result.results);
             assert.ok(result.results[0].Name);
         });
 
     });
-
-    describe("RuleBasedReplacer skips PascalCasing for particular keys", () => {
-
-        let testObj;
-
-        beforeEach(() => {
-            testObj = {
-                magic: "taste",
-                of: "skittles",
-                taste: {
-                    the: {
-                        rainbow: true,
-                        something: "else"
-                    },
-                    and: "this"
-                },
-                imAnArray: [
-                    { name: "Jason" },
-                    { name: "Steven" }
-                ]
-            };
-        });
-
-        it("skips everything down the 'taste' object", () => {
-            const transformRules: ReplacerTransformRule[] = [
-                {
-                    contextMatcher: (context) => context.currentPath.indexOf("Taste") !== 0,
-                    replacer: pascalCaseReplacer
-                }
-            ];
-
-            const replacer = RuleBasedReplacerFactory.build(transformRules);
-            const result = JSON.stringify(testObj, replacer);
-            assert.ok(JSON.parse(result)["Taste"]["the"]["rainbow"]);
-        });
-
-        it("skips just the keys of 'taste' object", () => {
-            const transformRules: ReplacerTransformRule[] = [
-                {
-                    contextMatcher: (context) => context.currentPath !== "Taste",
-                    replacer: pascalCaseReplacer
-                }
-            ];
-
-            const replacer = RuleBasedReplacerFactory.build(transformRules);
-            const result = JSON.stringify(testObj, replacer);
-            assert.ok(JSON.parse(result)["Taste"]["the"]["Rainbow"]);
-        });
-    });
-
 });

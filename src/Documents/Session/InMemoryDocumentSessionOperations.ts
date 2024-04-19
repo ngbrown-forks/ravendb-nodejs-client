@@ -82,8 +82,6 @@ export abstract class InMemoryDocumentSessionOperations
 
     private _disposed: boolean;
 
-    protected _jsonSerializer: JsonSerializer = JsonSerializer.getDefaultForCommandPayload();
-
     private readonly _id: string;
 
     public get id() {

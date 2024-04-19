@@ -35,10 +35,6 @@ export class GetCollectionStatisticsCommand extends RavenCommand<CollectionStati
         return { uri };
     }
 
-    protected get _serializer(): JsonSerializer {
-        return JsonSerializer.getDefault();
-    }
-
     public async setResponseAsync(bodyStream: Stream, fromCache: boolean): Promise<string> {
         if (!bodyStream) {
             this._throwInvalidResponse();

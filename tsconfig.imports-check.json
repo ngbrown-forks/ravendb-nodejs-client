@@ -2,8 +2,7 @@
   "extends": "./tsconfig",
 
   "include": [
-    "./src/**/*",
-    "./src/Types/global.d.ts"
+    "./src/**/*"
   ],
   "exclude": [
     "node_modules",

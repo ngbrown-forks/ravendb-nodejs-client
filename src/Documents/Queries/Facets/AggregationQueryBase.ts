@@ -54,7 +54,6 @@ export abstract class AggregationQueryBase {
     private _processResults(queryResult: QueryResult): FacetResultObject {
         this.emit("afterQueryExecuted", queryResult);
         const results: FacetResultObject = {};
-        const mapper = new TypesAwareObjectMapper();
         for (const result of queryResult.results) {
             const facetResult = Object.assign(new FacetResult(), result);
             results[facetResult.name] = facetResult;

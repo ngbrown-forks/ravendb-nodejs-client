@@ -81,10 +81,6 @@ export class QueryCommand extends RavenCommand<QueryResult> {
         };
     }
 
-    protected get _serializer(): JsonSerializer {
-        return super._serializer;
-    }
-
     public async setResponseAsync(bodyStream: Stream, fromCache: boolean): Promise<string> {
         if (!bodyStream) {
             this.result = null;

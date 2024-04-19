@@ -12,7 +12,6 @@ import { pipelineAsync } from "../Utility/StreamUtil";
 import { Stream, Transform, Readable, Writable, pipeline } from "node:stream";
 import {
     CollectResultStream,
-    CollectResultStreamOptions,
     lastChunk
 } from "../Mapping/Json/Streams/CollectResultStream";
 import { throwError, getError } from "../Exceptions";
@@ -33,7 +32,6 @@ export interface RavenCommandResponsePipelineOptions<TResult> {
     };
     jsonSync?: boolean;
     streamKeyCaseTransform?: ObjectKeyCaseTransformStreamOptions;
-    collectResult: CollectResultStreamOptions<TResult>;
     transform?: Stream;
 }
 
@@ -110,23 +108,6 @@ export class RavenCommandResponsePipeline<TStreamResult> extends EventEmitter {
 
         if (this._opts.jsonAsync) {
             this._opts.streamKeyCaseTransform.handleKeyValue = true;
-        }
-
-        return this;
-    }
-
-    public collectResult(
-        reduce: (result: TStreamResult, next: object) => TStreamResult,
-        init: TStreamResult): RavenCommandResponsePipeline<TStreamResult>;
-    public collectResult(opts: CollectResultStreamOptions<TStreamResult>): RavenCommandResponsePipeline<TStreamResult>;
-    public collectResult(
-        optsOrReduce:
-            CollectResultStreamOptions<TStreamResult> | ((result: TStreamResult, next: object) => TStreamResult),
-        init?: TStreamResult): RavenCommandResponsePipeline<TStreamResult> {
-        if (typeof optsOrReduce === "function") {
-            this._opts.collectResult = { reduceResults: optsOrReduce, initResult: init };
-        } else {
-            this._opts.collectResult = optsOrReduce;
         }
 
         return this;
@@ -217,9 +198,7 @@ export class RavenCommandResponsePipeline<TStreamResult> extends EventEmitter {
                 asm.on("done", asm => resolve(asm.current));
             });
         } else {
-            const collectResultOpts = !opts.collectResult || !opts.collectResult.reduceResults
-                ? { reduceResults: lastChunk as any } : opts.collectResult;
-            const collectResult = new CollectResultStream(collectResultOpts);
+            const collectResult = new CollectResultStream<TStreamResult>(lastChunk as any);
             streams.push(collectResult);
             resultPromise = collectResult.promise;
         }
