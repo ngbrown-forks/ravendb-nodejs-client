@@ -8,9 +8,9 @@ import { disposeTestDocumentStore, TemporaryDirContext, testContext } from "../U
 import { User } from "../Assets/Entities";
 import { UsersByName } from "./QueryTest";
 import { assertThat } from "../Utils/AssertExtensions";
-import * as fs from "node:fs";
+import fs from "node:fs";
 import { CONSTANTS } from "../../src/Constants";
-import * as path from "node:path";
+import path from "node:path";
 import { BackupUtils } from "../../src/Documents/Smuggler/BackupUtils";
 
 describe("SmugglerTest", function () {

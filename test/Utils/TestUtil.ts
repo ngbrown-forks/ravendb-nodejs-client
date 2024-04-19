@@ -1,15 +1,15 @@
-import * as fs from "node:fs";
-import * as path from "node:path";
-import * as url from "node:url";
-import * as http from "node:http";
-import * as https from "node:https";
+import fs from "node:fs";
+import path from "node:path";
+import url from "node:url";
+import http from "node:http";
+import https from "node:https";
 import { IDisposable } from "../../src/Types/Contracts";
 import { RavenTestDriver } from "../TestDriver";
 import { RavenServerLocator } from "../TestDriver/RavenServerLocator";
 import { IDocumentStore } from "../../src/Documents/IDocumentStore";
 import { getError, throwError } from "../../src/Exceptions";
 import { IAuthOptions } from "../../src/Auth/AuthOptions";
-import * as os from "node:os";
+import os from "node:os";
 import {
     CreateDatabaseOperation,
     DatabaseRecord,

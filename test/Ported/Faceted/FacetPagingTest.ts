@@ -4,7 +4,7 @@ import { disposeTestDocumentStore, testContext } from "../../Utils/TestUtil";
 import { Camera, FacetTestContext } from "../../Utils/FacetTestContext";
 import { FacetOptions } from "../../../src/Documents/Queries/Facets";
 import { Facet, FacetSetup, IDocumentStore, PutIndexesOperation, IndexDefinition } from "../../../src";
-import * as orderBy from "lodash.orderby";
+import orderBy from "lodash.orderby";
 
 describe("FacetPagingTest", function () {
 

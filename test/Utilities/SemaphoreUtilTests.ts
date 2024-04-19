@@ -1,5 +1,5 @@
 import assert from "node:assert"
-import * as SemaphoreUtil from "../../src/Utility/SemaphoreUtil";
+import { acquireSemaphore } from "../../src/Utility/SemaphoreUtil";
 import { delay } from "../../src/Utility/PromiseUtil";
 import { Semaphore } from "../../src/Utility/Semaphore";
 
@@ -12,7 +12,7 @@ describe("SemaphoreUtil", function () {
     });
 
     it("should be able to acquire and release semaphore ", async () => {
-        const semContext = SemaphoreUtil.acquireSemaphore(sem);
+        const semContext = acquireSemaphore(sem);
         await semContext.promise;
         semContext.dispose();
     });
@@ -20,14 +20,14 @@ describe("SemaphoreUtil", function () {
     it("can timeout and try again", async () => {
         assert.ok(sem.available(1));
 
-        const semContextLocked = SemaphoreUtil.acquireSemaphore(sem, { 
+        const semContextLocked = acquireSemaphore(sem, {
             contextName: "LOCK" 
         });
 
         await semContextLocked.promise;
         assert.ok(!sem.available(1));
         
-        const semContextTimingOut = SemaphoreUtil.acquireSemaphore(sem, { 
+        const semContextTimingOut = acquireSemaphore(sem, {
             timeout: 100, 
             contextName: "SHOULD_TIMEOUT" 
         });
@@ -40,7 +40,7 @@ describe("SemaphoreUtil", function () {
             assert.strictEqual(err.name, "TimeoutError");
             assert.ok(!sem.available(1));
 
-            const secondSemAcqAttempt = SemaphoreUtil.acquireSemaphore(sem, { 
+            const secondSemAcqAttempt = acquireSemaphore(sem, {
                 timeout: 1000,
                 contextName: "SHOULD_NOT_TIMEOUT"
             });
@@ -59,9 +59,9 @@ describe("SemaphoreUtil", function () {
     });
 
     it("should be able to acquire and release semaphore with multiple clients", async () => {
-        const semContext = SemaphoreUtil.acquireSemaphore(sem, { contextName: "1" });
-        const semContext2 = SemaphoreUtil.acquireSemaphore(sem, { contextName: "2" });
-        const semContext3 = SemaphoreUtil.acquireSemaphore(sem, { contextName: "3" });
+        const semContext = acquireSemaphore(sem, { contextName: "1" });
+        const semContext2 = acquireSemaphore(sem, { contextName: "2" });
+        const semContext3 = acquireSemaphore(sem, { contextName: "3" });
 
         async function semTryf(semContext, delayMs) {
             try {

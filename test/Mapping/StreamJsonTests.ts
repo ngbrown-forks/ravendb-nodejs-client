@@ -1,5 +1,5 @@
-import * as fs from "node:fs";
-import * as url from 'node:url';
+import fs from "node:fs";
+import url from 'node:url';
 import { Readable,pipeline } from "node:stream";
 import assert from "node:assert"
 import Parser from "stream-json/Parser.js";

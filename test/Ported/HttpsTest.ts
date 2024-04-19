@@ -8,7 +8,7 @@ import {
     IDocumentStore, PutClientCertificateOperation,
 } from "../../src";
 import { assertThat, assertThrows } from "../Utils/AssertExtensions";
-import * as unzipper from "unzipper";
+import { Parse } from "unzipper";
 import { bufferToReadable, readToBuffer, readToEnd, } from "../../src/Utility/StreamUtil";
 import { ReplaceClusterCertificateOperation } from "../../src/ServerWide/Operations/Certificates/ReplaceClusterCertificateOperation";
 import {
@@ -269,7 +269,7 @@ describe("HttpsTest", function () {
 
 async function extractCertificate(certificateRawData: CertificateRawData) {
     const stream = bufferToReadable(certificateRawData.rawData)
-        .pipe(unzipper.Parse( { forceStream: true }));
+        .pipe(Parse( { forceStream: true }));
 
     let cert = "";
 
@@ -291,7 +291,7 @@ async function extractCertificate(certificateRawData: CertificateRawData) {
 
 async function extractPfx(certificateRawData: CertificateRawData) {
     const stream = bufferToReadable(certificateRawData.rawData)
-        .pipe(unzipper.Parse( { forceStream: true }));
+        .pipe(Parse( { forceStream: true }));
 
     for await (const entry of stream) {
         if (entry.path.endsWith(".pfx")) {

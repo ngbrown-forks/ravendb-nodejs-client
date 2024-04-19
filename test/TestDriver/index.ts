@@ -1,5 +1,5 @@
 import { ChildProcess } from "node:child_process";
-import * as os from "node:os";
+import os from "node:os";
 
 import { CONSTANTS } from "../../src/Constants";
 import { DocumentStore } from "../../src/Documents/DocumentStore";
@@ -18,8 +18,8 @@ import {
 } from "../../src/Documents/Operations/Revisions/ConfigureRevisionsOperation";
 import { Dog, Entity, Genre, Movie, Rating, User } from "../Assets/Graph";
 import { RequestExecutor } from "../../src/Http/RequestExecutor";
-import * as proxyAgent from "http-proxy-agent";
-import * as http from "node:http";
+import proxyAgent from "http-proxy-agent";
+import http from "node:http";
 import { Stopwatch } from "../../src/Utility/Stopwatch";
 import { delay, wrapWithTimeout } from "../../src/Utility/PromiseUtil";
 import { ClusterTestContext } from "../Utils/TestUtil";

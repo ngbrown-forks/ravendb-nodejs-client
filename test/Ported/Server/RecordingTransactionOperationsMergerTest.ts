@@ -1,10 +1,10 @@
 import { IDocumentStore } from "../../../src";
 import { disposeTestDocumentStore, TemporaryDirContext, testContext } from "../../Utils/TestUtil";
-import * as path from "node:path";
+import path from "node:path";
 import { StartTransactionsRecordingOperation } from "../../../src/Documents/Operations/TransactionsRecording/StartTransactionsRecordingOperation";
 import { StopTransactionsRecordingOperation } from "../../../src/Documents/Operations/TransactionsRecording/StopTransactionsRecordingOperation";
 import { assertThat } from "../../Utils/AssertExtensions";
-import * as fs from "node:fs";
+import fs from "node:fs";
 import { CreateSampleDataOperation } from "../../Utils/CreateSampleDataOperation";
 
 describe("RecordingTransactionOperationsMergerTest", function () {

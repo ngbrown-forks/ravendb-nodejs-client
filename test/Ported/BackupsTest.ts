@@ -1,12 +1,12 @@
 import { GetOngoingTaskInfoOperation, IDocumentStore, PeriodicBackupConfiguration } from "../../src";
 import { disposeTestDocumentStore, RavenTestContext, TemporaryDirContext, testContext } from "../Utils/TestUtil";
-import * as path from "node:path";
-import * as fs from "node:fs";
+import path from "node:path";
+import fs from "node:fs";
 import { UpdatePeriodicBackupOperation } from "../../src/Documents/Operations/Backups/UpdatePeriodicBackupOperation";
 import { StartBackupOperation } from "../../src/Documents/Operations/Backups/StartBackupOperation";
 import { GetPeriodicBackupStatusOperation } from "../../src/Documents/Operations/Backups/GetPeriodicBackupStatusOperation";
 import { assertThat } from "../Utils/AssertExtensions";
-import * as rimraf from "rimraf";
+import { sync } from "rimraf";
 import { Stopwatch } from "../../src/Utility/Stopwatch";
 import { throwError } from "../../src/Exceptions";
 import { delay } from "../../src/Utility/PromiseUtil";
@@ -71,7 +71,7 @@ import { TimeUtil } from "../../src/Utility/TimeUtil";
             assertThat(backupStatus.status.isEncrypted)
                 .isFalse();
         } finally {
-            rimraf.sync(backupDir);
+            sync(backupDir);
         }
     });
 
