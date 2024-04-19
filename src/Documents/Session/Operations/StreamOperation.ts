@@ -11,8 +11,8 @@ import { getDocumentResultsAsObjects } from "../../../Mapping/Json/Streams/Pipel
 import { StringBuilder } from "../../../Utility/StringBuilder";
 import { ObjectUtil } from "../../../Utility/ObjectUtil";
 import { RavenCommandResponsePipeline } from "../../../Http/RavenCommandResponsePipeline";
-import * as Ignore from "stream-json/filters/Ignore.js";
-import * as StreamValues from "stream-json/streamers/StreamValues.js";
+import Ignore from "stream-json/filters/Ignore.js";
+import StreamValues from "stream-json/streamers/StreamValues.js";
 
 export class StreamOperation {
     private readonly _session: InMemoryDocumentSessionOperations;

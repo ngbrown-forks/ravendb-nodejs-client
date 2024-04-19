@@ -1,5 +1,5 @@
 import { EventEmitter } from "node:events";
-import * as Parser from "stream-json/Parser.js";
+import Parser from "stream-json/Parser.js";
 import {
     ObjectKeyCaseTransformStreamOptions,
     ObjectKeyCaseTransformStream
@@ -18,10 +18,10 @@ import {
 } from "../Mapping/Json/Streams/CollectResultStream";
 import { throwError, getError } from "../Exceptions";
 import { TypeUtil } from "../Utility/TypeUtil";
-import * as Assembler from "stream-json/Assembler.js";
+import Assembler from "stream-json/Assembler.js";
 import { ErrorFirstCallback } from "../Types/Callbacks";
 import { StringBuilder } from "../Utility/StringBuilder";
-import * as JsonlParser  from "stream-json/jsonl/Parser.js";
+import JsonlParser  from "stream-json/jsonl/Parser.js";
 
 export interface RavenCommandResponsePipelineOptions<TResult> {
     collectBody?: boolean | ((body: string) => void);

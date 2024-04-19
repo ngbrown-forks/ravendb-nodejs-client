@@ -1,8 +1,8 @@
-import * as net from "node:net";
+import net from "node:net";
 import { Socket } from "node:net";
 import { URL } from "node:url";
 import { IAuthOptions } from "../Auth/AuthOptions";
-import * as tls from "node:tls";
+import tls from "node:tls";
 import { Certificate } from "../Auth/Certificate";
 import { PeerCertificate } from "node:tls";
 import { getError, throwError } from "../Exceptions";

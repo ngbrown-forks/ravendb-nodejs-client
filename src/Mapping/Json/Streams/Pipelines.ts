@@ -1,10 +1,10 @@
 import { Stream, Transform, Writable } from "node:stream";
 import { RavenCommandResponsePipeline } from "../../../Http/RavenCommandResponsePipeline";
 import { DocumentConventions } from "../../../Documents/Conventions/DocumentConventions";
-import * as JsonlStringer from "stream-json/jsonl/Stringer.js";
-import * as Stringer from "stream-json/Stringer.js";
-import * as Pick from "stream-json/filters/Pick.js";
-import * as StreamArray from "stream-json/streamers/StreamArray.js";
+import JsonlStringer from "stream-json/jsonl/Stringer.js";
+import Stringer from "stream-json/Stringer.js";
+import Pick from "stream-json/filters/Pick.js";
+import StreamArray from "stream-json/streamers/StreamArray.js";
 import { ObjectUtil } from "../../../Utility/ObjectUtil";
 
 export function getDocumentResultsAsObjects(

@@ -1,6 +1,5 @@
 import { TypeUtil } from "./TypeUtil";
 import { throwError } from "../Exceptions";
-import * as changeCase from "change-case";
 import { CasingConvention, ObjectUtil } from "./ObjectUtil";
 import { StringBuilder } from "./StringBuilder";
 
