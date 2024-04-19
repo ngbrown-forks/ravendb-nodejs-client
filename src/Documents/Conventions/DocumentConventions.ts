@@ -99,26 +99,14 @@ export class DocumentConventions {
     private _objectMapper: TypesAwareObjectMapper;
     private _customFetch: any;
     private _dateUtil: DateUtil;
-    private _syncJsonParseLimit: number;
 
     private _useCompression: boolean;
     private _sendApplicationIdentifier: boolean;
 
     private readonly _bulkInsert: BulkInsertConventions;
 
-    private _useJsonlStreaming = true;
-
     public get bulkInsert() {
         return this._bulkInsert;
-    }
-
-    public get useJsonlStreaming() {
-        return this._useJsonlStreaming;
-    }
-
-    public set useJsonlStreaming(value) {
-        this._assertNotFrozen();
-        this._useJsonlStreaming = value;
     }
 
     public constructor() {
@@ -168,7 +156,6 @@ export class DocumentConventions {
 
         this._dateUtilOpts = {};
         this._dateUtil = new DateUtil(this._dateUtilOpts);
-        this._syncJsonParseLimit = 2 * 1_024 * 1_024;
 
         this._firstBroadcastAttemptTimeout = 5_000;
         this._secondBroadcastAttemptTimeout = 30_000;
@@ -282,23 +269,6 @@ export class DocumentConventions {
     public set customFetch(customFetch: any) {
         this._assertNotFrozen();
         this._customFetch = customFetch;
-    }
-
-    /**
-     * Sets json length limit for sync parsing. Beyond that size
-     * we fall back to async parsing
-     */
-    public get syncJsonParseLimit(): number {
-        return this._syncJsonParseLimit;
-    }
-
-    /**
-     * Gets json length limit for sync parsing. Beyond that size
-     * we fallback to async parsing
-     */
-    public set syncJsonParseLimit(value: number) {
-        this._assertNotFrozen();
-        this._syncJsonParseLimit = value;
     }
 
     public get dateUtil(): DateUtil {

@@ -37,9 +37,8 @@ describe("document streaming", function () {
         await session.saveChanges();
     }
 
-    async function streamDocuments(format: "json" | "jsonl", remoteCasing : "camel" | "pascal" = "camel") {
+    async function streamDocuments(remoteCasing : "camel" | "pascal" = "camel") {
         const newStore = new DocumentStore(store.urls, store.database);
-        newStore.conventions.useJsonlStreaming = format === "jsonl";
 
         if (remoteCasing === "pascal") {
             newStore.conventions.findCollectionNameForObjectLiteral = (o) => o["collection"];
@@ -79,20 +78,15 @@ describe("document streaming", function () {
         }
     }
 
-    it("can stream documents starting with - json - camel", async () => {
-        await streamDocuments("json");
-    });
+
 
     it("can stream documents starting with - jsonl - camel", async () => {
-        await streamDocuments("jsonl");
+        await streamDocuments();
     });
 
-    it("can stream documents starting with - json - pascal", async () => {
-        await streamDocuments("json", "pascal");
-    });
 
     it("can stream documents starting with - jsonl - pascal", async () => {
-        await streamDocuments("jsonl", "pascal");
+        await streamDocuments("pascal");
     });
     
     it("[TODO] can stream starting with prefix using opts");

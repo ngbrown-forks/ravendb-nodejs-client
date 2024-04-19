@@ -59,16 +59,7 @@ export class ConditionalGetDocumentsCommand extends RavenCommand<ConditionalGetR
         const body = await readToEnd(bodyStream);
         bodyCallback?.(body);
 
-        let parsedJson: any;
-        if (body.length > conventions.syncJsonParseLimit) {
-            const bodyStreamCopy = stringToReadable(body);
-            // response is quite big - fallback to async (slower) parsing to avoid blocking event loop
-            parsedJson = await RavenCommandResponsePipeline.create<any>()
-                .parseJsonAsync()
-                .process(bodyStreamCopy);
-        } else {
-            parsedJson = JSON.parse(body);
-        }
+        const parsedJson = JSON.parse(body);
 
         return ConditionalGetDocumentsCommand._mapToLocalObject(parsedJson, conventions);
     }

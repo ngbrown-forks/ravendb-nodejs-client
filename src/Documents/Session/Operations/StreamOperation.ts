@@ -49,9 +49,7 @@ export class StreamOperation {
     }
 
     private _createRequestForIdPrefix(idPrefix: string, opts: StartingWithOptions): StreamCommand {
-        const format = this._session.conventions.useJsonlStreaming ? 'jsonl' : 'json';
-
-        const sb = new StringBuilder(`streams/docs?format=${format}&`);
+        const sb = new StringBuilder(`streams/docs?format=jsonl&`);
         if (idPrefix) {
             sb.append("startsWith=")
                 .append(encodeURIComponent(idPrefix)).append("&");
@@ -96,14 +94,9 @@ export class StreamOperation {
         if (this._isQueryStream) {
             const pipeline = RavenCommandResponsePipeline.create<object[]>();
 
-            this._session.conventions.useJsonlStreaming
-                ? pipeline.parseJsonlAsync(x => x["Stats"])
-                : pipeline.parseJsonAsync([
-                    new Ignore({ filter: /^Results|Includes$/ }),
-                    new StreamValues()
-                ]);
+            pipeline.parseJsonlAsync(x => x["Stats"])
 
-                pipeline.stream(response.stream)
+            pipeline.stream(response.stream)
                 .on("error", err => result.emit("error", err))
                 .on("data", data => {
                     const rawWithCamel = ObjectUtil.transformObjectKeys(data["value"], {

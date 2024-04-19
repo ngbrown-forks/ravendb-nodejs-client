@@ -107,16 +107,7 @@ export class QueryCommand extends RavenCommand<QueryResult> {
         const body = await readToEnd(bodyStream);
         bodyCallback?.(body);
 
-        let parsedJson: any;
-        if (body.length > conventions.syncJsonParseLimit) {
-            const bodyStreamCopy = stringToReadable(body);
-            // response is quite big - fallback to async (slower) parsing to avoid blocking event loop
-            parsedJson = await RavenCommandResponsePipeline.create<ServerResponse<QueryResult>>()
-                .parseJsonAsync()
-                .process(bodyStreamCopy);
-        } else {
-            parsedJson = JSON.parse(body);
-        }
+        const parsedJson = JSON.parse(body);
 
         const queryResult = QueryCommand._mapToLocalObject(parsedJson, conventions);
 

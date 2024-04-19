@@ -221,9 +221,8 @@ describe("query streaming", function () {
 
     });
 
-    async function streamRawQueryResults(format: "json" | "jsonl", remoteCasing : "camel" | "pascal" = "camel") {
+    async function streamRawQueryResults(remoteCasing : "camel" | "pascal" = "camel") {
         const newStore = new DocumentStore(store.urls, store.database);
-        newStore.conventions.useJsonlStreaming = format === "jsonl";
 
         if (remoteCasing === "pascal") {
             newStore.conventions.findCollectionNameForObjectLiteral = (o) => o["collection"];
@@ -277,20 +276,14 @@ describe("query streaming", function () {
         }
     }
 
-    it("can stream raw query results with query statistics - json - camel", async () => {
-        await streamRawQueryResults("json");
-    });
 
     it("can stream raw query results with query statistics - jsonl - camel", async () => {
-        await streamRawQueryResults("jsonl");
+        await streamRawQueryResults();
     });
 
-    it("can stream raw query results with query statistics - json - pascal", async () => {
-        await streamRawQueryResults("json", "pascal");
-    });
 
     it("can stream raw query results with query statistics - jsonl - pascal", async () => {
-        await streamRawQueryResults("jsonl", "pascal");
+        await streamRawQueryResults("pascal");
     });
 
     it("can stream raw query into stream", async () => {

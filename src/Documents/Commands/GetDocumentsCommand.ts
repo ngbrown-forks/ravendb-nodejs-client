@@ -1,8 +1,5 @@
 import { Stream } from "node:stream";
 import { RavenCommand } from "../../Http/RavenCommand";
-import {
-    RavenCommandResponsePipeline
-} from "../../Http/RavenCommandResponsePipeline";
 import { ServerNode } from "../../Http/ServerNode";
 import { HttpRequestParameters } from "../../Primitives/Http";
 import { getHeaders } from "../../Utility/HttpUtil";
@@ -14,8 +11,7 @@ import { HashCalculator } from "../Queries/HashCalculator";
 import { IRavenObject } from "../../Types/IRavenObject";
 import { TimeSeriesRange } from "../Operations/TimeSeries/TimeSeriesRange";
 import { DateUtil } from "../../Utility/DateUtil";
-import { readToEnd, stringToReadable } from "../../Utility/StreamUtil";
-import { ServerResponse } from "../../Types";
+import { readToEnd } from "../../Utility/StreamUtil";
 import { ObjectUtil } from "../../Utility/ObjectUtil";
 import { AbstractTimeSeriesRange } from "../Operations/TimeSeries/AbstractTimeSeriesRange";
 import { TimeSeriesTimeRange } from "../Operations/TimeSeries/TimeSeriesTimeRange";
@@ -338,16 +334,7 @@ export class GetDocumentsCommand extends RavenCommand<GetDocumentsResult> {
         const body = await readToEnd(bodyStream);
         bodyCallback?.(body);
 
-        let parsedJson: any;
-        if (body.length > conventions.syncJsonParseLimit) {
-            const bodyStreamCopy = stringToReadable(body);
-            // response is quite big - fallback to async (slower) parsing to avoid blocking event loop
-            parsedJson = await RavenCommandResponsePipeline.create<ServerResponse<GetDocumentsResult>>()
-                .parseJsonAsync()
-                .process(bodyStreamCopy);
-        } else {
-            parsedJson = JSON.parse(body);
-        }
+        const parsedJson = JSON.parse(body);
 
         return GetDocumentsCommand._mapToLocalObject(parsedJson, conventions);
     }

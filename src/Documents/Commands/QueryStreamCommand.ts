@@ -30,11 +30,9 @@ export class QueryStreamCommand extends RavenCommand<StreamResultResponse> {
     }
 
     public createRequest(node: ServerNode): HttpRequestParameters {
-        const format = this._conventions.useJsonlStreaming ? 'jsonl' : 'json';
-
         return {
             method: "POST",
-            uri: `${node.url}/databases/${node.database}/streams/queries?format=${format}`,
+            uri: `${node.url}/databases/${node.database}/streams/queries?format=jsonl`,
             body: writeIndexQuery(this._conventions, this._indexQuery),
             headers: this._headers().typeAppJson().build()
         };
