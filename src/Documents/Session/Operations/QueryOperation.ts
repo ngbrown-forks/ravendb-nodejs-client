@@ -17,7 +17,7 @@ import { NESTED_OBJECT_TYPES_PROJECTION_FIELD } from "../DocumentQuery";
 import { TimeSeriesAggregationResult } from "../../Queries/TimeSeries/TimeSeriesAggregationResult";
 import { TimeSeriesRawResult } from "../../Queries/TimeSeries/TimeSeriesRawResult";
 import { TimeSeriesRangeAggregation } from "../../Queries/TimeSeries/TimeSeriesRangeAggregation";
-import { ObjectUtil } from "../../../Utility/ObjectUtil";
+import { ObjectChangeCaseOptions, ObjectUtil } from "../../../Utility/ObjectUtil";
 import { TimeSeriesEntry } from "../TimeSeries/TimeSeriesEntry";
 import { StringBuilder } from "../../../Utility/StringBuilder";
 import { DocumentConventions } from "../../Conventions/DocumentConventions";
@@ -298,7 +298,21 @@ export class QueryOperation {
                     result[key] = mapped[key];
                 }
             } else {
-                Object.assign(result, conventions.transformObjectKeysToLocalFieldNameConvention(raw));
+                if (conventions.serverToLocalFieldNameConverter) {
+                    const options: ObjectChangeCaseOptions = {
+                        recursive: true,
+                        arrayRecursive: true,
+                        ignorePaths: [
+                            CONSTANTS.Documents.Metadata.IGNORE_CASE_TRANSFORM_REGEX,
+                            /@projection/
+                        ],
+                        defaultTransform: conventions.serverToLocalFieldNameConverter
+                    };
+
+                    Object.assign(result, ObjectUtil.transformObjectKeys(raw, options));
+                } else {
+                    Object.assign(result, raw);
+                }
             }
         }
 

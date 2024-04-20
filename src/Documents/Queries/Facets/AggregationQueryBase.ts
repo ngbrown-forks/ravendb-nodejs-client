@@ -5,7 +5,6 @@ import { FacetResult } from ".";
 import { QueryCommand } from "../../Commands/QueryCommand";
 import { FacetQueryCommand } from "../../Commands/FacetQueryCommand";
 import { QueryResult } from "../QueryResult";
-import { TypesAwareObjectMapper } from "../../../Mapping/ObjectMapper";
 import { QueryOperation } from "../../Session/Operations/QueryOperation";
 import { Lazy } from "../../Lazy";
 import { DocumentSession } from "../../Session/DocumentSession";

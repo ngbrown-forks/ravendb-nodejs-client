@@ -296,9 +296,8 @@ function isObject(value) {
     return typeof value === "object" || typeof value === "function";
 }
 
-function isArray(value) {
-    return (Array.isArray && Array.isArray(value)) ||
-        Object.prototype.toString.call(value) === "[object Array]";
+function isArray(value: any): value is Array<any> {
+    return Array.isArray(value);
 }
 
 function computeNewValue(value, options, forceRecurse, stack) {

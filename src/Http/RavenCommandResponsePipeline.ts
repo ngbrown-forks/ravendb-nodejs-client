@@ -15,24 +15,23 @@ import { StringBuilder } from "../Utility/StringBuilder";
 import JsonlParser from "stream-json/jsonl/Parser.js";
 import { FieldNameConversion } from "../Utility/ObjectUtil";
 
-export interface RavenCommandResponsePipelineOptions<TResult> {
+export interface RavenCommandResponsePipelineOptions {
     collectBody?: boolean | ((body: string) => void);
     jsonlAsync?: {
         transforms: Transform[];
     };
     jsonSync?: boolean;
     streamKeyCaseTransform?: ObjectKeyCaseTransformStreamOptions;
-    transform?: Stream;
 }
 
 export class RavenCommandResponsePipeline<TStreamResult> extends EventEmitter {
 
-    private readonly _opts: RavenCommandResponsePipelineOptions<TStreamResult>;
+    private readonly _opts: RavenCommandResponsePipelineOptions;
     private _body: StringBuilder = new StringBuilder();
 
     private constructor() {
         super();
-        this._opts = {} as RavenCommandResponsePipelineOptions<TStreamResult>;
+        this._opts = {} as RavenCommandResponsePipelineOptions;
     }
 
     public static create<TResult>(): RavenCommandResponsePipeline<TResult> {

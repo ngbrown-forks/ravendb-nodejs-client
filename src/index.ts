@@ -739,7 +739,7 @@ export * from "./ServerWide/Operations/ModifyDatabaseTopologyOperation";
 export * from "./ServerWide/Operations/ModifyDatabaseTopologyResult";
 
 // MAPPING
-export { TypesAwareObjectMapper } from "./Mapping/ObjectMapper";
+export { TypesAwareObjectMapper, ITypesAwareObjectMapper } from "./Mapping/ObjectMapper";
 
 // CONSTANTS
 export { CONSTANTS } from "./Constants";

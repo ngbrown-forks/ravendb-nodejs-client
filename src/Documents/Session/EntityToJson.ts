@@ -4,7 +4,7 @@ import { TypeUtil } from "../../Utility/TypeUtil";
 import { DocumentConventions } from "../Conventions/DocumentConventions";
 import { CONSTANTS } from "../../Constants";
 import { DocumentType } from "../DocumentAbstractions";
-import { TypeInfo, TypesAwareObjectMapper } from "../../Mapping/ObjectMapper";
+import { ITypesAwareObjectMapper, TypeInfo } from "../../Mapping/ObjectMapper";
 import { throwError } from "../../Exceptions";
 import { SetupDocumentBase } from "../SetupDocumentBase";
 import { MetadataObject } from "./MetadataObject";
@@ -255,7 +255,7 @@ export class EntityToJson {
         this._session.generateEntityIdOnTheClient.trySetIdentity(entity, id);
     }
 
-    public static populateEntity(entity: object, document: object, objectMapper: TypesAwareObjectMapper) {
+    public static populateEntity(entity: object, document: object, objectMapper: ITypesAwareObjectMapper) {
         if (!entity) {
             throwError("InvalidArgumentException", "Entity cannot be null");
         }

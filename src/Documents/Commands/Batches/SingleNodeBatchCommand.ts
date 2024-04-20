@@ -141,7 +141,7 @@ export class SingleNodeBatchCommand extends RavenCommand<BatchCommandResult> imp
         let body: string = null;
         this.result = await RavenCommandResponsePipeline.create<BatchCommandResult>()
             .collectBody(_ => body = _)
-            .parseJsonSync() // TODO: consider parseJsonAsync()
+            .parseJsonSync()
             .objectKeysTransform({
                 defaultTransform: ObjectUtil.camel,
                 ignoreKeys: [/^@/],

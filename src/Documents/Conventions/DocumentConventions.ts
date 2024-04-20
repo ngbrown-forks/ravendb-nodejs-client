@@ -1,4 +1,4 @@
-import { TypesAwareObjectMapper } from "../../Mapping/ObjectMapper";
+import { ITypesAwareObjectMapper, TypesAwareObjectMapper } from "../../Mapping/ObjectMapper";
 import {
     DocumentType,
 } from "../DocumentAbstractions";
@@ -96,7 +96,7 @@ export class DocumentConventions {
     private _localToServerFieldNameConverter?: FieldNameConversion;
     private _serverToLocalFieldNameConverter?: FieldNameConversion;
 
-    private _objectMapper: TypesAwareObjectMapper;
+    private _objectMapper: ITypesAwareObjectMapper;
     private _customFetch: any;
     private _dateUtil: DateUtil;
 
@@ -243,11 +243,11 @@ export class DocumentConventions {
         this._firstBroadcastAttemptTimeout = firstBroadcastAttemptTimeout;
     }
 
-    public get objectMapper(): TypesAwareObjectMapper {
+    public get objectMapper(): ITypesAwareObjectMapper {
         return this._objectMapper;
     }
 
-    public set objectMapper(value: TypesAwareObjectMapper) {
+    public set objectMapper(value: ITypesAwareObjectMapper) {
         this._assertNotFrozen();
         this._objectMapper = value;
     }
@@ -963,25 +963,6 @@ export class DocumentConventions {
             ignorePaths: [
                 CONSTANTS.Documents.Metadata.IGNORE_CASE_TRANSFORM_REGEX,
             ]
-        };
-
-        return ObjectUtil.transformObjectKeys(obj, options);
-    }
-
-    public transformObjectKeysToLocalFieldNameConvention(
-        obj: object) {
-        if (!this._serverToLocalFieldNameConverter) {
-            return obj as object;
-        }
-
-        const options: ObjectChangeCaseOptions = {
-            recursive: true,
-            arrayRecursive: true,
-            ignorePaths: [
-                CONSTANTS.Documents.Metadata.IGNORE_CASE_TRANSFORM_REGEX,
-                /@projection/
-            ],
-            defaultTransform: this._serverToLocalFieldNameConverter
         };
 
         return ObjectUtil.transformObjectKeys(obj, options);

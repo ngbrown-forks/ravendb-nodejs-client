@@ -19,9 +19,12 @@ export interface NestedTypes {
 }
 
 export interface ITypesAwareObjectMapper {
-    fromObjectLiteral<TResult extends object>(raw: object, typeInfo?: TypeInfo): TResult;
+    fromObjectLiteral<TResult extends object>(rawResult: object, typeInfo?: TypeInfo, knownTypes?: Map<string, ObjectTypeDescriptor>): TResult;
 
-    toObjectLiteral<TFrom extends object>(obj: TFrom, typeInfo?: (typeInfo: TypeInfo) => void): object;
+    toObjectLiteral<TFrom extends object>(obj: TFrom,
+                                          typeInfoCallback?: (typeInfo: TypeInfo) => void,
+                                          knownTypes?: Map<string, ObjectTypeDescriptor>
+    ): object;
 }
 
 export class TypesAwareObjectMapper implements ITypesAwareObjectMapper {
@@ -50,9 +53,6 @@ export class TypesAwareObjectMapper implements ITypesAwareObjectMapper {
         this._throwMappingErrors = value;
     }
 
-    public fromObjectLiteral<TResult extends object>(rawResult: object, typeInfo?: TypeInfo): TResult;
-    public fromObjectLiteral<TResult extends object>(
-        rawResult: object, typeInfo?: TypeInfo, knownTypes?: Map<string, ObjectTypeDescriptor>): TResult;
     public fromObjectLiteral<TResult extends object>(
         rawResult: object, typeInfo?: TypeInfo, knownTypes?: Map<string, ObjectTypeDescriptor>): TResult {
 
@@ -93,14 +93,6 @@ export class TypesAwareObjectMapper implements ITypesAwareObjectMapper {
         return obj;
     }
 
-    public toObjectLiteral<TFrom extends object>(obj: TFrom): object;
-    public toObjectLiteral<TFrom extends object>(
-        obj: TFrom,
-        typeInfoCallback?: (typeInfo: TypeInfo) => void): object;
-    public toObjectLiteral<TFrom extends object>(
-        obj: TFrom,
-        typeInfoCallback?: (typeInfo: TypeInfo) => void,
-        knownTypes?: Map<string, ObjectTypeDescriptor>): object;
     public toObjectLiteral<TFrom extends object>(
         obj: TFrom,
         typeInfoCallback?: (typeInfo: TypeInfo) => void,

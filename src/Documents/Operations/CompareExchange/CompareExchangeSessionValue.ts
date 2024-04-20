@@ -12,7 +12,7 @@ import { EntityToJson } from "../../Session/EntityToJson";
 import { ICommandData } from "../../Commands/CommandData";
 import { PutCompareExchangeCommandData } from "../../Commands/Batches/PutCompareExchangeCommandData";
 import { DeleteCompareExchangeCommandData } from "../../Commands/Batches/DeleteCompareExchangeCommandData";
-import { TypesAwareObjectMapper } from "../../../Mapping/ObjectMapper";
+import { ITypesAwareObjectMapper } from "../../../Mapping/ObjectMapper";
 import { IMetadataDictionary } from "../../Session/IMetadataDictionary";
 
 export class CompareExchangeSessionValue {
@@ -169,7 +169,7 @@ export class CompareExchangeSessionValue {
         }
     }
 
-    private _convertEntity(key: string, entity: any, objectMapper: TypesAwareObjectMapper, metadata: any) {
+    private _convertEntity(key: string, entity: any, objectMapper: ITypesAwareObjectMapper, metadata: any) {
         return {
             [COMPARE_EXCHANGE.OBJECT_FIELD_NAME]: entity,
             [CONSTANTS.Documents.Metadata.KEY]: metadata ?? undefined
@@ -205,7 +205,7 @@ export class CompareExchangeSessionValue {
         }
     }
 
-    public updateValue(value: CompareExchangeValue<object>, mapper: TypesAwareObjectMapper) {
+    public updateValue(value: CompareExchangeValue<object>, mapper: ITypesAwareObjectMapper) {
         this._index = value.index;
         this._state = value.index >= 0 ? "None" : "Missing";
 

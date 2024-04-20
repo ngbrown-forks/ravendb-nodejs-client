@@ -4,7 +4,7 @@ import { HashCalculator } from "./HashCalculator";
 import { TypeUtil } from "../../Utility/TypeUtil";
 import { DocumentConventions } from "../Conventions/DocumentConventions";
 import { JsonSerializer } from "../../Mapping/Json/Serializer";
-import { TypesAwareObjectMapper } from "../../Mapping/ObjectMapper";
+import { ITypesAwareObjectMapper } from "../../Mapping/ObjectMapper";
 import { ServerCasing } from "../../Types";
 
 export interface IndexQueryParameters {
@@ -26,7 +26,7 @@ export class IndexQuery extends IndexQueryWithParameters<IndexQueryParameters> {
      */
     public disableCaching: boolean;
 
-    public getQueryHash(mapper: TypesAwareObjectMapper): string {
+    public getQueryHash(mapper: ITypesAwareObjectMapper): string {
         const hasher = new HashCalculator();
         try {
             hasher.write(this.query, mapper);

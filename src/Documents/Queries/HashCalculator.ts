@@ -1,5 +1,5 @@
 import { TypeUtil } from "../../Utility/TypeUtil";
-import { TypesAwareObjectMapper } from "../../Mapping/ObjectMapper";
+import { ITypesAwareObjectMapper } from "../../Mapping/ObjectMapper";
 import { createHash } from "node:crypto";
 
 const typeSignatures = {
@@ -24,7 +24,7 @@ export class HashCalculator {
 
     //TBD 4.1 public void Write(HighlightedField[] highlightedFields)
 
-    public write(o: any, mapper?: TypesAwareObjectMapper) {
+    public write(o: any, mapper?: ITypesAwareObjectMapper) {
         if (TypeUtil.isNullOrUndefined(o)) {
             this._buffers.push(Buffer.from("null"));
             return;
