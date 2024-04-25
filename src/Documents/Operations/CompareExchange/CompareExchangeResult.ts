@@ -27,7 +27,7 @@ export class CompareExchangeResult<T> {
             throwError("InvalidOperationException", "Response is invalid. Index is missing");
         }
 
-        const val = response.Value.Object || null;
+        const val = response.Value?.Object || null;
         return CompareExchangeResult._create(val, response.Index, response.Successful, conventions, clazz);
     }
 
