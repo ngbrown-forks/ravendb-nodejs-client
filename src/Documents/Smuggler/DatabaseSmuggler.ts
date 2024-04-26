@@ -9,7 +9,6 @@ import { HeadersBuilder } from "../../Utility/HttpUtil.js";
 import { DatabaseSmugglerOptions } from "./DatabaseSmugglerOptions.js";
 import { existsSync, mkdirSync, createWriteStream, readdirSync, createReadStream } from "node:fs";
 import { pipelineAsync } from "../../Utility/StreamUtil.js";
-import { LengthUnawareFormData } from "../../Utility/LengthUnawareFormData.js";
 import { dirname, resolve, extname } from "node:path";
 import { BackupUtils } from "./BackupUtils.js";
 import { RequestExecutor } from "../../Http/RequestExecutor.js";
@@ -19,6 +18,7 @@ import { RavenCommand, ResponseDisposeHandling } from "../../Http/RavenCommand.j
 import { DocumentConventions } from "../Conventions/DocumentConventions.js";
 import { ServerNode } from "../../Http/ServerNode.js";
 import { Readable } from "node:stream";
+import { FormData } from "node-fetch";
 
 export class DatabaseSmuggler {
     private readonly _store: IDocumentStore;
@@ -274,9 +274,9 @@ class ImportCommand extends RavenCommand<void> {
     createRequest(node: ServerNode): HttpRequestParameters {
         const uri = node.url + "/databases/" + node.database + "/smuggler/import?operationId=" + this._operationId;
 
-        const multipart = new LengthUnawareFormData();
+        const multipart = new FormData();
         multipart.append("importOptions", this._serializer.serialize(this._options));
-        multipart.append("file", this._stream, { filename: "name" });
+        multipart.append("file", this._stream);
 
         return {
             method: "POST",

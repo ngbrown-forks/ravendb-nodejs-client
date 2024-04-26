@@ -12,13 +12,13 @@ import { HttpRequestParameters } from "../../../Primitives/Http.js";
 import { HeadersBuilder } from "../../../Utility/HttpUtil.js";
 import { JsonSerializer } from "../../../Mapping/Json/Serializer.js";
 import { ServerNode } from "../../../Http/ServerNode.js";
-import { LengthUnawareFormData } from "../../../Utility/LengthUnawareFormData.js";
 import { RavenCommandResponsePipeline } from "../../../Http/RavenCommandResponsePipeline.js";
 import { Stream } from "node:stream";
 import { TimeUtil } from "../../../Utility/TimeUtil.js";
 import { PutAttachmentCommandHelper } from "./PutAttachmentCommandHelper.js";
 import { TypeUtil } from "../../../Utility/TypeUtil.js";
 import { ObjectUtil } from "../../../Utility/ObjectUtil.js";
+import { FormData } from "node-fetch";
 
 export class SingleNodeBatchCommand extends RavenCommand<BatchCommandResult> implements IDisposable {
     private _supportsAtomicWrites: boolean | null;
@@ -116,10 +116,10 @@ export class SingleNodeBatchCommand extends RavenCommand<BatchCommandResult> imp
                 request.headers = restHeaders;
             }
 
-            const multipart = new LengthUnawareFormData();
-            multipart.append("main", body, { header: { ...headers, "Content-Type": "multipart/form-data" } });
+            const multipart = new FormData();
+            multipart.append("main", body/*, { header: { ...headers, "Content-Type": "multipart/form-data" } }*/);
             for (let i = 0; i < attachments.length; i++) {
-                multipart.append("attachment_" + i, attachments[i].body, { header: attachments[i].headers });
+                multipart.append("attachment_" + i, attachments[i].body/*, { header: attachments[i].headers }*/);
             }
             request.body = multipart;
 
