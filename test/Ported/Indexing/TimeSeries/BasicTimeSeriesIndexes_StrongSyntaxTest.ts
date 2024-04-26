@@ -2,7 +2,7 @@ import {
     AbstractMultiMapTimeSeriesIndexCreationTask,
     AbstractTimeSeriesIndexCreationTask,
     IDocumentStore
-} from "../../../../src.js";
+} from "../../../../src/index.js";
 import { disposeTestDocumentStore, testContext } from "../../../Utils/TestUtil.js";
 import { Company } from "../../../Assets/Orders.js";
 import { assertThat } from "../../../Utils/AssertExtensions.js";

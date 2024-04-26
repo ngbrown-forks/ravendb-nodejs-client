@@ -5,7 +5,7 @@ import {
     IDocumentStore,
     StreamQueryStatistics,
     StreamResult, TimeSeriesRawResult,
-} from "../../../../src.js";
+} from "../../../../src/index.js";
 import assert from "node:assert"
 import { User } from "../../../Assets/Entities.js";
 import { finishedAsync } from "../../../../src/Utility/StreamUtil.js";

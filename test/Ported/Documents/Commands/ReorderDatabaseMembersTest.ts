@@ -1,4 +1,4 @@
-import { IDocumentStore } from "../../../../src.js";
+import { IDocumentStore } from "../../../../src/index.js";
 import { disposeTestDocumentStore, testContext } from "../../../Utils/TestUtil.js";
 import { ReorderDatabaseMembersOperation } from "../../../../src/ServerWide/Operations/ReorderDatabaseMembersOperation.js";
 

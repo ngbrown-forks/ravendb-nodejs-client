@@ -6,7 +6,7 @@ import {
     UpdateEtlOperation,
     ResetEtlOperation,
     SqlEtlConfiguration, SqlEtlTable, Transformation, GetOngoingTaskInfoOperation
-} from "../../../../../src.js";
+} from "../../../../../src/index.js";
 import { disposeTestDocumentStore, RavenTestContext, testContext } from "../../../../Utils/TestUtil.js";
 import { User } from "../../../../Assets/Entities.js";
 import { assertThat } from "../../../../Utils/AssertExtensions.js";

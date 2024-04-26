@@ -3,7 +3,7 @@ import {
     ExternalReplication,
     GetDatabaseRecordOperation,
     IDocumentStore, PutConnectionStringOperation, RavenConnectionString, UpdateExternalReplicationOperation
-} from "../../../../../src.js";
+} from "../../../../../src/index.js";
 import { disposeTestDocumentStore, RavenTestContext, testContext } from "../../../../Utils/TestUtil.js";
 import { ServerWideExternalReplication } from "../../../../../src/ServerWide/Operations/OngoingTasks/ServerWideExternalReplication.js";
 import { PutServerWideExternalReplicationOperation } from "../../../../../src/ServerWide/Operations/OngoingTasks/PutServerWideExternalReplicationOperation.js";

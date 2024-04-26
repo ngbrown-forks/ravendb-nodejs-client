@@ -4,7 +4,7 @@ import { testContext, disposeTestDocumentStore } from "../../../../Utils/TestUti
 import {
     IDocumentStore,
     GroupBy,
-} from "../../../../../src.js";
+} from "../../../../../src/index.js";
 import { Order, OrderLine, Address } from "../../../../Assets/Entities.js";
 
 describe("RavenDB-8761", function () {

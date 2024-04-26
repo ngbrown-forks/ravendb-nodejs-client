@@ -9,7 +9,7 @@ import {
     ConflictSolver,
     GetConflictsCommand,
     PutDocumentCommand, GetOngoingTaskInfoOperation,
-} from "../../../../src.js";
+} from "../../../../src/index.js";
 import { ReplicationTestContext } from "../../../Utils/ReplicationTestContext.js";
 import { assertThat } from "../../../Utils/AssertExtensions.js";
 import { OngoingTaskReplication } from "../../../../src/Documents/Operations/OngoingTasks/OngoingTask.js";

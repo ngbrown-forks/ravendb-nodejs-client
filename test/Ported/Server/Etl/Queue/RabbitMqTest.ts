@@ -4,7 +4,7 @@ import {
     IDocumentStore,
     PutConnectionStringOperation,
     QueueConnectionString, Transformation
-} from "../../../../../src.js";
+} from "../../../../../src/index.js";
 import { QueueEtlConfiguration } from "../../../../../src/Documents/Operations/Etl/Queue/QueueEtlConfiguration.js";
 import { OngoingTaskQueueEtlDetails } from "../../../../../src/Documents/Operations/OngoingTasks/OngoingTask.js";
 import { assertThat } from "../../../../Utils/AssertExtensions.js";

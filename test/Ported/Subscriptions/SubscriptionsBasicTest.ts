@@ -11,7 +11,7 @@ import DocumentStore, {
 } from "../../../src/index.js";
 import { AsyncQueue } from "../../Utils/AsyncQueue.js";
 import { acquireSemaphore } from "../../../src/Utility/SemaphoreUtil.js";
-import { getError, throwError } from "../../../src/Exceptions.js";
+import { getError, throwError } from "../../../src/Exceptions/index.js";
 import { TypeUtil } from "../../../src/Utility/TypeUtil.js";
 import { GetOngoingTaskInfoOperation } from "../../../src/Documents/Operations/GetOngoingTaskInfoOperation.js";
 import { OngoingTaskSubscription } from "../../../src/Documents/Operations/OngoingTasks/OngoingTask.js";

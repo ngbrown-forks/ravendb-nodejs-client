@@ -7,7 +7,7 @@ import {
     PutIndexesOperation,
     PatchRequest,
     PatchByQueryOperation, PatchOperation,
-} from "../../../../src.js";
+} from "../../../../src/index.js";
 
 describe("AdvancedPatchingTest", function () {
 

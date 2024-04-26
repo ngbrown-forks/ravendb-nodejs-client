@@ -1,4 +1,4 @@
-import { GetDatabaseRecordOperation, IDocumentStore } from "../../../../src.js";
+import { GetDatabaseRecordOperation, IDocumentStore } from "../../../../src/index.js";
 import { disposeTestDocumentStore, RavenTestContext, testContext } from "../../../Utils/TestUtil.js";
 import { UpdateDocumentsCompressionConfigurationOperation } from "../../../../src/ServerWide/Operations/DocumentsCompression/UpdateDocumentsCompressionConfigurationOperation.js";
 import { assertThat } from "../../../Utils/AssertExtensions.js";

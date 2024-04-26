@@ -9,7 +9,7 @@ import {
 import { ReplicationTestContext } from "../../Utils/ReplicationTestContext.js";
 import { Address, User } from "../../Assets/Entities.js";
 import { QueryCommand } from "../../../src/Documents/Commands/QueryCommand.js";
-import { tryGetConflict } from "../../../src/Mapping/Json.js";
+import { tryGetConflict } from "../../../src/Mapping/Json/index.js";
 
 (RavenTestContext.isPullRequest ? describe.skip : describe)(
     `${RavenTestContext.isPullRequest ? "[Skipped on PR] " : ""}` +

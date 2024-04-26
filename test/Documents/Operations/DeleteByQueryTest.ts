@@ -8,7 +8,7 @@ import {
 } from "../../../src/index.js";
 import { User } from "../../Assets/Entities.js";
 import { AsyncQueue } from "../../Utils/AsyncQueue.js";
-import { throwError } from "../../../src/Exceptions.js";
+import { throwError } from "../../../src/Exceptions/index.js";
 
 describe("DeleteByQueryTest", function () {
 

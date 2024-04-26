@@ -1,4 +1,4 @@
-import { IDocumentStore, Lazy } from "../../../../src.js";
+import { IDocumentStore, Lazy } from "../../../../src/index.js";
 import { disposeTestDocumentStore, testContext } from "../../../Utils/TestUtil.js";
 import assert from "node:assert"
 import { Order, OrderLine } from "../../../Assets/Entities.js";

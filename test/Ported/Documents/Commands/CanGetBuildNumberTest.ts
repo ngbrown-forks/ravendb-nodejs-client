@@ -1,5 +1,5 @@
 import { disposeTestDocumentStore, testContext } from "../../../Utils/TestUtil.js";
-import { IDocumentStore } from "../../../../src.js";
+import { IDocumentStore } from "../../../../src/index.js";
 import { GetBuildNumberOperation } from "../../../../src/ServerWide/Operations/GetBuildNumberOperation.js";
 import { assertThat } from "../../../Utils/AssertExtensions.js";
 

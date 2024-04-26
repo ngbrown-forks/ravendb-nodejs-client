@@ -6,10 +6,10 @@ import {
     IDocumentStore,
     SetIndexesPriorityOperation, GetStatisticsOperation,
     DocumentChange, IndexChange, AbstractJavaScriptIndexCreationTask
-} from "../../../../../src.js";
+} from "../../../../../src/index.js";
 import { Order, User } from "../../../../Assets/Entities.js";
 import { AsyncQueue } from "../../../../Utils/AsyncQueue.js";
-import { throwError } from "../../../../../src/Exceptions.js";
+import { throwError } from "../../../../../src/Exceptions/index.js";
 
 describe("ChangesTest", function () {
 

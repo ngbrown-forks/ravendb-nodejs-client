@@ -4,7 +4,7 @@ import {
     ElasticSearchConnectionString, GetOngoingTaskInfoOperation,
     IDocumentStore,
     PutConnectionStringOperation, Transformation
-} from "../../../../../src.js";
+} from "../../../../../src/index.js";
 import { disposeTestDocumentStore, RavenTestContext, testContext } from "../../../../Utils/TestUtil.js";
 import {
     ElasticSearchEtlConfiguration

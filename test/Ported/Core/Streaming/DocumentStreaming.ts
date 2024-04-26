@@ -4,7 +4,7 @@ import {
     DocumentStore,
     IDocumentStore,
     StreamResult,
-} from "../../../../src.js";
+} from "../../../../src/index.js";
 import assert from "node:assert"
 import { User } from "../../../Assets/Entities.js";
 import { CONSTANTS } from "../../../../src/Constants.js";

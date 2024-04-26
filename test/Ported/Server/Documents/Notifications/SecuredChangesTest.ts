@@ -3,11 +3,11 @@ import { testContext, disposeTestDocumentStore } from "../../../../Utils/TestUti
 
 import {
     IDocumentStore,
-} from "../../../../../src.js";
+} from "../../../../../src/index.js";
 import { User } from "../../../../Assets/Entities.js";
-import { DocumentChange } from "../../../../../src.js";
+import { DocumentChange } from "../../../../../src/index.js";
 import { AsyncQueue } from "../../../../Utils/AsyncQueue.js";
-import { throwError } from "../../../../../src/Exceptions.js";
+import { throwError } from "../../../../../src/Exceptions/index.js";
 
 describe("Secured changes test", function () {
 

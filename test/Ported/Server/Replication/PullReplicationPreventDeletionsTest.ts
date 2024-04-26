@@ -10,7 +10,7 @@ import {
     PutPullReplicationAsHubOperation,
     RavenConnectionString,
     UpdatePullReplicationAsSinkOperation
-} from "../../../../src.js";
+} from "../../../../src/index.js";
 import { ReplicationTestContext } from "../../../Utils/ReplicationTestContext.js";
 import moment from "moment";
 import { GenerateCertificateOperation } from "../../../Infrastructure/GenerateCertificateOperation.js";

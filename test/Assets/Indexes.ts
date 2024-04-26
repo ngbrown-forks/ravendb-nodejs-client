@@ -1,6 +1,5 @@
 import { User } from "./Entities.js";
-import { AbstractJavaScriptIndexCreationTask } from "../../src/Documents/Indexes/AbstractJavaScriptIndexCreationTask.js";
-import { AbstractCsharpIndexCreationTask } from "../../src/Documents/Indexes.js";
+import { AbstractCsharpIndexCreationTask, AbstractJavaScriptIndexCreationTask } from "../../src/index.js";
 
 export class UsersIndex extends AbstractJavaScriptIndexCreationTask<User, Pick<User, "name">> {
     public constructor() {

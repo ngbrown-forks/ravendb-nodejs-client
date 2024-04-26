@@ -4,7 +4,7 @@ import {
     OlapConnectionString,
     OlapEtlConfiguration,
     PutConnectionStringOperation, Transformation
-} from "../../../../../src.js";
+} from "../../../../../src/index.js";
 import { disposeTestDocumentStore, RavenTestContext, testContext } from "../../../../Utils/TestUtil.js";
 import { OngoingTaskOlapEtlDetails } from "../../../../../src/Documents/Operations/OngoingTasks/OngoingTask.js";
 import { assertThat } from "../../../../Utils/AssertExtensions.js";
