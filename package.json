@@ -74,7 +74,7 @@
     "tsup": "^8.0.2",
     "typescript": "^5.4.4",
     "typescript-eslint": "^7.5.0",
-    "unzipper": "^0.10.11"
+    "unzipper": "^0.11.4"
   },
   "dependencies": {
     "@types/node": "^20.12.4",
