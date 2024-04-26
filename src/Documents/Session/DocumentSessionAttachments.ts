@@ -1,9 +1,9 @@
-import { DocumentSessionAttachmentsBase } from "./DocumentSessionAttachmentsBase";
-import { IAttachmentsSessionOperations } from "./IAttachmentsSessionOperations";
-import { InMemoryDocumentSessionOperations } from "./InMemoryDocumentSessionOperations";
-import { HeadAttachmentCommand } from "../Commands/HeadAttachmentCommand";
-import { AttachmentResult } from "../Attachments";
-import { GetAttachmentOperation } from "../Operations/Attachments/GetAttachmentOperation";
+import { DocumentSessionAttachmentsBase } from "./DocumentSessionAttachmentsBase.js";
+import { IAttachmentsSessionOperations } from "./IAttachmentsSessionOperations.js";
+import { InMemoryDocumentSessionOperations } from "./InMemoryDocumentSessionOperations.js";
+import { HeadAttachmentCommand } from "../Commands/HeadAttachmentCommand.js";
+import { AttachmentResult } from "../Attachments/index.js";
+import { GetAttachmentOperation } from "../Operations/Attachments/GetAttachmentOperation.js";
 
 export class DocumentSessionAttachments
     extends DocumentSessionAttachmentsBase implements IAttachmentsSessionOperations {

@@ -1,12 +1,12 @@
-import { IServerOperation, OperationResultType } from "../../../Documents/Operations/OperationAbstractions";
-import { throwError } from "../../../Exceptions";
-import { DocumentConventions } from "../../../Documents/Conventions/DocumentConventions";
-import { RavenCommand } from "../../../Http/RavenCommand";
-import { HttpRequestParameters } from "../../../Primitives/Http";
-import { ServerNode } from "../../../Http/ServerNode";
+import { IServerOperation, OperationResultType } from "../../../Documents/Operations/OperationAbstractions.js";
+import { throwError } from "../../../Exceptions/index.js";
+import { DocumentConventions } from "../../../Documents/Conventions/DocumentConventions.js";
+import { RavenCommand } from "../../../Http/RavenCommand.js";
+import { HttpRequestParameters } from "../../../Primitives/Http.js";
+import { ServerNode } from "../../../Http/ServerNode.js";
 import { Stream } from "node:stream";
-import { ServerWideBackupConfiguration } from "./ServerWideBackupConfiguration";
-import { GetServerWideBackupConfigurationsResponse } from "../../../Documents/Operations/GetServerWideBackupConfigurationsResponse";
+import { ServerWideBackupConfiguration } from "./ServerWideBackupConfiguration.js";
+import { GetServerWideBackupConfigurationsResponse } from "../../../Documents/Operations/GetServerWideBackupConfigurationsResponse.js";
 
 export class GetServerWideBackupConfigurationOperation implements IServerOperation<ServerWideBackupConfiguration> {
     private readonly _name: string;

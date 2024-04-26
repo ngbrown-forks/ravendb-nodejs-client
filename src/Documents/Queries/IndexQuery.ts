@@ -1,11 +1,11 @@
-import { throwError } from "../../Exceptions";
-import { IndexQueryWithParameters } from "./IndexQueryWithParameters";
-import { HashCalculator } from "./HashCalculator";
-import { TypeUtil } from "../../Utility/TypeUtil";
-import { DocumentConventions } from "../Conventions/DocumentConventions";
-import { JsonSerializer } from "../../Mapping/Json/Serializer";
-import { ITypesAwareObjectMapper } from "../../Mapping/ObjectMapper";
-import { ServerCasing } from "../../Types";
+import { throwError } from "../../Exceptions/index.js";
+import { IndexQueryWithParameters } from "./IndexQueryWithParameters.js";
+import { HashCalculator } from "./HashCalculator.js";
+import { TypeUtil } from "../../Utility/TypeUtil.js";
+import { DocumentConventions } from "../Conventions/DocumentConventions.js";
+import { JsonSerializer } from "../../Mapping/Json/Serializer.js";
+import { ITypesAwareObjectMapper } from "../../Mapping/ObjectMapper.js";
+import { ServerCasing } from "../../Types/index.js";
 
 export interface IndexQueryParameters {
     [key: string]: object;

@@ -1,4 +1,4 @@
-import { StatusCodes } from "../../../Http/StatusCode";
+import { StatusCodes } from "../../../Http/StatusCode.js";
 
 export class GetResponse {
     public constructor() {

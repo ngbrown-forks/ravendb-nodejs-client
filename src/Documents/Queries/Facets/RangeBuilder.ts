@@ -1,4 +1,4 @@
-import { throwError } from "../../../Exceptions";
+import { throwError } from "../../../Exceptions/index.js";
 
 export class RangeBuilder<T = any> {
     private readonly _path: string;

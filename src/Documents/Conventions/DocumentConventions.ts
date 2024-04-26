@@ -1,23 +1,23 @@
-import { ITypesAwareObjectMapper, TypesAwareObjectMapper } from "../../Mapping/ObjectMapper";
+import { ITypesAwareObjectMapper, TypesAwareObjectMapper } from "../../Mapping/ObjectMapper.js";
 import {
     DocumentType,
-} from "../DocumentAbstractions";
+} from "../DocumentAbstractions.js";
 import {
     ObjectTypeDescriptor,
     ObjectLiteralDescriptor,
     ClassConstructor, EntityConstructor, Field
-} from "../../Types";
+} from "../../Types/index.js";
 import Pluralize from "pluralize";
-import { ClientConfiguration } from "../Operations/Configuration/ClientConfiguration";
-import { ReadBalanceBehavior } from "../../Http/ReadBalanceBehavior";
-import { throwError } from "../../Exceptions";
-import { CONSTANTS } from "../../Constants";
-import { TypeUtil } from "../../Utility/TypeUtil";
-import { DateUtil, DateUtilOpts } from "../../Utility/DateUtil";
-import { ObjectUtil, ObjectChangeCaseOptions, FieldNameConversion } from "../../Utility/ObjectUtil";
-import { LoadBalanceBehavior } from "../../Http/LoadBalanceBehavior";
-import { BulkInsertConventions } from "./BulkInsertConventions";
-import { InMemoryDocumentSessionOperations } from "../Session/InMemoryDocumentSessionOperations";
+import { ClientConfiguration } from "../Operations/Configuration/ClientConfiguration.js";
+import { ReadBalanceBehavior } from "../../Http/ReadBalanceBehavior.js";
+import { throwError } from "../../Exceptions/index.js";
+import { CONSTANTS } from "../../Constants.js";
+import { TypeUtil } from "../../Utility/TypeUtil.js";
+import { DateUtil, DateUtilOpts } from "../../Utility/DateUtil.js";
+import { ObjectUtil, ObjectChangeCaseOptions, FieldNameConversion } from "../../Utility/ObjectUtil.js";
+import { LoadBalanceBehavior } from "../../Http/LoadBalanceBehavior.js";
+import { BulkInsertConventions } from "./BulkInsertConventions.js";
+import { InMemoryDocumentSessionOperations } from "../Session/InMemoryDocumentSessionOperations.js";
 
 const { plural } = Pluralize;
 
@@ -675,7 +675,7 @@ export class DocumentConventions {
 
     public getEntityTypeDescriptor<T extends object>(entity: T): ObjectTypeDescriptor<T> {
         if (TypeUtil.isClass(entity.constructor)) {
-            return entity.constructor as ClassConstructor;
+            return entity.constructor as ClassConstructor<T>;
         }
 
         for (const entityType of this._knownEntityTypes.values()) {

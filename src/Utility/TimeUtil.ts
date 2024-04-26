@@ -1,6 +1,6 @@
-import { StringUtil } from "./StringUtil";
-import { throwError } from "../Exceptions";
-import { StringBuilder } from "./StringBuilder";
+import { StringUtil } from "./StringUtil.js";
+import { throwError } from "../Exceptions/index.js";
+import { StringBuilder } from "./StringBuilder.js";
 
 export class TimeUtil {
 

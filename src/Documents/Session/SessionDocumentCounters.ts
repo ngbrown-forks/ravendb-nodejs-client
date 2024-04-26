@@ -1,10 +1,10 @@
-import { SessionCountersBase } from "./SessionCountersBase";
-import { ISessionDocumentCounters } from "./ISessionDocumentCounters";
-import { InMemoryDocumentSessionOperations } from "./InMemoryDocumentSessionOperations";
-import { CaseInsensitiveKeysMap } from "../../Primitives/CaseInsensitiveKeysMap";
-import { CONSTANTS } from "../../Constants";
-import { GetCountersOperation } from "../Operations/Counters/GetCountersOperation";
-import { ObjectUtil } from "../../Utility/ObjectUtil";
+import { SessionCountersBase } from "./SessionCountersBase.js";
+import { ISessionDocumentCounters } from "./ISessionDocumentCounters.js";
+import { InMemoryDocumentSessionOperations } from "./InMemoryDocumentSessionOperations.js";
+import { CaseInsensitiveKeysMap } from "../../Primitives/CaseInsensitiveKeysMap.js";
+import { CONSTANTS } from "../../Constants.js";
+import { GetCountersOperation } from "../Operations/Counters/GetCountersOperation.js";
+import { ObjectUtil } from "../../Utility/ObjectUtil.js";
 
 export class SessionDocumentCounters extends SessionCountersBase implements ISessionDocumentCounters {
 

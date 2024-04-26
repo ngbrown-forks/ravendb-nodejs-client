@@ -1,4 +1,4 @@
-import { CaseInsensitiveKeysStore } from "./CaseInsensitiveKeysStore";
+import { CaseInsensitiveKeysStore } from "./CaseInsensitiveKeysStore.js";
 
 function validateKey(key) {
     if (!(key && key.toLowerCase)) {

@@ -1,5 +1,5 @@
-import { StringUtil } from "../../../Utility/StringUtil";
-import { throwError } from "../../../Exceptions";
+import { StringUtil } from "../../../Utility/StringUtil.js";
+import { throwError } from "../../../Exceptions/index.js";
 
 export class AttachmentRequest {
     private readonly _name: string;

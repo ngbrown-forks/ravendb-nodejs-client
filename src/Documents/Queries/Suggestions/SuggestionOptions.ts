@@ -1,5 +1,5 @@
-import { StringDistanceTypes } from "./StringDistanceTypes";
-import { SuggestionSortMode } from "./SuggestionSortMode";
+import { StringDistanceTypes } from "./StringDistanceTypes.js";
+import { SuggestionSortMode } from "./SuggestionSortMode.js";
 
 export interface SuggestionOptions {
     pageSize: number;

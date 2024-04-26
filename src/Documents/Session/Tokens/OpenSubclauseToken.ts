@@ -1,4 +1,4 @@
-import { QueryToken } from "./QueryToken";
+import { QueryToken } from "./QueryToken.js";
 
 export class OpenSubclauseToken extends QueryToken {
     private constructor() {

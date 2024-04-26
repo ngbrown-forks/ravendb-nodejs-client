@@ -1,15 +1,15 @@
-import { HttpRequestParameters } from "../../../Primitives/Http";
+import { HttpRequestParameters } from "../../../Primitives/Http.js";
 import { Stream } from "node:stream";
 import {
     ConnectionStringType,
     SqlConnectionString,
     RavenConnectionString,
     OlapConnectionString, ElasticSearchConnectionString, QueueConnectionString
-} from "../Etl/ConnectionString";
-import { DocumentConventions } from "../../Conventions/DocumentConventions";
-import { OperationResultType, IMaintenanceOperation } from "../OperationAbstractions";
-import { RavenCommand } from "../../../Http/RavenCommand";
-import { ServerNode } from "../../../Http/ServerNode";
+} from "../Etl/ConnectionString.js";
+import { DocumentConventions } from "../../Conventions/DocumentConventions.js";
+import { OperationResultType, IMaintenanceOperation } from "../OperationAbstractions.js";
+import { RavenCommand } from "../../../Http/RavenCommand.js";
+import { ServerNode } from "../../../Http/ServerNode.js";
 
 export interface GetConnectionStringsResult {
     ravenConnectionStrings: Record<string, RavenConnectionString>;

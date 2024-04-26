@@ -1,7 +1,7 @@
-import { TimeSeriesQueryResult } from "./TimeSeriesQueryResult";
-import { TimeSeriesEntry } from "../../Session/TimeSeries/TimeSeriesEntry";
-import { ClassConstructor } from "../../../Types";
-import { TypedTimeSeriesRawResult } from "./TypedTimeSeriesRawResult";
+import { TimeSeriesQueryResult } from "./TimeSeriesQueryResult.js";
+import { TimeSeriesEntry } from "../../Session/TimeSeries/TimeSeriesEntry.js";
+import { ClassConstructor } from "../../../Types/index.js";
+import { TypedTimeSeriesRawResult } from "./TypedTimeSeriesRawResult.js";
 
 export class TimeSeriesRawResult extends TimeSeriesQueryResult {
     public results: TimeSeriesEntry[];

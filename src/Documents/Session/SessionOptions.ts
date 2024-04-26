@@ -1,5 +1,5 @@
-import { RequestExecutor } from "../../Http/RequestExecutor";
-import { TransactionMode } from "./TransactionMode";
+import { RequestExecutor } from "../../Http/RequestExecutor.js";
+import { TransactionMode } from "./TransactionMode.js";
 
 export interface SessionOptions {
     database?: string;

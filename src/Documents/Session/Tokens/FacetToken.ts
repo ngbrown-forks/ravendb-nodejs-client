@@ -1,13 +1,13 @@
-import { QueryToken } from "./QueryToken";
-import { throwError } from "../../../Exceptions";
-import { StringUtil } from "../../../Utility/StringUtil";
-import { Facet } from "../../Queries/Facets/Facet";
-import { FacetAggregation, FacetOptions } from "../../Queries/Facets";
-import { FacetBase } from "../../Queries/Facets/FacetBase";
-import { GenericRangeFacet } from "../../Queries/Facets/GenericRangeFacet";
-import { RangeFacet } from "../../Queries/Facets/RangeFacet";
-import { QueryFieldUtil } from "../../Queries/QueryFieldUtil";
-import { StringBuilder } from "../../../Utility/StringBuilder";
+import { QueryToken } from "./QueryToken.js";
+import { throwError } from "../../../Exceptions/index.js";
+import { StringUtil } from "../../../Utility/StringUtil.js";
+import { Facet } from "../../Queries/Facets/Facet.js";
+import { FacetAggregation, FacetOptions } from "../../Queries/Facets/index.js";
+import { FacetBase } from "../../Queries/Facets/FacetBase.js";
+import { GenericRangeFacet } from "../../Queries/Facets/GenericRangeFacet.js";
+import { RangeFacet } from "../../Queries/Facets/RangeFacet.js";
+import { QueryFieldUtil } from "../../Queries/QueryFieldUtil.js";
+import { StringBuilder } from "../../../Utility/StringBuilder.js";
 
 export interface FacetTokenSetupDocumentIdOptions {
     facetSetupDocumentId: string;

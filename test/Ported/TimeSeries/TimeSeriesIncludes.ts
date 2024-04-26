@@ -1,9 +1,9 @@
-import { IDocumentStore, InMemoryDocumentSessionOperations } from "../../../src";
-import { disposeTestDocumentStore, testContext } from "../../Utils/TestUtil";
+import { IDocumentStore, InMemoryDocumentSessionOperations } from "../../../src/index.js";
+import { disposeTestDocumentStore, testContext } from "../../Utils/TestUtil.js";
 import moment from "moment";
-import { Company, Order } from "../../Assets/Entities";
-import { assertThat, assertThrows } from "../../Utils/AssertExtensions";
-import { TimeValue } from "../../../src/Primitives/TimeValue";
+import { Company, Order } from "../../Assets/Entities.js";
+import { assertThat, assertThrows } from "../../Utils/AssertExtensions.js";
+import { TimeValue } from "../../../src/Primitives/TimeValue.js";
 
 describe("TimeSeriesIncludesTest", function () {
 

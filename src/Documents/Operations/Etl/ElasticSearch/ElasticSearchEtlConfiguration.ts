@@ -1,7 +1,7 @@
-import { EtlConfiguration } from "../EtlConfiguration";
-import { ElasticSearchConnectionString, EtlType } from "../ConnectionString";
-import { ElasticSearchIndex } from "./ElasticSearchIndex";
-import { DocumentConventions } from "../../../Conventions/DocumentConventions";
+import { EtlConfiguration } from "../EtlConfiguration.js";
+import { ElasticSearchConnectionString, EtlType } from "../ConnectionString.js";
+import { ElasticSearchIndex } from "./ElasticSearchIndex.js";
+import { DocumentConventions } from "../../../Conventions/DocumentConventions.js";
 
 export class ElasticSearchEtlConfiguration extends EtlConfiguration<ElasticSearchConnectionString> {
     public elasticIndexes?: ElasticSearchIndex[];

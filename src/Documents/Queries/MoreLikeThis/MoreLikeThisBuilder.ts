@@ -1,14 +1,14 @@
-import { IMoreLikeThisOperations } from "./IMoreLikeThisOperations";
-import { IMoreLikeThisBuilderForDocumentQuery } from "./IMoreLikeThisBuilderForDocumentQuery";
-import { IMoreLikeThisBuilderBase } from "./IMoreLikeThisBuilderBase";
-import { MoreLikeThisBase } from "./MoreLikeThisBase";
-import { MoreLikeThisOptions } from "./MoreLikeThisOptions";
-import { MoreLikeThisUsingAnyDocument } from "./MoreLikeThisUsingAnyDocument";
-import { MoreLikeThisUsingDocument } from "./MoreLikeThisUsingDocument";
-import { TypeUtil } from "../../../Utility/TypeUtil";
-import { MoreLikeThisUsingDocumentForDocumentQuery } from "./MoreLikeThisUsingDocumentForDocumentQuery";
-import { IFilterDocumentQueryBase } from "../../Session/IFilterDocumentQueryBase";
-import { IDocumentQuery } from "../../Session/IDocumentQuery";
+import { IMoreLikeThisOperations } from "./IMoreLikeThisOperations.js";
+import { IMoreLikeThisBuilderForDocumentQuery } from "./IMoreLikeThisBuilderForDocumentQuery.js";
+import { IMoreLikeThisBuilderBase } from "./IMoreLikeThisBuilderBase.js";
+import { MoreLikeThisBase } from "./MoreLikeThisBase.js";
+import { MoreLikeThisOptions } from "./MoreLikeThisOptions.js";
+import { MoreLikeThisUsingAnyDocument } from "./MoreLikeThisUsingAnyDocument.js";
+import { MoreLikeThisUsingDocument } from "./MoreLikeThisUsingDocument.js";
+import { TypeUtil } from "../../../Utility/TypeUtil.js";
+import { MoreLikeThisUsingDocumentForDocumentQuery } from "./MoreLikeThisUsingDocumentForDocumentQuery.js";
+import { IFilterDocumentQueryBase } from "../../Session/IFilterDocumentQueryBase.js";
+import { IDocumentQuery } from "../../Session/IDocumentQuery.js";
 
 export class MoreLikeThisBuilder<T extends object>
     implements IMoreLikeThisOperations<T>, IMoreLikeThisBuilderForDocumentQuery<T>, IMoreLikeThisBuilderBase<T> {

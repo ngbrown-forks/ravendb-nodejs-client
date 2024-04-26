@@ -1,4 +1,4 @@
-import { PatchResultBase } from "./PatchResultBase";
+import { PatchResultBase } from "./PatchResultBase.js";
 
 export class PatchResult extends PatchResultBase {
     public originalDocument: object;

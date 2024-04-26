@@ -1,8 +1,8 @@
-import { IndexPriority, IndexState } from "./Enums";
-import { DocumentConventions } from "../Conventions/DocumentConventions";
-import { IndexDefinition } from "./IndexDefinition";
-import { IDocumentStore } from "../IDocumentStore";
-import { IndexDeploymentMode } from "./IndexDeploymentMode";
+import { IndexPriority, IndexState } from "./Enums.js";
+import { DocumentConventions } from "../Conventions/DocumentConventions.js";
+import { IndexDefinition } from "./IndexDefinition.js";
+import { IDocumentStore } from "../IDocumentStore.js";
+import { IndexDeploymentMode } from "./IndexDeploymentMode.js";
 
 export interface IAbstractIndexCreationTask {
 

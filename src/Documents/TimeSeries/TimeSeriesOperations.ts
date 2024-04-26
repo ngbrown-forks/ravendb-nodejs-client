@@ -1,21 +1,21 @@
-import { IDocumentStore } from "../IDocumentStore";
-import { TypeUtil } from "../../Utility/TypeUtil";
+import { IDocumentStore } from "../IDocumentStore.js";
+import { TypeUtil } from "../../Utility/TypeUtil.js";
 import {
     ConfigureTimeSeriesValueNamesOperation,
     ConfigureTimeSeriesValueNamesParameters
-} from "../Operations/TimeSeries/ConfigureTimeSeriesValueNamesOperation";
-import { throwError } from "../../Exceptions";
-import { TimeValue } from "../../Primitives/TimeValue";
-import { TimeSeriesPolicy } from "../Operations/TimeSeries/TimeSeriesPolicy";
-import { ConfigureTimeSeriesPolicyOperation } from "../Operations/TimeSeries/ConfigureTimeSeriesPolicyOperation";
-import { StringUtil } from "../../Utility/StringUtil";
-import { RawTimeSeriesPolicy } from "../Operations/TimeSeries/RawTimeSeriesPolicy";
-import { ConfigureRawTimeSeriesPolicyOperation } from "../Operations/TimeSeries/ConfigureRawTimeSeriesPolicyOperation";
-import { RemoveTimeSeriesPolicyOperation } from "../Operations/TimeSeries/RemoveTimeSeriesPolicyOperation";
-import { TimeSeriesValuesHelper } from "../Session/TimeSeries/TimeSeriesValuesHelper";
-import { MaintenanceOperationExecutor } from "../Operations/MaintenanceOperationExecutor";
-import { ClassConstructor } from "../../Types";
-import { DocumentConventions } from "../Conventions/DocumentConventions";
+} from "../Operations/TimeSeries/ConfigureTimeSeriesValueNamesOperation.js";
+import { throwError } from "../../Exceptions/index.js";
+import { TimeValue } from "../../Primitives/TimeValue.js";
+import { TimeSeriesPolicy } from "../Operations/TimeSeries/TimeSeriesPolicy.js";
+import { ConfigureTimeSeriesPolicyOperation } from "../Operations/TimeSeries/ConfigureTimeSeriesPolicyOperation.js";
+import { StringUtil } from "../../Utility/StringUtil.js";
+import { RawTimeSeriesPolicy } from "../Operations/TimeSeries/RawTimeSeriesPolicy.js";
+import { ConfigureRawTimeSeriesPolicyOperation } from "../Operations/TimeSeries/ConfigureRawTimeSeriesPolicyOperation.js";
+import { RemoveTimeSeriesPolicyOperation } from "../Operations/TimeSeries/RemoveTimeSeriesPolicyOperation.js";
+import { TimeSeriesValuesHelper } from "../Session/TimeSeries/TimeSeriesValuesHelper.js";
+import { MaintenanceOperationExecutor } from "../Operations/MaintenanceOperationExecutor.js";
+import { ClassConstructor } from "../../Types/index.js";
+import { DocumentConventions } from "../Conventions/DocumentConventions.js";
 
 export class TimeSeriesOperations {
     private readonly _store: IDocumentStore;

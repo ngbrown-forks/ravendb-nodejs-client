@@ -1,8 +1,8 @@
-import { RavenCommand } from "../../Http/RavenCommand";
-import { TcpConnectionInfo } from "../../ServerWide/Commands/GetTcpInfoCommand";
-import { throwError } from "../../Exceptions";
-import { ServerNode } from "../../Http/ServerNode";
-import { HttpRequestParameters } from "../../Primitives/Http";
+import { RavenCommand } from "../../Http/RavenCommand.js";
+import { TcpConnectionInfo } from "../../ServerWide/Commands/GetTcpInfoCommand.js";
+import { throwError } from "../../Exceptions/index.js";
+import { ServerNode } from "../../Http/ServerNode.js";
+import { HttpRequestParameters } from "../../Primitives/Http.js";
 import { Stream } from "node:stream";
 
 export class GetTcpInfoForRemoteTaskCommand extends RavenCommand<TcpConnectionInfo> {

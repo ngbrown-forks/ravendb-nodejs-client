@@ -1,11 +1,11 @@
-import { DocumentStore, EntityToJson, IDocumentStore, PutDocumentCommand } from "../../src";
-import { ClusterTestContext, disposeTestDocumentStore, RavenTestContext, testContext } from "../Utils/TestUtil";
-import { throwError } from "../../src/Exceptions";
-import { HttpRequestParameters, HttpResponse } from "../../src/Primitives/Http";
+import { DocumentStore, EntityToJson, IDocumentStore, PutDocumentCommand } from "../../src/index.js";
+import { ClusterTestContext, disposeTestDocumentStore, RavenTestContext, testContext } from "../Utils/TestUtil.js";
+import { throwError } from "../../src/Exceptions/index.js";
+import { HttpRequestParameters, HttpResponse } from "../../src/Primitives/Http.js";
 import { Readable } from "node:stream";
 import { Agent } from "node:http";
-import { User } from "../Assets/Entities";
-import { assertThat } from "../Utils/AssertExtensions";
+import { User } from "../Assets/Entities.js";
+import { assertThat } from "../Utils/AssertExtensions.js";
 
 (RavenTestContext.isPullRequest ? describe.skip : describe)("RequestExecutor", function () {
 

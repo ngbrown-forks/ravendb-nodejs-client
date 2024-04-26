@@ -1,6 +1,6 @@
-import { IAbstractTimeSeriesIncludeBuilder } from "./IAbstractTimeSeriesIncludeBuilder";
-import { TimeSeriesRangeType } from "../../Operations/TimeSeries/TimeSeriesRangeType";
-import { TimeValue } from "../../../Primitives/TimeValue";
+import { IAbstractTimeSeriesIncludeBuilder } from "./IAbstractTimeSeriesIncludeBuilder.js";
+import { TimeSeriesRangeType } from "../../Operations/TimeSeries/TimeSeriesRangeType.js";
+import { TimeValue } from "../../../Primitives/TimeValue.js";
 
 export interface IGenericTimeSeriesIncludeBuilder<TBuilder> extends IAbstractTimeSeriesIncludeBuilder<TBuilder> {
     includeTimeSeries(name: string): TBuilder;

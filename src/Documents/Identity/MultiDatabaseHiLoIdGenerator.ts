@@ -1,10 +1,10 @@
-import { MultiTypeHiLoIdGenerator } from "./MultiTypeHiLoIdGenerator";
-import { DocumentStore } from "../DocumentStore";
-import { IRavenObject } from "../../Types/IRavenObject";
-import { DocumentStoreBase } from "../DocumentStoreBase";
-import { IHiLoIdGenerator } from "./IHiLoIdGenerator";
-import { TypeUtil } from "../../Utility/TypeUtil";
-import { ObjectTypeDescriptor } from "../../Types";
+import { MultiTypeHiLoIdGenerator } from "./MultiTypeHiLoIdGenerator.js";
+import { DocumentStore } from "../DocumentStore.js";
+import { IRavenObject } from "../../Types/IRavenObject.js";
+import { DocumentStoreBase } from "../DocumentStoreBase.js";
+import { IHiLoIdGenerator } from "./IHiLoIdGenerator.js";
+import { TypeUtil } from "../../Utility/TypeUtil.js";
+import { ObjectTypeDescriptor } from "../../Types/index.js";
 
 export class MultiDatabaseHiLoIdGenerator implements IHiLoIdGenerator {
 

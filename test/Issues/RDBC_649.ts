@@ -1,9 +1,9 @@
-import { testContext, disposeTestDocumentStore } from "../Utils/TestUtil";
+import { testContext, disposeTestDocumentStore } from "../Utils/TestUtil.js";
 import assert from "node:assert"
 import {
     IDocumentSession,
     IDocumentStore
-} from "../../src";
+} from "../../src/index.js";
 
 class User {
     public name: string;

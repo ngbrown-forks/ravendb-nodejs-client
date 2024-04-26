@@ -1,6 +1,6 @@
-import { IndexQuery } from "../Queries/IndexQuery";
-import { QueryResult } from "../Queries/QueryResult";
-import { TypedEventEmitter } from "../../Primitives/Events";
+import { IndexQuery } from "../Queries/IndexQuery.js";
+import { QueryResult } from "../Queries/QueryResult.js";
+import { TypedEventEmitter } from "../../Primitives/Events.js";
 
 export interface StreamingQueryEvents {
     "afterStreamExecuted": object;

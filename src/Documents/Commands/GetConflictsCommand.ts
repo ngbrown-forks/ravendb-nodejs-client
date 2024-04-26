@@ -1,10 +1,10 @@
-import { HttpRequestParameters } from "../../Primitives/Http";
-import { RavenCommand } from "../../Http/RavenCommand";
-import { GetConflictsResult } from "./GetConflictsResult";
-import { ServerNode } from "../../Http/ServerNode";
+import { HttpRequestParameters } from "../../Primitives/Http.js";
+import { RavenCommand } from "../../Http/RavenCommand.js";
+import { GetConflictsResult } from "./GetConflictsResult.js";
+import { ServerNode } from "../../Http/ServerNode.js";
 import { Stream } from "node:stream";
-import { DocumentConventions } from "../Conventions/DocumentConventions";
-import { ServerResponse } from "../../Types";
+import { DocumentConventions } from "../Conventions/DocumentConventions.js";
+import { ServerResponse } from "../../Types/index.js";
 
 export class GetConflictsCommand extends RavenCommand<GetConflictsResult> {
 

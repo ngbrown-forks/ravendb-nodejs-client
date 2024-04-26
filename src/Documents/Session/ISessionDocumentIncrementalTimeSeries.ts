@@ -1,6 +1,6 @@
-import { ISessionDocumentDeleteTimeSeriesBase } from "./ISessionDocumentDeleteTimeSeriesBase";
-import { TimeSeriesEntry } from "./TimeSeries/TimeSeriesEntry";
-import { ITimeSeriesIncludeBuilder } from "./Loaders/ITimeSeriesIncludeBuilder";
+import { ISessionDocumentDeleteTimeSeriesBase } from "./ISessionDocumentDeleteTimeSeriesBase.js";
+import { TimeSeriesEntry } from "./TimeSeries/TimeSeriesEntry.js";
+import { ITimeSeriesIncludeBuilder } from "./Loaders/ITimeSeriesIncludeBuilder.js";
 
 
 export interface ISessionDocumentIncrementalTimeSeries extends ISessionDocumentDeleteTimeSeriesBase {

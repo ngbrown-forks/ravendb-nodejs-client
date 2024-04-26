@@ -1,5 +1,5 @@
 import { Readable } from "node:stream";
-import { HttpResponse } from "../../Primitives/Http";
+import { HttpResponse } from "../../Primitives/Http.js";
 
 export interface StreamResultResponse {
     response: HttpResponse;

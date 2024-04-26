@@ -1,17 +1,17 @@
-import { IOperation, OperationResultType } from "../OperationAbstractions";
-import { CountersDetail } from "./CountersDetail";
-import { IDocumentStore } from "../../IDocumentStore";
-import { DocumentConventions } from "../../Conventions/DocumentConventions";
-import { HttpCache } from "../../../Http/HttpCache";
-import { RavenCommand } from "../../../Http/RavenCommand";
-import { throwError } from "../../../Exceptions";
-import { ServerNode } from "../../../Http/ServerNode";
-import { HttpRequestParameters } from "../../../Primitives/Http";
-import { DocumentCountersOperation } from "./DocumentCountersOperation";
-import { CounterOperation } from "./CounterOperation";
-import { CounterBatch } from "./CounterBatch";
+import { IOperation, OperationResultType } from "../OperationAbstractions.js";
+import { CountersDetail } from "./CountersDetail.js";
+import { IDocumentStore } from "../../IDocumentStore.js";
+import { DocumentConventions } from "../../Conventions/DocumentConventions.js";
+import { HttpCache } from "../../../Http/HttpCache.js";
+import { RavenCommand } from "../../../Http/RavenCommand.js";
+import { throwError } from "../../../Exceptions/index.js";
+import { ServerNode } from "../../../Http/ServerNode.js";
+import { HttpRequestParameters } from "../../../Primitives/Http.js";
+import { DocumentCountersOperation } from "./DocumentCountersOperation.js";
+import { CounterOperation } from "./CounterOperation.js";
+import { CounterBatch } from "./CounterBatch.js";
 import { Stream } from "node:stream";
-import { StringBuilder } from "../../../Utility/StringBuilder";
+import { StringBuilder } from "../../../Utility/StringBuilder.js";
 
 export class GetCountersOperation implements IOperation<CountersDetail> {
     private readonly _docId: string;

@@ -1,5 +1,5 @@
-import { ISessionDocumentDeleteTimeSeriesBase } from "./ISessionDocumentDeleteTimeSeriesBase";
-import { TypedTimeSeriesEntry } from "./TimeSeries/TypedTimeSeriesEntry";
+import { ISessionDocumentDeleteTimeSeriesBase } from "./ISessionDocumentDeleteTimeSeriesBase.js";
+import { TypedTimeSeriesEntry } from "./TimeSeries/TypedTimeSeriesEntry.js";
 
 
 export interface ISessionDocumentTypedIncrementalTimeSeries<TValues extends object> extends ISessionDocumentDeleteTimeSeriesBase {

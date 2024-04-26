@@ -1,17 +1,17 @@
-import { HttpRequestParameters } from "../../../Primitives/Http";
-import { IOperation, OperationResultType } from "../OperationAbstractions";
-import { CompareExchangeValue } from "./CompareExchangeValue";
-import { throwError } from "../../../Exceptions";
-import { CompareExchangeResultClass, ServerCasing, ServerResponse } from "../../../Types";
-import { IDocumentStore } from "../../IDocumentStore";
-import { DocumentConventions } from "../../Conventions/DocumentConventions";
-import { HttpCache } from "../../../Http/HttpCache";
-import { RavenCommand } from "../../../Http/RavenCommand";
-import { ServerNode } from "../../../Http/ServerNode";
-import { CompareExchangeValueResultParser, GetCompareExchangeValuesResponse } from "./CompareExchangeValueResultParser";
+import { HttpRequestParameters } from "../../../Primitives/Http.js";
+import { IOperation, OperationResultType } from "../OperationAbstractions.js";
+import { CompareExchangeValue } from "./CompareExchangeValue.js";
+import { throwError } from "../../../Exceptions/index.js";
+import { CompareExchangeResultClass, ServerCasing, ServerResponse } from "../../../Types/index.js";
+import { IDocumentStore } from "../../IDocumentStore.js";
+import { DocumentConventions } from "../../Conventions/DocumentConventions.js";
+import { HttpCache } from "../../../Http/HttpCache.js";
+import { RavenCommand } from "../../../Http/RavenCommand.js";
+import { ServerNode } from "../../../Http/ServerNode.js";
+import { CompareExchangeValueResultParser, GetCompareExchangeValuesResponse } from "./CompareExchangeValueResultParser.js";
 import { Stream } from "node:stream";
-import { StringBuilder } from "../../../Utility/StringBuilder";
-import { TypeUtil } from "../../../Utility/TypeUtil";
+import { StringBuilder } from "../../../Utility/StringBuilder.js";
+import { TypeUtil } from "../../../Utility/TypeUtil.js";
 
 export interface GetCompareExchangeValuesParameters<T> {
     keys?: string[];

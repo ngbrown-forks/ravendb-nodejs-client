@@ -1,4 +1,4 @@
-import { AmazonSettings } from "./AmazonSettings";
+import { AmazonSettings } from "./AmazonSettings.js";
 
 export interface S3Settings extends AmazonSettings {
     bucketName: string;

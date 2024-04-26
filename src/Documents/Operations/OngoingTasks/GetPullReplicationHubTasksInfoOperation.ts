@@ -1,9 +1,9 @@
-import { IMaintenanceOperation, OperationResultType } from "../OperationAbstractions";
-import { PullReplicationDefinitionAndCurrentConnections } from "../Replication/PullReplicationDefinitionAndCurrentConnections";
-import { RavenCommand } from "../../../Http/RavenCommand";
-import { DocumentConventions } from "../../Conventions/DocumentConventions";
-import { HttpRequestParameters } from "../../../Primitives/Http";
-import { ServerNode } from "../../../Http/ServerNode";
+import { IMaintenanceOperation, OperationResultType } from "../OperationAbstractions.js";
+import { PullReplicationDefinitionAndCurrentConnections } from "../Replication/PullReplicationDefinitionAndCurrentConnections.js";
+import { RavenCommand } from "../../../Http/RavenCommand.js";
+import { DocumentConventions } from "../../Conventions/DocumentConventions.js";
+import { HttpRequestParameters } from "../../../Primitives/Http.js";
+import { ServerNode } from "../../../Http/ServerNode.js";
 import { Stream } from "node:stream";
 
 export class GetPullReplicationHubTasksInfoOperation implements IMaintenanceOperation<PullReplicationDefinitionAndCurrentConnections> {

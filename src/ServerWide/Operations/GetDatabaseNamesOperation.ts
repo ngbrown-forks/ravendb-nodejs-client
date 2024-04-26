@@ -1,9 +1,9 @@
-import { IServerOperation, OperationResultType } from "../../Documents/Operations/OperationAbstractions";
-import { RavenCommand } from "../../Http/RavenCommand";
-import { ServerNode } from "../../Http/ServerNode";
-import { HttpRequestParameters } from "../../Primitives/Http";
+import { IServerOperation, OperationResultType } from "../../Documents/Operations/OperationAbstractions.js";
+import { RavenCommand } from "../../Http/RavenCommand.js";
+import { ServerNode } from "../../Http/ServerNode.js";
+import { HttpRequestParameters } from "../../Primitives/Http.js";
 import { Stream } from "node:stream";
-import { DocumentConventions } from "../../Documents/Conventions/DocumentConventions";
+import { DocumentConventions } from "../../Documents/Conventions/DocumentConventions.js";
 
 export class GetDatabaseNamesOperation implements IServerOperation<string[]> {
 

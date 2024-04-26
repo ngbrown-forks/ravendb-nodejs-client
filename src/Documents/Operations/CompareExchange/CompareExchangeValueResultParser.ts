@@ -1,11 +1,11 @@
-import { DocumentConventions } from "../../Conventions/DocumentConventions";
-import { CompareExchangeValue } from "./CompareExchangeValue";
-import { throwError } from "../../../Exceptions";
-import { TypeUtil } from "../../../Utility/TypeUtil";
-import { ObjectUtil } from "../../../Utility/ObjectUtil";
-import { CONSTANTS } from "../../../Constants";
-import { MetadataAsDictionary, MetadataDictionary } from "../../../Mapping/MetadataAsDictionary";
-import { CompareExchangeResultClass, EntityConstructor } from "../../../Types";
+import { DocumentConventions } from "../../Conventions/DocumentConventions.js";
+import { CompareExchangeValue } from "./CompareExchangeValue.js";
+import { throwError } from "../../../Exceptions/index.js";
+import { TypeUtil } from "../../../Utility/TypeUtil.js";
+import { ObjectUtil } from "../../../Utility/ObjectUtil.js";
+import { CONSTANTS } from "../../../Constants.js";
+import { MetadataAsDictionary, MetadataDictionary } from "../../../Mapping/MetadataAsDictionary.js";
+import { CompareExchangeResultClass, EntityConstructor } from "../../../Types/index.js";
 
 export interface CompareExchangeResultItem {
     index: number;

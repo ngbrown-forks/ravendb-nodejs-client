@@ -3,16 +3,16 @@ import {
     ExternalReplication,
     GetDatabaseRecordOperation,
     IDocumentStore, PutConnectionStringOperation, RavenConnectionString, UpdateExternalReplicationOperation
-} from "../../../../../src";
-import { disposeTestDocumentStore, RavenTestContext, testContext } from "../../../../Utils/TestUtil";
-import { ServerWideExternalReplication } from "../../../../../src/ServerWide/Operations/OngoingTasks/ServerWideExternalReplication";
-import { PutServerWideExternalReplicationOperation } from "../../../../../src/ServerWide/Operations/OngoingTasks/PutServerWideExternalReplicationOperation";
-import { GetServerWideExternalReplicationOperation } from "../../../../../src/ServerWide/Operations/OngoingTasks/GetServerWideExternalReplicationOperation";
-import { ServerWideExternalReplicationResponse } from "../../../../../src/ServerWide/Operations/OngoingTasks/ServerWideTaskResponse";
-import { assertThat } from "../../../../Utils/AssertExtensions";
-import { DeleteServerWideTaskOperation } from "../../../../../src/ServerWide/Operations/OngoingTasks/DeleteServerWideTaskOperation";
+} from "../../../../../src.js";
+import { disposeTestDocumentStore, RavenTestContext, testContext } from "../../../../Utils/TestUtil.js";
+import { ServerWideExternalReplication } from "../../../../../src/ServerWide/Operations/OngoingTasks/ServerWideExternalReplication.js";
+import { PutServerWideExternalReplicationOperation } from "../../../../../src/ServerWide/Operations/OngoingTasks/PutServerWideExternalReplicationOperation.js";
+import { GetServerWideExternalReplicationOperation } from "../../../../../src/ServerWide/Operations/OngoingTasks/GetServerWideExternalReplicationOperation.js";
+import { ServerWideExternalReplicationResponse } from "../../../../../src/ServerWide/Operations/OngoingTasks/ServerWideTaskResponse.js";
+import { assertThat } from "../../../../Utils/AssertExtensions.js";
+import { DeleteServerWideTaskOperation } from "../../../../../src/ServerWide/Operations/OngoingTasks/DeleteServerWideTaskOperation.js";
 import { randomUUID } from "node:crypto";
-import { PutConnectionStringResult } from "../../../../../src/Documents/Operations/ConnectionStrings/PutConnectionStringOperation";
+import { PutConnectionStringResult } from "../../../../../src/Documents/Operations/ConnectionStrings/PutConnectionStringOperation.js";
 
 (RavenTestContext.isPullRequest ? describe.skip : describe)("ServerWideReplicationTest", function () {
 

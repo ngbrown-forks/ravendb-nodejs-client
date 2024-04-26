@@ -1,16 +1,16 @@
-import { ClusterTestContext, RavenTestContext } from "../../Utils/TestUtil";
-import { DocumentStore } from "../../../src/Documents/DocumentStore";
-import { DocumentConventions } from "../../../src/Documents/Conventions/DocumentConventions";
-import { ServerNode } from "../../../src/Http/ServerNode";
-import { Topology } from "../../../src/Http/Topology";
-import { GetDatabaseTopologyCommand } from "../../../src/ServerWide/Commands/GetDatabaseTopologyCommand";
-import { delay } from "../../../src/Utility/PromiseUtil";
-import { DocumentSession } from "../../../src/Documents/Session/DocumentSession";
-import { User } from "../../Assets/Entities";
-import { assertThat } from "../../Utils/AssertExtensions";
-import { RequestExecutor } from "../../../src/Http/RequestExecutor";
-import { GetStatisticsOperation } from "../../../src/Documents/Operations/GetStatisticsOperation";
-import { UpdateTopologyParameters } from "../../../src/Http/UpdateTopologyParameters";
+import { ClusterTestContext, RavenTestContext } from "../../Utils/TestUtil.js";
+import { DocumentStore } from "../../../src/Documents/DocumentStore.js";
+import { DocumentConventions } from "../../../src/Documents/Conventions/DocumentConventions.js";
+import { ServerNode } from "../../../src/Http/ServerNode.js";
+import { Topology } from "../../../src/Http/Topology.js";
+import { GetDatabaseTopologyCommand } from "../../../src/ServerWide/Commands/GetDatabaseTopologyCommand.js";
+import { delay } from "../../../src/Utility/PromiseUtil.js";
+import { DocumentSession } from "../../../src/Documents/Session/DocumentSession.js";
+import { User } from "../../Assets/Entities.js";
+import { assertThat } from "../../Utils/AssertExtensions.js";
+import { RequestExecutor } from "../../../src/Http/RequestExecutor.js";
+import { GetStatisticsOperation } from "../../../src/Documents/Operations/GetStatisticsOperation.js";
+import { UpdateTopologyParameters } from "../../../src/Http/UpdateTopologyParameters.js";
 
 (RavenTestContext.isPullRequest ? describe.skip : describe)("ClusterModesForRequestExecutorTest", function () {
 

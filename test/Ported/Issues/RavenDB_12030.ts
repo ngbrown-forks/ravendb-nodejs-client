@@ -1,8 +1,8 @@
-import { IDocumentStore } from "../../../src/Documents/IDocumentStore";
-import { disposeTestDocumentStore, testContext } from "../../Utils/TestUtil";
-import { Company } from "../../Assets/Orders";
-import { assertThat } from "../../Utils/AssertExtensions";
-import { AbstractJavaScriptIndexCreationTask } from "../../../src";
+import { IDocumentStore } from "../../../src/Documents/IDocumentStore.js";
+import { disposeTestDocumentStore, testContext } from "../../Utils/TestUtil.js";
+import { Company } from "../../Assets/Orders.js";
+import { assertThat } from "../../Utils/AssertExtensions.js";
+import { AbstractJavaScriptIndexCreationTask } from "../../../src/index.js";
 
 describe("RavenDB_12030", function () {
 

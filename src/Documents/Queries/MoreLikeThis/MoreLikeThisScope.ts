@@ -1,7 +1,7 @@
-import { IDisposable } from "../../../Types/Contracts";
-import { MoreLikeThisToken } from "../../Session/Tokens/MoreLikeThisToken";
-import { MoreLikeThisOptions } from "./MoreLikeThisOptions";
-import { ObjectUtil } from "../../../Utility/ObjectUtil";
+import { IDisposable } from "../../../Types/Contracts.js";
+import { MoreLikeThisToken } from "../../Session/Tokens/MoreLikeThisToken.js";
+import { MoreLikeThisOptions } from "./MoreLikeThisOptions.js";
+import { ObjectUtil } from "../../../Utility/ObjectUtil.js";
 
 export class MoreLikeThisScope implements IDisposable {
 

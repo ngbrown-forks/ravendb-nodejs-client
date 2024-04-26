@@ -1,21 +1,21 @@
-import { IOperation, OperationResultType } from "../OperationAbstractions";
-import { TimeSeriesDetails } from "./TimeSeriesDetails";
-import { TimeSeriesRange } from "./TimeSeriesRange";
-import { TypeUtil } from "../../../Utility/TypeUtil";
-import { throwError } from "../../../Exceptions";
-import { StringUtil } from "../../../Utility/StringUtil";
-import { IDocumentStore } from "../../IDocumentStore";
-import { HttpCache } from "../../../Http/HttpCache";
-import { HttpRequestParameters } from "../../../Primitives/Http";
-import { DateUtil } from "../../../Utility/DateUtil";
+import { IOperation, OperationResultType } from "../OperationAbstractions.js";
+import { TimeSeriesDetails } from "./TimeSeriesDetails.js";
+import { TimeSeriesRange } from "./TimeSeriesRange.js";
+import { TypeUtil } from "../../../Utility/TypeUtil.js";
+import { throwError } from "../../../Exceptions/index.js";
+import { StringUtil } from "../../../Utility/StringUtil.js";
+import { IDocumentStore } from "../../IDocumentStore.js";
+import { HttpCache } from "../../../Http/HttpCache.js";
+import { HttpRequestParameters } from "../../../Primitives/Http.js";
+import { DateUtil } from "../../../Utility/DateUtil.js";
 import { Stream } from "node:stream";
-import { CaseInsensitiveKeysMap } from "../../../Primitives/CaseInsensitiveKeysMap";
-import { GetTimeSeriesCommand, reviveTimeSeriesRangeResult } from "./GetTimeSeriesOperation";
-import { DocumentConventions } from "../../Conventions/DocumentConventions";
-import { RavenCommand } from "../../../Http/RavenCommand";
-import { ServerNode } from "../../../Http/ServerNode";
-import { StringBuilder } from "../../../Utility/StringBuilder";
-import { ITimeSeriesIncludeBuilder } from "../../Session/Loaders/ITimeSeriesIncludeBuilder";
+import { CaseInsensitiveKeysMap } from "../../../Primitives/CaseInsensitiveKeysMap.js";
+import { GetTimeSeriesCommand, reviveTimeSeriesRangeResult } from "./GetTimeSeriesOperation.js";
+import { DocumentConventions } from "../../Conventions/DocumentConventions.js";
+import { RavenCommand } from "../../../Http/RavenCommand.js";
+import { ServerNode } from "../../../Http/ServerNode.js";
+import { StringBuilder } from "../../../Utility/StringBuilder.js";
+import { ITimeSeriesIncludeBuilder } from "../../Session/Loaders/ITimeSeriesIncludeBuilder.js";
 
 export class GetMultipleTimeSeriesOperation implements IOperation<TimeSeriesDetails> {
     private readonly _docId: string;

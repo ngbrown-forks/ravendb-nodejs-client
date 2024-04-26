@@ -1,5 +1,5 @@
-import { BuildNumber } from "../Operations/BuildNumber";
-import { ServerNodeRole } from "../../Http/ServerNode";
+import { BuildNumber } from "../Operations/BuildNumber.js";
+import { ServerNodeRole } from "../../Http/ServerNode.js";
 
 export interface NodeInfo {
     nodeTag: string;

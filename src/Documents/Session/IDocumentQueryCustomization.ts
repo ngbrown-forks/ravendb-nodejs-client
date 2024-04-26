@@ -1,10 +1,10 @@
-import { QueryOperation } from "./Operations/QueryOperation";
-import { IndexQuery } from "../Queries/IndexQuery";
-import { QueryResult } from "../Queries/QueryResult";
-import { ValueCallback } from "../../Types/Callbacks";
-import { QueryTimings } from "../Queries/Timings/QueryTimings";
-import { ProjectionBehavior } from "../Queries/ProjectionBehavior";
-import { AbstractDocumentQuery } from "./AbstractDocumentQuery";
+import { QueryOperation } from "./Operations/QueryOperation.js";
+import { IndexQuery } from "../Queries/IndexQuery.js";
+import { QueryResult } from "../Queries/QueryResult.js";
+import { ValueCallback } from "../../Types/Callbacks.js";
+import { QueryTimings } from "../Queries/Timings/QueryTimings.js";
+import { ProjectionBehavior } from "../Queries/ProjectionBehavior.js";
+import { AbstractDocumentQuery } from "./AbstractDocumentQuery.js";
 
 export interface IDocumentQueryCustomization {
 

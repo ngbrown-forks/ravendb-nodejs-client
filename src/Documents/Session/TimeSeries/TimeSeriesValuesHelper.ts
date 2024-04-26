@@ -1,7 +1,7 @@
-import { ClassConstructor } from "../../../Types";
-import { throwError } from "../../../Exceptions";
-import { TypeUtil } from "../../../Utility/TypeUtil";
-import { TimeSeriesValue } from "./TimeSeriesValue";
+import { ClassConstructor } from "../../../Types/index.js";
+import { throwError } from "../../../Exceptions/index.js";
+import { TypeUtil } from "../../../Utility/TypeUtil.js";
+import { TimeSeriesValue } from "./TimeSeriesValue.js";
 
 type TimeSeriesFieldsMapping = { field: string; name: string }[];
 

@@ -1,11 +1,11 @@
-import { ObjectTypeDescriptor, ObjectLiteralDescriptor, EntityConstructor } from "../Types";
-import { throwError } from "../Exceptions";
-import { TypeUtil } from "../Utility/TypeUtil";
-import { getLogger } from "../Utility/LogUtil";
-import { StringUtil } from "../Utility/StringUtil";
-import { DocumentConventions } from "../Documents/Conventions/DocumentConventions";
-import { ObjectUtil } from "../Utility/ObjectUtil";
-import { CONSTANTS } from "../Constants";
+import { ObjectTypeDescriptor, ObjectLiteralDescriptor, EntityConstructor } from "../Types/index.js";
+import { throwError } from "../Exceptions/index.js";
+import { TypeUtil } from "../Utility/TypeUtil.js";
+import { getLogger } from "../Utility/LogUtil.js";
+import { StringUtil } from "../Utility/StringUtil.js";
+import { DocumentConventions } from "../Documents/Conventions/DocumentConventions.js";
+import { ObjectUtil } from "../Utility/ObjectUtil.js";
+import { CONSTANTS } from "../Constants.js";
 
 const log = getLogger({ module: "ObjectMapper" });
 

@@ -1,4 +1,4 @@
-import { getError } from "../../src/Exceptions";
+import { getError } from "../../src/Exceptions/index.js";
 
 type valueResolver<T> = (val: T) => void;
 

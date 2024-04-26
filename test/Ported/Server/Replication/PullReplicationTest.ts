@@ -1,16 +1,16 @@
-import { IDocumentStore } from "../../../../src/Documents/IDocumentStore";
-import { disposeTestDocumentStore, RavenTestContext, testContext } from "../../../Utils/TestUtil";
-import { ReplicationTestContext } from "../../../Utils/ReplicationTestContext";
-import { PutPullReplicationAsHubOperation } from "../../../../src/Documents/Operations/Replication/PutPullReplicationAsHubOperation";
-import { User } from "../../../Assets/Entities";
-import { ModifyOngoingTaskResult } from "../../../../src/ServerWide/ModifyOnGoingTaskResult";
-import { PullReplicationAsSink } from "../../../../src/Documents/Operations/Replication/PullReplicationAsSink";
-import { assertThat } from "../../../Utils/AssertExtensions";
-import { GetOngoingTaskInfoOperation } from "../../../../src/Documents/Operations/GetOngoingTaskInfoOperation";
-import { OngoingTaskPullReplicationAsSink } from "../../../../src/Documents/Operations/OngoingTasks/OngoingTaskPullReplicationAsSink";
-import { GetPullReplicationHubTasksInfoOperation } from "../../../../src/Documents/Operations/OngoingTasks/GetPullReplicationHubTasksInfoOperation";
-import { PullReplicationDefinition } from "../../../../src/Documents/Operations/Replication/PullReplicationDefinition";
-import { delay } from "../../../../src/Utility/PromiseUtil";
+import { IDocumentStore } from "../../../../src/Documents/IDocumentStore.js";
+import { disposeTestDocumentStore, RavenTestContext, testContext } from "../../../Utils/TestUtil.js";
+import { ReplicationTestContext } from "../../../Utils/ReplicationTestContext.js";
+import { PutPullReplicationAsHubOperation } from "../../../../src/Documents/Operations/Replication/PutPullReplicationAsHubOperation.js";
+import { User } from "../../../Assets/Entities.js";
+import { ModifyOngoingTaskResult } from "../../../../src/ServerWide/ModifyOnGoingTaskResult.js";
+import { PullReplicationAsSink } from "../../../../src/Documents/Operations/Replication/PullReplicationAsSink.js";
+import { assertThat } from "../../../Utils/AssertExtensions.js";
+import { GetOngoingTaskInfoOperation } from "../../../../src/Documents/Operations/GetOngoingTaskInfoOperation.js";
+import { OngoingTaskPullReplicationAsSink } from "../../../../src/Documents/Operations/OngoingTasks/OngoingTaskPullReplicationAsSink.js";
+import { GetPullReplicationHubTasksInfoOperation } from "../../../../src/Documents/Operations/OngoingTasks/GetPullReplicationHubTasksInfoOperation.js";
+import { PullReplicationDefinition } from "../../../../src/Documents/Operations/Replication/PullReplicationDefinition.js";
+import { delay } from "../../../../src/Utility/PromiseUtil.js";
 
 (RavenTestContext.isPullRequest ? describe.skip : describe)("PullReplicationTest", function () {
 

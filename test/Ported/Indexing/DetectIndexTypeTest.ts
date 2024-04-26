@@ -3,7 +3,7 @@ import assert from "node:assert"
 import {
     IndexType,
     IndexDefinition,
-} from "../../../src";
+} from "../../../src/index.js";
 
 describe("DetectIndexTypeTest", function () {
 

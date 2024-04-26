@@ -1,16 +1,16 @@
 import assert from "node:assert"
-import { testContext, disposeTestDocumentStore } from "../../Utils/TestUtil";
+import { testContext, disposeTestDocumentStore } from "../../Utils/TestUtil.js";
 
 import {
     AttachmentName,
     IDocumentStore,
     DeleteAttachmentOperation,
     DeleteCommandData
-} from "../../../src";
+} from "../../../src/index.js";
 import { Readable, Writable } from "node:stream";
-import { User } from "../../Assets/Entities";
-import { CONSTANTS } from "../../../src/Constants";
-import { finishedAsync } from "../../../src/Utility/StreamUtil";
+import { User } from "../../Assets/Entities.js";
+import { CONSTANTS } from "../../../src/Constants.js";
+import { finishedAsync } from "../../../src/Utility/StreamUtil.js";
 
 describe("Attachments Session", function () {
 

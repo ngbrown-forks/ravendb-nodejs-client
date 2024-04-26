@@ -1,7 +1,7 @@
-import { throwError } from "../../Exceptions";
-import { IndexDefinition, IndexDefinitionBuilder } from "./IndexDefinition";
-import { DocumentConventions } from "../Conventions/DocumentConventions";
-import { AbstractGenericIndexCreationTask } from "./AbstractGenericIndexCreationTask";
+import { throwError } from "../../Exceptions/index.js";
+import { IndexDefinition, IndexDefinitionBuilder } from "./IndexDefinition.js";
+import { DocumentConventions } from "../Conventions/DocumentConventions.js";
+import { AbstractGenericIndexCreationTask } from "./AbstractGenericIndexCreationTask.js";
 
 export class AbstractCsharpMultiMapIndexCreationTask extends AbstractGenericIndexCreationTask {
 

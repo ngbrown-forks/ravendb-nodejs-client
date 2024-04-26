@@ -1,13 +1,13 @@
-import { IOperation, OperationResultType } from "../OperationAbstractions";
-import { RevisionsResult } from "./RevisionsResult";
-import { DocumentType } from "../../DocumentAbstractions";
-import { IDocumentStore } from "../../IDocumentStore";
-import { DocumentConventions } from "../../Conventions/DocumentConventions";
-import { HttpCache } from "../../../Http/HttpCache";
-import { RavenCommand } from "../../../Http/RavenCommand";
-import { GetRevisionsCommand } from "../../Commands/GetRevisionsCommand";
-import { ServerNode } from "../../../Http/ServerNode";
-import { HttpRequestParameters } from "../../../Primitives/Http";
+import { IOperation, OperationResultType } from "../OperationAbstractions.js";
+import { RevisionsResult } from "./RevisionsResult.js";
+import { DocumentType } from "../../DocumentAbstractions.js";
+import { IDocumentStore } from "../../IDocumentStore.js";
+import { DocumentConventions } from "../../Conventions/DocumentConventions.js";
+import { HttpCache } from "../../../Http/HttpCache.js";
+import { RavenCommand } from "../../../Http/RavenCommand.js";
+import { GetRevisionsCommand } from "../../Commands/GetRevisionsCommand.js";
+import { ServerNode } from "../../../Http/ServerNode.js";
+import { HttpRequestParameters } from "../../../Primitives/Http.js";
 import { Stream } from "node:stream";
 
 export class GetRevisionsOperation<T extends object> implements IOperation<RevisionsResult<T>> {

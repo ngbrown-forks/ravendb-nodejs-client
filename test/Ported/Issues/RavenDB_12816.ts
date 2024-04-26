@@ -1,7 +1,7 @@
-import { Facet, FacetSetup, IDocumentStore, RangeFacet } from "../../../src";
-import { disposeTestDocumentStore, testContext } from "../../Utils/TestUtil";
-import { Camera, CameraCostIndex, FacetTestContext } from "../../Utils/FacetTestContext";
-import { assertThat, assertThrows } from "../../Utils/AssertExtensions";
+import { Facet, FacetSetup, IDocumentStore, RangeFacet } from "../../../src/index.js";
+import { disposeTestDocumentStore, testContext } from "../../Utils/TestUtil.js";
+import { Camera, CameraCostIndex, FacetTestContext } from "../../Utils/FacetTestContext.js";
+import { assertThat, assertThrows } from "../../Utils/AssertExtensions.js";
 
 describe("RavenDB_12816Test", function () {
 

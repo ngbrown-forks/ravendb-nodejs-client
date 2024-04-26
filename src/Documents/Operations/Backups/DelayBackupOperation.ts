@@ -1,9 +1,9 @@
-import { IMaintenanceOperation, OperationResultType } from "../OperationAbstractions";
-import { DocumentConventions } from "../../Conventions/DocumentConventions";
-import { RavenCommand } from "../../../Http/RavenCommand";
-import { ServerNode } from "../../../Http/ServerNode";
-import { HttpRequestParameters } from "../../../Primitives/Http";
-import { TimeUtil } from "../../../Utility/TimeUtil";
+import { IMaintenanceOperation, OperationResultType } from "../OperationAbstractions.js";
+import { DocumentConventions } from "../../Conventions/DocumentConventions.js";
+import { RavenCommand } from "../../../Http/RavenCommand.js";
+import { ServerNode } from "../../../Http/ServerNode.js";
+import { HttpRequestParameters } from "../../../Primitives/Http.js";
+import { TimeUtil } from "../../../Utility/TimeUtil.js";
 
 export class DelayBackupOperation implements IMaintenanceOperation<void> {
     private readonly _runningBackupTaskId: number;

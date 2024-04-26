@@ -1,7 +1,7 @@
-import { RavenCommand } from "../../Http/RavenCommand";
-import { NodeInfo } from "./NodeInfo";
-import { ServerNode } from "../../Http/ServerNode";
-import { HttpRequestParameters } from "../../Primitives/Http";
+import { RavenCommand } from "../../Http/RavenCommand.js";
+import { NodeInfo } from "./NodeInfo.js";
+import { ServerNode } from "../../Http/ServerNode.js";
+import { HttpRequestParameters } from "../../Primitives/Http.js";
 import { Stream } from "node:stream";
 
 export class GetNodeInfoCommand extends RavenCommand<NodeInfo> {

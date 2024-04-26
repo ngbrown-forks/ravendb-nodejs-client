@@ -1,20 +1,20 @@
-import { OperationCompletionAwaiter } from "./OperationCompletionAwaiter";
+import { OperationCompletionAwaiter } from "./OperationCompletionAwaiter.js";
 import {
     IOperation,
     AwaitableOperation,
     OperationIdResult
-} from "./OperationAbstractions";
-import { RequestExecutor } from "../../Http/RequestExecutor";
-import { RavenCommand } from "../../Http/RavenCommand";
-import { throwError } from "../../Exceptions";
-import { DocumentStoreBase } from "../DocumentStoreBase";
-import { SessionInfo } from "../Session/IDocumentSession";
-import { PatchOperation, PatchOperationResult } from "./PatchOperation";
-import { DocumentType } from "../DocumentAbstractions";
-import { PatchResult } from "./PatchResult";
-import { IDocumentStore } from "../IDocumentStore";
-import { StatusCodes } from "../../Http/StatusCode";
-import { StringUtil } from "../../Utility/StringUtil";
+} from "./OperationAbstractions.js";
+import { RequestExecutor } from "../../Http/RequestExecutor.js";
+import { RavenCommand } from "../../Http/RavenCommand.js";
+import { throwError } from "../../Exceptions/index.js";
+import { DocumentStoreBase } from "../DocumentStoreBase.js";
+import { SessionInfo } from "../Session/IDocumentSession.js";
+import { PatchOperation, PatchOperationResult } from "./PatchOperation.js";
+import { DocumentType } from "../DocumentAbstractions.js";
+import { PatchResult } from "./PatchResult.js";
+import { IDocumentStore } from "../IDocumentStore.js";
+import { StatusCodes } from "../../Http/StatusCode.js";
+import { StringUtil } from "../../Utility/StringUtil.js";
 
 export class OperationExecutor {
 

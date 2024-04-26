@@ -1,11 +1,11 @@
-import { assertThat } from "../../Utils/AssertExtensions";
-import { testContext, disposeTestDocumentStore } from "../../Utils/TestUtil";
+import { assertThat } from "../../Utils/AssertExtensions.js";
+import { testContext, disposeTestDocumentStore } from "../../Utils/TestUtil.js";
 
 import {
     IDocumentStore,
     AbstractCsharpMultiMapIndexCreationTask,
     Highlightings,
-} from "../../../src";
+} from "../../../src/index.js";
 
 interface ISearchable {
     slug: string;

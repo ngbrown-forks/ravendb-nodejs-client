@@ -1,10 +1,10 @@
-import { IMaintenanceOperation, OperationResultType } from "../OperationAbstractions";
-import { HttpRequestParameters } from "../../../Primitives/Http";
+import { IMaintenanceOperation, OperationResultType } from "../OperationAbstractions.js";
+import { HttpRequestParameters } from "../../../Primitives/Http.js";
 import { Stream } from "node:stream";
-import { DocumentConventions } from "../../Conventions/DocumentConventions";
-import { RavenCommand } from "../../../Http/RavenCommand";
-import { ServerNode } from "../../../Http/ServerNode";
-import { throwError } from "../../../Exceptions";
+import { DocumentConventions } from "../../Conventions/DocumentConventions.js";
+import { RavenCommand } from "../../../Http/RavenCommand.js";
+import { ServerNode } from "../../../Http/ServerNode.js";
+import { throwError } from "../../../Exceptions/index.js";
 
 export class StartTransactionsRecordingOperation implements IMaintenanceOperation<void> {
     private readonly _filePath: string;

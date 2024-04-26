@@ -1,8 +1,8 @@
-import { testContext, disposeTestDocumentStore } from "../Utils/TestUtil";
+import { testContext, disposeTestDocumentStore } from "../Utils/TestUtil.js";
 
 import DocumentStore, {
     IDocumentStore, GetDatabaseNamesOperation, DeleteDatabasesOperation,
-} from "../../src";
+} from "../../src/index.js";
 
 describe("RDBC-404", function () {
 

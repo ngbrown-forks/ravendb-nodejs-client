@@ -1,5 +1,5 @@
 import assert from "node:assert"
-import { testContext, disposeTestDocumentStore } from "../../Utils/TestUtil";
+import { testContext, disposeTestDocumentStore } from "../../Utils/TestUtil.js";
 
 export abstract class Identity {
     public id: string;
@@ -33,10 +33,10 @@ export class ComplexProperty {
 import {
     AbstractJavaScriptIndexCreationTask,
     IDocumentStore,
-} from "../../../src";
-import { MoreLikeThisOptions } from "../../../src/Documents/Queries/MoreLikeThis/MoreLikeThisOptions";
-import { MoreLikeThisStopWords } from "../../../src/Documents/Queries/MoreLikeThis/MoreLikeThisStopWords";
-import { assertThat } from "../../Utils/AssertExtensions";
+} from "../../../src/index.js";
+import { MoreLikeThisOptions } from "../../../src/Documents/Queries/MoreLikeThis/MoreLikeThisOptions.js";
+import { MoreLikeThisStopWords } from "../../../src/Documents/Queries/MoreLikeThis/MoreLikeThisStopWords.js";
+import { assertThat } from "../../Utils/AssertExtensions.js";
 
 export class DataIndex extends AbstractJavaScriptIndexCreationTask<Data, Pick<Data, "body" | "whitespaceAnalyzerField">> {
 

@@ -1,6 +1,6 @@
-import { IRavenObject } from "../Types/IRavenObject";
-import { UriUtility } from "./UriUtility";
-import { ClusterTopology } from "./ClusterTopology";
+import { IRavenObject } from "../Types/IRavenObject.js";
+import { UriUtility } from "./UriUtility.js";
+import { ClusterTopology } from "./ClusterTopology.js";
 
 export type ServerNodeRole = "None" | "Promotable" | "Member" | "Rehab";
 

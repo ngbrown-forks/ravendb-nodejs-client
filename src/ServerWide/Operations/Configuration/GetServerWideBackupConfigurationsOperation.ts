@@ -1,10 +1,10 @@
-import { IServerOperation, OperationResultType } from "../../../Documents/Operations/OperationAbstractions";
-import { RavenCommand } from "../../../Http/RavenCommand";
-import { DocumentConventions } from "../../../Documents/Conventions/DocumentConventions";
-import { HttpRequestParameters } from "../../../Primitives/Http";
-import { ServerNode } from "../../../Http/ServerNode";
+import { IServerOperation, OperationResultType } from "../../../Documents/Operations/OperationAbstractions.js";
+import { RavenCommand } from "../../../Http/RavenCommand.js";
+import { DocumentConventions } from "../../../Documents/Conventions/DocumentConventions.js";
+import { HttpRequestParameters } from "../../../Primitives/Http.js";
+import { ServerNode } from "../../../Http/ServerNode.js";
 import { Stream } from "node:stream";
-import { ServerWideBackupConfiguration } from "./ServerWideBackupConfiguration";
+import { ServerWideBackupConfiguration } from "./ServerWideBackupConfiguration.js";
 
 export class GetServerWideBackupConfigurationsOperation implements IServerOperation<ServerWideBackupConfiguration[]> {
     getCommand(conventions: DocumentConventions): RavenCommand<ServerWideBackupConfiguration[]> {

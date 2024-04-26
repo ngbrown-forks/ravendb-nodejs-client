@@ -1,8 +1,8 @@
 import fs from "node:fs";
 import path from "node:path";
 import { ChildProcess, spawn } from "node:child_process";
-import { RavenServerLocator } from "./RavenServerLocator";
-import { throwError } from "../../src/Exceptions";
+import { RavenServerLocator } from "./RavenServerLocator.js";
+import { throwError } from "../../src/Exceptions/index.js";
 
 interface ProcessStartInfo {
     command: string;

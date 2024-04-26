@@ -1,11 +1,11 @@
 import assert from "node:assert"
-import { testContext, disposeTestDocumentStore } from "../../Utils/TestUtil";
+import { testContext, disposeTestDocumentStore } from "../../Utils/TestUtil.js";
 import {
     IDocumentStore,
     DocumentStore
-} from "../../../src";
-import { GetDocumentsCommand } from "../../../src/Documents/Commands/GetDocumentsCommand";
-import { ObjectUtil } from "../../../src/Utility/ObjectUtil";
+} from "../../../src/index.js";
+import { GetDocumentsCommand } from "../../../src/Documents/Commands/GetDocumentsCommand.js";
+import { ObjectUtil } from "../../../src/Utility/ObjectUtil.js";
 
 describe("GetDocumentCommand streaming", function () {
 

@@ -1,9 +1,9 @@
-import { IMaintenanceOperation, OperationResultType } from "../OperationAbstractions";
-import { StringUtil } from "../../../Utility/StringUtil";
-import { throwError } from "../../../Exceptions";
-import { RavenCommand } from "../../../Http/RavenCommand";
-import { DocumentConventions } from "../../Conventions/DocumentConventions";
-import { NextIdentityForCommand } from "../../Commands/NextIdentityForCommand";
+import { IMaintenanceOperation, OperationResultType } from "../OperationAbstractions.js";
+import { StringUtil } from "../../../Utility/StringUtil.js";
+import { throwError } from "../../../Exceptions/index.js";
+import { RavenCommand } from "../../../Http/RavenCommand.js";
+import { DocumentConventions } from "../../Conventions/DocumentConventions.js";
+import { NextIdentityForCommand } from "../../Commands/NextIdentityForCommand.js";
 
 export class NextIdentityForOperation implements IMaintenanceOperation<number> {
     private readonly _identityName: string;

@@ -1,7 +1,7 @@
 import { Stream, Readable } from "node:stream";
-import { HttpResponse } from "../../Primitives/Http";
-import { closeHttpResponse } from "../../Utility/HttpUtil";
-import { CapitalizeType } from "../../Types";
+import { HttpResponse } from "../../Primitives/Http.js";
+import { closeHttpResponse } from "../../Utility/HttpUtil.js";
+import { CapitalizeType } from "../../Types/index.js";
 
 export type AttachmentType = "Document" | "Revision";
 

@@ -1,7 +1,7 @@
-import { AbstractIndexDefinitionBuilder } from "../AbstractIndexDefinitionBuilder";
-import { TimeSeriesIndexDefinition } from "./TimeSeriesIndexDefinition";
-import { throwError } from "../../../Exceptions";
-import { DocumentConventions } from "../../Conventions/DocumentConventions";
+import { AbstractIndexDefinitionBuilder } from "../AbstractIndexDefinitionBuilder.js";
+import { TimeSeriesIndexDefinition } from "./TimeSeriesIndexDefinition.js";
+import { throwError } from "../../../Exceptions/index.js";
+import { DocumentConventions } from "../../Conventions/DocumentConventions.js";
 
 export class TimeSeriesIndexDefinitionBuilder extends AbstractIndexDefinitionBuilder<TimeSeriesIndexDefinition> {
     public map: string;

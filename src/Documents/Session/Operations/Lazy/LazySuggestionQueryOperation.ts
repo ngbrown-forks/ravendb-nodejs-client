@@ -1,12 +1,12 @@
-import { ILazyOperation } from "./ILazyOperation";
-import { QueryResult } from "../../../Queries/QueryResult";
-import { GetRequest } from "../../../Commands/MultiGet/GetRequest";
-import { GetResponse } from "../../../Commands/MultiGet/GetResponse";
-import { QueryCommand } from "../../../Commands/QueryCommand";
-import { stringToReadable } from "../../../../Utility/StreamUtil";
-import { IndexQuery, writeIndexQuery } from "../../../Queries/IndexQuery";
-import { SuggestionsResponseObject } from "../../../../Types";
-import { InMemoryDocumentSessionOperations } from "../../InMemoryDocumentSessionOperations";
+import { ILazyOperation } from "./ILazyOperation.js";
+import { QueryResult } from "../../../Queries/QueryResult.js";
+import { GetRequest } from "../../../Commands/MultiGet/GetRequest.js";
+import { GetResponse } from "../../../Commands/MultiGet/GetResponse.js";
+import { QueryCommand } from "../../../Commands/QueryCommand.js";
+import { stringToReadable } from "../../../../Utility/StreamUtil.js";
+import { IndexQuery, writeIndexQuery } from "../../../Queries/IndexQuery.js";
+import { SuggestionsResponseObject } from "../../../../Types/index.js";
+import { InMemoryDocumentSessionOperations } from "../../InMemoryDocumentSessionOperations.js";
 
 export class LazySuggestionQueryOperation implements ILazyOperation {
 

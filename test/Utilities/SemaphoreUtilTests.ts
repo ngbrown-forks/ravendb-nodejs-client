@@ -1,7 +1,7 @@
 import assert from "node:assert"
-import { acquireSemaphore } from "../../src/Utility/SemaphoreUtil";
-import { delay } from "../../src/Utility/PromiseUtil";
-import { Semaphore } from "../../src/Utility/Semaphore";
+import { acquireSemaphore } from "../../src/Utility/SemaphoreUtil.js";
+import { delay } from "../../src/Utility/PromiseUtil.js";
+import { Semaphore } from "../../src/Utility/Semaphore.js";
 
 describe("SemaphoreUtil", function () {
 

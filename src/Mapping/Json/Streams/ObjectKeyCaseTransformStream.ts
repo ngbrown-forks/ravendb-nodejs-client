@@ -3,8 +3,8 @@ import {
     ObjectUtil,
     ObjectChangeCaseOptions,
     ObjectChangeCaseOptionsBase, FieldNameConversion
-} from "../../../Utility/ObjectUtil";
-import { TypeUtil } from "../../../Utility/TypeUtil";
+} from "../../../Utility/ObjectUtil.js";
+import { TypeUtil } from "../../../Utility/TypeUtil.js";
 
 export interface ObjectKeyCaseTransformStreamOptions
     extends ObjectChangeCaseOptions {

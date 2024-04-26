@@ -1,54 +1,54 @@
 import { EOL } from "node:os";
 import { Readable } from "node:stream";
-import { acquireSemaphore, SemaphoreAcquisitionContext } from "../Utility/SemaphoreUtil";
-import { getLogger, ILogger } from "../Utility/LogUtil";
-import { Timer } from "../Primitives/Timer";
-import { ServerNode } from "./ServerNode";
-import { RavenCommand, ResponseDisposeHandling } from "./RavenCommand";
-import { Topology } from "./Topology";
-import { GetDatabaseTopologyCommand } from "../ServerWide/Commands/GetDatabaseTopologyCommand";
-import { StatusCodes } from "./StatusCode";
-import { NodeSelector } from "./NodeSelector";
-import { IDisposable } from "../Types/Contracts";
-import { IRequestAuthOptions, IAuthOptions } from "../Auth/AuthOptions";
-import { Certificate, ICertificate } from "../Auth/Certificate";
-import { HttpCache, CachedItemMetadata, ReleaseCacheItem } from "./HttpCache";
-import { AggressiveCacheOptions } from "./AggressiveCacheOptions";
-import { throwError, RavenErrorType, ExceptionDispatcher, ExceptionSchema, getError } from "../Exceptions";
+import { acquireSemaphore, SemaphoreAcquisitionContext } from "../Utility/SemaphoreUtil.js";
+import { getLogger, ILogger } from "../Utility/LogUtil.js";
+import { Timer } from "../Primitives/Timer.js";
+import { ServerNode } from "./ServerNode.js";
+import { RavenCommand, ResponseDisposeHandling } from "./RavenCommand.js";
+import { Topology } from "./Topology.js";
+import { GetDatabaseTopologyCommand } from "../ServerWide/Commands/GetDatabaseTopologyCommand.js";
+import { StatusCodes } from "./StatusCode.js";
+import { NodeSelector } from "./NodeSelector.js";
+import { IDisposable } from "../Types/Contracts.js";
+import { IRequestAuthOptions, IAuthOptions } from "../Auth/AuthOptions.js";
+import { Certificate, ICertificate } from "../Auth/Certificate.js";
+import { HttpCache, CachedItemMetadata, ReleaseCacheItem } from "./HttpCache.js";
+import { AggressiveCacheOptions } from "./AggressiveCacheOptions.js";
+import { throwError, RavenErrorType, ExceptionDispatcher, ExceptionSchema, getError } from "../Exceptions/index.js";
 import {
     GetClientConfigurationCommand,
-} from "../Documents/Operations/Configuration/GetClientConfigurationOperation";
-import CurrentIndexAndNode from "./CurrentIndexAndNode";
-import { HEADERS } from "../Constants";
-import { HttpRequestParameters, HttpResponse, HttpRequestParametersWithoutUri } from "../Primitives/Http";
-import { raceToResolution } from "../Utility/PromiseUtil";
-import { GetStatisticsOperation } from "../Documents/Operations/GetStatisticsOperation";
-import { DocumentConventions } from "../Documents/Conventions/DocumentConventions";
-import { TypeUtil } from "../Utility/TypeUtil";
-import { SessionInfo } from "../Documents/Session/IDocumentSession";
-import { JsonSerializer } from "../Mapping/Json/Serializer";
-import { validateUri } from "../Utility/UriUtil";
-import { readToEnd } from "../Utility/StreamUtil";
-import { closeHttpResponse } from "../Utility/HttpUtil";
-import { PromiseStatusTracker } from "../Utility/PromiseUtil";
+} from "../Documents/Operations/Configuration/GetClientConfigurationOperation.js";
+import CurrentIndexAndNode from "./CurrentIndexAndNode.js";
+import { HEADERS } from "../Constants.js";
+import { HttpRequestParameters, HttpResponse, HttpRequestParametersWithoutUri } from "../Primitives/Http.js";
+import { raceToResolution } from "../Utility/PromiseUtil.js";
+import { GetStatisticsOperation } from "../Documents/Operations/GetStatisticsOperation.js";
+import { DocumentConventions } from "../Documents/Conventions/DocumentConventions.js";
+import { TypeUtil } from "../Utility/TypeUtil.js";
+import { SessionInfo } from "../Documents/Session/IDocumentSession.js";
+import { JsonSerializer } from "../Mapping/Json/Serializer.js";
+import { validateUri } from "../Utility/UriUtil.js";
+import { readToEnd } from "../Utility/StreamUtil.js";
+import { closeHttpResponse } from "../Utility/HttpUtil.js";
+import { PromiseStatusTracker } from "../Utility/PromiseUtil.js";
 import { Agent as httpAgent } from "node:http";
 import { Agent as httpsAgent } from "node:https";
-import { IBroadcast } from "./IBroadcast";
-import { StringUtil } from "../Utility/StringUtil";
-import { IRaftCommand } from "./IRaftCommand";
+import { IBroadcast } from "./IBroadcast.js";
+import { StringUtil } from "../Utility/StringUtil.js";
+import { IRaftCommand } from "./IRaftCommand.js";
 import { EventEmitter } from "node:events";
 import {
     BeforeRequestEventArgs,
     FailedRequestEventArgs,
     SucceedRequestEventArgs,
     TopologyUpdatedEventArgs
-} from "../Documents/Session/SessionEvents";
-import { TimeUtil } from "../Utility/TimeUtil";
-import { UpdateTopologyParameters } from "./UpdateTopologyParameters";
+} from "../Documents/Session/SessionEvents.js";
+import { TimeUtil } from "../Utility/TimeUtil.js";
+import { UpdateTopologyParameters } from "./UpdateTopologyParameters.js";
 import { randomUUID } from "node:crypto";
-import { DatabaseHealthCheckOperation } from "../Documents/Operations/DatabaseHealthCheckOperation";
-import { GetNodeInfoCommand } from "../ServerWide/Commands/GetNodeInfoCommand";
-import { Semaphore } from "../Utility/Semaphore";
+import { DatabaseHealthCheckOperation } from "../Documents/Operations/DatabaseHealthCheckOperation.js";
+import { GetNodeInfoCommand } from "../ServerWide/Commands/GetNodeInfoCommand.js";
+import { Semaphore } from "../Utility/Semaphore.js";
 
 const DEFAULT_REQUEST_OPTIONS = {};
 

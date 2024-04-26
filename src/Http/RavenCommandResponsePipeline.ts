@@ -2,18 +2,18 @@ import { EventEmitter } from "node:events";
 import {
     ObjectKeyCaseTransformStreamOptions,
     ObjectKeyCaseTransformStream
-} from "../Mapping/Json/Streams/ObjectKeyCaseTransformStream";
-import { pipelineAsync } from "../Utility/StreamUtil";
+} from "../Mapping/Json/Streams/ObjectKeyCaseTransformStream.js";
+import { pipelineAsync } from "../Utility/StreamUtil.js";
 import { Stream, Transform, Readable, Writable, pipeline } from "node:stream";
 import {
     CollectResultStream,
-} from "../Mapping/Json/Streams/CollectResultStream";
-import { throwError, getError } from "../Exceptions";
-import { TypeUtil } from "../Utility/TypeUtil";
-import { ErrorFirstCallback } from "../Types/Callbacks";
-import { StringBuilder } from "../Utility/StringBuilder";
+} from "../Mapping/Json/Streams/CollectResultStream.js";
+import { throwError, getError } from "../Exceptions/index.js";
+import { TypeUtil } from "../Utility/TypeUtil.js";
+import { ErrorFirstCallback } from "../Types/Callbacks.js";
+import { StringBuilder } from "../Utility/StringBuilder.js";
 import JsonlParser from "stream-json/jsonl/Parser.js";
-import { FieldNameConversion } from "../Utility/ObjectUtil";
+import { FieldNameConversion } from "../Utility/ObjectUtil.js";
 
 export interface RavenCommandResponsePipelineOptions {
     collectBody?: boolean | ((body: string) => void);

@@ -1,4 +1,4 @@
-import { ServerWideBackupConfiguration } from "../../ServerWide/Operations/Configuration/ServerWideBackupConfiguration";
+import { ServerWideBackupConfiguration } from "../../ServerWide/Operations/Configuration/ServerWideBackupConfiguration.js";
 
 export interface GetServerWideBackupConfigurationsResponse {
     results: ServerWideBackupConfiguration[];

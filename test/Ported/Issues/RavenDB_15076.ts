@@ -3,12 +3,12 @@ import {
     PutConnectionStringOperation,
     RavenConnectionString,
     UpdateExternalReplicationOperation
-} from "../../../src";
-import { RavenTestContext, testContext } from "../../Utils/TestUtil";
-import { User } from "../../Assets/Entities";
-import { HeartRateMeasure } from "../TimeSeries/TimeSeriesTypedSession";
-import { assertThat } from "../../Utils/AssertExtensions";
-import { ReplicationTestContext } from "../../Utils/ReplicationTestContext";
+} from "../../../src/index.js";
+import { RavenTestContext, testContext } from "../../Utils/TestUtil.js";
+import { User } from "../../Assets/Entities.js";
+import { HeartRateMeasure } from "../TimeSeries/TimeSeriesTypedSession.js";
+import { assertThat } from "../../Utils/AssertExtensions.js";
+import { ReplicationTestContext } from "../../Utils/ReplicationTestContext.js";
 
 (RavenTestContext.isPullRequest ? describe.skip : describe)("RavenDB_15076", function () {
 

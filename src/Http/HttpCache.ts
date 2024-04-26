@@ -1,6 +1,6 @@
 import moment from "moment";
 import { safeMemoryCache } from "safe-memory-cache";
-import { IDisposable } from "../Types/Contracts";
+import { IDisposable } from "../Types/Contracts.js";
 
 export interface CachedItemMetadata {
     changeVector: string;

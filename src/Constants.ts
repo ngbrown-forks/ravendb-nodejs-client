@@ -1,4 +1,4 @@
-import { MetadataObject } from "./Documents/Session/MetadataObject";
+import { MetadataObject } from "./Documents/Session/MetadataObject.js";
 
 export const CONSTANTS = {
     Documents: {

@@ -1,4 +1,4 @@
-import { QueryResultBase } from "./QueryResultBase";
+import { QueryResultBase } from "./QueryResultBase.js";
 
 export interface QueryResultHighlightings {
     [key: string]: { [key: string]: string[] };

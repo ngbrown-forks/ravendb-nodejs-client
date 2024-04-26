@@ -1,13 +1,13 @@
 import assert from "node:assert"
-import { testContext, disposeTestDocumentStore } from "../../../../Utils/TestUtil";
+import { testContext, disposeTestDocumentStore } from "../../../../Utils/TestUtil.js";
 
 import {
     IDocumentStore,
-} from "../../../../../src";
-import { User } from "../../../../Assets/Entities";
-import { DocumentChange } from "../../../../../src";
-import { AsyncQueue } from "../../../../Utils/AsyncQueue";
-import { throwError } from "../../../../../src/Exceptions";
+} from "../../../../../src.js";
+import { User } from "../../../../Assets/Entities.js";
+import { DocumentChange } from "../../../../../src.js";
+import { AsyncQueue } from "../../../../Utils/AsyncQueue.js";
+import { throwError } from "../../../../../src/Exceptions.js";
 
 describe("Secured changes test", function () {
 

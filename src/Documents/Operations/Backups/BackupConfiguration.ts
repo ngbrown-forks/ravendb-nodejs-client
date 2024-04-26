@@ -1,12 +1,12 @@
-import { BackupType, BackupUploadMode } from "./Enums";
-import { SnapshotSettings } from "./BackupStatus";
-import { BackupEncryptionSettings } from "./BackupEncryptionSettings";
-import { LocalSettings } from "./LocalSettings";
-import { S3Settings } from "./S3Settings";
-import { GlacierSettings } from "./GlacierSettings";
-import { AzureSettings } from "./AzureSettings";
-import { FtpSettings } from "./FtpSettings";
-import { GoogleCloudSettings } from "./GoogleCloudSettings";
+import { BackupType, BackupUploadMode } from "./Enums.js";
+import { SnapshotSettings } from "./BackupStatus.js";
+import { BackupEncryptionSettings } from "./BackupEncryptionSettings.js";
+import { LocalSettings } from "./LocalSettings.js";
+import { S3Settings } from "./S3Settings.js";
+import { GlacierSettings } from "./GlacierSettings.js";
+import { AzureSettings } from "./AzureSettings.js";
+import { FtpSettings } from "./FtpSettings.js";
+import { GoogleCloudSettings } from "./GoogleCloudSettings.js";
 
 export interface BackupConfiguration {
 

@@ -1,4 +1,4 @@
-import { HighlightingOptions } from "./HighlightingOptions";
+import { HighlightingOptions } from "./HighlightingOptions.js";
 
 export interface HighlightingParameters extends HighlightingOptions {
     fieldName: string; 

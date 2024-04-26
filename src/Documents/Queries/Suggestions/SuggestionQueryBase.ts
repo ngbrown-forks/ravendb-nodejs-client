@@ -1,15 +1,15 @@
-import { Stopwatch } from "../../../Utility/Stopwatch";
-import { QueryResult } from "../QueryResult";
-import { QueryCommand } from "../../Commands/QueryCommand";
-import { Lazy } from "../../Lazy";
-import { LazySuggestionQueryOperation } from "../../Session/Operations/Lazy/LazySuggestionQueryOperation";
-import { QueryOperation } from "../../Session/Operations/QueryOperation";
-import { ObjectUtil } from "../../../Utility/ObjectUtil";
-import { SuggestionResult } from "./SuggestionResult";
-import { InMemoryDocumentSessionOperations } from "../../Session/InMemoryDocumentSessionOperations";
-import { IndexQuery } from "../IndexQuery";
-import { SuggestionsResponseObject } from "../../../Types";
-import { DocumentSession } from "../../Session/DocumentSession";
+import { Stopwatch } from "../../../Utility/Stopwatch.js";
+import { QueryResult } from "../QueryResult.js";
+import { QueryCommand } from "../../Commands/QueryCommand.js";
+import { Lazy } from "../../Lazy.js";
+import { LazySuggestionQueryOperation } from "../../Session/Operations/Lazy/LazySuggestionQueryOperation.js";
+import { QueryOperation } from "../../Session/Operations/QueryOperation.js";
+import { ObjectUtil } from "../../../Utility/ObjectUtil.js";
+import { SuggestionResult } from "./SuggestionResult.js";
+import { InMemoryDocumentSessionOperations } from "../../Session/InMemoryDocumentSessionOperations.js";
+import { IndexQuery } from "../IndexQuery.js";
+import { SuggestionsResponseObject } from "../../../Types/index.js";
+import { DocumentSession } from "../../Session/DocumentSession.js";
 
 export abstract class SuggestionQueryBase {
 

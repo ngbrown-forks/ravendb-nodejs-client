@@ -1,10 +1,10 @@
-import { HttpRequestParameters } from "../../../Primitives/Http";
+import { HttpRequestParameters } from "../../../Primitives/Http.js";
 import { Stream } from "node:stream";
-import { RavenCommand } from "../../../Http/RavenCommand";
-import { IServerOperation, OperationResultType } from "../../../Documents/Operations/OperationAbstractions";
-import { ClientConfiguration } from "../../../Documents/Operations/Configuration/ClientConfiguration";
-import { DocumentConventions } from "../../../Documents/Conventions/DocumentConventions";
-import { ServerNode } from "../../../Http/ServerNode";
+import { RavenCommand } from "../../../Http/RavenCommand.js";
+import { IServerOperation, OperationResultType } from "../../../Documents/Operations/OperationAbstractions.js";
+import { ClientConfiguration } from "../../../Documents/Operations/Configuration/ClientConfiguration.js";
+import { DocumentConventions } from "../../../Documents/Conventions/DocumentConventions.js";
+import { ServerNode } from "../../../Http/ServerNode.js";
 
 export class GetServerWideClientConfigurationOperation implements IServerOperation<ClientConfiguration> {
     public get resultType(): OperationResultType {

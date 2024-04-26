@@ -1,4 +1,4 @@
-import { CommandType } from "./Commands/CommandData";
+import { CommandType } from "./Commands/CommandData.js";
 
 export class IdTypeAndName {
     private id: string;

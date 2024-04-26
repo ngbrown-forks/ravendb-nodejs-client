@@ -1,11 +1,11 @@
-import { LocalSettings } from "../Backups/LocalSettings";
-import { S3Settings } from "../Backups/S3Settings";
-import { AzureSettings } from "../Backups/AzureSettings";
-import { GlacierSettings } from "../Backups/GlacierSettings";
-import { GoogleCloudSettings } from "../Backups/GoogleCloudSettings";
-import { FtpSettings } from "../Backups/FtpSettings";
-import { KafkaConnectionSettings } from "./Queue/KafkaConnectionSettings";
-import { RabbitMqConnectionSettings } from "./Queue/RabbitMqConnectionSettings";
+import { LocalSettings } from "../Backups/LocalSettings.js";
+import { S3Settings } from "../Backups/S3Settings.js";
+import { AzureSettings } from "../Backups/AzureSettings.js";
+import { GlacierSettings } from "../Backups/GlacierSettings.js";
+import { GoogleCloudSettings } from "../Backups/GoogleCloudSettings.js";
+import { FtpSettings } from "../Backups/FtpSettings.js";
+import { KafkaConnectionSettings } from "./Queue/KafkaConnectionSettings.js";
+import { RabbitMqConnectionSettings } from "./Queue/RabbitMqConnectionSettings.js";
 
 export type ConnectionStringType =
     "None"

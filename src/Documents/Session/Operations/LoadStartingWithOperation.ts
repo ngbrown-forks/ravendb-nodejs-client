@@ -1,11 +1,11 @@
-import { InMemoryDocumentSessionOperations } from "../InMemoryDocumentSessionOperations";
-import { GetDocumentsCommand, GetDocumentsResult } from "../../Commands/GetDocumentsCommand";
-import { StartingWithOptions } from "../IDocumentSession";
-import { DocumentInfo } from "../DocumentInfo";
-import { DocumentType } from "../../DocumentAbstractions";
-import { TypeUtil } from "../../../Utility/TypeUtil";
-import { throwError } from "../../../Exceptions";
-import { ObjectTypeDescriptor } from "../../../Types";
+import { InMemoryDocumentSessionOperations } from "../InMemoryDocumentSessionOperations.js";
+import { GetDocumentsCommand, GetDocumentsResult } from "../../Commands/GetDocumentsCommand.js";
+import { StartingWithOptions } from "../IDocumentSession.js";
+import { DocumentInfo } from "../DocumentInfo.js";
+import { DocumentType } from "../../DocumentAbstractions.js";
+import { TypeUtil } from "../../../Utility/TypeUtil.js";
+import { throwError } from "../../../Exceptions/index.js";
+import { ObjectTypeDescriptor } from "../../../Types/index.js";
 
 export class LoadStartingWithOperation {
 

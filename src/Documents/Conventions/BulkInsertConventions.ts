@@ -1,4 +1,4 @@
-import { throwError } from "../../Exceptions";
+import { throwError } from "../../Exceptions/index.js";
 
 export class BulkInsertConventions {
     private readonly _notFrozen: () => void;

@@ -1,13 +1,13 @@
-import { RavenCommand, ResponseDisposeHandling } from "../../Http/RavenCommand";
-import { HttpCache } from "../../Http/HttpCache";
-import { HttpRequestParameters, HttpResponse } from "../../Primitives/Http";
-import { StringUtil } from "../../Utility/StringUtil";
-import { throwError } from "../../Exceptions";
-import { ServerNode } from "../../Http/ServerNode";
-import { StatusCodes } from "../../Http/StatusCode";
+import { RavenCommand, ResponseDisposeHandling } from "../../Http/RavenCommand.js";
+import { HttpCache } from "../../Http/HttpCache.js";
+import { HttpRequestParameters, HttpResponse } from "../../Primitives/Http.js";
+import { StringUtil } from "../../Utility/StringUtil.js";
+import { throwError } from "../../Exceptions/index.js";
+import { ServerNode } from "../../Http/ServerNode.js";
+import { StatusCodes } from "../../Http/StatusCode.js";
 import { Stream, Readable } from "node:stream";
-import { getRequiredEtagHeader } from "../../Utility/HttpUtil";
-import { HEADERS } from "../../Constants";
+import { getRequiredEtagHeader } from "../../Utility/HttpUtil.js";
+import { HEADERS } from "../../Constants.js";
 
 export class HeadAttachmentCommand extends RavenCommand<string> {
 

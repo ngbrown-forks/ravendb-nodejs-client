@@ -1,10 +1,10 @@
-import { IDocumentStore } from "../../../src";
-import { disposeTestDocumentStore, testContext } from "../../Utils/TestUtil";
-import { User } from "../../Assets/Entities";
-import { assertThat } from "../../Utils/AssertExtensions";
-import { TimeSeriesRange } from "../../../src/Documents/Operations/TimeSeries/TimeSeriesRange";
-import { GetMultipleTimeSeriesCommand } from "../../../src/Documents/Operations/TimeSeries/GetMultipleTimeSeriesOperation";
-import { TypeUtil } from "../../../src/Utility/TypeUtil";
+import { IDocumentStore } from "../../../src/index.js";
+import { disposeTestDocumentStore, testContext } from "../../Utils/TestUtil.js";
+import { User } from "../../Assets/Entities.js";
+import { assertThat } from "../../Utils/AssertExtensions.js";
+import { TimeSeriesRange } from "../../../src/Documents/Operations/TimeSeries/TimeSeriesRange.js";
+import { GetMultipleTimeSeriesCommand } from "../../../src/Documents/Operations/TimeSeries/GetMultipleTimeSeriesOperation.js";
+import { TypeUtil } from "../../../src/Utility/TypeUtil.js";
 
 describe("RavenDB_15426", function () {
 

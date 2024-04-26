@@ -1,12 +1,12 @@
 import moment from "moment";
 import assert from "node:assert"
-import { testContext, disposeTestDocumentStore } from "../../Utils/TestUtil";
+import { testContext, disposeTestDocumentStore } from "../../Utils/TestUtil.js";
 
 import {
     AbstractJavaScriptIndexCreationTask,
     IDocumentStore,
     RangeBuilder,
-} from "../../../src";
+} from "../../../src/index.js";
 
 class ItemsOrders_All extends AbstractJavaScriptIndexCreationTask<ItemsOrder, Pick<ItemsOrder, "at" | "items">> {
     public constructor() {

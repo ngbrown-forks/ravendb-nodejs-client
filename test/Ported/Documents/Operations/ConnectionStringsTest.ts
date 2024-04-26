@@ -5,9 +5,9 @@ import {
     SqlConnectionString,
     GetConnectionStringsOperation,
     RemoveConnectionStringOperation, OlapConnectionString, ElasticSearchConnectionString, QueueConnectionString
-} from "../../../../src";
-import { disposeTestDocumentStore, testContext } from "../../../Utils/TestUtil";
-import { assertThat } from "../../../Utils/AssertExtensions";
+} from "../../../../src.js";
+import { disposeTestDocumentStore, testContext } from "../../../Utils/TestUtil.js";
+import { assertThat } from "../../../Utils/AssertExtensions.js";
 
 describe("ConnectionStringsTest", function () {
 

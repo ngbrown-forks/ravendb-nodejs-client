@@ -1,4 +1,4 @@
-import { getError } from "../Exceptions";
+import { getError } from "../Exceptions/index.js";
 import { clearTimeout } from "node:timers";
 
 export interface IDefer<TResult> {

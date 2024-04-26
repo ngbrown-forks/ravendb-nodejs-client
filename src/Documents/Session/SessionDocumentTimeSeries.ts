@@ -1,10 +1,10 @@
-import { SessionTimeSeriesBase } from "./SessionTimeSeriesBase";
-import { ISessionDocumentTimeSeries } from "./ISessionDocumentTimeSeries";
-import { InMemoryDocumentSessionOperations } from "./InMemoryDocumentSessionOperations";
-import { TimeSeriesEntry } from "./TimeSeries/TimeSeriesEntry";
-import { TypeUtil } from "../../Utility/TypeUtil";
-import { ITimeSeriesIncludeBuilder } from "./Loaders/ITimeSeriesIncludeBuilder";
-import { ISessionDocumentIncrementalTimeSeries } from "./ISessionDocumentIncrementalTimeSeries";
+import { SessionTimeSeriesBase } from "./SessionTimeSeriesBase.js";
+import { ISessionDocumentTimeSeries } from "./ISessionDocumentTimeSeries.js";
+import { InMemoryDocumentSessionOperations } from "./InMemoryDocumentSessionOperations.js";
+import { TimeSeriesEntry } from "./TimeSeries/TimeSeriesEntry.js";
+import { TypeUtil } from "../../Utility/TypeUtil.js";
+import { ITimeSeriesIncludeBuilder } from "./Loaders/ITimeSeriesIncludeBuilder.js";
+import { ISessionDocumentIncrementalTimeSeries } from "./ISessionDocumentIncrementalTimeSeries.js";
 
 export class SessionDocumentTimeSeries extends SessionTimeSeriesBase implements ISessionDocumentTimeSeries, ISessionDocumentIncrementalTimeSeries {
 

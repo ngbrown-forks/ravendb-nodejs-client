@@ -1,5 +1,5 @@
-import { AggregationOperation, AutoFieldIndexing, FieldStorage, GroupByArrayBehavior } from "./Enums";
-import { AutoSpatialOptions } from "./Spatial/AutoSpatialOptions";
+import { AggregationOperation, AutoFieldIndexing, FieldStorage, GroupByArrayBehavior } from "./Enums.js";
+import { AutoSpatialOptions } from "./Spatial/AutoSpatialOptions.js";
 
 export interface AutoIndexFieldOptions {
     storage: FieldStorage;

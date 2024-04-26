@@ -1,8 +1,8 @@
-import { IServerOperation, OperationResultType } from "../../src/Documents/Operations/OperationAbstractions";
-import { RavenCommand } from "../../src/Http/RavenCommand";
-import { HttpRequestParameters } from "../../src/Primitives/Http";
-import { DocumentConventions } from "../../src/Documents/Conventions/DocumentConventions";
-import { ServerNode } from "../../src/Http/ServerNode";
+import { IServerOperation, OperationResultType } from "../../src/Documents/Operations/OperationAbstractions.js";
+import { RavenCommand } from "../../src/Http/RavenCommand.js";
+import { HttpRequestParameters } from "../../src/Primitives/Http.js";
+import { DocumentConventions } from "../../src/Documents/Conventions/DocumentConventions.js";
+import { ServerNode } from "../../src/Http/ServerNode.js";
 import { Stream } from "node:stream";
 
 export class AdminJsConsoleOperation implements IServerOperation<any> {

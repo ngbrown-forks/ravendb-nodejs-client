@@ -1,5 +1,5 @@
-import { ISuggestionOperations } from "./ISuggestionOperations";
-import { Field } from "../../../Types";
+import { ISuggestionOperations } from "./ISuggestionOperations.js";
+import { Field } from "../../../Types/index.js";
 
 export interface ISuggestionBuilder<T> {
 

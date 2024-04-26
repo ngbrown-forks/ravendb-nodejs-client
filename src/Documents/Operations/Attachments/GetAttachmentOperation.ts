@@ -1,15 +1,15 @@
-import { IOperation, OperationResultType } from "../OperationAbstractions";
-import { AttachmentDetails } from "../../Attachments";
-import { getEtagHeader } from "../../../Utility/HttpUtil";
-import { HttpRequestParameters, HttpResponse } from "../../../Primitives/Http";
-import { AttachmentResult, AttachmentType } from "../../Attachments";
-import { RavenCommand, ResponseDisposeHandling } from "../../../Http/RavenCommand";
-import { HttpCache } from "../../../Http/HttpCache";
-import { IDocumentStore } from "../../IDocumentStore";
-import { DocumentConventions } from "../../Conventions/DocumentConventions";
-import { throwError } from "../../../Exceptions";
-import { StringUtil } from "../../../Utility/StringUtil";
-import { ServerNode } from "../../../Http/ServerNode";
+import { IOperation, OperationResultType } from "../OperationAbstractions.js";
+import { AttachmentDetails } from "../../Attachments/index.js";
+import { getEtagHeader } from "../../../Utility/HttpUtil.js";
+import { HttpRequestParameters, HttpResponse } from "../../../Primitives/Http.js";
+import { AttachmentResult, AttachmentType } from "../../Attachments/index.js";
+import { RavenCommand, ResponseDisposeHandling } from "../../../Http/RavenCommand.js";
+import { HttpCache } from "../../../Http/HttpCache.js";
+import { IDocumentStore } from "../../IDocumentStore.js";
+import { DocumentConventions } from "../../Conventions/DocumentConventions.js";
+import { throwError } from "../../../Exceptions/index.js";
+import { StringUtil } from "../../../Utility/StringUtil.js";
+import { ServerNode } from "../../../Http/ServerNode.js";
 import { Readable } from "node:stream";
 
 export class GetAttachmentOperation implements IOperation<AttachmentResult> {

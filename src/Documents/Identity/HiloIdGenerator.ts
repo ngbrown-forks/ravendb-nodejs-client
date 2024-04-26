@@ -1,10 +1,10 @@
-import { IDocumentStore } from "../IDocumentStore";
-import { DateUtil } from "../../Utility/DateUtil";
-import { HiloReturnCommand } from "./Commands/HiloReturnCommand";
-import { NextHiloCommand, HiLoResult } from "./Commands/NextHiloCommand";
-import { HiloRangeValue } from "./HiloRangeValue";
-import { Lazy } from "../Lazy";
-import { NextId } from "./NextId";
+import { IDocumentStore } from "../IDocumentStore.js";
+import { DateUtil } from "../../Utility/DateUtil.js";
+import { HiloReturnCommand } from "./Commands/HiloReturnCommand.js";
+import { NextHiloCommand, HiLoResult } from "./Commands/NextHiloCommand.js";
+import { HiloRangeValue } from "./HiloRangeValue.js";
+import { Lazy } from "../Lazy.js";
+import { NextId } from "./NextId.js";
 
 export class HiloIdGenerator {
     private _store: IDocumentStore;

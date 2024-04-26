@@ -2,11 +2,11 @@ import {
     CreateDatabaseOperation,
     GetDatabaseRecordOperation,
     IDocumentStore
-} from "../../../src";
-import { disposeTestDocumentStore, RavenTestContext, testContext } from "../../Utils/TestUtil";
-import { assertThat, assertThrows } from "../../Utils/AssertExtensions";
-import { UpdateDatabaseOperation } from "../../../src/ServerWide/Operations/UpdateDatabaseOperation";
-import { Company } from "../../Assets/Entities";
+} from "../../../src/index.js";
+import { disposeTestDocumentStore, RavenTestContext, testContext } from "../../Utils/TestUtil.js";
+import { assertThat, assertThrows } from "../../Utils/AssertExtensions.js";
+import { UpdateDatabaseOperation } from "../../../src/ServerWide/Operations/UpdateDatabaseOperation.js";
+import { Company } from "../../Assets/Entities.js";
 
 (RavenTestContext.isPullRequest ? describe.skip : describe)("RavenDB_10929Test", function () {
 

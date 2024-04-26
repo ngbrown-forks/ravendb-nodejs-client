@@ -1,7 +1,7 @@
-import { EtlConfiguration } from "../EtlConfiguration";
-import { EtlType, QueueBrokerType, QueueConnectionString } from "../ConnectionString";
-import { EtlQueue } from "./EtlQueue";
-import { DocumentConventions } from "../../../Conventions/DocumentConventions";
+import { EtlConfiguration } from "../EtlConfiguration.js";
+import { EtlType, QueueBrokerType, QueueConnectionString } from "../ConnectionString.js";
+import { EtlQueue } from "./EtlQueue.js";
+import { DocumentConventions } from "../../../Conventions/DocumentConventions.js";
 
 export class QueueEtlConfiguration extends EtlConfiguration<QueueConnectionString> {
     public queues: EtlQueue[];

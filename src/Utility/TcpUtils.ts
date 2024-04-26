@@ -1,13 +1,13 @@
 import net from "node:net";
 import { Socket } from "node:net";
 import { URL } from "node:url";
-import { IAuthOptions } from "../Auth/AuthOptions";
+import { IAuthOptions } from "../Auth/AuthOptions.js";
 import tls from "node:tls";
-import { Certificate } from "../Auth/Certificate";
+import { Certificate } from "../Auth/Certificate.js";
 import { PeerCertificate } from "node:tls";
-import { getError, throwError } from "../Exceptions";
-import { TcpConnectionInfo } from "../ServerWide/Commands/GetTcpInfoCommand";
-import { OperationTypes, SupportedFeatures } from "../ServerWide/Tcp/TcpConnectionHeaderMessage";
+import { getError, throwError } from "../Exceptions/index.js";
+import { TcpConnectionInfo } from "../ServerWide/Commands/GetTcpInfoCommand.js";
+import { OperationTypes, SupportedFeatures } from "../ServerWide/Tcp/TcpConnectionHeaderMessage.js";
 
 export class TcpUtils {
     public static async connect(

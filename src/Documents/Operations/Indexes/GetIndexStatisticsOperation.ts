@@ -1,11 +1,11 @@
-import { IMaintenanceOperation, OperationResultType } from "../OperationAbstractions";
-import { IndexStats, CollectionStats } from "../../Indexes/IndexStats";
-import { throwError } from "../../../Exceptions";
-import { RavenCommand } from "../../../Http/RavenCommand";
-import { DocumentConventions } from "../../Conventions/DocumentConventions";
-import { HttpRequestParameters } from "../../../Primitives/Http";
+import { IMaintenanceOperation, OperationResultType } from "../OperationAbstractions.js";
+import { IndexStats, CollectionStats } from "../../Indexes/IndexStats.js";
+import { throwError } from "../../../Exceptions/index.js";
+import { RavenCommand } from "../../../Http/RavenCommand.js";
+import { DocumentConventions } from "../../Conventions/DocumentConventions.js";
+import { HttpRequestParameters } from "../../../Primitives/Http.js";
 import { Stream } from "node:stream";
-import { ServerNode } from "../../../Http/ServerNode";
+import { ServerNode } from "../../../Http/ServerNode.js";
 
 export class GetIndexStatisticsOperation implements IMaintenanceOperation<IndexStats> {
     private readonly _indexName: string;

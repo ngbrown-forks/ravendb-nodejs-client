@@ -1,7 +1,7 @@
-import { TimeSeriesPolicy } from "./TimeSeriesPolicy";
-import { TimeValue } from "../../../Primitives/TimeValue";
-import { throwError } from "../../../Exceptions";
-import { TimeSeriesPolicyRaw } from "./RawTimeSeriesTypes";
+import { TimeSeriesPolicy } from "./TimeSeriesPolicy.js";
+import { TimeValue } from "../../../Primitives/TimeValue.js";
+import { throwError } from "../../../Exceptions/index.js";
+import { TimeSeriesPolicyRaw } from "./RawTimeSeriesTypes.js";
 
 export class RawTimeSeriesPolicy extends TimeSeriesPolicy {
     public static POLICY_STRING = "rawpolicy"; // must be lower case

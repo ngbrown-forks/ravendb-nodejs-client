@@ -1,9 +1,9 @@
-import { ICommandData, CommandType } from "../CommandData";
-import { StringUtil } from "../../../Utility/StringUtil";
-import { throwError } from "../../../Exceptions";
-import { CounterOperationType } from "../../Operations/Counters/CounterOperationType";
-import { DocumentCountersOperation } from "../../Operations/Counters/DocumentCountersOperation";
-import { CounterOperation } from "../../Operations/Counters/CounterOperation";
+import { ICommandData, CommandType } from "../CommandData.js";
+import { StringUtil } from "../../../Utility/StringUtil.js";
+import { throwError } from "../../../Exceptions/index.js";
+import { CounterOperationType } from "../../Operations/Counters/CounterOperationType.js";
+import { DocumentCountersOperation } from "../../Operations/Counters/DocumentCountersOperation.js";
+import { CounterOperation } from "../../Operations/Counters/CounterOperation.js";
 
 export class CountersBatchCommandData implements ICommandData {
     private _id: string;

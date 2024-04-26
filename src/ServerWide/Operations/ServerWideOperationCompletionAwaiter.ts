@@ -1,9 +1,9 @@
-import { OperationCompletionAwaiter } from "../../Documents/Operations/OperationCompletionAwaiter";
-import { RavenCommand, IRavenResponse } from "../../Http/RavenCommand";
-import { GetServerWideOperationStateCommand } from "./GetServerWideOperationStateOperation";
-import { RequestExecutor } from "../../Http/RequestExecutor";
-import { DocumentConventions } from "../../Documents/Conventions/DocumentConventions";
-import { KillServerOperationCommand } from "../../Documents/Commands/KillServerOperationCommand";
+import { OperationCompletionAwaiter } from "../../Documents/Operations/OperationCompletionAwaiter.js";
+import { RavenCommand, IRavenResponse } from "../../Http/RavenCommand.js";
+import { GetServerWideOperationStateCommand } from "./GetServerWideOperationStateOperation.js";
+import { RequestExecutor } from "../../Http/RequestExecutor.js";
+import { DocumentConventions } from "../../Documents/Conventions/DocumentConventions.js";
+import { KillServerOperationCommand } from "../../Documents/Commands/KillServerOperationCommand.js";
 
 export class ServerWideOperationCompletionAwaiter extends OperationCompletionAwaiter {
 

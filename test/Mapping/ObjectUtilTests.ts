@@ -1,6 +1,6 @@
-import { ObjectChangeCaseOptions } from "./../../src/Utility/ObjectUtil";
+import { ObjectChangeCaseOptions } from "./../../src/Utility/ObjectUtil.js";
 import assert from "node:assert"
-import { ObjectUtil } from "../../src/Utility/ObjectUtil";
+import { ObjectUtil } from "../../src/Utility/ObjectUtil.js";
 
 describe("ObjectUtil", function () {
 

@@ -1,10 +1,10 @@
 import assert from "node:assert"
-import { testContext, disposeTestDocumentStore } from "../Utils/TestUtil";
+import { testContext, disposeTestDocumentStore } from "../Utils/TestUtil.js";
 
 import {
     IDocumentStore,
-} from "../../src";
-import { TypeUtil } from "../../src/Utility/TypeUtil";
+} from "../../src/index.js";
+import { TypeUtil } from "../../src/Utility/TypeUtil.js";
 
 describe("TypeUtil", function () {
 

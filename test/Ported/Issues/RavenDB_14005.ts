@@ -1,10 +1,10 @@
 import {
     IDocumentStore,
     SessionOptions
-} from "../../../src";
-import { disposeTestDocumentStore, testContext } from "../../Utils/TestUtil";
-import { Address } from "../../Assets/Orders";
-import { assertThat } from "../../Utils/AssertExtensions";
+} from "../../../src/index.js";
+import { disposeTestDocumentStore, testContext } from "../../Utils/TestUtil.js";
+import { Address } from "../../Assets/Orders.js";
+import { assertThat } from "../../Utils/AssertExtensions.js";
 
 describe("RavenDB_14005", function () {
 

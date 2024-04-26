@@ -1,15 +1,15 @@
 
 import assert from "node:assert"
-import { testContext, disposeTestDocumentStore } from "../../../../Utils/TestUtil";
+import { testContext, disposeTestDocumentStore } from "../../../../Utils/TestUtil.js";
 
 import {
     IDocumentStore,
     SetIndexesPriorityOperation, GetStatisticsOperation,
     DocumentChange, IndexChange, AbstractJavaScriptIndexCreationTask
-} from "../../../../../src";
-import { Order, User } from "../../../../Assets/Entities";
-import { AsyncQueue } from "../../../../Utils/AsyncQueue";
-import { throwError } from "../../../../../src/Exceptions";
+} from "../../../../../src.js";
+import { Order, User } from "../../../../Assets/Entities.js";
+import { AsyncQueue } from "../../../../Utils/AsyncQueue.js";
+import { throwError } from "../../../../../src/Exceptions.js";
 
 describe("ChangesTest", function () {
 

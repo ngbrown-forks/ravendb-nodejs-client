@@ -1,16 +1,16 @@
-import { HttpRequestParameters } from "../../Primitives/Http";
-import { IOperation, OperationIdResult, OperationResultType } from "./OperationAbstractions";
-import { IndexQuery, writeIndexQuery } from "../Queries/IndexQuery";
-import { throwError } from "../../Exceptions";
-import { HttpCache } from "../../Http/HttpCache";
-import { DocumentConventions } from "../Conventions/DocumentConventions";
-import { IDocumentStore } from "../IDocumentStore";
-import { RavenCommand } from "../../Http/RavenCommand";
-import { ServerNode } from "../../Http/ServerNode";
-import { TypeUtil } from "../../Utility/TypeUtil";
-import { QueryOperationOptions } from "../Queries/QueryOperationOptions";
+import { HttpRequestParameters } from "../../Primitives/Http.js";
+import { IOperation, OperationIdResult, OperationResultType } from "./OperationAbstractions.js";
+import { IndexQuery, writeIndexQuery } from "../Queries/IndexQuery.js";
+import { throwError } from "../../Exceptions/index.js";
+import { HttpCache } from "../../Http/HttpCache.js";
+import { DocumentConventions } from "../Conventions/DocumentConventions.js";
+import { IDocumentStore } from "../IDocumentStore.js";
+import { RavenCommand } from "../../Http/RavenCommand.js";
+import { ServerNode } from "../../Http/ServerNode.js";
+import { TypeUtil } from "../../Utility/TypeUtil.js";
+import { QueryOperationOptions } from "../Queries/QueryOperationOptions.js";
 import { Stream } from "node:stream";
-import { StringBuilder } from "../../Utility/StringBuilder";
+import { StringBuilder } from "../../Utility/StringBuilder.js";
 
 export class DeleteByQueryOperation implements IOperation<OperationIdResult> {
 

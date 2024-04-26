@@ -1,7 +1,7 @@
-import { disposeTestDocumentStore, testContext } from "../../Utils/TestUtil";
-import { GetCountersOperation, IDocumentStore } from "../../../src";
-import { User } from "../../Assets/Entities";
-import { assertThat, assertThrows } from "../../Utils/AssertExtensions";
+import { disposeTestDocumentStore, testContext } from "../../Utils/TestUtil.js";
+import { GetCountersOperation, IDocumentStore } from "../../../src/index.js";
+import { User } from "../../Assets/Entities.js";
+import { assertThat, assertThrows } from "../../Utils/AssertExtensions.js";
 
 describe("BulkInsertCountersTest", function () {
     let store: IDocumentStore;

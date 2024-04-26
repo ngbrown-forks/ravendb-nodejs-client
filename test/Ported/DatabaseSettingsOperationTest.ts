@@ -1,13 +1,13 @@
-import { IDocumentStore, ToggleDatabasesStateOperation } from "../../src";
-import { disposeTestDocumentStore, testContext } from "../Utils/TestUtil";
+import { IDocumentStore, ToggleDatabasesStateOperation } from "../../src/index.js";
+import { disposeTestDocumentStore, testContext } from "../Utils/TestUtil.js";
 import {
     PutDatabaseSettingsOperation
-} from "../../src/ServerWide/Operations/Configuration/PutDatabaseSettingsOperation";
+} from "../../src/ServerWide/Operations/Configuration/PutDatabaseSettingsOperation.js";
 import {
     GetDatabaseSettingsOperation
-} from "../../src/ServerWide/Operations/Configuration/GetDatabaseSettingsOperation";
-import { assertThat } from "../Utils/AssertExtensions";
-import { DatabaseSettings } from "../../src/ServerWide/Operations/Configuration/DatabaseSettings";
+} from "../../src/ServerWide/Operations/Configuration/GetDatabaseSettingsOperation.js";
+import { assertThat } from "../Utils/AssertExtensions.js";
+import { DatabaseSettings } from "../../src/ServerWide/Operations/Configuration/DatabaseSettings.js";
 
 
 describe("DatabaseSettingsOperationTest", function () {

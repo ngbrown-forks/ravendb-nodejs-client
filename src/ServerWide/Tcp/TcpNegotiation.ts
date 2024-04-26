@@ -1,12 +1,12 @@
-import { getLogger } from "../../Utility/LogUtil";
+import { getLogger } from "../../Utility/LogUtil.js";
 import { Socket } from "node:net";
-import { TcpNegotiateParameters } from "./TcpNegotiateParameters";
+import { TcpNegotiateParameters } from "./TcpNegotiateParameters.js";
 import {
     DROP_BASE_LINE,
     getSupportedFeaturesFor, operationVersionSupported,
     SupportedFeatures
-} from "./TcpConnectionHeaderMessage";
-import { throwError } from "../../Exceptions";
+} from "./TcpConnectionHeaderMessage.js";
+import { throwError } from "../../Exceptions/index.js";
 
 const log = getLogger({ module: "ClusterRequestExecutor" });
 

@@ -1,22 +1,22 @@
 import assert from "node:assert"
-import { testContext, disposeTestDocumentStore } from "../Utils/TestUtil";
+import { testContext, disposeTestDocumentStore } from "../Utils/TestUtil.js";
 
 import {
     CertificateRawData,
     CreateClientCertificateOperation, DatabaseAccess, DeleteCertificateOperation,
     DocumentStore, GetCertificateOperation, GetCertificatesOperation,
     IDocumentStore, PutClientCertificateOperation,
-} from "../../src";
-import { assertThat, assertThrows } from "../Utils/AssertExtensions";
+} from "../../src/index.js";
+import { assertThat, assertThrows } from "../Utils/AssertExtensions.js";
 import { Parse } from "unzipper";
-import { bufferToReadable, readToBuffer, readToEnd, } from "../../src/Utility/StreamUtil";
-import { ReplaceClusterCertificateOperation } from "../../src/ServerWide/Operations/Certificates/ReplaceClusterCertificateOperation";
+import { bufferToReadable, readToBuffer, readToEnd, } from "../../src/Utility/StreamUtil.js";
+import { ReplaceClusterCertificateOperation } from "../../src/ServerWide/Operations/Certificates/ReplaceClusterCertificateOperation.js";
 import {
     EditClientCertificateOperation,
     EditClientCertificateParameters
-} from "../../src/ServerWide/Operations/Certificates/EditClientCertificateOperation";
-import { GetCertificateMetadataOperation } from "../../src/ServerWide/Operations/Certificates/GetCertificateMetadataOperation";
-import { GetCertificatesMetadataOperation } from "../../src/ServerWide/Operations/Certificates/GetCertificatesMetadataOperation";
+} from "../../src/ServerWide/Operations/Certificates/EditClientCertificateOperation.js";
+import { GetCertificateMetadataOperation } from "../../src/ServerWide/Operations/Certificates/GetCertificateMetadataOperation.js";
+import { GetCertificatesMetadataOperation } from "../../src/ServerWide/Operations/Certificates/GetCertificatesMetadataOperation.js";
 
 describe("HttpsTest", function () {
 

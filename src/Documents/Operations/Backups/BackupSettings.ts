@@ -1,4 +1,4 @@
-import { GetBackupConfigurationScript } from "./GetBackupConfigurationScript";
+import { GetBackupConfigurationScript } from "./GetBackupConfigurationScript.js";
 
 export interface BackupSettings {
     disabled?: boolean;

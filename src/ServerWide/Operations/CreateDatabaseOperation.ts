@@ -1,16 +1,16 @@
 import { Stream } from "node:stream";
-import { HttpRequestParameters } from "../../Primitives/Http";
-import { RavenCommand } from "../../Http/RavenCommand";
-import { DatabasePutResult } from ".";
-import { throwError } from "../../Exceptions";
-import { ServerNode } from "../../Http/ServerNode";
-import { IServerOperation, OperationResultType } from "../../Documents/Operations/OperationAbstractions";
-import { HeadersBuilder } from "../../Utility/HttpUtil";
-import { DatabaseRecord } from "..";
-import { DocumentConventions } from "../../Documents/Conventions/DocumentConventions";
-import { HEADERS } from "../../Constants";
-import { IRaftCommand } from "../../Http/IRaftCommand";
-import { RaftIdGenerator } from "../../Utility/RaftIdGenerator";
+import { HttpRequestParameters } from "../../Primitives/Http.js";
+import { RavenCommand } from "../../Http/RavenCommand.js";
+import { DatabasePutResult } from "./index.js";
+import { throwError } from "../../Exceptions/index.js";
+import { ServerNode } from "../../Http/ServerNode.js";
+import { IServerOperation, OperationResultType } from "../../Documents/Operations/OperationAbstractions.js";
+import { HeadersBuilder } from "../../Utility/HttpUtil.js";
+import { DatabaseRecord } from "../index.js";
+import { DocumentConventions } from "../../Documents/Conventions/DocumentConventions.js";
+import { HEADERS } from "../../Constants.js";
+import { IRaftCommand } from "../../Http/IRaftCommand.js";
+import { RaftIdGenerator } from "../../Utility/RaftIdGenerator.js";
 
 export class CreateDatabaseOperation implements IServerOperation<DatabasePutResult> {
 

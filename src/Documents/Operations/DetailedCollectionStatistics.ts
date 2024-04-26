@@ -1,4 +1,4 @@
-import { CollectionDetails } from "./CollectionDetails";
+import { CollectionDetails } from "./CollectionDetails.js";
 
 export interface DetailedCollectionStatistics {
     countOfDocuments: number;

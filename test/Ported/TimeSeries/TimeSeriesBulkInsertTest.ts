@@ -1,10 +1,10 @@
-import { GetCountersOperation, IDocumentStore, TimeSeriesEntry } from "../../../src";
-import { disposeTestDocumentStore, testContext } from "../../Utils/TestUtil";
-import { User } from "../../Assets/Entities";
-import { assertThat, assertThrows } from "../../Utils/AssertExtensions";
-import { IAttachmentsBulkInsert } from "../../../src/Documents/BulkInsertOperation";
-import { readToBuffer } from "../../../src/Utility/StreamUtil";
-import { HEADERS } from "../../../src/Constants";
+import { GetCountersOperation, IDocumentStore, TimeSeriesEntry } from "../../../src/index.js";
+import { disposeTestDocumentStore, testContext } from "../../Utils/TestUtil.js";
+import { User } from "../../Assets/Entities.js";
+import { assertThat, assertThrows } from "../../Utils/AssertExtensions.js";
+import { IAttachmentsBulkInsert } from "../../../src/Documents/BulkInsertOperation.js";
+import { readToBuffer } from "../../../src/Utility/StreamUtil.js";
+import { HEADERS } from "../../../src/Constants.js";
 
 describe("TimeSeriesBulkInsertTest", function () {
 

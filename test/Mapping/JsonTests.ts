@@ -4,7 +4,7 @@ import {
     camelCaseReplacer,
     pascalCaseReviver,
     camelCaseReviver
-} from "../../src/Mapping/Json";
+} from "../../src/Mapping/Json.js";
 
 describe("Json module", () => {
 

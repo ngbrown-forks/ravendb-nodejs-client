@@ -1,14 +1,14 @@
-import { RavenCommand, ResponseDisposeHandling } from "../../Http/RavenCommand";
-import { ServerNode } from "../../Http/ServerNode";
-import { HttpRequestParameters, HttpResponse } from "../../Primitives/Http";
+import { RavenCommand, ResponseDisposeHandling } from "../../Http/RavenCommand.js";
+import { ServerNode } from "../../Http/ServerNode.js";
+import { HttpRequestParameters, HttpResponse } from "../../Primitives/Http.js";
 import { Stream, Readable } from "node:stream";
-import { HttpCache } from "../../Http/HttpCache";
-import { StatusCodes } from "../../Http/StatusCode";
-import { DocumentConventions } from "../Conventions/DocumentConventions";
-import { readToEnd, stringToReadable } from "../../Utility/StreamUtil";
-import { RavenCommandResponsePipeline } from "../../Http/RavenCommandResponsePipeline";
-import { ObjectUtil } from "../../Utility/ObjectUtil";
-import { HEADERS } from "../../Constants";
+import { HttpCache } from "../../Http/HttpCache.js";
+import { StatusCodes } from "../../Http/StatusCode.js";
+import { DocumentConventions } from "../Conventions/DocumentConventions.js";
+import { readToEnd, stringToReadable } from "../../Utility/StreamUtil.js";
+import { RavenCommandResponsePipeline } from "../../Http/RavenCommandResponsePipeline.js";
+import { ObjectUtil } from "../../Utility/ObjectUtil.js";
+import { HEADERS } from "../../Constants.js";
 
 export class ConditionalGetDocumentsCommand extends RavenCommand<ConditionalGetResult> {
 

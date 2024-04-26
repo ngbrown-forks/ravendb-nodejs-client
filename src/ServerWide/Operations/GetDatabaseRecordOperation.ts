@@ -1,15 +1,15 @@
-import { HttpRequestParameters } from "../../Primitives/Http";
+import { HttpRequestParameters } from "../../Primitives/Http.js";
 import { Stream } from "node:stream";
-import { IServerOperation, OperationResultType } from "../../Documents/Operations/OperationAbstractions";
-import { DatabaseRecordWithEtag, IndexHistoryEntry } from "..";
-import { DocumentConventions } from "../../Documents/Conventions/DocumentConventions";
-import { RavenCommand } from "../../Http/RavenCommand";
-import { ServerNode } from "../../Http/ServerNode";
-import { TimeSeriesConfiguration } from "../../Documents/Operations/TimeSeries/TimeSeriesConfiguration";
-import { ServerResponse } from "../../Types";
-import { RollingIndexDeployment } from "../../Documents/Indexes/RollingIndexDeployment";
-import { DateUtil } from "../../Utility/DateUtil";
-import { ObjectUtil } from "../../Utility/ObjectUtil";
+import { IServerOperation, OperationResultType } from "../../Documents/Operations/OperationAbstractions.js";
+import { DatabaseRecordWithEtag, IndexHistoryEntry } from "../index.js";
+import { DocumentConventions } from "../../Documents/Conventions/DocumentConventions.js";
+import { RavenCommand } from "../../Http/RavenCommand.js";
+import { ServerNode } from "../../Http/ServerNode.js";
+import { TimeSeriesConfiguration } from "../../Documents/Operations/TimeSeries/TimeSeriesConfiguration.js";
+import { ServerResponse } from "../../Types/index.js";
+import { RollingIndexDeployment } from "../../Documents/Indexes/RollingIndexDeployment.js";
+import { DateUtil } from "../../Utility/DateUtil.js";
+import { ObjectUtil } from "../../Utility/ObjectUtil.js";
 
 export class GetDatabaseRecordOperation implements IServerOperation<DatabaseRecordWithEtag> {
     private readonly _database: string;

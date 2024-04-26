@@ -1,4 +1,4 @@
-import { QueryToken } from "./QueryToken";
+import { QueryToken } from "./QueryToken.js";
 
 export class NegateToken extends QueryToken {
     private constructor() {

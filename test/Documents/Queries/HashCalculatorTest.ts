@@ -1,7 +1,7 @@
 import assert from "node:assert"
 
-import { HashCalculator } from "../../../src/Documents/Queries/HashCalculator";
-import { ITypesAwareObjectMapper } from "../../../src";
+import { HashCalculator } from "../../../src/Documents/Queries/HashCalculator.js";
+import { ITypesAwareObjectMapper } from "../../../src/index.js";
 
 const mockObjectMapper = {
     toObjectLiteral: obj => obj.toString() as any,

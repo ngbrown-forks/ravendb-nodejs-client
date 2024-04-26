@@ -1,12 +1,12 @@
-import { IMaintenanceOperation, OperationResultType } from "../OperationAbstractions";
-import { StringUtil } from "../../../Utility/StringUtil";
-import { throwError } from "../../../Exceptions";
-import { DocumentConventions } from "../../Conventions/DocumentConventions";
-import { RavenCommand } from "../../../Http/RavenCommand";
-import { IRaftCommand } from "../../../Http/IRaftCommand";
-import { ServerNode } from "../../../Http/ServerNode";
-import { HttpRequestParameters } from "../../../Primitives/Http";
-import { RaftIdGenerator } from "../../../Utility/RaftIdGenerator";
+import { IMaintenanceOperation, OperationResultType } from "../OperationAbstractions.js";
+import { StringUtil } from "../../../Utility/StringUtil.js";
+import { throwError } from "../../../Exceptions/index.js";
+import { DocumentConventions } from "../../Conventions/DocumentConventions.js";
+import { RavenCommand } from "../../../Http/RavenCommand.js";
+import { IRaftCommand } from "../../../Http/IRaftCommand.js";
+import { ServerNode } from "../../../Http/ServerNode.js";
+import { HttpRequestParameters } from "../../../Primitives/Http.js";
+import { RaftIdGenerator } from "../../../Utility/RaftIdGenerator.js";
 
 export class UnregisterReplicationHubAccessOperation implements IMaintenanceOperation<void> {
     private readonly _hubName: string;

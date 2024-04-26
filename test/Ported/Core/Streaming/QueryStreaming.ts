@@ -1,19 +1,19 @@
-import { testContext, disposeTestDocumentStore } from "../../../Utils/TestUtil";
+import { testContext, disposeTestDocumentStore } from "../../../Utils/TestUtil.js";
 
 import {
     AbstractCsharpIndexCreationTask, DocumentStore,
     IDocumentStore,
     StreamQueryStatistics,
     StreamResult, TimeSeriesRawResult,
-} from "../../../../src";
+} from "../../../../src.js";
 import assert from "node:assert"
-import { User } from "../../../Assets/Entities";
-import { finishedAsync } from "../../../../src/Utility/StreamUtil";
-import { CONSTANTS } from "../../../../src/Constants";
-import { parseJsonStreamVerbose, parseJsonVerbose } from "../../../Utils/Json";
-import { getStringWritable } from "../../../Utils/Streams";
-import { assertThat } from "../../../Utils/AssertExtensions";
-import { ObjectUtil } from "../../../../src/Utility/ObjectUtil";
+import { User } from "../../../Assets/Entities.js";
+import { finishedAsync } from "../../../../src/Utility/StreamUtil.js";
+import { CONSTANTS } from "../../../../src/Constants.js";
+import { parseJsonStreamVerbose, parseJsonVerbose } from "../../../Utils/Json.js";
+import { getStringWritable } from "../../../Utils/Streams.js";
+import { assertThat } from "../../../Utils/AssertExtensions.js";
+import { ObjectUtil } from "../../../../src/Utility/ObjectUtil.js";
 
 describe("query streaming", function () {
 

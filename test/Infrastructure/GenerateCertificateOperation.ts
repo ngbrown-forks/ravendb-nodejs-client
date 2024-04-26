@@ -5,9 +5,9 @@ import {
     OperationResultType,
     RavenCommand,
     ServerNode
-} from "../../src";
-import { HttpRequestParameters } from "../../src/Primitives/Http";
-import { RaftIdGenerator } from "../../src/Utility/RaftIdGenerator";
+} from "../../src/index.js";
+import { HttpRequestParameters } from "../../src/Primitives/Http.js";
+import { RaftIdGenerator } from "../../src/Utility/RaftIdGenerator.js";
 import { Stream } from "node:stream";
 
 export class GenerateCertificateOperation implements IMaintenanceOperation<PullReplicationCertificate> {

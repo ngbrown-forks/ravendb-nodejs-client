@@ -1,11 +1,11 @@
 import assert from "node:assert"
-import { testContext, disposeTestDocumentStore } from "../../../../Utils/TestUtil";
+import { testContext, disposeTestDocumentStore } from "../../../../Utils/TestUtil.js";
 
 import {
     IDocumentStore,
     GroupBy,
-} from "../../../../../src";
-import { Order, OrderLine, Address } from "../../../../Assets/Entities";
+} from "../../../../../src.js";
+import { Order, OrderLine, Address } from "../../../../Assets/Entities.js";
 
 describe("RavenDB-8761", function () {
 

@@ -1,9 +1,9 @@
-import { SessionTimeSeriesBase } from "./SessionTimeSeriesBase";
-import { ISessionDocumentRollupTypedTimeSeries } from "./ISessionDocumentRollupTypedTimeSeries";
-import { ClassConstructor } from "../../Types";
-import { InMemoryDocumentSessionOperations } from "./InMemoryDocumentSessionOperations";
-import { TypedTimeSeriesRollupEntry } from "./TimeSeries/TypedTimeSeriesRollupEntry";
-import { TypeUtil } from "../../Utility/TypeUtil";
+import { SessionTimeSeriesBase } from "./SessionTimeSeriesBase.js";
+import { ISessionDocumentRollupTypedTimeSeries } from "./ISessionDocumentRollupTypedTimeSeries.js";
+import { ClassConstructor } from "../../Types/index.js";
+import { InMemoryDocumentSessionOperations } from "./InMemoryDocumentSessionOperations.js";
+import { TypedTimeSeriesRollupEntry } from "./TimeSeries/TypedTimeSeriesRollupEntry.js";
+import { TypeUtil } from "../../Utility/TypeUtil.js";
 
 export class SessionDocumentRollupTypedTimeSeries<T extends object> extends SessionTimeSeriesBase implements ISessionDocumentRollupTypedTimeSeries<T> {
 

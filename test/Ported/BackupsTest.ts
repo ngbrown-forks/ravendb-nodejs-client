@@ -1,17 +1,17 @@
-import { GetOngoingTaskInfoOperation, IDocumentStore, PeriodicBackupConfiguration } from "../../src";
-import { disposeTestDocumentStore, RavenTestContext, TemporaryDirContext, testContext } from "../Utils/TestUtil";
+import { GetOngoingTaskInfoOperation, IDocumentStore, PeriodicBackupConfiguration } from "../../src/index.js";
+import { disposeTestDocumentStore, RavenTestContext, TemporaryDirContext, testContext } from "../Utils/TestUtil.js";
 import path from "node:path";
 import fs from "node:fs";
-import { UpdatePeriodicBackupOperation } from "../../src/Documents/Operations/Backups/UpdatePeriodicBackupOperation";
-import { StartBackupOperation } from "../../src/Documents/Operations/Backups/StartBackupOperation";
-import { GetPeriodicBackupStatusOperation } from "../../src/Documents/Operations/Backups/GetPeriodicBackupStatusOperation";
-import { assertThat } from "../Utils/AssertExtensions";
+import { UpdatePeriodicBackupOperation } from "../../src/Documents/Operations/Backups/UpdatePeriodicBackupOperation.js";
+import { StartBackupOperation } from "../../src/Documents/Operations/Backups/StartBackupOperation.js";
+import { GetPeriodicBackupStatusOperation } from "../../src/Documents/Operations/Backups/GetPeriodicBackupStatusOperation.js";
+import { assertThat } from "../Utils/AssertExtensions.js";
 import { sync } from "rimraf";
-import { Stopwatch } from "../../src/Utility/Stopwatch";
-import { throwError } from "../../src/Exceptions";
-import { delay } from "../../src/Utility/PromiseUtil";
-import { OngoingTaskBackup } from "../../src/Documents/Operations/OngoingTasks/OngoingTask";
-import { TimeUtil } from "../../src/Utility/TimeUtil";
+import { Stopwatch } from "../../src/Utility/Stopwatch.js";
+import { throwError } from "../../src/Exceptions/index.js";
+import { delay } from "../../src/Utility/PromiseUtil.js";
+import { OngoingTaskBackup } from "../../src/Documents/Operations/OngoingTasks/OngoingTask.js";
+import { TimeUtil } from "../../src/Utility/TimeUtil.js";
 
 (RavenTestContext.isPullRequest ? describe.skip : describe)("BackupsTest", function () {
 

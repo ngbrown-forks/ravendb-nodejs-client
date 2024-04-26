@@ -1,5 +1,5 @@
-import { ChangesType, IChangesConnectionState } from "./IChangesConnectionState";
-import { IChangesObservable } from "./IChangesObservable";
+import { ChangesType, IChangesConnectionState } from "./IChangesConnectionState.js";
+import { IChangesObservable } from "./IChangesObservable.js";
 
 export class ChangesObservable<T, TConnectionState extends IChangesConnectionState<any>>
     implements IChangesObservable<T> {

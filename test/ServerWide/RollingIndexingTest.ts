@@ -1,8 +1,8 @@
-import { UsersIndex } from "../Assets/Indexes";
-import { DocumentConventions, DocumentStore, GetDatabaseRecordOperation } from "../../src";
-import { ClusterTestContext, RavenTestContext } from "../Utils/TestUtil";
-import { User } from "../Assets/Entities";
-import { assertThat } from "../Utils/AssertExtensions";
+import { UsersIndex } from "../Assets/Indexes.js";
+import { DocumentConventions, DocumentStore, GetDatabaseRecordOperation } from "../../src/index.js";
+import { ClusterTestContext, RavenTestContext } from "../Utils/TestUtil.js";
+import { User } from "../Assets/Entities.js";
+import { assertThat } from "../Utils/AssertExtensions.js";
 
 (RavenTestContext.isPullRequest ? describe.skip : describe)("ClusterModesForRequestExecutorTest", function () {
 

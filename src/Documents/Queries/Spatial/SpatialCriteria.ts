@@ -1,9 +1,9 @@
-import { ShapeToken } from "../../Session/Tokens/ShapeToken";
-import { SpatialRelation } from "../../Indexes/Spatial";
-import { QueryToken } from "../../Session/Tokens/QueryToken";
-import { throwError } from "../../../Exceptions";
-import { WhereOperator } from "../../Session/Tokens/WhereOperator";
-import { WhereToken, WhereOptions } from "../../Session/Tokens/WhereToken";
+import { ShapeToken } from "../../Session/Tokens/ShapeToken.js";
+import { SpatialRelation } from "../../Indexes/Spatial.js";
+import { QueryToken } from "../../Session/Tokens/QueryToken.js";
+import { throwError } from "../../../Exceptions/index.js";
+import { WhereOperator } from "../../Session/Tokens/WhereOperator.js";
+import { WhereToken, WhereOptions } from "../../Session/Tokens/WhereToken.js";
 
 export abstract class SpatialCriteria {
 

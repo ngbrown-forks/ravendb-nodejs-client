@@ -1,10 +1,10 @@
-import { QueryOperator } from "../Queries/QueryOperator";
-import { IndexQuery } from "../Queries/IndexQuery";
-import { QueryStatistics } from "./QueryStatistics";
-import { DocumentConventions } from "../Conventions/DocumentConventions";
-import { QueryEventsEmitter } from "./QueryEvents";
-import { ValueCallback } from "../../Types/Callbacks";
-import { QueryTimings } from "../Queries/Timings/QueryTimings";
+import { QueryOperator } from "../Queries/QueryOperator.js";
+import { IndexQuery } from "../Queries/IndexQuery.js";
+import { QueryStatistics } from "./QueryStatistics.js";
+import { DocumentConventions } from "../Conventions/DocumentConventions.js";
+import { QueryEventsEmitter } from "./QueryEvents.js";
+import { ValueCallback } from "../../Types/Callbacks.js";
+import { QueryTimings } from "../Queries/Timings/QueryTimings.js";
 
 export interface IQueryBase<T, TSelf extends IQueryBase<T, TSelf>> extends QueryEventsEmitter {
 

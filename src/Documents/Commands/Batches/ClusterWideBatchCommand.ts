@@ -1,10 +1,10 @@
-import { IRaftCommand } from "../../../Http/IRaftCommand";
-import { RaftIdGenerator } from "../../../Utility/RaftIdGenerator";
-import { DocumentConventions } from "../../Conventions/DocumentConventions";
-import { ICommandData } from "../CommandData";
-import { BatchOptions } from "./BatchOptions";
-import { SingleNodeBatchCommand } from "./SingleNodeBatchCommand";
-import { TypeUtil } from "../../../Utility/TypeUtil";
+import { IRaftCommand } from "../../../Http/IRaftCommand.js";
+import { RaftIdGenerator } from "../../../Utility/RaftIdGenerator.js";
+import { DocumentConventions } from "../../Conventions/DocumentConventions.js";
+import { ICommandData } from "../CommandData.js";
+import { BatchOptions } from "./BatchOptions.js";
+import { SingleNodeBatchCommand } from "./SingleNodeBatchCommand.js";
+import { TypeUtil } from "../../../Utility/TypeUtil.js";
 
 export class ClusterWideBatchCommand extends SingleNodeBatchCommand implements IRaftCommand {
 

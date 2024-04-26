@@ -1,10 +1,10 @@
-import { HttpRequestParameters } from "../../Primitives/Http";
-import { IServerOperation, OperationIdResult, OperationResultType } from "./OperationAbstractions";
-import { CompactSettings } from "../../ServerWide/CompactSettings";
-import { throwError } from "../../Exceptions";
-import { RavenCommand } from "../../Http/RavenCommand";
-import { DocumentConventions } from "../Conventions/DocumentConventions";
-import { ServerNode } from "../../Http/ServerNode";
+import { HttpRequestParameters } from "../../Primitives/Http.js";
+import { IServerOperation, OperationIdResult, OperationResultType } from "./OperationAbstractions.js";
+import { CompactSettings } from "../../ServerWide/CompactSettings.js";
+import { throwError } from "../../Exceptions/index.js";
+import { RavenCommand } from "../../Http/RavenCommand.js";
+import { DocumentConventions } from "../Conventions/DocumentConventions.js";
+import { ServerNode } from "../../Http/ServerNode.js";
 import { Stream } from "node:stream";
 
 export class CompactDatabaseOperation implements IServerOperation<OperationIdResult> {

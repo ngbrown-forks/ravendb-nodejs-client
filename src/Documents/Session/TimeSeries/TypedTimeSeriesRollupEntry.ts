@@ -1,6 +1,6 @@
-import { ClassConstructor } from "../../../Types";
-import { TimeSeriesValuesHelper } from "./TimeSeriesValuesHelper";
-import { TimeSeriesEntry } from "./TimeSeriesEntry";
+import { ClassConstructor } from "../../../Types/index.js";
+import { TimeSeriesValuesHelper } from "./TimeSeriesValuesHelper.js";
+import { TimeSeriesEntry } from "./TimeSeriesEntry.js";
 
 export class TypedTimeSeriesRollupEntry<TValues extends object> {
     private _clazz: ClassConstructor<TValues>;

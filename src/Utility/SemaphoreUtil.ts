@@ -1,7 +1,7 @@
-import { IDisposable } from "../Types/Contracts";
-import { AsyncTimeout } from "./PromiseUtil";
-import { getError } from "../Exceptions";
-import { Semaphore } from "./Semaphore";
+import { IDisposable } from "../Types/Contracts.js";
+import { AsyncTimeout } from "./PromiseUtil.js";
+import { getError } from "../Exceptions/index.js";
+import { Semaphore } from "./Semaphore.js";
 
 export interface AcquireSemaphoreOptions {
     timeout?: number;

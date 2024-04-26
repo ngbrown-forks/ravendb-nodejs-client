@@ -1,12 +1,12 @@
-import { IDocumentQuery } from "../../../src/Documents/Session/IDocumentQuery";
+import { IDocumentQuery } from "../../../src/Documents/Session/IDocumentQuery.js";
 import assert from "node:assert"
-import { testContext, disposeTestDocumentStore } from "../../Utils/TestUtil";
+import { testContext, disposeTestDocumentStore } from "../../Utils/TestUtil.js";
 
 import {
     IDocumentStore,
     IDocumentSession,
-} from "../../../src";
-import { AbstractJavaScriptIndexCreationTask } from "../../../src/Documents/Indexes/AbstractJavaScriptIndexCreationTask";
+} from "../../../src/index.js";
+import { AbstractJavaScriptIndexCreationTask } from "../../../src/Documents/Indexes/AbstractJavaScriptIndexCreationTask.js";
 
 describe("Issue RavenDB-903", function () {
 

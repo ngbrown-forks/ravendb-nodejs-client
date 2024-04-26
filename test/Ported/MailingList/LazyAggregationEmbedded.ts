@@ -1,10 +1,10 @@
 import assert from "node:assert"
-import { testContext, disposeTestDocumentStore } from "../../Utils/TestUtil";
+import { testContext, disposeTestDocumentStore } from "../../Utils/TestUtil.js";
 
 import {
     AbstractJavaScriptIndexCreationTask,
     IDocumentStore,
-} from "../../../src";
+} from "../../../src/index.js";
 
 class TaskIndex extends AbstractJavaScriptIndexCreationTask<Task, Pick<Task, "assigneeId">> {
     public constructor() {

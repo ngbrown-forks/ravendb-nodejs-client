@@ -1,5 +1,5 @@
 import assert from "node:assert"
-import { testContext, disposeTestDocumentStore } from "../Utils/TestUtil";
+import { testContext, disposeTestDocumentStore } from "../Utils/TestUtil.js";
 
 import {
     RequestExecutor,
@@ -10,8 +10,8 @@ import {
     GetDatabaseNamesOperation,
     ServerNode,
     IDocumentStore
-} from "../../src";
-import { UpdateTopologyParameters } from "../../src/Http/UpdateTopologyParameters";
+} from "../../src/index.js";
+import { UpdateTopologyParameters } from "../../src/Http/UpdateTopologyParameters.js";
 
 describe("Request executor", function () {
 

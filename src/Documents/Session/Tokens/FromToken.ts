@@ -1,6 +1,6 @@
-import { QueryToken } from "./QueryToken";
-import { throwError } from "../../../Exceptions";
-import { StringUtil } from "../../../Utility/StringUtil";
+import { QueryToken } from "./QueryToken.js";
+import { throwError } from "../../../Exceptions/index.js";
+import { StringUtil } from "../../../Utility/StringUtil.js";
 
 export class FromToken extends QueryToken {
 

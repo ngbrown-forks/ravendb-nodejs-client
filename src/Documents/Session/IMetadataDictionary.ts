@@ -1,4 +1,4 @@
-import { MetadataObject } from "./MetadataObject";
+import { MetadataObject } from "./MetadataObject.js";
 
 export interface IRawMetadataDictionary extends MetadataObject {
     [key: string]: any;

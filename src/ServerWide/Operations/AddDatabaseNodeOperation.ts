@@ -1,13 +1,13 @@
-import { throwError } from "../../Exceptions";
-import { HttpRequestParameters } from "../../Primitives/Http";
+import { throwError } from "../../Exceptions/index.js";
+import { HttpRequestParameters } from "../../Primitives/Http.js";
 import { Stream } from "node:stream";
-import { IServerOperation, OperationResultType } from "../../Documents/Operations/OperationAbstractions";
-import { DatabasePutResult } from "./index";
-import { DocumentConventions } from "../../Documents/Conventions/DocumentConventions";
-import { RavenCommand } from "../../Http/RavenCommand";
-import { ServerNode } from "../../Http/ServerNode";
-import { IRaftCommand } from "../../Http/IRaftCommand";
-import { RaftIdGenerator } from "../../Utility/RaftIdGenerator";
+import { IServerOperation, OperationResultType } from "../../Documents/Operations/OperationAbstractions.js";
+import { DatabasePutResult } from "./index.js";
+import { DocumentConventions } from "../../Documents/Conventions/DocumentConventions.js";
+import { RavenCommand } from "../../Http/RavenCommand.js";
+import { ServerNode } from "../../Http/ServerNode.js";
+import { IRaftCommand } from "../../Http/IRaftCommand.js";
+import { RaftIdGenerator } from "../../Utility/RaftIdGenerator.js";
 
 export class AddDatabaseNodeOperation implements IServerOperation<DatabasePutResult> {
     private readonly _databaseName: string;

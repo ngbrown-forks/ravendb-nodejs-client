@@ -1,12 +1,12 @@
 import assert from "node:assert"
-import { testContext, disposeTestDocumentStore, RavenTestContext } from "../../Utils/TestUtil";
+import { testContext, disposeTestDocumentStore, RavenTestContext } from "../../Utils/TestUtil.js";
 
 import {
     IDocumentStore,
     SubscriptionCreationOptions,
     SubscriptionWorker,
-} from "../../../src";
-import { assertThat } from "../../Utils/AssertExtensions";
+} from "../../../src/index.js";
+import { assertThat } from "../../Utils/AssertExtensions.js";
 
 class Dog {
     public name: string;

@@ -1,6 +1,6 @@
 import assert from "node:assert"
-import { User } from "../../Assets/Entities";
-import { testContext, disposeTestDocumentStore } from "../../Utils/TestUtil";
+import { User } from "../../Assets/Entities.js";
+import { testContext, disposeTestDocumentStore } from "../../Utils/TestUtil.js";
 
 import {
     IDocumentStore,
@@ -9,9 +9,9 @@ import {
     CounterBatch,
     CounterBatchOperation,
     GetCountersOperation,
-} from "../../../src";
-import { CONSTANTS } from "../../../src/Constants";
-import { assertThat } from "../../Utils/AssertExtensions";
+} from "../../../src/index.js";
+import { CONSTANTS } from "../../../src/Constants.js";
+import { assertThat } from "../../Utils/AssertExtensions.js";
 
 describe("CountersSingleNodeTest", function () {
 

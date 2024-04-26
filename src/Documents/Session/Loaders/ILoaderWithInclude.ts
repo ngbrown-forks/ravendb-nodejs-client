@@ -1,5 +1,5 @@
-import { DocumentType } from "../../DocumentAbstractions";
-import { EntitiesCollectionObject } from "../../../Types";
+import { DocumentType } from "../../DocumentAbstractions.js";
+import { EntitiesCollectionObject } from "../../../Types/index.js";
 
 export interface ILoaderWithInclude {
 

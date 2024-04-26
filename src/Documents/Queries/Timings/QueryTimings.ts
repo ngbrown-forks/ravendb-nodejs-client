@@ -1,4 +1,4 @@
-import { QueryResult } from "../QueryResult";
+import { QueryResult } from "../QueryResult.js";
 
 export class QueryTimings {
     public durationInMs: number;

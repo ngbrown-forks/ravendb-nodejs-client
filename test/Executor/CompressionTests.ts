@@ -1,11 +1,11 @@
 import assert from "node:assert"
 import sinon from "sinon";
-import { testContext, disposeTestDocumentStore } from "../Utils/TestUtil";
+import { testContext, disposeTestDocumentStore } from "../Utils/TestUtil.js";
 
 import DocumentStore, {
     IDocumentStore,
     GetDatabaseNamesCommand,
-} from "../../src";
+} from "../../src/index.js";
 
 describe("Compression", function () {
 

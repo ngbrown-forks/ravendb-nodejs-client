@@ -1,7 +1,7 @@
-import { disposeTestDocumentStore, testContext } from "../../../Utils/TestUtil";
-import { AbstractCsharpCountersIndexCreationTask, IDocumentStore } from "../../../../src";
-import { Company } from "../../../Assets/Orders";
-import { assertThat } from "../../../Utils/AssertExtensions";
+import { disposeTestDocumentStore, testContext } from "../../../Utils/TestUtil.js";
+import { AbstractCsharpCountersIndexCreationTask, IDocumentStore } from "../../../../src.js";
+import { Company } from "../../../Assets/Orders.js";
+import { assertThat } from "../../../Utils/AssertExtensions.js";
 
 describe("BasicCountersIndexes_StrongSyntaxTest", function () {
 

@@ -1,13 +1,13 @@
-import { AbstractRawJavaScriptIndexCreationTask, GetTermsOperation, IDocumentStore } from "../../../../src";
-import { disposeTestDocumentStore, testContext } from "../../../Utils/TestUtil";
+import { AbstractRawJavaScriptIndexCreationTask, GetTermsOperation, IDocumentStore } from "../../../../src.js";
+import { disposeTestDocumentStore, testContext } from "../../../Utils/TestUtil.js";
 import moment from "moment";
 import {
     AbstractRawJavaScriptTimeSeriesIndexCreationTask
-} from "../../../../src/Documents/Indexes/TimeSeries/AbstractRawJavaScriptTimeSeriesIndexCreationTask";
-import { Employee } from "../../../Assets/Orders";
-import { Address, Company, User } from "../../../Assets/Entities";
-import { assertThat } from "../../../Utils/AssertExtensions";
-import { RavenTestHelper } from "../../../Utils/RavenTestHelper";
+} from "../../../../src/Documents/Indexes/TimeSeries/AbstractRawJavaScriptTimeSeriesIndexCreationTask.js";
+import { Employee } from "../../../Assets/Orders.js";
+import { Address, Company, User } from "../../../Assets/Entities.js";
+import { assertThat } from "../../../Utils/AssertExtensions.js";
+import { RavenTestHelper } from "../../../Utils/RavenTestHelper.js";
 
 describe("BasicTimeSeriesIndexes_JavaScript", function () {
 

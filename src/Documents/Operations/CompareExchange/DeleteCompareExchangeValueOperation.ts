@@ -1,16 +1,16 @@
-import { HttpRequestParameters } from "../../../Primitives/Http";
-import { IOperation, OperationResultType } from "../OperationAbstractions";
-import { CompareExchangeResult, CompareExchangeResultResponse } from "./CompareExchangeResult";
-import { CompareExchangeResultClass, ServerCasing, ServerResponse } from "../../../Types";
-import { IDocumentStore } from "../../IDocumentStore";
-import { DocumentConventions } from "../../Conventions/DocumentConventions";
-import { HttpCache } from "../../../Http/HttpCache";
-import { RavenCommand } from "../../../Http/RavenCommand";
-import { throwError } from "../../../Exceptions";
-import { ServerNode } from "../../../Http/ServerNode";
+import { HttpRequestParameters } from "../../../Primitives/Http.js";
+import { IOperation, OperationResultType } from "../OperationAbstractions.js";
+import { CompareExchangeResult, CompareExchangeResultResponse } from "./CompareExchangeResult.js";
+import { CompareExchangeResultClass, ServerCasing, ServerResponse } from "../../../Types/index.js";
+import { IDocumentStore } from "../../IDocumentStore.js";
+import { DocumentConventions } from "../../Conventions/DocumentConventions.js";
+import { HttpCache } from "../../../Http/HttpCache.js";
+import { RavenCommand } from "../../../Http/RavenCommand.js";
+import { throwError } from "../../../Exceptions/index.js";
+import { ServerNode } from "../../../Http/ServerNode.js";
 import { Stream } from "node:stream";
-import { IRaftCommand } from "../../../Http/IRaftCommand";
-import { RaftIdGenerator } from "../../../Utility/RaftIdGenerator";
+import { IRaftCommand } from "../../../Http/IRaftCommand.js";
+import { RaftIdGenerator } from "../../../Utility/RaftIdGenerator.js";
 
 export class DeleteCompareExchangeValueOperation<T> implements IOperation<CompareExchangeResult<T>> {
 

@@ -1,9 +1,9 @@
-import { ICommandData } from "../Commands/CommandData";
-import { InMemoryDocumentSessionOperations } from "./InMemoryDocumentSessionOperations";
-import { RequestExecutor } from "../../Http/RequestExecutor";
-import { SessionInfo } from "./IDocumentSession";
-import { IDocumentStore } from "../IDocumentStore";
-import { DocumentsById } from "./DocumentsById";
+import { ICommandData } from "../Commands/CommandData.js";
+import { InMemoryDocumentSessionOperations } from "./InMemoryDocumentSessionOperations.js";
+import { RequestExecutor } from "../../Http/RequestExecutor.js";
+import { SessionInfo } from "./IDocumentSession.js";
+import { IDocumentStore } from "../IDocumentStore.js";
+import { DocumentsById } from "./DocumentsById.js";
 
 export abstract class AdvancedSessionExtensionBase {
     protected _session: InMemoryDocumentSessionOperations;

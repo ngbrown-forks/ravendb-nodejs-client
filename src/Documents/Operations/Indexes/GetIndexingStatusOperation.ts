@@ -1,9 +1,9 @@
-import { IMaintenanceOperation, OperationResultType } from "../OperationAbstractions";
-import { DocumentConventions } from "../../Conventions/DocumentConventions";
-import { RavenCommand } from "../../../Http/RavenCommand";
-import { HttpRequestParameters } from "../../../Primitives/Http";
-import { ServerNode } from "../../../Http/ServerNode";
-import { IndexingStatus } from "../../Indexes/IndexingStatus";
+import { IMaintenanceOperation, OperationResultType } from "../OperationAbstractions.js";
+import { DocumentConventions } from "../../Conventions/DocumentConventions.js";
+import { RavenCommand } from "../../../Http/RavenCommand.js";
+import { HttpRequestParameters } from "../../../Primitives/Http.js";
+import { ServerNode } from "../../../Http/ServerNode.js";
+import { IndexingStatus } from "../../Indexes/IndexingStatus.js";
 import { Stream } from "node:stream";
 
 export class GetIndexingStatusOperation implements IMaintenanceOperation<IndexingStatus> {

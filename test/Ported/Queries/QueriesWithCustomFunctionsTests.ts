@@ -1,12 +1,12 @@
 import assert from "node:assert"
-import { testContext, disposeTestDocumentStore } from "../../Utils/TestUtil";
+import { testContext, disposeTestDocumentStore } from "../../Utils/TestUtil.js";
 
 import {
     IDocumentStore,
     PutCompareExchangeValueOperation,
     CmpXchg,
-} from "../../../src";
-import { User } from "../../Assets/Entities";
+} from "../../../src/index.js";
+import { User } from "../../Assets/Entities.js";
 
 describe("Queries with custom functions", function () {
 

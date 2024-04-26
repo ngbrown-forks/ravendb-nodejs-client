@@ -1,14 +1,14 @@
-import { IQueryBase } from "./IQueryBase";
-import { IFilterDocumentQueryBase } from "./IFilterDocumentQueryBase";
-import { OrderingType } from "./OrderingType";
-import { DynamicSpatialField } from "../Queries/Spatial/DynamicSpatialField";
-import { ValueCallback } from "../../Types/Callbacks";
-import { Explanations } from "../Queries/Explanation/Explanations";
-import { ExplanationOptions } from "../Queries/Explanation/ExplanationOptions";
-import { Highlightings } from "../Queries/Highlighting/Hightlightings";
-import { HighlightingParameters } from "../Queries/Highlighting/HighlightingParameters";
-import { IQueryIncludeBuilder } from "./Loaders/IQueryIncludeBuilder";
-import { Field } from "../../Types";
+import { IQueryBase } from "./IQueryBase.js";
+import { IFilterDocumentQueryBase } from "./IFilterDocumentQueryBase.js";
+import { OrderingType } from "./OrderingType.js";
+import { DynamicSpatialField } from "../Queries/Spatial/DynamicSpatialField.js";
+import { ValueCallback } from "../../Types/Callbacks.js";
+import { Explanations } from "../Queries/Explanation/Explanations.js";
+import { ExplanationOptions } from "../Queries/Explanation/ExplanationOptions.js";
+import { Highlightings } from "../Queries/Highlighting/Hightlightings.js";
+import { HighlightingParameters } from "../Queries/Highlighting/HighlightingParameters.js";
+import { IQueryIncludeBuilder } from "./Loaders/IQueryIncludeBuilder.js";
+import { Field } from "../../Types/index.js";
 
 export interface IDocumentQueryBase<T extends object, TSelf extends IDocumentQueryBase<T, TSelf>>
     extends IQueryBase<T, TSelf>, IFilterDocumentQueryBase<T, TSelf> {

@@ -1,10 +1,10 @@
 import assert from "node:assert"
-import { User } from "../Assets/Entities";
-import { testContext, disposeTestDocumentStore } from "../Utils/TestUtil";
+import { User } from "../Assets/Entities.js";
+import { testContext, disposeTestDocumentStore } from "../Utils/TestUtil.js";
 
 import {
     IDocumentStore,
-} from "../../src";
+} from "../../src/index.js";
 
 describe("RavenDB-10566", function () {
 

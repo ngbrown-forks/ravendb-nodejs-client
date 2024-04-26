@@ -2,12 +2,12 @@ import {
     AbstractMultiMapTimeSeriesIndexCreationTask,
     AbstractTimeSeriesIndexCreationTask,
     IDocumentStore
-} from "../../../../src";
-import { disposeTestDocumentStore, testContext } from "../../../Utils/TestUtil";
-import { Company } from "../../../Assets/Orders";
-import { assertThat } from "../../../Utils/AssertExtensions";
+} from "../../../../src.js";
+import { disposeTestDocumentStore, testContext } from "../../../Utils/TestUtil.js";
+import { Company } from "../../../Assets/Orders.js";
+import { assertThat } from "../../../Utils/AssertExtensions.js";
 import moment from "moment";
-import { User } from "../../../Assets/Entities";
+import { User } from "../../../Assets/Entities.js";
 
 describe("BasicTimeSeriesIndexes_StrongSyntaxTest", function () {
 

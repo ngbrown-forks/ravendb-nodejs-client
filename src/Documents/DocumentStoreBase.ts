@@ -1,9 +1,9 @@
-import { MaintenanceOperationExecutor } from "./Operations/MaintenanceOperationExecutor";
+import { MaintenanceOperationExecutor } from "./Operations/MaintenanceOperationExecutor.js";
 import { EventEmitter } from "node:events";
-import { IDocumentStore, SessionDisposingEventArgs } from "./IDocumentStore";
-import { throwError } from "../Exceptions";
-import { validateUri } from "../Utility/UriUtil";
-import { IAuthOptions } from "../Auth/AuthOptions";
+import { IDocumentStore, SessionDisposingEventArgs } from "./IDocumentStore.js";
+import { throwError } from "../Exceptions/index.js";
+import { validateUri } from "../Utility/UriUtil.js";
+import { IAuthOptions } from "../Auth/AuthOptions.js";
 import {
     SessionBeforeStoreEventArgs,
     SessionAfterSaveChangesEventArgs,
@@ -17,27 +17,27 @@ import {
     TopologyUpdatedEventArgs,
     BeforeRequestEventArgs,
     SucceedRequestEventArgs
-} from "./Session/SessionEvents";
-import { OperationExecutor } from "./Operations/OperationExecutor";
-import { IDocumentSession } from "./Session/IDocumentSession";
-import { DocumentSession } from "./Session/DocumentSession";
-import { DocumentConventions } from "./Conventions/DocumentConventions";
-import { RequestExecutor } from "../Http/RequestExecutor";
-import { IndexCreation } from "./Indexes/IndexCreation";
-import { PutIndexesOperation } from "./Operations/Indexes/PutIndexesOperation";
-import { BulkInsertOperation, BulkInsertOptions } from "./BulkInsertOperation";
-import { IDatabaseChanges } from "./Changes/IDatabaseChanges";
-import { DocumentSubscriptions } from "./Subscriptions/DocumentSubscriptions";
-import { DocumentStore } from "./DocumentStore";
-import { TypeUtil } from "../Utility/TypeUtil";
-import { CaseInsensitiveKeysMap } from "../Primitives/CaseInsensitiveKeysMap";
-import { SessionOptions } from "./Session/SessionOptions";
-import { DatabaseSmuggler } from "./Smuggler/DatabaseSmuggler";
-import { IDisposable } from "../Types/Contracts";
-import { TimeSeriesOperations } from "./TimeSeries/TimeSeriesOperations";
-import { IAbstractIndexCreationTask } from "./Indexes/IAbstractIndexCreationTask";
-import { StringUtil } from "../Utility/StringUtil";
-import { IHiLoIdGenerator } from "./Identity/IHiLoIdGenerator";
+} from "./Session/SessionEvents.js";
+import { OperationExecutor } from "./Operations/OperationExecutor.js";
+import { IDocumentSession } from "./Session/IDocumentSession.js";
+import { DocumentSession } from "./Session/DocumentSession.js";
+import { DocumentConventions } from "./Conventions/DocumentConventions.js";
+import { RequestExecutor } from "../Http/RequestExecutor.js";
+import { IndexCreation } from "./Indexes/IndexCreation.js";
+import { PutIndexesOperation } from "./Operations/Indexes/PutIndexesOperation.js";
+import { BulkInsertOperation, BulkInsertOptions } from "./BulkInsertOperation.js";
+import { IDatabaseChanges } from "./Changes/IDatabaseChanges.js";
+import { DocumentSubscriptions } from "./Subscriptions/DocumentSubscriptions.js";
+import { DocumentStore } from "./DocumentStore.js";
+import { TypeUtil } from "../Utility/TypeUtil.js";
+import { CaseInsensitiveKeysMap } from "../Primitives/CaseInsensitiveKeysMap.js";
+import { SessionOptions } from "./Session/SessionOptions.js";
+import { DatabaseSmuggler } from "./Smuggler/DatabaseSmuggler.js";
+import { IDisposable } from "../Types/Contracts.js";
+import { TimeSeriesOperations } from "./TimeSeries/TimeSeriesOperations.js";
+import { IAbstractIndexCreationTask } from "./Indexes/IAbstractIndexCreationTask.js";
+import { StringUtil } from "../Utility/StringUtil.js";
+import { IHiLoIdGenerator } from "./Identity/IHiLoIdGenerator.js";
 
 export abstract class DocumentStoreBase
     extends EventEmitter

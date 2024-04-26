@@ -1,10 +1,10 @@
-import { ServerNode } from "../../../Http/ServerNode";
-import { DateUtil } from "../../../Utility/DateUtil";
-import { RavenCommand } from "../../../Http/RavenCommand";
-import { throwError } from "../../../Exceptions";
-import { HttpRequestParameters } from "../../../Primitives/Http";
+import { ServerNode } from "../../../Http/ServerNode.js";
+import { DateUtil } from "../../../Utility/DateUtil.js";
+import { RavenCommand } from "../../../Http/RavenCommand.js";
+import { throwError } from "../../../Exceptions/index.js";
+import { HttpRequestParameters } from "../../../Primitives/Http.js";
 import { Stream } from "node:stream";
-import { DocumentConventions } from "../../Conventions/DocumentConventions";
+import { DocumentConventions } from "../../Conventions/DocumentConventions.js";
 import { stringify } from "node:querystring";
 
 export interface HiLoResult {

@@ -1,21 +1,21 @@
-import { IOperation, OperationResultType } from "../OperationAbstractions";
-import { TimeSeriesRangeResult } from "./TimeSeriesRangeResult";
-import { TypeUtil } from "../../../Utility/TypeUtil";
-import { StringUtil } from "../../../Utility/StringUtil";
-import { throwError } from "../../../Exceptions";
-import { IDocumentStore } from "../../IDocumentStore";
-import { HttpCache } from "../../../Http/HttpCache";
-import { HttpRequestParameters } from "../../../Primitives/Http";
-import { DateUtil } from "../../../Utility/DateUtil";
+import { IOperation, OperationResultType } from "../OperationAbstractions.js";
+import { TimeSeriesRangeResult } from "./TimeSeriesRangeResult.js";
+import { TypeUtil } from "../../../Utility/TypeUtil.js";
+import { StringUtil } from "../../../Utility/StringUtil.js";
+import { throwError } from "../../../Exceptions/index.js";
+import { IDocumentStore } from "../../IDocumentStore.js";
+import { HttpCache } from "../../../Http/HttpCache.js";
+import { HttpRequestParameters } from "../../../Primitives/Http.js";
+import { DateUtil } from "../../../Utility/DateUtil.js";
 import { Stream } from "node:stream";
-import { TimeSeriesEntry } from "../../Session/TimeSeries/TimeSeriesEntry";
-import { DocumentConventions } from "../../Conventions/DocumentConventions";
-import { RavenCommand } from "../../../Http/RavenCommand";
-import { ServerNode } from "../../../Http/ServerNode";
-import { StringBuilder } from "../../../Utility/StringBuilder";
-import { ServerResponse } from "../../../Types";
-import { ITimeSeriesIncludeBuilder } from "../../Session/Loaders/ITimeSeriesIncludeBuilder";
-import { TimeSeriesIncludeBuilder } from "../../Session/Loaders/TimeSeriesIncludeBuilder";
+import { TimeSeriesEntry } from "../../Session/TimeSeries/TimeSeriesEntry.js";
+import { DocumentConventions } from "../../Conventions/DocumentConventions.js";
+import { RavenCommand } from "../../../Http/RavenCommand.js";
+import { ServerNode } from "../../../Http/ServerNode.js";
+import { StringBuilder } from "../../../Utility/StringBuilder.js";
+import { ServerResponse } from "../../../Types/index.js";
+import { ITimeSeriesIncludeBuilder } from "../../Session/Loaders/ITimeSeriesIncludeBuilder.js";
+import { TimeSeriesIncludeBuilder } from "../../Session/Loaders/TimeSeriesIncludeBuilder.js";
 
 export class GetTimeSeriesOperation implements IOperation<TimeSeriesRangeResult> {
     private readonly _docId: string;

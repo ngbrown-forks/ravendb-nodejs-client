@@ -1,17 +1,17 @@
-import { InMemoryDocumentSessionOperations } from "../InMemoryDocumentSessionOperations";
-import { throwError } from "../../../Exceptions";
-import { CONSTANTS } from "../../../Constants";
-import { SessionAfterSaveChangesEventArgs } from "../SessionEvents";
-import { DocumentInfo } from "../DocumentInfo";
-import { ActionsToRunOnSuccess, CommandType } from "../../Commands/CommandData";
-import { CaseInsensitiveKeysMap } from "../../../Primitives/CaseInsensitiveKeysMap";
-import { PatchStatus } from "../../Operations/PatchStatus";
-import { CounterTracking } from "../CounterInternalTypes";
-import { TypeUtil } from "../../../Utility/TypeUtil";
-import { BatchCommandResult } from "./BatchCommandResult";
-import { ObjectUtil } from "../../../Utility/ObjectUtil";
-import { ClusterWideBatchCommand } from "../../Commands/Batches/ClusterWideBatchCommand";
-import { SingleNodeBatchCommand } from "../../Commands/Batches/SingleNodeBatchCommand";
+import { InMemoryDocumentSessionOperations } from "../InMemoryDocumentSessionOperations.js";
+import { throwError } from "../../../Exceptions/index.js";
+import { CONSTANTS } from "../../../Constants.js";
+import { SessionAfterSaveChangesEventArgs } from "../SessionEvents.js";
+import { DocumentInfo } from "../DocumentInfo.js";
+import { ActionsToRunOnSuccess, CommandType } from "../../Commands/CommandData.js";
+import { CaseInsensitiveKeysMap } from "../../../Primitives/CaseInsensitiveKeysMap.js";
+import { PatchStatus } from "../../Operations/PatchStatus.js";
+import { CounterTracking } from "../CounterInternalTypes.js";
+import { TypeUtil } from "../../../Utility/TypeUtil.js";
+import { BatchCommandResult } from "./BatchCommandResult.js";
+import { ObjectUtil } from "../../../Utility/ObjectUtil.js";
+import { ClusterWideBatchCommand } from "../../Commands/Batches/ClusterWideBatchCommand.js";
+import { SingleNodeBatchCommand } from "../../Commands/Batches/SingleNodeBatchCommand.js";
 
 export class BatchOperation {
 

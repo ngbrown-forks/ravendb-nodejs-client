@@ -1,11 +1,11 @@
 import assert from "node:assert"
-import { disposeTestDocumentStore, testContext } from "../../Utils/TestUtil";
-import { CreateSampleDataOperation } from "../../Utils/CreateSampleDataOperation";
+import { disposeTestDocumentStore, testContext } from "../../Utils/TestUtil.js";
+import { CreateSampleDataOperation } from "../../Utils/CreateSampleDataOperation.js";
 
-import { GetStatisticsCommand, GetStatisticsOperation, IDocumentStore, } from "../../../src";
-import { User } from "../../Assets/Entities";
+import { GetStatisticsCommand, GetStatisticsOperation, IDocumentStore, } from "../../../src/index.js";
+import { User } from "../../Assets/Entities.js";
 import moment from "moment";
-import { assertThat } from "../../Utils/AssertExtensions";
+import { assertThat } from "../../Utils/AssertExtensions.js";
 
 describe("GetStatisticsCommand()", function () {
 

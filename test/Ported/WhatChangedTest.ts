@@ -1,11 +1,11 @@
 import assert from "node:assert"
-import { testContext, disposeTestDocumentStore } from "../Utils/TestUtil";
+import { testContext, disposeTestDocumentStore } from "../Utils/TestUtil.js";
 
 import {
     IDocumentStore,
-} from "../../src";
-import { User } from "../Assets/Entities";
-import { assertThat } from "../Utils/AssertExtensions";
+} from "../../src/index.js";
+import { User } from "../Assets/Entities.js";
+import { assertThat } from "../Utils/AssertExtensions.js";
 
 describe("WhatChangedTest", function () {
 

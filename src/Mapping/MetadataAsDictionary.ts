@@ -1,5 +1,5 @@
-import { IMetadataDictionary, IRawMetadataDictionary } from "../Documents/Session/IMetadataDictionary";
-import { throwError } from "../Exceptions";
+import { IMetadataDictionary, IRawMetadataDictionary } from "../Documents/Session/IMetadataDictionary.js";
+import { throwError } from "../Exceptions/index.js";
 
 export interface MetadataAsDictionaryParentInfo {
     parent: MetadataDictionary;

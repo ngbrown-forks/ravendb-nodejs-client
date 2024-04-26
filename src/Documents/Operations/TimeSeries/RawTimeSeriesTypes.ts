@@ -1,4 +1,4 @@
-import { TimeValueUnit } from "../../../Primitives/TimeValueUnit";
+import { TimeValueUnit } from "../../../Primitives/TimeValueUnit.js";
 
 export interface TimeSeriesPolicyRaw {
     Name: string;

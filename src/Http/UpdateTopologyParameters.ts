@@ -1,5 +1,5 @@
-import { ServerNode } from "./ServerNode";
-import { throwError } from "../Exceptions";
+import { ServerNode } from "./ServerNode.js";
+import { throwError } from "../Exceptions/index.js";
 
 export class UpdateTopologyParameters {
 

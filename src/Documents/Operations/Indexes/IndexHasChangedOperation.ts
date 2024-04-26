@@ -1,11 +1,11 @@
-import { IMaintenanceOperation, OperationResultType } from "../OperationAbstractions";
-import { IndexDefinition } from "../../Indexes/IndexDefinition";
-import { throwError } from "../../../Exceptions";
-import { DocumentConventions } from "../../Conventions/DocumentConventions";
-import { RavenCommand } from "../../../Http/RavenCommand";
-import { ServerNode } from "../../../Http/ServerNode";
-import { HttpRequestParameters } from "../../../Primitives/Http";
-import { HeadersBuilder } from "../../../Utility/HttpUtil";
+import { IMaintenanceOperation, OperationResultType } from "../OperationAbstractions.js";
+import { IndexDefinition } from "../../Indexes/IndexDefinition.js";
+import { throwError } from "../../../Exceptions/index.js";
+import { DocumentConventions } from "../../Conventions/DocumentConventions.js";
+import { RavenCommand } from "../../../Http/RavenCommand.js";
+import { ServerNode } from "../../../Http/ServerNode.js";
+import { HttpRequestParameters } from "../../../Primitives/Http.js";
+import { HeadersBuilder } from "../../../Utility/HttpUtil.js";
 import { Stream } from "node:stream";
 
 export class IndexHasChangedOperation implements IMaintenanceOperation<boolean> {

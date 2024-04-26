@@ -2,9 +2,9 @@ import assert from "node:assert"
 import {
     testContext,
     disposeTestDocumentStore
-} from "../../Utils/TestUtil";
-import { UsersIndex } from "../../Assets/Indexes";
-import { Post, User } from "../../Assets/Entities";
+} from "../../Utils/TestUtil.js";
+import { UsersIndex } from "../../Assets/Indexes.js";
+import { Post, User } from "../../Assets/Entities.js";
 import {
     IDocumentStore,
     GetStatisticsCommand,
@@ -23,12 +23,12 @@ import {
     SetIndexesPriorityOperation,
     GetTermsOperation,
     AbstractJavaScriptIndexCreationTask,
-} from "../../../src";
-import { DeleteIndexOperation } from "../../../src/Documents/Operations/Indexes/DeleteIndexOperation";
-import { QueryStatistics } from "../../../src/Documents/Session/QueryStatistics";
-import { MoreLikeThisOptions } from "../../../src/Documents/Queries/MoreLikeThis/MoreLikeThisOptions";
-import { IndexCreation } from "../../../src/Documents/Indexes/IndexCreation";
-import { delay } from "../../../src/Utility/PromiseUtil";
+} from "../../../src/index.js";
+import { DeleteIndexOperation } from "../../../src/Documents/Operations/Indexes/DeleteIndexOperation.js";
+import { QueryStatistics } from "../../../src/Documents/Session/QueryStatistics.js";
+import { MoreLikeThisOptions } from "../../../src/Documents/Queries/MoreLikeThis/MoreLikeThisOptions.js";
+import { IndexCreation } from "../../../src/Documents/Indexes/IndexCreation.js";
+import { delay } from "../../../src/Utility/PromiseUtil.js";
 
 describe("Indexes from client", function () {
 

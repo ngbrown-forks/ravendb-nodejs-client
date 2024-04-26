@@ -1,7 +1,7 @@
-import { ILazyLoaderWithInclude } from "./ILazyLoaderWithInclude";
-import { IDocumentSessionImpl } from "../IDocumentSession";
-import { ObjectTypeDescriptor, EntitiesCollectionObject } from "../../../Types";
-import { Lazy } from "../../Lazy";
+import { ILazyLoaderWithInclude } from "./ILazyLoaderWithInclude.js";
+import { IDocumentSessionImpl } from "../IDocumentSession.js";
+import { ObjectTypeDescriptor, EntitiesCollectionObject } from "../../../Types/index.js";
+import { Lazy } from "../../Lazy.js";
 
 export class LazyMultiLoaderWithInclude implements ILazyLoaderWithInclude {
     private readonly _session: IDocumentSessionImpl;

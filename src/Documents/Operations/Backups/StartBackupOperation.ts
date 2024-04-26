@@ -1,10 +1,10 @@
-import { IMaintenanceOperation, OperationResultType } from "../OperationAbstractions";
-import { StartBackupOperationResult } from "./StartBackupOperationResult";
-import { HttpRequestParameters } from "../../../Primitives/Http";
+import { IMaintenanceOperation, OperationResultType } from "../OperationAbstractions.js";
+import { StartBackupOperationResult } from "./StartBackupOperationResult.js";
+import { HttpRequestParameters } from "../../../Primitives/Http.js";
 import { Stream } from "node:stream";
-import { DocumentConventions } from "../../Conventions/DocumentConventions";
-import { RavenCommand } from "../../../Http/RavenCommand";
-import { ServerNode } from "../../../Http/ServerNode";
+import { DocumentConventions } from "../../Conventions/DocumentConventions.js";
+import { RavenCommand } from "../../../Http/RavenCommand.js";
+import { ServerNode } from "../../../Http/ServerNode.js";
 
 export class StartBackupOperation implements IMaintenanceOperation<StartBackupOperationResult> {
     private readonly _isFullBackup: boolean;

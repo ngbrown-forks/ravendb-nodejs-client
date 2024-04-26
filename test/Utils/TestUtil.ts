@@ -3,12 +3,10 @@ import path from "node:path";
 import url from "node:url";
 import http from "node:http";
 import https from "node:https";
-import { IDisposable } from "../../src/Types/Contracts";
-import { RavenTestDriver } from "../TestDriver";
-import { RavenServerLocator } from "../TestDriver/RavenServerLocator";
-import { IDocumentStore } from "../../src/Documents/IDocumentStore";
-import { getError, throwError } from "../../src/Exceptions";
-import { IAuthOptions } from "../../src/Auth/AuthOptions";
+import { IDisposable, IDocumentStore, IAuthOptions } from "../../src/index.js";
+import { RavenTestDriver } from "../TestDriver/index.js";
+import { RavenServerLocator } from "../TestDriver/RavenServerLocator.js";
+import { getError, throwError } from "../../src/Exceptions/index.js";
 import os from "node:os";
 import {
     CreateDatabaseOperation,
@@ -23,16 +21,16 @@ import {
     GetDatabaseRecordOperation,
     IDocumentSession,
     ServerNode
-} from "../../src";
+} from "../../src/index.js";
 import { sync } from "rimraf";
 import { ChildProcess } from "node:child_process";
-import { TypeUtil } from "../../src/Utility/TypeUtil";
-import { getLogger } from "../../src/Utility/LogUtil";
-import { AdminJsConsoleOperation } from "./AdminJsConsoleOperation";
-import { Stopwatch } from "../../src/Utility/Stopwatch";
-import { delay, wrapWithTimeout } from "../../src/Utility/PromiseUtil";
+import { TypeUtil } from "../../src/Utility/TypeUtil.js";
+import { getLogger } from "../../src/Utility/LogUtil.js";
+import { AdminJsConsoleOperation } from "./AdminJsConsoleOperation.js";
+import { Stopwatch } from "../../src/Utility/Stopwatch.js";
+import { delay, wrapWithTimeout } from "../../src/Utility/PromiseUtil.js";
 import moment from "moment";
-import { INDEXES } from "../../src/Constants";
+import { INDEXES } from "../../src/Constants.js";
 
 const log = getLogger({ module: "TestDriver" });
 

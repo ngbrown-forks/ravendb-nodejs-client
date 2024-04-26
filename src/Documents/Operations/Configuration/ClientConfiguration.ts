@@ -1,5 +1,5 @@
-import { ReadBalanceBehavior } from "../../../Http/ReadBalanceBehavior";
-import { LoadBalanceBehavior } from "../../../Http/LoadBalanceBehavior";
+import { ReadBalanceBehavior } from "../../../Http/ReadBalanceBehavior.js";
+import { LoadBalanceBehavior } from "../../../Http/LoadBalanceBehavior.js";
 
 export interface ClientConfiguration {
     identityPartsSeparator?: string;

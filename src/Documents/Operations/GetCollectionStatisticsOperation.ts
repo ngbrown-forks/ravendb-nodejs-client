@@ -1,12 +1,12 @@
-import { HttpRequestParameters } from "../../Primitives/Http";
-import { IMaintenanceOperation, OperationResultType } from "./OperationAbstractions";
-import { CollectionStatistics } from "./CollectionStatistics";
-import { RavenCommand } from "../../Http/RavenCommand";
-import { DocumentConventions } from "../Conventions/DocumentConventions";
-import { ServerNode } from "../../Http/ServerNode";
-import { JsonSerializer } from "../../Mapping/Json/Serializer";
+import { HttpRequestParameters } from "../../Primitives/Http.js";
+import { IMaintenanceOperation, OperationResultType } from "./OperationAbstractions.js";
+import { CollectionStatistics } from "./CollectionStatistics.js";
+import { RavenCommand } from "../../Http/RavenCommand.js";
+import { DocumentConventions } from "../Conventions/DocumentConventions.js";
+import { ServerNode } from "../../Http/ServerNode.js";
+import { JsonSerializer } from "../../Mapping/Json/Serializer.js";
 import { Stream } from "node:stream";
-import { ObjectUtil } from "../../Utility/ObjectUtil";
+import { ObjectUtil } from "../../Utility/ObjectUtil.js";
 
 export class GetCollectionStatisticsOperation implements IMaintenanceOperation<CollectionStatistics> {
 

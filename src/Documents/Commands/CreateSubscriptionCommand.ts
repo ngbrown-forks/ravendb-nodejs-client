@@ -1,12 +1,12 @@
-import { RavenCommand } from "../../Http/RavenCommand";
-import { CreateSubscriptionResult } from "../Subscriptions/CreateSubscriptionResult";
-import { SubscriptionCreationOptions } from "../Subscriptions/SubscriptionCreationOptions";
-import { HttpRequestParameters } from "../../Primitives/Http";
+import { RavenCommand } from "../../Http/RavenCommand.js";
+import { CreateSubscriptionResult } from "../Subscriptions/CreateSubscriptionResult.js";
+import { SubscriptionCreationOptions } from "../Subscriptions/SubscriptionCreationOptions.js";
+import { HttpRequestParameters } from "../../Primitives/Http.js";
 import { Stream } from "node:stream";
-import { ServerNode } from "../../Http/ServerNode";
-import { IRaftCommand } from "../../Http/IRaftCommand";
-import { RaftIdGenerator } from "../../Utility/RaftIdGenerator";
-import { throwError } from "../../Exceptions";
+import { ServerNode } from "../../Http/ServerNode.js";
+import { IRaftCommand } from "../../Http/IRaftCommand.js";
+import { RaftIdGenerator } from "../../Utility/RaftIdGenerator.js";
+import { throwError } from "../../Exceptions/index.js";
 
 export class CreateSubscriptionCommand extends RavenCommand<CreateSubscriptionResult> implements IRaftCommand {
     private readonly _options: SubscriptionCreationOptions;

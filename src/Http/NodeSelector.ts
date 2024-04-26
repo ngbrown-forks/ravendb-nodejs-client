@@ -1,9 +1,9 @@
-import { ArrayUtil } from "../Utility/ArrayUtil";
-import { ServerNode } from "./ServerNode";
-import CurrentIndexAndNode from "../Http/CurrentIndexAndNode";
-import { Topology } from "./Topology";
-import { Timer } from "../Primitives/Timer";
-import { throwError } from "../Exceptions";
+import { ArrayUtil } from "../Utility/ArrayUtil.js";
+import { ServerNode } from "./ServerNode.js";
+import CurrentIndexAndNode from "../Http/CurrentIndexAndNode.js";
+import { Topology } from "./Topology.js";
+import { Timer } from "../Primitives/Timer.js";
+import { throwError } from "../Exceptions/index.js";
 
 class NodeSelectorState {
     public topology: Topology;

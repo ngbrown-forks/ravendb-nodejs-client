@@ -1,4 +1,4 @@
-import { Size } from "../../Utility/SizeUtil";
+import { Size } from "../../Utility/SizeUtil.js";
 
 export interface CollectionDetails {
     name: string;

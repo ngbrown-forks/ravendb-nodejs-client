@@ -1,6 +1,6 @@
-import { IDatabaseSmugglerOptions } from "./IDatabaseSmugglerOptions";
-import { DatabaseItemType } from "./DatabaseItemType";
-import { DatabaseRecordItemType } from "./DatabaseRecordItemType";
+import { IDatabaseSmugglerOptions } from "./IDatabaseSmugglerOptions.js";
+import { DatabaseItemType } from "./DatabaseItemType.js";
+import { DatabaseRecordItemType } from "./DatabaseRecordItemType.js";
 
 export class DatabaseSmugglerOptions implements IDatabaseSmugglerOptions {
     public static readonly DEFAULT_OPERATE_ON_TYPES: DatabaseItemType[] = [

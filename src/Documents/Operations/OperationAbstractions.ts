@@ -1,7 +1,7 @@
-import { RavenCommand } from "../../Http/RavenCommand";
-import { IDocumentStore } from "../IDocumentStore";
-import { DocumentConventions } from "../Conventions/DocumentConventions";
-import { HttpCache } from "../../Http/HttpCache";
+import { RavenCommand } from "../../Http/RavenCommand.js";
+import { IDocumentStore } from "../IDocumentStore.js";
+import { DocumentConventions } from "../Conventions/DocumentConventions.js";
+import { HttpCache } from "../../Http/HttpCache.js";
 
 export type OperationResultType = "OperationId" | "CommandResult" | "PatchResult";
 

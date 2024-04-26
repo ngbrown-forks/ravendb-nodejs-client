@@ -1,8 +1,8 @@
-import { IDocumentStore, Lazy } from "../../../../src";
-import { disposeTestDocumentStore, testContext } from "../../../Utils/TestUtil";
+import { IDocumentStore, Lazy } from "../../../../src.js";
+import { disposeTestDocumentStore, testContext } from "../../../Utils/TestUtil.js";
 import assert from "node:assert"
-import { Order, OrderLine } from "../../../Assets/Entities";
-import { assertThat } from "../../../Utils/AssertExtensions";
+import { Order, OrderLine } from "../../../Assets/Entities.js";
+import { assertThat } from "../../../Utils/AssertExtensions.js";
 
 export class User {
     public id: string;

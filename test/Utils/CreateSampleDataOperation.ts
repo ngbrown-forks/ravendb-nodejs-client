@@ -1,8 +1,8 @@
-import { IMaintenanceOperation } from "../../src/Documents/Operations/OperationAbstractions";
-import { RavenCommand } from "../../src/Http/RavenCommand";
-import { DatabaseItemType, DocumentConventions, IRaftCommand, OperationResultType, ServerNode } from "../../src";
-import { HttpRequestParameters } from "../../src/Primitives/Http";
-import { RaftIdGenerator } from "../../src/Utility/RaftIdGenerator";
+import { IMaintenanceOperation } from "../../src/Documents/Operations/OperationAbstractions.js";
+import { RavenCommand } from "../../src/Http/RavenCommand.js";
+import { DatabaseItemType, DocumentConventions, IRaftCommand, OperationResultType, ServerNode } from "../../src/index.js";
+import { HttpRequestParameters } from "../../src/Primitives/Http.js";
+import { RaftIdGenerator } from "../../src/Utility/RaftIdGenerator.js";
 
 export class CreateSampleDataOperation implements IMaintenanceOperation<void> {
 

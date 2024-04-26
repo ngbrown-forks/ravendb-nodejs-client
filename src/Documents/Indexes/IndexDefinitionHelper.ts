@@ -1,7 +1,7 @@
-import { IndexType } from "./Enums";
-import { throwError } from "../../Exceptions";
-import { StringUtil } from "../../Utility/StringUtil";
-import { IndexSourceType } from "./IndexSourceType";
+import { IndexType } from "./Enums.js";
+import { throwError } from "../../Exceptions/index.js";
+import { StringUtil } from "../../Utility/StringUtil.js";
+import { IndexSourceType } from "./IndexSourceType.js";
 
 const COMMENT_REGEX = new RegExp("(?:/\\*(?:[^*]|(?:\\*+[^*/]))*\\*+/)|(?://.*)", "gm");
 

@@ -1,11 +1,11 @@
-import { RavenCommand } from "../../Http/RavenCommand";
-import { throwError } from "../../Exceptions";
-import { HttpRequestParameters } from "../../Primitives/Http";
-import { ServerNode } from "../../Http/ServerNode";
+import { RavenCommand } from "../../Http/RavenCommand.js";
+import { throwError } from "../../Exceptions/index.js";
+import { HttpRequestParameters } from "../../Primitives/Http.js";
+import { ServerNode } from "../../Http/ServerNode.js";
 import { Stream } from "node:stream";
-import { TypeUtil } from "../../Utility/TypeUtil";
-import { IRaftCommand } from "../../Http/IRaftCommand";
-import { RaftIdGenerator } from "../../Utility/RaftIdGenerator";
+import { TypeUtil } from "../../Utility/TypeUtil.js";
+import { IRaftCommand } from "../../Http/IRaftCommand.js";
+import { RaftIdGenerator } from "../../Utility/RaftIdGenerator.js";
 
 export class SeedIdentityForCommand extends RavenCommand<number> implements IRaftCommand {
 

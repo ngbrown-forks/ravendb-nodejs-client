@@ -1,11 +1,11 @@
-import { User } from "../Assets/Entities";
+import { User } from "../Assets/Entities.js";
 import assert from "node:assert"
-import { testContext, disposeTestDocumentStore } from "../Utils/TestUtil";
+import { testContext, disposeTestDocumentStore } from "../Utils/TestUtil.js";
 
 import {
     IDocumentStore,
     CompactDatabaseOperation, CompactSettings,
-} from "../../src";
+} from "../../src/index.js";
 
 describe("CompactTest", function () {
 

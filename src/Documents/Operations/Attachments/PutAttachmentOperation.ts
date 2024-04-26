@@ -1,14 +1,14 @@
-import { IOperation, OperationResultType } from "../OperationAbstractions";
-import { AttachmentData, AttachmentDetails } from "../../Attachments";
-import { IDocumentStore } from "../../IDocumentStore";
-import { HttpCache } from "../../../Http/HttpCache";
-import { StringUtil } from "../../../Utility/StringUtil";
-import { throwError } from "../../../Exceptions";
-import { HttpRequestParameters } from "../../../Primitives/Http";
+import { IOperation, OperationResultType } from "../OperationAbstractions.js";
+import { AttachmentData, AttachmentDetails } from "../../Attachments/index.js";
+import { IDocumentStore } from "../../IDocumentStore.js";
+import { HttpCache } from "../../../Http/HttpCache.js";
+import { StringUtil } from "../../../Utility/StringUtil.js";
+import { throwError } from "../../../Exceptions/index.js";
+import { HttpRequestParameters } from "../../../Primitives/Http.js";
 import { Stream } from "node:stream";
-import { DocumentConventions } from "../../Conventions/DocumentConventions";
-import { RavenCommand } from "../../../Http/RavenCommand";
-import { ServerNode } from "../../../Http/ServerNode";
+import { DocumentConventions } from "../../Conventions/DocumentConventions.js";
+import { RavenCommand } from "../../../Http/RavenCommand.js";
+import { ServerNode } from "../../../Http/ServerNode.js";
 
 export class PutAttachmentOperation implements IOperation<AttachmentDetails> {
     private readonly _documentId: string;

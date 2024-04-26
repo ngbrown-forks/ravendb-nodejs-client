@@ -1,8 +1,8 @@
-import { GetTermsOperation, IDocumentStore } from "../../../../src";
-import { disposeTestDocumentStore, testContext } from "../../../Utils/TestUtil";
-import { AbstractRawJavaScriptCountersIndexCreationTask } from "../../../../src/Documents/Indexes/Counters/AbstractRawJavaScriptCountersIndexCreationTask";
-import { Address, Company, User } from "../../../Assets/Entities";
-import { assertThat } from "../../../Utils/AssertExtensions";
+import { GetTermsOperation, IDocumentStore } from "../../../../src.js";
+import { disposeTestDocumentStore, testContext } from "../../../Utils/TestUtil.js";
+import { AbstractRawJavaScriptCountersIndexCreationTask } from "../../../../src/Documents/Indexes/Counters/AbstractRawJavaScriptCountersIndexCreationTask.js";
+import { Address, Company, User } from "../../../Assets/Entities.js";
+import { assertThat } from "../../../Utils/AssertExtensions.js";
 
 describe("BasicCountersIndexes_JavaScript", function () {
 

@@ -1,13 +1,13 @@
 import assert from "node:assert"
-import { testContext, disposeTestDocumentStore, storeNewDoc } from "../../Utils/TestUtil";
+import { testContext, disposeTestDocumentStore, storeNewDoc } from "../../Utils/TestUtil.js";
 
 import {
     IDocumentStore, AbstractJavaScriptMultiMapIndexCreationTask, SpatialField,
-} from "../../../src";
-import { CONSTANTS } from "../../../src/Constants";
-import { assertThat } from "../../Utils/AssertExtensions";
-import { AbstractJavaScriptIndexCreationTask } from "../../../src/Documents/Indexes/AbstractJavaScriptIndexCreationTask";
-import { CreatedField } from "../../../src/Documents/Indexes/StronglyTyped";
+} from "../../../src/index.js";
+import { CONSTANTS } from "../../../src/Constants.js";
+import { assertThat } from "../../Utils/AssertExtensions.js";
+import { AbstractJavaScriptIndexCreationTask } from "../../../src/Documents/Indexes/AbstractJavaScriptIndexCreationTask.js";
+import { CreatedField } from "../../../src/Documents/Indexes/StronglyTyped.js";
 
 describe("JavaScriptIndexTest", function () {
 

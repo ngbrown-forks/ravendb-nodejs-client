@@ -1,14 +1,14 @@
-import { AbstractDocumentQuery } from "./AbstractDocumentQuery";
-import { IRawDocumentQuery } from "./IRawDocumentQuery";
-import { InMemoryDocumentSessionOperations } from "./InMemoryDocumentSessionOperations";
-import { DocumentType } from "../DocumentAbstractions";
-import { QueryOperator } from "../Queries/QueryOperator";
-import { QueryStatistics } from "./QueryStatistics";
-import { QueryTimings } from "../Queries/Timings/QueryTimings";
-import { ValueCallback } from "../../Types/Callbacks";
-import { FacetResult } from "../Queries/Facets";
-import { AggregationRawDocumentQuery } from "../Queries/Facets/AggregationRawDocumentQuery";
-import { ProjectionBehavior } from "../Queries/ProjectionBehavior";
+import { AbstractDocumentQuery } from "./AbstractDocumentQuery.js";
+import { IRawDocumentQuery } from "./IRawDocumentQuery.js";
+import { InMemoryDocumentSessionOperations } from "./InMemoryDocumentSessionOperations.js";
+import { DocumentType } from "../DocumentAbstractions.js";
+import { QueryOperator } from "../Queries/QueryOperator.js";
+import { QueryStatistics } from "./QueryStatistics.js";
+import { QueryTimings } from "../Queries/Timings/QueryTimings.js";
+import { ValueCallback } from "../../Types/Callbacks.js";
+import { FacetResult } from "../Queries/Facets/index.js";
+import { AggregationRawDocumentQuery } from "../Queries/Facets/AggregationRawDocumentQuery.js";
+import { ProjectionBehavior } from "../Queries/ProjectionBehavior.js";
 
 export class RawDocumentQuery<T extends object>
     extends AbstractDocumentQuery<T, RawDocumentQuery<T>> implements IRawDocumentQuery<T> {

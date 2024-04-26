@@ -1,13 +1,13 @@
-import { AggregationQueryBase } from "./AggregationQueryBase";
-import { FacetBase } from "./FacetBase";
-import { IAggregationDocumentQuery } from "./IAggregationDocumentQuery";
-import { DocumentQuery } from "../../Session/DocumentQuery";
-import { AbstractDocumentQuery } from "../../Session/AbstractDocumentQuery";
-import { InMemoryDocumentSessionOperations } from "../../Session/InMemoryDocumentSessionOperations";
-import { IFacetBuilder } from "./IFacetBuilder";
-import { FacetBuilder } from "./FacetBuilder";
-import { IndexQuery } from "../IndexQuery";
-import { QueryResult } from "../QueryResult";
+import { AggregationQueryBase } from "./AggregationQueryBase.js";
+import { FacetBase } from "./FacetBase.js";
+import { IAggregationDocumentQuery } from "./IAggregationDocumentQuery.js";
+import { DocumentQuery } from "../../Session/DocumentQuery.js";
+import { AbstractDocumentQuery } from "../../Session/AbstractDocumentQuery.js";
+import { InMemoryDocumentSessionOperations } from "../../Session/InMemoryDocumentSessionOperations.js";
+import { IFacetBuilder } from "./IFacetBuilder.js";
+import { FacetBuilder } from "./FacetBuilder.js";
+import { IndexQuery } from "../IndexQuery.js";
+import { QueryResult } from "../QueryResult.js";
 
 export class AggregationDocumentQuery<T extends object> extends AggregationQueryBase
     implements IAggregationDocumentQuery<T> {

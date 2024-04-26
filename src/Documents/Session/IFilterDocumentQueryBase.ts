@@ -1,15 +1,15 @@
-import { IDocumentQueryBase } from "./IDocumentQueryBase";
-import { IQueryBase } from "./IQueryBase";
-import { SearchOperator } from "../Queries/SearchOperator";
-import { MethodCall } from "./MethodCall";
-import { WhereParams } from "./WhereParams";
-import { SpatialUnits, SpatialRelation } from "../Indexes/Spatial";
-import { SpatialCriteria } from "../Queries/Spatial/SpatialCriteria";
-import { SpatialCriteriaFactory } from "../Queries/Spatial/SpatialCriteriaFactory";
-import { IDocumentQuery } from "./IDocumentQuery";
-import { DynamicSpatialField } from "../Queries/Spatial/DynamicSpatialField";
-import { MoreLikeThisBase } from "../Queries/MoreLikeThis/MoreLikeThisBase";
-import { Field } from "../../Types";
+import { IDocumentQueryBase } from "./IDocumentQueryBase.js";
+import { IQueryBase } from "./IQueryBase.js";
+import { SearchOperator } from "../Queries/SearchOperator.js";
+import { MethodCall } from "./MethodCall.js";
+import { WhereParams } from "./WhereParams.js";
+import { SpatialUnits, SpatialRelation } from "../Indexes/Spatial.js";
+import { SpatialCriteria } from "../Queries/Spatial/SpatialCriteria.js";
+import { SpatialCriteriaFactory } from "../Queries/Spatial/SpatialCriteriaFactory.js";
+import { IDocumentQuery } from "./IDocumentQuery.js";
+import { DynamicSpatialField } from "../Queries/Spatial/DynamicSpatialField.js";
+import { MoreLikeThisBase } from "../Queries/MoreLikeThis/MoreLikeThisBase.js";
+import { Field } from "../../Types/index.js";
 
 export interface IFilterDocumentQueryBase<T extends object, TSelf extends IDocumentQueryBase<T, TSelf>>
     extends IQueryBase<T, TSelf> {

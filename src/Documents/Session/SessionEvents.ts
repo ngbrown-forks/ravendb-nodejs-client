@@ -1,12 +1,12 @@
-import { InMemoryDocumentSessionOperations } from "./InMemoryDocumentSessionOperations";
-import { IMetadataDictionary } from "./IMetadataDictionary";
-import { IDocumentQueryCustomization } from "./IDocumentQueryCustomization";
-import { DocumentType } from "../DocumentAbstractions";
-import { Reference } from "../../Utility/Reference";
-import { Topology } from "../../Http/Topology";
-import { HttpRequestParameters, HttpResponse } from "../../Primitives/Http";
-import { SessionDisposingEventArgs } from "../IDocumentStore";
-import { BulkInsertProgress } from "../Operations/BulkInsertProgress";
+import { InMemoryDocumentSessionOperations } from "./InMemoryDocumentSessionOperations.js";
+import { IMetadataDictionary } from "./IMetadataDictionary.js";
+import { IDocumentQueryCustomization } from "./IDocumentQueryCustomization.js";
+import { DocumentType } from "../DocumentAbstractions.js";
+import { Reference } from "../../Utility/Reference.js";
+import { Topology } from "../../Http/Topology.js";
+import { HttpRequestParameters, HttpResponse } from "../../Primitives/Http.js";
+import { SessionDisposingEventArgs } from "../IDocumentStore.js";
+import { BulkInsertProgress } from "../Operations/BulkInsertProgress.js";
 
 export interface SessionEventsEmitter {
     on(eventName: "beforeStore", eventHandler: (eventArgs: SessionBeforeStoreEventArgs) => void): this;

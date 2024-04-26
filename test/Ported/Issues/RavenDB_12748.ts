@@ -1,7 +1,7 @@
-import { AbstractJavaScriptIndexCreationTask, IDocumentStore, RangeBuilder } from "../../../src";
-import { disposeTestDocumentStore, testContext } from "../../Utils/TestUtil";
-import { Order } from "../../Assets/Faceted";
-import { assertThat } from "../../Utils/AssertExtensions";
+import { AbstractJavaScriptIndexCreationTask, IDocumentStore, RangeBuilder } from "../../../src/index.js";
+import { disposeTestDocumentStore, testContext } from "../../Utils/TestUtil.js";
+import { Order } from "../../Assets/Faceted.js";
+import { assertThat } from "../../Utils/AssertExtensions.js";
 
 describe("RavenDB_12748", function () {
 

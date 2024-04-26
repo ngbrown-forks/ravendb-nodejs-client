@@ -1,11 +1,11 @@
-import { ILazyOperation } from "./ILazyOperation";
-import { IRavenArrayResult } from "../../../../Types";
-import { GetRevisionOperation } from "../GetRevisionOperation";
-import { QueryResult } from "../../../Queries/QueryResult";
-import { GetRequest } from "../../../Commands/MultiGet/GetRequest";
-import { GetResponse } from "../../../Commands/MultiGet/GetResponse";
-import { DocumentType } from "../../../DocumentAbstractions";
-import { throwError } from "../../../../Exceptions";
+import { ILazyOperation } from "./ILazyOperation.js";
+import { IRavenArrayResult } from "../../../../Types/index.js";
+import { GetRevisionOperation } from "../GetRevisionOperation.js";
+import { QueryResult } from "../../../Queries/QueryResult.js";
+import { GetRequest } from "../../../Commands/MultiGet/GetRequest.js";
+import { GetResponse } from "../../../Commands/MultiGet/GetResponse.js";
+import { DocumentType } from "../../../DocumentAbstractions.js";
+import { throwError } from "../../../../Exceptions/index.js";
 
 export type Mode = "Single" | "Multi" | "Map" | "ListOfMetadata";
 

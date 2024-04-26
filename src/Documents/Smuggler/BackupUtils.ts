@@ -1,5 +1,5 @@
-import { CONSTANTS } from "../../Constants";
-import { StringUtil } from "../../Utility/StringUtil";
+import { CONSTANTS } from "../../Constants.js";
+import { StringUtil } from "../../Utility/StringUtil.js";
 import { basename, extname, resolve } from "node:path";
 import { statSync } from "node:fs";
 

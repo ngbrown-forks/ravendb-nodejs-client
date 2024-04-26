@@ -1,5 +1,5 @@
-import { DatabaseItemType } from "./DatabaseItemType";
-import { DatabaseRecordItemType } from "./DatabaseRecordItemType";
+import { DatabaseItemType } from "./DatabaseItemType.js";
+import { DatabaseRecordItemType } from "./DatabaseRecordItemType.js";
 
 export interface IDatabaseSmugglerOptions {
     operateOnTypes: DatabaseItemType[];

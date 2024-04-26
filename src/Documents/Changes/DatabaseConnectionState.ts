@@ -1,10 +1,10 @@
-import { DatabaseChange } from "./DatabaseChange";
-import { ChangesType, IChangesConnectionState } from "./IChangesConnectionState";
+import { DatabaseChange } from "./DatabaseChange.js";
+import { ChangesType, IChangesConnectionState } from "./IChangesConnectionState.js";
 import { EventEmitter } from "node:events";
-import { getError } from "../../Exceptions";
-import { IDefer } from "../../Utility/PromiseUtil";
-import { defer } from "../../Utility/PromiseUtil";
-import { TypeUtil } from "../../Utility/TypeUtil";
+import { getError } from "../../Exceptions/index.js";
+import { IDefer } from "../../Utility/PromiseUtil.js";
+import { defer } from "../../Utility/PromiseUtil.js";
+import { TypeUtil } from "../../Utility/TypeUtil.js";
 
 export class DatabaseConnectionState implements IChangesConnectionState<DatabaseChange> {
 

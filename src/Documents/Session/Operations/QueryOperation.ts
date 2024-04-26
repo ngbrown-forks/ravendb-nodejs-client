@@ -1,26 +1,26 @@
-import { InMemoryDocumentSessionOperations } from "../InMemoryDocumentSessionOperations";
-import { IndexQuery } from "../../Queries/IndexQuery";
-import { QueryResult } from "../../Queries/QueryResult";
-import { FieldsToFetchToken } from "../Tokens/FieldsToFetchToken";
-import { Stopwatch } from "../../../Utility/Stopwatch";
-import { getLogger } from "../../../Utility/LogUtil";
-import { QueryCommand } from "../../Commands/QueryCommand";
-import { throwError } from "../../../Exceptions";
+import { InMemoryDocumentSessionOperations } from "../InMemoryDocumentSessionOperations.js";
+import { IndexQuery } from "../../Queries/IndexQuery.js";
+import { QueryResult } from "../../Queries/QueryResult.js";
+import { FieldsToFetchToken } from "../Tokens/FieldsToFetchToken.js";
+import { Stopwatch } from "../../../Utility/Stopwatch.js";
+import { getLogger } from "../../../Utility/LogUtil.js";
+import { QueryCommand } from "../../Commands/QueryCommand.js";
+import { throwError } from "../../../Exceptions/index.js";
 import {
     DocumentType,
-} from "../../DocumentAbstractions";
-import { CONSTANTS, TIME_SERIES } from "../../../Constants";
-import { TypeUtil } from "../../../Utility/TypeUtil";
-import { StringUtil } from "../../../Utility/StringUtil";
-import { Reference } from "../../../Utility/Reference";
-import { NESTED_OBJECT_TYPES_PROJECTION_FIELD } from "../DocumentQuery";
-import { TimeSeriesAggregationResult } from "../../Queries/TimeSeries/TimeSeriesAggregationResult";
-import { TimeSeriesRawResult } from "../../Queries/TimeSeries/TimeSeriesRawResult";
-import { TimeSeriesRangeAggregation } from "../../Queries/TimeSeries/TimeSeriesRangeAggregation";
-import { ObjectChangeCaseOptions, ObjectUtil } from "../../../Utility/ObjectUtil";
-import { TimeSeriesEntry } from "../TimeSeries/TimeSeriesEntry";
-import { StringBuilder } from "../../../Utility/StringBuilder";
-import { DocumentConventions } from "../../Conventions/DocumentConventions";
+} from "../../DocumentAbstractions.js";
+import { CONSTANTS, TIME_SERIES } from "../../../Constants.js";
+import { TypeUtil } from "../../../Utility/TypeUtil.js";
+import { StringUtil } from "../../../Utility/StringUtil.js";
+import { Reference } from "../../../Utility/Reference.js";
+import { NESTED_OBJECT_TYPES_PROJECTION_FIELD } from "../DocumentQuery.js";
+import { TimeSeriesAggregationResult } from "../../Queries/TimeSeries/TimeSeriesAggregationResult.js";
+import { TimeSeriesRawResult } from "../../Queries/TimeSeries/TimeSeriesRawResult.js";
+import { TimeSeriesRangeAggregation } from "../../Queries/TimeSeries/TimeSeriesRangeAggregation.js";
+import { ObjectChangeCaseOptions, ObjectUtil } from "../../../Utility/ObjectUtil.js";
+import { TimeSeriesEntry } from "../TimeSeries/TimeSeriesEntry.js";
+import { StringBuilder } from "../../../Utility/StringBuilder.js";
+import { DocumentConventions } from "../../Conventions/DocumentConventions.js";
 
 const log = getLogger({ module: "QueryOperation" });
 

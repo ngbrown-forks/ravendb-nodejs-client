@@ -1,4 +1,4 @@
-import { TimeSeriesItemDetail } from "./TimeSeriesItemDetail";
+import { TimeSeriesItemDetail } from "./TimeSeriesItemDetail.js";
 
 export interface TimeSeriesStatistics {
     documentId: string;

@@ -1,40 +1,40 @@
-import { IDisposable } from "../../Types/Contracts";
-import { DocumentType } from "../DocumentAbstractions";
-import { getLogger } from "../../Utility/LogUtil";
-import { DocumentStore } from "../DocumentStore";
-import { SubscriptionWorkerOptions } from "./SubscriptionWorkerOptions";
-import { SubscriptionBatch } from "./SubscriptionBatch";
+import { IDisposable } from "../../Types/Contracts.js";
+import { DocumentType } from "../DocumentAbstractions.js";
+import { getLogger } from "../../Utility/LogUtil.js";
+import { DocumentStore } from "../DocumentStore.js";
+import { SubscriptionWorkerOptions } from "./SubscriptionWorkerOptions.js";
+import { SubscriptionBatch } from "./SubscriptionBatch.js";
 import { Socket } from "node:net";
-import { StringUtil } from "../../Utility/StringUtil";
-import { getError, throwError, RavenErrorType } from "../../Exceptions";
-import { TcpUtils } from "../../Utility/TcpUtils";
+import { StringUtil } from "../../Utility/StringUtil.js";
+import { getError, throwError, RavenErrorType } from "../../Exceptions/index.js";
+import { TcpUtils } from "../../Utility/TcpUtils.js";
 import { Transform, pipeline, Readable } from "node:stream";
-import { TcpNegotiateParameters } from "../../ServerWide/Tcp/TcpNegotiateParameters";
+import { TcpNegotiateParameters } from "../../ServerWide/Tcp/TcpNegotiateParameters.js";
 import {
     SUBSCRIPTION_TCP_VERSION,
     SupportedFeatures,
     TcpConnectionHeaderMessage
-} from "../../ServerWide/Tcp/TcpConnectionHeaderMessage";
-import { OUT_OF_RANGE_STATUS, TcpNegotiation } from "../../ServerWide/Tcp/TcpNegotiation";
-import { TcpConnectionHeaderResponse } from "../../ServerWide/Tcp/TcpConnectionHeaderResponse";
+} from "../../ServerWide/Tcp/TcpConnectionHeaderMessage.js";
+import { OUT_OF_RANGE_STATUS, TcpNegotiation } from "../../ServerWide/Tcp/TcpNegotiation.js";
+import { TcpConnectionHeaderResponse } from "../../ServerWide/Tcp/TcpConnectionHeaderResponse.js";
 import { EventEmitter } from "node:events";
-import { TimeUtil } from "../../Utility/TimeUtil";
-import { ObjectUtil } from "../../Utility/ObjectUtil";
-import { SubscriptionConnectionServerMessage } from "./SubscriptionConnectionServerMessage";
-import { EmptyCallback } from "../../Types/Callbacks";
-import { delay, wrapWithTimeout } from "../../Utility/PromiseUtil";
+import { TimeUtil } from "../../Utility/TimeUtil.js";
+import { ObjectUtil } from "../../Utility/ObjectUtil.js";
+import { SubscriptionConnectionServerMessage } from "./SubscriptionConnectionServerMessage.js";
+import { EmptyCallback } from "../../Types/Callbacks.js";
+import { delay, wrapWithTimeout } from "../../Utility/PromiseUtil.js";
 import Parser from "stream-json/Parser.js";
 import StreamValues from "stream-json/streamers/StreamValues.js";
-import { BatchFromServer, CounterIncludeItem } from "./BatchFromServer";
-import { ServerNode } from "../../Http/ServerNode";
-import { RequestExecutor } from "../../Http/RequestExecutor";
-import { GetTcpInfoCommand, TcpConnectionInfo } from "../../ServerWide/Commands/GetTcpInfoCommand";
-import { GetTcpInfoForRemoteTaskCommand } from "../Commands/GetTcpInfoForRemoteTaskCommand";
+import { BatchFromServer, CounterIncludeItem } from "./BatchFromServer.js";
+import { ServerNode } from "../../Http/ServerNode.js";
+import { RequestExecutor } from "../../Http/RequestExecutor.js";
+import { GetTcpInfoCommand, TcpConnectionInfo } from "../../ServerWide/Commands/GetTcpInfoCommand.js";
+import { GetTcpInfoForRemoteTaskCommand } from "../Commands/GetTcpInfoForRemoteTaskCommand.js";
 import { EOL } from "node:os";
-import { DocumentConventions } from "../Conventions/DocumentConventions";
-import { ServerCasing, ServerResponse } from "../../Types";
-import { CONSTANTS } from "../../Constants";
-import { TcpNegotiationResponse } from "../../ServerWide/Tcp/TcpNegotiationResponse";
+import { DocumentConventions } from "../Conventions/DocumentConventions.js";
+import { ServerCasing, ServerResponse } from "../../Types/index.js";
+import { CONSTANTS } from "../../Constants.js";
+import { TcpNegotiationResponse } from "../../ServerWide/Tcp/TcpNegotiationResponse.js";
 import { randomUUID } from "node:crypto";
 
 type EventTypes = "afterAcknowledgment" | "onEstablishedSubscriptionConnection" | "connectionRetry" | "batch" | "error" | "end" | "unexpectedSubscriptionError";

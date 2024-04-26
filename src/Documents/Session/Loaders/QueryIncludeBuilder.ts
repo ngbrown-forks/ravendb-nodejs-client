@@ -1,10 +1,10 @@
-import { IncludeBuilderBase } from "./IncludeBuilderBase";
-import { IQueryIncludeBuilder } from "./IQueryIncludeBuilder";
-import { DocumentConventions } from "../../Conventions/DocumentConventions";
-import { TypeUtil } from "../../../Utility/TypeUtil";
-import { TimeSeriesRangeType } from "../../Operations/TimeSeries/TimeSeriesRangeType";
-import { TimeValue } from "../../../Primitives/TimeValue";
-import { TIME_SERIES } from "../../../Constants";
+import { IncludeBuilderBase } from "./IncludeBuilderBase.js";
+import { IQueryIncludeBuilder } from "./IQueryIncludeBuilder.js";
+import { DocumentConventions } from "../../Conventions/DocumentConventions.js";
+import { TypeUtil } from "../../../Utility/TypeUtil.js";
+import { TimeSeriesRangeType } from "../../Operations/TimeSeries/TimeSeriesRangeType.js";
+import { TimeValue } from "../../../Primitives/TimeValue.js";
+import { TIME_SERIES } from "../../../Constants.js";
 
 export class QueryIncludeBuilder extends IncludeBuilderBase implements IQueryIncludeBuilder {
 

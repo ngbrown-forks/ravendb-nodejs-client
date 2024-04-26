@@ -1,4 +1,4 @@
-import { ReplicationBatchOptions, IndexBatchOptions } from "../../Session/IAdvancedSessionOperations";
+import { ReplicationBatchOptions, IndexBatchOptions } from "../../Session/IAdvancedSessionOperations.js";
 
 export interface BatchOptions {
     replicationOptions: ReplicationBatchOptions;

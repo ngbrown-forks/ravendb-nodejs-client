@@ -1,5 +1,5 @@
-import { throwError } from "../../Exceptions";
-import { StringUtil } from "../../Utility/StringUtil";
+import { throwError } from "../../Exceptions/index.js";
+import { StringUtil } from "../../Utility/StringUtil.js";
 
 
 export class AdditionalAssembly {

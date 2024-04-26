@@ -7,14 +7,14 @@ import {
     TimeSeriesConfiguration,
     TimeSeriesPolicy,
     TimeSeriesValue
-} from "../../../src";
-import { disposeTestDocumentStore, RavenTestContext, testContext } from "../../Utils/TestUtil";
+} from "../../../src/index.js";
+import { disposeTestDocumentStore, RavenTestContext, testContext } from "../../Utils/TestUtil.js";
 import moment from "moment";
-import { User } from "../../Assets/Entities";
-import { assertThat } from "../../Utils/AssertExtensions";
-import { TimeValue } from "../../../src/Primitives/TimeValue";
-import { StockPrice } from "../TimeSeries/TimeSeriesTypedSession";
-import { delay } from "../../../src/Utility/PromiseUtil";
+import { User } from "../../Assets/Entities.js";
+import { assertThat } from "../../Utils/AssertExtensions.js";
+import { TimeValue } from "../../../src/Primitives/TimeValue.js";
+import { StockPrice } from "../TimeSeries/TimeSeriesTypedSession.js";
+import { delay } from "../../../src/Utility/PromiseUtil.js";
 
 (RavenTestContext.isPullRequest ? describe.skip : describe)("RavenDB_16060Test", function () {
 

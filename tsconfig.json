@@ -2,8 +2,8 @@
   "version": "2.9.2",
   "compilerOptions": {
     "target": "ES2022",
-    "module": "es2022",
-    "moduleResolution": "node",
+    "module": "Node16",
+    "moduleResolution": "Node16",
     "esModuleInterop": false,
     "allowSyntheticDefaultImports": true,
     "declarationMap": true,

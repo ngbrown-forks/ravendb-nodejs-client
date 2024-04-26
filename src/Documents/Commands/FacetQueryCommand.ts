@@ -1,10 +1,10 @@
-import { QueryResult } from "../Queries/QueryResult";
-import { DocumentConventions } from "../Conventions/DocumentConventions";
+import { QueryResult } from "../Queries/QueryResult.js";
+import { DocumentConventions } from "../Conventions/DocumentConventions.js";
 import { Stream } from "node:stream";
-import { QueryCommand } from "./QueryCommand";
-import { RavenCommandResponsePipeline } from "../../Http/RavenCommandResponsePipeline";
-import { ServerCasing, ServerResponse } from "../../Types";
-import { ObjectUtil } from "../../Utility/ObjectUtil";
+import { QueryCommand } from "./QueryCommand.js";
+import { RavenCommandResponsePipeline } from "../../Http/RavenCommandResponsePipeline.js";
+import { ServerCasing, ServerResponse } from "../../Types/index.js";
+import { ObjectUtil } from "../../Utility/ObjectUtil.js";
 
 export class FacetQueryCommand extends QueryCommand {
 

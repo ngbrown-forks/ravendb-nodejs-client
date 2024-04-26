@@ -1,12 +1,12 @@
-import { AbstractJavaScriptIndexCreationTask, SpatialBounds } from "../../../src";
+import { AbstractJavaScriptIndexCreationTask, SpatialBounds } from "../../../src/index.js";
 
 import assert from "node:assert"
-import { testContext, disposeTestDocumentStore } from "../../Utils/TestUtil";
+import { testContext, disposeTestDocumentStore } from "../../Utils/TestUtil.js";
 
 import {
     IDocumentStore
-} from "../../../src";
-import { SpatialField } from "../../../src/Documents/Indexes/StronglyTyped";
+} from "../../../src/index.js";
+import { SpatialField } from "../../../src/Documents/Indexes/StronglyTyped.js";
 
 describe("BoundingBoxIndexTest", function () {
 

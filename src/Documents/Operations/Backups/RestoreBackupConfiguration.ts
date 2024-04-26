@@ -1,4 +1,4 @@
-import { RestoreBackupConfigurationBase } from "./RestoreBackupConfigurationBase";
+import { RestoreBackupConfigurationBase } from "./RestoreBackupConfigurationBase.js";
 
 export interface RestoreBackupConfiguration extends RestoreBackupConfigurationBase {
     backupLocation: string;

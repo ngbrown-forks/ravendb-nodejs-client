@@ -1,5 +1,5 @@
-import { IDocumentSession } from "./Session/IDocumentSession";
-import { IStoreAuthOptions } from "../Auth/AuthOptions";
+import { IDocumentSession } from "./Session/IDocumentSession.js";
+import { IStoreAuthOptions } from "../Auth/AuthOptions.js";
 import {
     SessionBeforeStoreEventArgs,
     SessionAfterSaveChangesEventArgs,
@@ -11,21 +11,21 @@ import {
     AfterConversionToEntityEventArgs,
     FailedRequestEventArgs,
     TopologyUpdatedEventArgs, BeforeRequestEventArgs, SucceedRequestEventArgs
-} from "./Session/SessionEvents";
-import { IDisposable } from "../Types/Contracts";
-import { MaintenanceOperationExecutor } from "./Operations/MaintenanceOperationExecutor";
-import { OperationExecutor } from "./Operations/OperationExecutor";
-import { RequestExecutor } from "../Http/RequestExecutor";
-import { DocumentConventions } from "./Conventions/DocumentConventions";
-import { InMemoryDocumentSessionOperations } from "./Session/InMemoryDocumentSessionOperations";
-import { BulkInsertOperation, BulkInsertOptions } from "./BulkInsertOperation";
-import { IDatabaseChanges } from "./Changes/IDatabaseChanges";
-import { DocumentSubscriptions } from "./Subscriptions/DocumentSubscriptions";
-import { SessionOptions } from "./Session/SessionOptions";
-import { DatabaseSmuggler } from "./Smuggler/DatabaseSmuggler";
-import { IAbstractIndexCreationTask } from "./Indexes/IAbstractIndexCreationTask";
-import { TimeSeriesOperations } from "./TimeSeries/TimeSeriesOperations";
-import { IHiLoIdGenerator } from "./Identity/IHiLoIdGenerator";
+} from "./Session/SessionEvents.js";
+import { IDisposable } from "../Types/Contracts.js";
+import { MaintenanceOperationExecutor } from "./Operations/MaintenanceOperationExecutor.js";
+import { OperationExecutor } from "./Operations/OperationExecutor.js";
+import { RequestExecutor } from "../Http/RequestExecutor.js";
+import { DocumentConventions } from "./Conventions/DocumentConventions.js";
+import { InMemoryDocumentSessionOperations } from "./Session/InMemoryDocumentSessionOperations.js";
+import { BulkInsertOperation, BulkInsertOptions } from "./BulkInsertOperation.js";
+import { IDatabaseChanges } from "./Changes/IDatabaseChanges.js";
+import { DocumentSubscriptions } from "./Subscriptions/DocumentSubscriptions.js";
+import { SessionOptions } from "./Session/SessionOptions.js";
+import { DatabaseSmuggler } from "./Smuggler/DatabaseSmuggler.js";
+import { IAbstractIndexCreationTask } from "./Indexes/IAbstractIndexCreationTask.js";
+import { TimeSeriesOperations } from "./TimeSeries/TimeSeriesOperations.js";
+import { IHiLoIdGenerator } from "./Identity/IHiLoIdGenerator.js";
 
 export interface SessionEventsProxy {
     addSessionListener(eventName: "failedRequest", eventHandler: (eventArgs: FailedRequestEventArgs) => void): this;

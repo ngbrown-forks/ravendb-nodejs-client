@@ -1,16 +1,16 @@
-import { ILazyOperation } from "./ILazyOperation";
-import { ObjectTypeDescriptor } from "../../../../Types";
-import { InMemoryDocumentSessionOperations } from "../../InMemoryDocumentSessionOperations";
-import { GetRequest } from "../../../Commands/MultiGet/GetRequest";
-import { throwError } from "../../../../Exceptions";
-import { QueryResult } from "../../../Queries/QueryResult";
-import { GetResponse } from "../../../Commands/MultiGet/GetResponse";
-import { StatusCodes } from "../../../../Http/StatusCode";
-import { ConditionalLoadResult } from "../../ConditionalLoadResult";
-import { HEADERS } from "../../../../Constants";
-import { QueryCommand } from "../../../Commands/QueryCommand";
-import { stringToReadable } from "../../../../Utility/StreamUtil";
-import { DocumentInfo } from "../../DocumentInfo";
+import { ILazyOperation } from "./ILazyOperation.js";
+import { ObjectTypeDescriptor } from "../../../../Types/index.js";
+import { InMemoryDocumentSessionOperations } from "../../InMemoryDocumentSessionOperations.js";
+import { GetRequest } from "../../../Commands/MultiGet/GetRequest.js";
+import { throwError } from "../../../../Exceptions/index.js";
+import { QueryResult } from "../../../Queries/QueryResult.js";
+import { GetResponse } from "../../../Commands/MultiGet/GetResponse.js";
+import { StatusCodes } from "../../../../Http/StatusCode.js";
+import { ConditionalLoadResult } from "../../ConditionalLoadResult.js";
+import { HEADERS } from "../../../../Constants.js";
+import { QueryCommand } from "../../../Commands/QueryCommand.js";
+import { stringToReadable } from "../../../../Utility/StreamUtil.js";
+import { DocumentInfo } from "../../DocumentInfo.js";
 
 
 export class LazyConditionalLoadOperation<T extends object> implements ILazyOperation {

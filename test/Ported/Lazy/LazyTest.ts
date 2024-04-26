@@ -1,9 +1,9 @@
-import { EntitiesCollectionObject, IDocumentStore } from "../../../src";
-import { disposeTestDocumentStore, testContext } from "../../Utils/TestUtil";
-import { Company, User } from "../../Assets/Entities";
-import { Lazy } from "../../../src/Documents/Lazy";
+import { EntitiesCollectionObject, IDocumentStore } from "../../../src/index.js";
+import { disposeTestDocumentStore, testContext } from "../../Utils/TestUtil.js";
+import { Company, User } from "../../Assets/Entities.js";
+import { Lazy } from "../../../src/Documents/Lazy.js";
 import assert from "node:assert"
-import { assertThat } from "../../Utils/AssertExtensions";
+import { assertThat } from "../../Utils/AssertExtensions.js";
 
 describe("LazyTest", function () {
 

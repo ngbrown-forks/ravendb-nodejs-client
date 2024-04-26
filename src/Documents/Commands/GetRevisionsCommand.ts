@@ -1,13 +1,13 @@
-import { TypeUtil } from "../../Utility/TypeUtil";
-import { HttpRequestParameters } from "../../Primitives/Http";
-import { DateUtil } from "../../Utility/DateUtil";
+import { TypeUtil } from "../../Utility/TypeUtil.js";
+import { HttpRequestParameters } from "../../Primitives/Http.js";
+import { DateUtil } from "../../Utility/DateUtil.js";
 import { Stream } from "node:stream";
-import { GetDocumentsCommand } from "./GetDocumentsCommand";
-import { RavenCommand } from "../../Http/RavenCommand";
-import { IRavenArrayResult } from "../../Types";
-import { DocumentConventions } from "../Conventions/DocumentConventions";
-import { ServerNode } from "../../Http/ServerNode";
-import { throwError } from "../../Exceptions";
+import { GetDocumentsCommand } from "./GetDocumentsCommand.js";
+import { RavenCommand } from "../../Http/RavenCommand.js";
+import { IRavenArrayResult } from "../../Types/index.js";
+import { DocumentConventions } from "../Conventions/DocumentConventions.js";
+import { ServerNode } from "../../Http/ServerNode.js";
+import { throwError } from "../../Exceptions/index.js";
 
 export class GetRevisionsCommand extends RavenCommand<IRavenArrayResult> {
 

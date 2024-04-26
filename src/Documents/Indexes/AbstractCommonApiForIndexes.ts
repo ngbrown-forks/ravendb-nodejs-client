@@ -1,5 +1,5 @@
-import { IndexConfiguration } from "./IndexDefinition";
-import { AdditionalAssembly } from "./AdditionalAssembly";
+import { IndexConfiguration } from "./IndexDefinition.js";
+import { AdditionalAssembly } from "./AdditionalAssembly.js";
 
 export abstract class AbstractCommonApiForIndexes {
     additionalSources: Record<string, string>;

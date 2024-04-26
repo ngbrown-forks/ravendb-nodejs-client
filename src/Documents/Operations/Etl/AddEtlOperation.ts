@@ -1,13 +1,13 @@
-import { ConnectionString } from "./ConnectionString";
-import { IMaintenanceOperation, OperationResultType } from "../OperationAbstractions";
-import { EtlConfiguration } from "./EtlConfiguration";
-import { HttpRequestParameters } from "../../../Primitives/Http";
+import { ConnectionString } from "./ConnectionString.js";
+import { IMaintenanceOperation, OperationResultType } from "../OperationAbstractions.js";
+import { EtlConfiguration } from "./EtlConfiguration.js";
+import { HttpRequestParameters } from "../../../Primitives/Http.js";
 import { Stream } from "node:stream";
-import { DocumentConventions } from "../../Conventions/DocumentConventions";
-import { RavenCommand } from "../../../Http/RavenCommand";
-import { ServerNode } from "../../../Http/ServerNode";
-import { IRaftCommand } from "../../../Http/IRaftCommand";
-import { RaftIdGenerator } from "../../../Utility/RaftIdGenerator";
+import { DocumentConventions } from "../../Conventions/DocumentConventions.js";
+import { RavenCommand } from "../../../Http/RavenCommand.js";
+import { ServerNode } from "../../../Http/ServerNode.js";
+import { IRaftCommand } from "../../../Http/IRaftCommand.js";
+import { RaftIdGenerator } from "../../../Utility/RaftIdGenerator.js";
 
 export class AddEtlOperation<T extends ConnectionString> implements IMaintenanceOperation<AddEtlOperationResult> {
     private readonly _configuration: EtlConfiguration<T>;

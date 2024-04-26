@@ -1,9 +1,9 @@
-import { AbstractJavaScriptIndexCreationTask, IDocumentStore, ResetIndexOperation } from "../../../src";
-import { disposeTestDocumentStore, RavenTestContext, testContext } from "../../Utils/TestUtil";
-import { assertThat, assertThrows } from "../../Utils/AssertExtensions";
-import { AnalyzerDefinition } from "../../../src/Documents/Indexes/Analysis/AnalyzerDefinition";
-import { DeleteServerWideAnalyzerOperation } from "../../../src/ServerWide/Operations/Analyzers/DeleteServerWideAnalyzerOperation";
-import { PutServerWideAnalyzersOperation } from "../../../src/ServerWide/Operations/Analyzers/PutServerWideAnalyzersOperation";
+import { AbstractJavaScriptIndexCreationTask, IDocumentStore, ResetIndexOperation } from "../../../src/index.js";
+import { disposeTestDocumentStore, RavenTestContext, testContext } from "../../Utils/TestUtil.js";
+import { assertThat, assertThrows } from "../../Utils/AssertExtensions.js";
+import { AnalyzerDefinition } from "../../../src/Documents/Indexes/Analysis/AnalyzerDefinition.js";
+import { DeleteServerWideAnalyzerOperation } from "../../../src/ServerWide/Operations/Analyzers/DeleteServerWideAnalyzerOperation.js";
+import { PutServerWideAnalyzersOperation } from "../../../src/ServerWide/Operations/Analyzers/PutServerWideAnalyzersOperation.js";
 
 (RavenTestContext.is60Server ? describe.skip : describe)("RavenDB_16328_AnalyzersTest", function () {
 

@@ -1,5 +1,5 @@
-import { SubscriptionOpeningStrategy } from "./SubscriptionOpeningStrategy";
-import { DocumentType } from "../DocumentAbstractions";
+import { SubscriptionOpeningStrategy } from "./SubscriptionOpeningStrategy.js";
+import { DocumentType } from "../DocumentAbstractions.js";
 
 export interface SubscriptionWorkerOptions<T extends object> {
     subscriptionName?: string;

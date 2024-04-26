@@ -1,12 +1,12 @@
 import { Readable } from "node:stream";
-import { RavenCommand, ResponseDisposeHandling } from "../../Http/RavenCommand";
-import { DocumentConventions } from "../Conventions/DocumentConventions";
-import { IndexQuery, writeIndexQuery } from "../Queries/IndexQuery";
-import { StreamResultResponse } from "./StreamResultResponse";
-import { throwError } from "../../Exceptions";
-import { ServerNode } from "../../Http/ServerNode";
-import { HttpRequestParameters, HttpResponse } from "../../Primitives/Http";
-import { HttpCache } from "../../Http/HttpCache";
+import { RavenCommand, ResponseDisposeHandling } from "../../Http/RavenCommand.js";
+import { DocumentConventions } from "../Conventions/DocumentConventions.js";
+import { IndexQuery, writeIndexQuery } from "../Queries/IndexQuery.js";
+import { StreamResultResponse } from "./StreamResultResponse.js";
+import { throwError } from "../../Exceptions/index.js";
+import { ServerNode } from "../../Http/ServerNode.js";
+import { HttpRequestParameters, HttpResponse } from "../../Primitives/Http.js";
+import { HttpCache } from "../../Http/HttpCache.js";
 
 export class QueryStreamCommand extends RavenCommand<StreamResultResponse> {
 

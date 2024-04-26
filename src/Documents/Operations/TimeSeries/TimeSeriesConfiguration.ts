@@ -1,9 +1,9 @@
-import { CaseInsensitiveKeysMap } from "../../../Primitives/CaseInsensitiveKeysMap";
+import { CaseInsensitiveKeysMap } from "../../../Primitives/CaseInsensitiveKeysMap.js";
 import {
     TimeSeriesCollectionConfiguration
-} from "./TimeSeriesCollectionConfiguration";
-import { TimeUtil } from "../../../Utility/TimeUtil";
-import { TimeSeriesCollectionConfigurationRaw } from "./RawTimeSeriesTypes";
+} from "./TimeSeriesCollectionConfiguration.js";
+import { TimeUtil } from "../../../Utility/TimeUtil.js";
+import { TimeSeriesCollectionConfigurationRaw } from "./RawTimeSeriesTypes.js";
 
 export class TimeSeriesConfiguration {
 

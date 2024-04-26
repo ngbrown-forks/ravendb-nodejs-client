@@ -1,17 +1,17 @@
-import { HttpRequestParameters } from "../../Primitives/Http";
-import { PatchRequest } from "./PatchRequest";
-import { IOperation, OperationResultType } from "./OperationAbstractions";
-import { PatchStatus } from "./PatchStatus";
-import { RavenCommand } from "../../Http/RavenCommand";
-import { throwError } from "../../Exceptions";
-import { IDocumentStore } from "../IDocumentStore";
-import { DocumentConventions } from "../Conventions/DocumentConventions";
-import { HttpCache } from "../../Http/HttpCache";
-import { ServerNode } from "../../Http/ServerNode";
-import { PatchResult } from "./PatchResult";
+import { HttpRequestParameters } from "../../Primitives/Http.js";
+import { PatchRequest } from "./PatchRequest.js";
+import { IOperation, OperationResultType } from "./OperationAbstractions.js";
+import { PatchStatus } from "./PatchStatus.js";
+import { RavenCommand } from "../../Http/RavenCommand.js";
+import { throwError } from "../../Exceptions/index.js";
+import { IDocumentStore } from "../IDocumentStore.js";
+import { DocumentConventions } from "../Conventions/DocumentConventions.js";
+import { HttpCache } from "../../Http/HttpCache.js";
+import { ServerNode } from "../../Http/ServerNode.js";
+import { PatchResult } from "./PatchResult.js";
 import { Stream } from "node:stream";
-import { ObjectUtil } from "../../Utility/ObjectUtil";
-import { ServerCasing, ServerResponse } from "../../Types";
+import { ObjectUtil } from "../../Utility/ObjectUtil.js";
+import { ServerCasing, ServerResponse } from "../../Types/index.js";
 
 export interface Payload {
     patch: PatchRequest;

@@ -1,17 +1,17 @@
-import { JsonSerializer } from "../../../Mapping/Json/Serializer";
-import { IMaintenanceOperation, OperationResultType } from "../OperationAbstractions";
-import { IndexDefinition } from "../../Indexes/IndexDefinition";
-import { throwError } from "../../../Exceptions";
-import { DocumentConventions } from "../../Conventions/DocumentConventions";
-import { RavenCommand } from "../../../Http/RavenCommand";
-import { HttpRequestParameters } from "../../../Primitives/Http";
-import { HeadersBuilder } from "../../../Utility/HttpUtil";
-import { IndexTypeExtensions } from "../../Indexes/IndexTypeExtensions";
+import { JsonSerializer } from "../../../Mapping/Json/Serializer.js";
+import { IMaintenanceOperation, OperationResultType } from "../OperationAbstractions.js";
+import { IndexDefinition } from "../../Indexes/IndexDefinition.js";
+import { throwError } from "../../../Exceptions/index.js";
+import { DocumentConventions } from "../../Conventions/DocumentConventions.js";
+import { RavenCommand } from "../../../Http/RavenCommand.js";
+import { HttpRequestParameters } from "../../../Primitives/Http.js";
+import { HeadersBuilder } from "../../../Utility/HttpUtil.js";
+import { IndexTypeExtensions } from "../../Indexes/IndexTypeExtensions.js";
 import { Stream } from "node:stream";
-import { ServerNode } from "../../../Http/ServerNode";
-import { IRaftCommand } from "../../../Http/IRaftCommand";
-import { RaftIdGenerator } from "../../../Utility/RaftIdGenerator";
-import { ObjectUtil } from "../../../Utility/ObjectUtil";
+import { ServerNode } from "../../../Http/ServerNode.js";
+import { IRaftCommand } from "../../../Http/IRaftCommand.js";
+import { RaftIdGenerator } from "../../../Utility/RaftIdGenerator.js";
+import { ObjectUtil } from "../../../Utility/ObjectUtil.js";
 
 export interface PutIndexResult {
     index: string;

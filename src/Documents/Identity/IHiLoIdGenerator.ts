@@ -1,4 +1,4 @@
-import { ObjectTypeDescriptor } from "../../Types";
+import { ObjectTypeDescriptor } from "../../Types/index.js";
 
 
 export interface IHiLoIdGenerator {

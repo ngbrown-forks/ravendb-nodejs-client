@@ -1,4 +1,4 @@
-import { TimeSeriesRangeResult } from "./TimeSeriesRangeResult";
+import { TimeSeriesRangeResult } from "./TimeSeriesRangeResult.js";
 
 export class TimeSeriesDetails {
     public id: string;

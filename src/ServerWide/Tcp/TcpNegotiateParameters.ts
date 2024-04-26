@@ -1,7 +1,7 @@
-import { AuthorizationInfo, OperationTypes } from "./TcpConnectionHeaderMessage";
+import { AuthorizationInfo, OperationTypes } from "./TcpConnectionHeaderMessage.js";
 import { Socket } from "node:net";
-import { TcpNegotiationResponse } from "./TcpNegotiationResponse";
-import { LicensedFeatures } from "./LicensedFeatures";
+import { TcpNegotiationResponse } from "./TcpNegotiationResponse.js";
+import { LicensedFeatures } from "./LicensedFeatures.js";
 
 export interface TcpNegotiateParameters {
     operation: OperationTypes;

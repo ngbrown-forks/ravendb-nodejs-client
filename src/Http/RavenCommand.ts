@@ -1,22 +1,22 @@
-import { ServerNode } from "./ServerNode";
-import { HttpCache } from "./HttpCache";
-import { StatusCodes } from "./StatusCode";
+import { ServerNode } from "./ServerNode.js";
+import { HttpCache } from "./HttpCache.js";
+import { StatusCodes } from "./StatusCode.js";
 import { Stream, Readable, PassThrough } from "node:stream";
 import { Response, default as fetch, RequestInit } from "node-fetch";
-import { HttpRequestParameters, HttpResponse } from "../Primitives/Http";
-import { getLogger } from "../Utility/LogUtil";
-import { throwError } from "../Exceptions";
-import { IRavenObject } from "../Types/IRavenObject";
-import { getEtagHeader, HeadersBuilder, closeHttpResponse } from "../Utility/HttpUtil";
-import { TypeInfo } from "../Mapping/ObjectMapper";
-import { JsonSerializer } from "../Mapping/Json/Serializer";
-import { RavenCommandResponsePipeline } from "./RavenCommandResponsePipeline";
-import { DocumentConventions } from "../Documents/Conventions/DocumentConventions";
+import { HttpRequestParameters, HttpResponse } from "../Primitives/Http.js";
+import { getLogger } from "../Utility/LogUtil.js";
+import { throwError } from "../Exceptions/index.js";
+import { IRavenObject } from "../Types/IRavenObject.js";
+import { getEtagHeader, HeadersBuilder, closeHttpResponse } from "../Utility/HttpUtil.js";
+import { TypeInfo } from "../Mapping/ObjectMapper.js";
+import { JsonSerializer } from "../Mapping/Json/Serializer.js";
+import { RavenCommandResponsePipeline } from "./RavenCommandResponsePipeline.js";
+import { DocumentConventions } from "../Documents/Conventions/DocumentConventions.js";
 import { Agent } from "node:http";
-import { ObjectTypeDescriptor } from "../Types";
-import { ReadableWebToNodeStream } from "../Utility/ReadableWebToNodeStream";
-import { LengthUnawareFormData } from "../Utility/LengthUnawareFormData";
-import { ObjectUtil } from "../Utility/ObjectUtil";
+import { ObjectTypeDescriptor } from "../Types/index.js";
+import { ReadableWebToNodeStream } from "../Utility/ReadableWebToNodeStream.js";
+import { LengthUnawareFormData } from "../Utility/LengthUnawareFormData.js";
+import { ObjectUtil } from "../Utility/ObjectUtil.js";
 
 const log = getLogger({ module: "RavenCommand" });
 

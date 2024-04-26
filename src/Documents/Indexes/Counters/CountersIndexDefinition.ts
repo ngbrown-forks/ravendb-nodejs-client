@@ -1,5 +1,5 @@
-import { IndexDefinition } from "../IndexDefinition";
-import { IndexSourceType } from "../IndexSourceType";
+import { IndexDefinition } from "../IndexDefinition.js";
+import { IndexSourceType } from "../IndexSourceType.js";
 
 export class CountersIndexDefinition extends IndexDefinition {
 

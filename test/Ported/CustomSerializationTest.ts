@@ -1,12 +1,12 @@
 import assert from "node:assert";
 import "reflect-metadata";
-import { testContext, disposeTestDocumentStore } from "../Utils/TestUtil";
+import { testContext, disposeTestDocumentStore } from "../Utils/TestUtil.js";
 
-import { DocumentConventions, IDocumentStore, ITypesAwareObjectMapper, ObjectTypeDescriptor } from "../../src";
-import { GetDocumentsCommand } from "../../src/Documents/Commands/GetDocumentsCommand";
-import { TypeInfo } from "../../src/Mapping/ObjectMapper";
+import { DocumentConventions, IDocumentStore, ITypesAwareObjectMapper, ObjectTypeDescriptor } from "../../src/index.js";
+import { GetDocumentsCommand } from "../../src/Documents/Commands/GetDocumentsCommand.js";
+import { TypeInfo } from "../../src/Mapping/ObjectMapper.js";
 import { Transform, Expose, instanceToPlain, plainToInstance, Type } from "class-transformer";
-import { assertThat } from "../Utils/AssertExtensions";
+import { assertThat } from "../Utils/AssertExtensions.js";
 
 class ClassTransformer implements ITypesAwareObjectMapper {
     private _conventions: DocumentConventions;
@@ -188,7 +188,7 @@ export class Money {
     public readonly currency: string;
     public readonly amount: number;
 
-    private constructor(amount: number, currency: string) {
+    constructor(amount: number, currency: string) {
         this.currency = currency;
         this.amount = amount;
     }

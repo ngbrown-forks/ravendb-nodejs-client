@@ -1,12 +1,12 @@
 import assert from "node:assert"
-import { testContext, disposeTestDocumentStore } from "../../Utils/TestUtil";
+import { testContext, disposeTestDocumentStore } from "../../Utils/TestUtil.js";
 
 import {
     IDocumentStore,
     DocumentSession
-} from "../../../src";
-import { User, Person } from "../../Assets/Entities";
-import { GetDocumentsCommand } from "../../../src/Documents/Commands/GetDocumentsCommand";
+} from "../../../src/index.js";
+import { User, Person } from "../../Assets/Entities.js";
+import { GetDocumentsCommand } from "../../../src/Documents/Commands/GetDocumentsCommand.js";
 
 describe("Basic documents test", function () {
 

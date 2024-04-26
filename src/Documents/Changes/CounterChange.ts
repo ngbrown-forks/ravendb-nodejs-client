@@ -1,4 +1,4 @@
-import { DatabaseChange } from "./DatabaseChange";
+import { DatabaseChange } from "./DatabaseChange.js";
 
 export type CounterChangeTypes = "None" | "Put" | "Delete" | "Increment";
 

@@ -1,6 +1,6 @@
-import { DocumentStore, GetCompareExchangeValuesOperation, SessionOptions } from "../../../../src";
-import { ClusterTestContext, RavenTestContext, } from "../../../Utils/TestUtil";
-import { assertThat } from "../../../Utils/AssertExtensions";
+import { DocumentStore, GetCompareExchangeValuesOperation, SessionOptions } from "../../../../src.js";
+import { ClusterTestContext, RavenTestContext, } from "../../../Utils/TestUtil.js";
+import { assertThat } from "../../../Utils/AssertExtensions.js";
 
 (RavenTestContext.isPullRequest ? describe.skip : describe)("AtomicClusterReadWriteTest", function () {
 

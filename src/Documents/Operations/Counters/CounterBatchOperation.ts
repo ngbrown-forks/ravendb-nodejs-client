@@ -1,13 +1,13 @@
-import { IOperation, OperationResultType } from "../OperationAbstractions";
-import { CountersDetail } from "./CountersDetail";
-import { CounterBatch } from "./CounterBatch";
-import { DocumentConventions } from "../../Conventions/DocumentConventions";
-import { IDocumentStore } from "../../IDocumentStore";
-import { HttpCache } from "../../../Http/HttpCache";
-import { RavenCommand } from "../../../Http/RavenCommand";
-import { throwError } from "../../../Exceptions";
-import { ServerNode } from "../../../Http/ServerNode";
-import { HttpRequestParameters } from "../../../Primitives/Http";
+import { IOperation, OperationResultType } from "../OperationAbstractions.js";
+import { CountersDetail } from "./CountersDetail.js";
+import { CounterBatch } from "./CounterBatch.js";
+import { DocumentConventions } from "../../Conventions/DocumentConventions.js";
+import { IDocumentStore } from "../../IDocumentStore.js";
+import { HttpCache } from "../../../Http/HttpCache.js";
+import { RavenCommand } from "../../../Http/RavenCommand.js";
+import { throwError } from "../../../Exceptions/index.js";
+import { ServerNode } from "../../../Http/ServerNode.js";
+import { HttpRequestParameters } from "../../../Primitives/Http.js";
 import { Stream } from "node:stream";
 
 export class CounterBatchOperation implements IOperation<CountersDetail> {

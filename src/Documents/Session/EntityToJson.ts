@@ -1,15 +1,15 @@
-import { InMemoryDocumentSessionOperations } from "./InMemoryDocumentSessionOperations";
-import { DocumentInfo } from "./DocumentInfo";
-import { TypeUtil } from "../../Utility/TypeUtil";
-import { DocumentConventions } from "../Conventions/DocumentConventions";
-import { CONSTANTS } from "../../Constants";
-import { DocumentType } from "../DocumentAbstractions";
-import { ITypesAwareObjectMapper, TypeInfo } from "../../Mapping/ObjectMapper";
-import { throwError } from "../../Exceptions";
-import { SetupDocumentBase } from "../SetupDocumentBase";
-import { MetadataObject } from "./MetadataObject";
-import { ObjectTypeDescriptor } from "../../Types";
-import { Reference } from "../../Utility/Reference";
+import { InMemoryDocumentSessionOperations } from "./InMemoryDocumentSessionOperations.js";
+import { DocumentInfo } from "./DocumentInfo.js";
+import { TypeUtil } from "../../Utility/TypeUtil.js";
+import { DocumentConventions } from "../Conventions/DocumentConventions.js";
+import { CONSTANTS } from "../../Constants.js";
+import { DocumentType } from "../DocumentAbstractions.js";
+import { ITypesAwareObjectMapper, TypeInfo } from "../../Mapping/ObjectMapper.js";
+import { throwError } from "../../Exceptions/index.js";
+import { SetupDocumentBase } from "../SetupDocumentBase.js";
+import { MetadataObject } from "./MetadataObject.js";
+import { ObjectTypeDescriptor } from "../../Types/index.js";
+import { Reference } from "../../Utility/Reference.js";
 
 export class EntityToJson {
 

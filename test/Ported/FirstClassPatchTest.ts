@@ -1,6 +1,6 @@
 import assert from "node:assert"
-import { IDocumentStore, InMemoryDocumentSessionOperations } from "../../src";
-import { disposeTestDocumentStore, testContext } from "../Utils/TestUtil";
+import { IDocumentStore, InMemoryDocumentSessionOperations } from "../../src/index.js";
+import { disposeTestDocumentStore, testContext } from "../Utils/TestUtil.js";
 
 describe("FirstClassPatchTest", function () {
 

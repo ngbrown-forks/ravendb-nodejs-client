@@ -1,11 +1,11 @@
 import assert from "node:assert"
-import { testContext, disposeTestDocumentStore } from "../Utils/TestUtil";
+import { testContext, disposeTestDocumentStore } from "../Utils/TestUtil.js";
 
 import {
     IDocumentStore,
-} from "../../src";
-import { User } from "../Assets/Entities";
-import { GetDocumentsCommand } from "../../src/Documents/Commands/GetDocumentsCommand";
+} from "../../src/index.js";
+import { User } from "../Assets/Entities.js";
+import { GetDocumentsCommand } from "../../src/Documents/Commands/GetDocumentsCommand.js";
 
 describe("CRUD tests", function () {
 

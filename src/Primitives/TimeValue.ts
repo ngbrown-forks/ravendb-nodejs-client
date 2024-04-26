@@ -1,8 +1,8 @@
-import { TimeValueUnit } from "./TimeValueUnit";
-import { throwError } from "../Exceptions";
-import { TypeUtil } from "../Utility/TypeUtil";
-import { TimeValueRaw } from "../Documents/Operations/TimeSeries/RawTimeSeriesTypes";
-import { StringBuilder } from "../Utility/StringBuilder";
+import { TimeValueUnit } from "./TimeValueUnit.js";
+import { throwError } from "../Exceptions/index.js";
+import { TypeUtil } from "../Utility/TypeUtil.js";
+import { TimeValueRaw } from "../Documents/Operations/TimeSeries/RawTimeSeriesTypes.js";
+import { StringBuilder } from "../Utility/StringBuilder.js";
 
 export class TimeValue {
 

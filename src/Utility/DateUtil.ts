@@ -1,5 +1,5 @@
 import moment from "moment";
-import { throwError } from "../Exceptions";
+import { throwError } from "../Exceptions/index.js";
 
 export interface DateUtilOpts {
     withTimezone?: boolean;

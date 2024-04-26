@@ -1,4 +1,4 @@
-import { IOperationResult } from "./IOperationResult";
+import { IOperationResult } from "./IOperationResult.js";
 
 export interface IndexOptimizeResult extends IOperationResult {
     indexName: string;

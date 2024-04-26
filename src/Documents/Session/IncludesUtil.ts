@@ -1,4 +1,4 @@
-import { StringUtil } from "../../Utility/StringUtil";
+import { StringUtil } from "../../Utility/StringUtil.js";
 
 export class IncludesUtil {
 

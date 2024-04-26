@@ -1,7 +1,7 @@
-import { DatabaseRecord, DocumentStore } from "../../../src";
-import { ClusterTestContext, RavenTestContext } from "../../Utils/TestUtil";
-import { User } from "../../Assets/Entities";
-import { assertThat } from "../../Utils/AssertExtensions";
+import { DatabaseRecord, DocumentStore } from "../../../src/index.js";
+import { ClusterTestContext, RavenTestContext } from "../../Utils/TestUtil.js";
+import { User } from "../../Assets/Entities.js";
+import { assertThat } from "../../Utils/AssertExtensions.js";
 
 (RavenTestContext.isPullRequest ? describe.skip : describe)("RDBC_538Test", function () {
 

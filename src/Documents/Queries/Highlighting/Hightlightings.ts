@@ -1,4 +1,4 @@
-import { QueryResultHighlightings } from "../GenericQueryResult";
+import { QueryResultHighlightings } from "../GenericQueryResult.js";
 
 /**
  *  Query highlightings for the documents.

@@ -1,5 +1,5 @@
-import { FacetOptions } from ".";
-import { Field } from "../../../Types";
+import { FacetOptions } from "./index.js";
+import { Field } from "../../../Types/index.js";
 
 export interface IFacetOperations<T> {
     withDisplayName(displayName: string): IFacetOperations<T>;

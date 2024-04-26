@@ -1,5 +1,5 @@
-import { StreamResult } from "../Commands/StreamResult";
-import { StreamQueryStatistics } from "./StreamQueryStatistics";
+import { StreamResult } from "../Commands/StreamResult.js";
+import { StreamQueryStatistics } from "./StreamQueryStatistics.js";
 import { Readable } from "node:stream";
 
 export interface DocumentStreamResultEvents<TEntity extends object> {

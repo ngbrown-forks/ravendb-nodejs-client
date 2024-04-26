@@ -1,13 +1,13 @@
 import assert from "node:assert"
-import { testContext, disposeTestDocumentStore } from "../../Utils/TestUtil";
+import { testContext, disposeTestDocumentStore } from "../../Utils/TestUtil.js";
 
 import {
     IDocumentStore,
     PatchRequest,
     PatchOperation,
     GetCountersOperation,
-} from "../../../src";
-import { User } from "../../Assets/Entities";
+} from "../../../src/index.js";
+import { User } from "../../Assets/Entities.js";
 
 describe("PatchOnCountersTest", function () {
 

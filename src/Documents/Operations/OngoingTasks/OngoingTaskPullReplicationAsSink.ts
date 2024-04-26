@@ -1,5 +1,5 @@
-import { OngoingTask } from "./OngoingTask";
-import { PullReplicationMode } from "../Replication/PullReplicationMode";
+import { OngoingTask } from "./OngoingTask.js";
+import { PullReplicationMode } from "../Replication/PullReplicationMode.js";
 
 
 export interface OngoingTaskPullReplicationAsSink extends OngoingTask {

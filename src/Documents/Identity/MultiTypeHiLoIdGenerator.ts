@@ -1,10 +1,10 @@
-import { HiloIdGenerator } from "./HiloIdGenerator";
-import { acquireSemaphore } from "../../Utility/SemaphoreUtil";
-import { IRavenObject } from "../../Types/IRavenObject";
-import { DocumentStore } from "../DocumentStore";
-import { DocumentConventions } from "../Conventions/DocumentConventions";
-import { DefaultHiLoIdGenerator } from "./DefaultHiLoIdGenerator";
-import { Semaphore } from "../../Utility/Semaphore";
+import { HiloIdGenerator } from "./HiloIdGenerator.js";
+import { acquireSemaphore } from "../../Utility/SemaphoreUtil.js";
+import { IRavenObject } from "../../Types/IRavenObject.js";
+import { DocumentStore } from "../DocumentStore.js";
+import { DocumentConventions } from "../Conventions/DocumentConventions.js";
+import { DefaultHiLoIdGenerator } from "./DefaultHiLoIdGenerator.js";
+import { Semaphore } from "../../Utility/Semaphore.js";
 
 export class MultiTypeHiLoIdGenerator {
     private readonly _sem: Semaphore;

@@ -1,17 +1,17 @@
-import { IndexDefinition, IndexDefinitionBuilder } from "./IndexDefinition";
+import { IndexDefinition, IndexDefinitionBuilder } from "./IndexDefinition.js";
 import {
     IndexingGroupResults,
     IndexingMapDefinition,
     IndexingMapUtils,
     IndexingReduceDefinition, StubMapUtils
-} from "./StronglyTyped";
-import { DocumentType } from "../DocumentAbstractions";
-import { TypeUtil } from "../../Utility/TypeUtil";
-import { throwError } from "../../Exceptions";
-import { StringUtil } from "../../Utility/StringUtil";
-import { DocumentConventions } from "../Conventions/DocumentConventions";
-import { StringBuilder } from "../../Utility/StringBuilder";
-import { BaseJavaScriptIndexCreationTask } from "./BaseJavaScriptIndexCreationTask";
+} from "./StronglyTyped.js";
+import { DocumentType } from "../DocumentAbstractions.js";
+import { TypeUtil } from "../../Utility/TypeUtil.js";
+import { throwError } from "../../Exceptions/index.js";
+import { StringUtil } from "../../Utility/StringUtil.js";
+import { DocumentConventions } from "../Conventions/DocumentConventions.js";
+import { StringBuilder } from "../../Utility/StringBuilder.js";
+import { BaseJavaScriptIndexCreationTask } from "./BaseJavaScriptIndexCreationTask.js";
 
 export class AbstractJavaScriptMultiMapIndexCreationTask<TMapResult extends object = any>
     extends BaseJavaScriptIndexCreationTask<keyof TMapResult & string> {

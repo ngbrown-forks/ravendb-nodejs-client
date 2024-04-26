@@ -1,10 +1,10 @@
-import { GetLogsConfigurationResult } from "./GetLogsConfigurationResult";
-import { HttpRequestParameters } from "../../../Primitives/Http";
+import { GetLogsConfigurationResult } from "./GetLogsConfigurationResult.js";
+import { HttpRequestParameters } from "../../../Primitives/Http.js";
 import { Stream } from "node:stream";
-import { IServerOperation, OperationResultType } from "../../../Documents/Operations/OperationAbstractions";
-import { DocumentConventions } from "../../../Documents/Conventions/DocumentConventions";
-import { RavenCommand } from "../../../Http/RavenCommand";
-import { ServerNode } from "../../../Http/ServerNode";
+import { IServerOperation, OperationResultType } from "../../../Documents/Operations/OperationAbstractions.js";
+import { DocumentConventions } from "../../../Documents/Conventions/DocumentConventions.js";
+import { RavenCommand } from "../../../Http/RavenCommand.js";
+import { ServerNode } from "../../../Http/ServerNode.js";
 
 export class GetLogsConfigurationOperation implements IServerOperation<GetLogsConfigurationResult> {
 

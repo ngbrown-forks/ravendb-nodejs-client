@@ -1,9 +1,9 @@
-import { HttpRequestParameters } from "../../Primitives/Http";
-import { RavenCommand } from "../../Http/RavenCommand";
-import { DocumentConventions } from "../Conventions/DocumentConventions";
-import { IndexQuery, writeIndexQuery } from "../Queries/IndexQuery";
-import { throwError } from "../../Exceptions";
-import { ServerNode } from "../../Http/ServerNode";
+import { HttpRequestParameters } from "../../Primitives/Http.js";
+import { RavenCommand } from "../../Http/RavenCommand.js";
+import { DocumentConventions } from "../Conventions/DocumentConventions.js";
+import { IndexQuery, writeIndexQuery } from "../Queries/IndexQuery.js";
+import { throwError } from "../../Exceptions/index.js";
+import { ServerNode } from "../../Http/ServerNode.js";
 import { Stream } from "node:stream";
 
 export interface ExplainQueryResult {

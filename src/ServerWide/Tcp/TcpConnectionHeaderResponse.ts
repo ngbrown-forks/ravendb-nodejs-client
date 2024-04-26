@@ -1,5 +1,5 @@
-import { TcpConnectionStatus } from "./TcpConnectionStatus";
-import { LicensedFeatures } from "./LicensedFeatures";
+import { TcpConnectionStatus } from "./TcpConnectionStatus.js";
+import { LicensedFeatures } from "./LicensedFeatures.js";
 
 export interface TcpConnectionHeaderResponse {
     status: TcpConnectionStatus;

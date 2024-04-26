@@ -1,7 +1,7 @@
-import { disposeTestDocumentStore, testContext } from "../../../Utils/TestUtil";
-import { IDocumentStore } from "../../../../src";
-import { GetBuildNumberOperation } from "../../../../src/ServerWide/Operations/GetBuildNumberOperation";
-import { assertThat } from "../../../Utils/AssertExtensions";
+import { disposeTestDocumentStore, testContext } from "../../../Utils/TestUtil.js";
+import { IDocumentStore } from "../../../../src.js";
+import { GetBuildNumberOperation } from "../../../../src/ServerWide/Operations/GetBuildNumberOperation.js";
+import { assertThat } from "../../../Utils/AssertExtensions.js";
 
 describe("CanGetBuildNumberTest", function () {
 

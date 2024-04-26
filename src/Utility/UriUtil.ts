@@ -1,4 +1,4 @@
-import { throwError } from "../Exceptions";
+import { throwError } from "../Exceptions/index.js";
 import { parse } from "node:url";
 
 export function isValidUri(uriString: string): boolean {

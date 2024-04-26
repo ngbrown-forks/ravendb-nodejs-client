@@ -1,11 +1,11 @@
-import { IDocumentStore } from "../../../src/Documents/IDocumentStore";
-import { disposeTestDocumentStore, testContext } from "../../Utils/TestUtil";
-import { GetLogsConfigurationOperation } from "../../../src/ServerWide/Operations/Logs/GetLogsConfigurationOperation";
-import { LogMode } from "../../../src/ServerWide/Operations/Logs/LogMode";
-import { throwError } from "../../../src/Exceptions/index";
-import { SetLogsConfigurationOperation } from "../../../src/ServerWide/Operations/Logs/SetLogsConfigurationOperation";
-import { TimeUtil } from "../../../src/Utility/TimeUtil";
-import { assertThat } from "../../Utils/AssertExtensions";
+import { IDocumentStore } from "../../../src/Documents/IDocumentStore.js";
+import { disposeTestDocumentStore, testContext } from "../../Utils/TestUtil.js";
+import { GetLogsConfigurationOperation } from "../../../src/ServerWide/Operations/Logs/GetLogsConfigurationOperation.js";
+import { LogMode } from "../../../src/ServerWide/Operations/Logs/LogMode.js";
+import { throwError } from "../../../src/Exceptions/index.js";
+import { SetLogsConfigurationOperation } from "../../../src/ServerWide/Operations/Logs/SetLogsConfigurationOperation.js";
+import { TimeUtil } from "../../../src/Utility/TimeUtil.js";
+import { assertThat } from "../../Utils/AssertExtensions.js";
 
 describe("RavenDB_11440", function () {
 

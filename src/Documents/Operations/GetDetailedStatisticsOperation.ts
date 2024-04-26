@@ -1,9 +1,9 @@
-import { IMaintenanceOperation, OperationResultType } from "./OperationAbstractions";
-import { DetailedDatabaseStatistics } from "./DetailedDatabaseStatistics";
-import { RavenCommand } from "../../Http/RavenCommand";
-import { DocumentConventions } from "../Conventions/DocumentConventions";
-import { ServerNode } from "../../Http/ServerNode";
-import { HttpRequestParameters } from "../../Primitives/Http";
+import { IMaintenanceOperation, OperationResultType } from "./OperationAbstractions.js";
+import { DetailedDatabaseStatistics } from "./DetailedDatabaseStatistics.js";
+import { RavenCommand } from "../../Http/RavenCommand.js";
+import { DocumentConventions } from "../Conventions/DocumentConventions.js";
+import { ServerNode } from "../../Http/ServerNode.js";
+import { HttpRequestParameters } from "../../Primitives/Http.js";
 import { Stream } from "node:stream";
 
 export class GetDetailedStatisticsOperation implements IMaintenanceOperation<DetailedDatabaseStatistics> {

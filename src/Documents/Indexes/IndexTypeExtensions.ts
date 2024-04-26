@@ -1,4 +1,4 @@
-import { IndexType } from "./Enums";
+import { IndexType } from "./Enums.js";
 
 export class IndexTypeExtensions {
 

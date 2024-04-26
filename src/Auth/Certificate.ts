@@ -1,6 +1,6 @@
-import { IAuthOptions } from "./AuthOptions";
-import { StringUtil } from "../Utility/StringUtil";
-import { throwError } from "../Exceptions";
+import { IAuthOptions } from "./AuthOptions.js";
+import { StringUtil } from "../Utility/StringUtil.js";
+import { throwError } from "../Exceptions/index.js";
 import { AgentOptions } from "node:https";
 import { ClientOptions } from "ws";
 

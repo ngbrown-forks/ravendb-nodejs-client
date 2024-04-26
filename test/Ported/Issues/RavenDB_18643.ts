@@ -1,7 +1,7 @@
-import { BulkInsertOnProgressEventArgs, IDocumentStore } from "../../../src";
-import { disposeTestDocumentStore, testContext } from "../../Utils/TestUtil";
-import { assertThat } from "../../Utils/AssertExtensions";
-import { delay } from "../../../src/Utility/PromiseUtil";
+import { BulkInsertOnProgressEventArgs, IDocumentStore } from "../../../src/index.js";
+import { disposeTestDocumentStore, testContext } from "../../Utils/TestUtil.js";
+import { assertThat } from "../../Utils/AssertExtensions.js";
+import { delay } from "../../../src/Utility/PromiseUtil.js";
 
 
 describe("RavenDB_18643Test", function () {

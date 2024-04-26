@@ -1,17 +1,17 @@
 import moment from "moment";
-import { User, Event } from "../Assets/Entities";
+import { User, Event } from "../Assets/Entities.js";
 import assert from "node:assert"
-import { testContext, disposeTestDocumentStore } from "../Utils/TestUtil";
+import { testContext, disposeTestDocumentStore } from "../Utils/TestUtil.js";
 
 import {
     IDocumentStore,
     GetCollectionStatisticsOperation,
     GroupByField,
     IDocumentSession, AbstractJavaScriptIndexCreationTask, DocumentQuery
-} from "../../src";
-import { DateUtil } from "../../src/Utility/DateUtil";
-import { TypeUtil } from "../../src/Utility/TypeUtil";
-import { assertThat } from "../Utils/AssertExtensions";
+} from "../../src/index.js";
+import { DateUtil } from "../../src/Utility/DateUtil.js";
+import { TypeUtil } from "../../src/Utility/TypeUtil.js";
+import { assertThat } from "../Utils/AssertExtensions.js";
 
 describe("QueryTest", function () {
 

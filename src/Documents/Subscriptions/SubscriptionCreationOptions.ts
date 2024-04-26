@@ -1,5 +1,5 @@
-import { DocumentType } from "../DocumentAbstractions";
-import { ISubscriptionIncludeBuilder } from "../Session/Loaders/ISubscriptionIncludeBuilder";
+import { DocumentType } from "../DocumentAbstractions.js";
+import { ISubscriptionIncludeBuilder } from "../Session/Loaders/ISubscriptionIncludeBuilder.js";
 
 export interface SubscriptionCreationOptions {
     name?: string;

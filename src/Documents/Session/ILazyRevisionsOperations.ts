@@ -1,8 +1,8 @@
-import { SessionRevisionsMetadataOptions } from "./IRevisionsSessionOperations";
-import { DocumentType } from "../DocumentAbstractions";
-import { Lazy } from "../Lazy";
-import { MetadataAsDictionary } from "../../Mapping/MetadataAsDictionary";
-import { RevisionsCollectionObject } from "../../Types";
+import { SessionRevisionsMetadataOptions } from "./IRevisionsSessionOperations.js";
+import { DocumentType } from "../DocumentAbstractions.js";
+import { Lazy } from "../Lazy.js";
+import { MetadataAsDictionary } from "../../Mapping/MetadataAsDictionary.js";
+import { RevisionsCollectionObject } from "../../Types/index.js";
 
 /**
  * Revisions advanced synchronous Lazy session operations

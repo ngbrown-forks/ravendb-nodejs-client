@@ -1,14 +1,14 @@
-import { InMemoryDocumentSessionOperations } from "../../Session/InMemoryDocumentSessionOperations";
-import { IndexQuery } from "../IndexQuery";
-import { Stopwatch } from "../../../Utility/Stopwatch";
-import { FacetResult } from ".";
-import { QueryCommand } from "../../Commands/QueryCommand";
-import { FacetQueryCommand } from "../../Commands/FacetQueryCommand";
-import { QueryResult } from "../QueryResult";
-import { QueryOperation } from "../../Session/Operations/QueryOperation";
-import { Lazy } from "../../Lazy";
-import { DocumentSession } from "../../Session/DocumentSession";
-import { LazyAggregationQueryOperation } from "../../Session/Operations/Lazy/LazyAggregationQueryOperation";
+import { InMemoryDocumentSessionOperations } from "../../Session/InMemoryDocumentSessionOperations.js";
+import { IndexQuery } from "../IndexQuery.js";
+import { Stopwatch } from "../../../Utility/Stopwatch.js";
+import { FacetResult } from "./index.js";
+import { QueryCommand } from "../../Commands/QueryCommand.js";
+import { FacetQueryCommand } from "../../Commands/FacetQueryCommand.js";
+import { QueryResult } from "../QueryResult.js";
+import { QueryOperation } from "../../Session/Operations/QueryOperation.js";
+import { Lazy } from "../../Lazy.js";
+import { DocumentSession } from "../../Session/DocumentSession.js";
+import { LazyAggregationQueryOperation } from "../../Session/Operations/Lazy/LazyAggregationQueryOperation.js";
 
 export interface FacetResultObject {
     [key: string]: FacetResult;

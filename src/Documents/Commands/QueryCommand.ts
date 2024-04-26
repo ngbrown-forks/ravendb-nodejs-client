@@ -1,20 +1,20 @@
-import { HttpRequestParameters } from "../../Primitives/Http";
-import { RavenCommand } from "../../Http/RavenCommand";
-import { QueryResult } from "../Queries/QueryResult";
-import { DocumentConventions } from "../Conventions/DocumentConventions";
-import { IndexQuery, writeIndexQuery } from "../Queries/IndexQuery";
-import { throwError } from "../../Exceptions";
-import { ServerNode } from "../../Http/ServerNode";
-import { JsonSerializer } from "../../Mapping/Json/Serializer";
+import { HttpRequestParameters } from "../../Primitives/Http.js";
+import { RavenCommand } from "../../Http/RavenCommand.js";
+import { QueryResult } from "../Queries/QueryResult.js";
+import { DocumentConventions } from "../Conventions/DocumentConventions.js";
+import { IndexQuery, writeIndexQuery } from "../Queries/IndexQuery.js";
+import { throwError } from "../../Exceptions/index.js";
+import { ServerNode } from "../../Http/ServerNode.js";
+import { JsonSerializer } from "../../Mapping/Json/Serializer.js";
 import { Stream } from "node:stream";
-import { RavenCommandResponsePipeline } from "../../Http/RavenCommandResponsePipeline";
-import { StringBuilder } from "../../Utility/StringBuilder";
-import { ServerCasing, ServerResponse } from "../../Types";
-import { QueryTimings } from "../Queries/Timings/QueryTimings";
-import { StringUtil } from "../../Utility/StringUtil";
-import { readToEnd, stringToReadable } from "../../Utility/StreamUtil";
-import { ObjectUtil } from "../../Utility/ObjectUtil";
-import { InMemoryDocumentSessionOperations } from "../Session/InMemoryDocumentSessionOperations";
+import { RavenCommandResponsePipeline } from "../../Http/RavenCommandResponsePipeline.js";
+import { StringBuilder } from "../../Utility/StringBuilder.js";
+import { ServerCasing, ServerResponse } from "../../Types/index.js";
+import { QueryTimings } from "../Queries/Timings/QueryTimings.js";
+import { StringUtil } from "../../Utility/StringUtil.js";
+import { readToEnd, stringToReadable } from "../../Utility/StreamUtil.js";
+import { ObjectUtil } from "../../Utility/ObjectUtil.js";
+import { InMemoryDocumentSessionOperations } from "../Session/InMemoryDocumentSessionOperations.js";
 
 export interface QueryCommandOptions {
     metadataOnly?: boolean;

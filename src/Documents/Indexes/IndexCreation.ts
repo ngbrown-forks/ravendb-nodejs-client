@@ -1,9 +1,9 @@
-import { getLogger } from "../../Utility/LogUtil";
-import { IDocumentStore } from "../IDocumentStore";
-import { DocumentConventions } from "../Conventions/DocumentConventions";
-import { PutIndexesOperation } from "../Operations/Indexes/PutIndexesOperation";
-import { IndexDefinition } from "./IndexDefinition";
-import { IAbstractIndexCreationTask } from "./IAbstractIndexCreationTask";
+import { getLogger } from "../../Utility/LogUtil.js";
+import { IDocumentStore } from "../IDocumentStore.js";
+import { DocumentConventions } from "../Conventions/DocumentConventions.js";
+import { PutIndexesOperation } from "../Operations/Indexes/PutIndexesOperation.js";
+import { IndexDefinition } from "./IndexDefinition.js";
+import { IAbstractIndexCreationTask } from "./IAbstractIndexCreationTask.js";
 
 const log = getLogger({ module: "DocumentStore" });
 

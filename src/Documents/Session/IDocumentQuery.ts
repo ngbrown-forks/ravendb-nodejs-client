@@ -1,25 +1,25 @@
-import { IDocumentQueryBaseSingle } from "./IDocumentQueryBaseSingle";
-import { IAggregationDocumentQuery } from "../Queries/Facets/IAggregationDocumentQuery";
-import { IEnumerableQuery } from "./IEnumerableQuery";
-import { QueryResult } from "../Queries/QueryResult";
-import { DocumentType } from "../DocumentAbstractions";
-import { QueryData } from "../Queries/QueryData";
-import { GroupBy } from "../Queries/GroupBy";
-import { IDocumentQueryBase } from "./IDocumentQueryBase";
-import { IGroupByDocumentQuery } from "./IGroupByDocumentQuery";
-import { IFacetBuilder } from "../Queries/Facets/IFacetBuilder";
-import { FacetBase } from "../Queries/Facets/FacetBase";
-import { IMoreLikeThisBuilderForDocumentQuery } from "../Queries/MoreLikeThis/IMoreLikeThisBuilderForDocumentQuery";
-import { MoreLikeThisBase } from "../Queries/MoreLikeThis/MoreLikeThisBase";
-import { ISuggestionBuilder } from "../Queries/Suggestions/ISuggestionBuilder";
-import { ISuggestionDocumentQuery } from "../Queries/Suggestions/ISuggestionDocumentQuery";
-import { SuggestionBase } from "../Queries/Suggestions/SuggestionBase";
-import { ITimeSeriesQueryBuilder } from "../Queries/TimeSeries/ITimeSeriesQueryBuilder";
-import { TimeSeriesAggregationResult } from "../Queries/TimeSeries/TimeSeriesAggregationResult";
-import { TimeSeriesRawResult } from "../Queries/TimeSeries/TimeSeriesRawResult";
-import { Field } from "../../Types";
-import { ProjectionBehavior } from "../Queries/ProjectionBehavior";
-import { IFilterFactory } from "../Queries/IFilterFactory";
+import { IDocumentQueryBaseSingle } from "./IDocumentQueryBaseSingle.js";
+import { IAggregationDocumentQuery } from "../Queries/Facets/IAggregationDocumentQuery.js";
+import { IEnumerableQuery } from "./IEnumerableQuery.js";
+import { QueryResult } from "../Queries/QueryResult.js";
+import { DocumentType } from "../DocumentAbstractions.js";
+import { QueryData } from "../Queries/QueryData.js";
+import { GroupBy } from "../Queries/GroupBy.js";
+import { IDocumentQueryBase } from "./IDocumentQueryBase.js";
+import { IGroupByDocumentQuery } from "./IGroupByDocumentQuery.js";
+import { IFacetBuilder } from "../Queries/Facets/IFacetBuilder.js";
+import { FacetBase } from "../Queries/Facets/FacetBase.js";
+import { IMoreLikeThisBuilderForDocumentQuery } from "../Queries/MoreLikeThis/IMoreLikeThisBuilderForDocumentQuery.js";
+import { MoreLikeThisBase } from "../Queries/MoreLikeThis/MoreLikeThisBase.js";
+import { ISuggestionBuilder } from "../Queries/Suggestions/ISuggestionBuilder.js";
+import { ISuggestionDocumentQuery } from "../Queries/Suggestions/ISuggestionDocumentQuery.js";
+import { SuggestionBase } from "../Queries/Suggestions/SuggestionBase.js";
+import { ITimeSeriesQueryBuilder } from "../Queries/TimeSeries/ITimeSeriesQueryBuilder.js";
+import { TimeSeriesAggregationResult } from "../Queries/TimeSeries/TimeSeriesAggregationResult.js";
+import { TimeSeriesRawResult } from "../Queries/TimeSeries/TimeSeriesRawResult.js";
+import { Field } from "../../Types/index.js";
+import { ProjectionBehavior } from "../Queries/ProjectionBehavior.js";
+import { IFilterFactory } from "../Queries/IFilterFactory.js";
 
 /**
  * A query against a Raven index
@@ -29,12 +29,12 @@ export interface IDocumentQuery<T extends object>
         IDocumentQueryBaseSingle<T>,
         IEnumerableQuery<T> {
 
-    indexName;
+    indexName: string;
 
     /**
      * Whether we should apply distinct operation to the query on the server side
      */
-    isDistinct;
+    isDistinct: boolean;
 
     /**
      * Returns the query result. Accessing this property for the first time will execute the query.

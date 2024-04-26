@@ -1,9 +1,9 @@
 import { Stream } from "node:stream";
-import { RavenCommand } from "../../Http/RavenCommand";
-import { ServerNode } from "../../Http/ServerNode";
-import { Topology } from "../../Http/Topology";
-import { HttpRequestParameters } from "../../Primitives/Http";
-import { ObjectUtil } from "../../Utility/ObjectUtil";
+import { RavenCommand } from "../../Http/RavenCommand.js";
+import { ServerNode } from "../../Http/ServerNode.js";
+import { Topology } from "../../Http/Topology.js";
+import { HttpRequestParameters } from "../../Primitives/Http.js";
+import { ObjectUtil } from "../../Utility/ObjectUtil.js";
 
 interface ServerNodeDto {
     database: string;

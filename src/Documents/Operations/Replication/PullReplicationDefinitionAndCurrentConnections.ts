@@ -1,5 +1,5 @@
-import { PullReplicationDefinition } from "./PullReplicationDefinition";
-import { OngoingTaskPullReplicationAsHub } from "../OngoingTasks/OngoingTaskPullReplicationAsHub";
+import { PullReplicationDefinition } from "./PullReplicationDefinition.js";
+import { OngoingTaskPullReplicationAsHub } from "../OngoingTasks/OngoingTaskPullReplicationAsHub.js";
 
 export interface PullReplicationDefinitionAndCurrentConnections {
     definition: PullReplicationDefinition;

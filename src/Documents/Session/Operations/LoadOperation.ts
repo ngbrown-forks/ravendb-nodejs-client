@@ -1,16 +1,16 @@
-import { InMemoryDocumentSessionOperations } from "../InMemoryDocumentSessionOperations";
-import { getLogger } from "../../../Utility/LogUtil";
-import { DocumentInfo } from "../DocumentInfo";
+import { InMemoryDocumentSessionOperations } from "../InMemoryDocumentSessionOperations.js";
+import { getLogger } from "../../../Utility/LogUtil.js";
+import { DocumentInfo } from "../DocumentInfo.js";
 import {
     GetDocumentsCommand,
     GetDocumentsResult,
     GetDocumentsByIdsCommandOptions
-} from "../../Commands/GetDocumentsCommand";
-import { TypeUtil } from "../../../Utility/TypeUtil";
-import { throwError } from "../../../Exceptions";
-import { ObjectTypeDescriptor, EntitiesCollectionObject } from "../../../Types";
-import { StringUtil } from "../../../Utility/StringUtil";
-import { AbstractTimeSeriesRange } from "../../Operations/TimeSeries/AbstractTimeSeriesRange";
+} from "../../Commands/GetDocumentsCommand.js";
+import { TypeUtil } from "../../../Utility/TypeUtil.js";
+import { throwError } from "../../../Exceptions/index.js";
+import { ObjectTypeDescriptor, EntitiesCollectionObject } from "../../../Types/index.js";
+import { StringUtil } from "../../../Utility/StringUtil.js";
+import { AbstractTimeSeriesRange } from "../../Operations/TimeSeries/AbstractTimeSeriesRange.js";
 
 const log = getLogger({ module: "LoadOperation" });
 

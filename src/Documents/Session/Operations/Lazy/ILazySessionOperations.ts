@@ -1,8 +1,8 @@
-import { ILazyLoaderWithInclude } from "../../Loaders/ILazyLoaderWithInclude";
-import { ObjectTypeDescriptor, EntitiesCollectionObject } from "../../../../Types";
-import { Lazy } from "../../../Lazy";
-import { SessionLoadStartingWithOptions } from "../../IDocumentSession";
-import { ConditionalLoadResult } from "../../ConditionalLoadResult";
+import { ILazyLoaderWithInclude } from "../../Loaders/ILazyLoaderWithInclude.js";
+import { ObjectTypeDescriptor, EntitiesCollectionObject } from "../../../../Types/index.js";
+import { Lazy } from "../../../Lazy.js";
+import { SessionLoadStartingWithOptions } from "../../IDocumentSession.js";
+import { ConditionalLoadResult } from "../../ConditionalLoadResult.js";
 
 /**
  * Specify interface for lazy operation for the session

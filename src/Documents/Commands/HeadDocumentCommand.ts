@@ -1,12 +1,12 @@
-import { StatusCodes } from "../../Http/StatusCode";
-import { HttpRequestParameters, HttpResponse } from "../../Primitives/Http";
-import { ResponseDisposeHandling, RavenCommand } from "../../Http/RavenCommand";
-import { throwError } from "../../Exceptions";
-import { HttpCache } from "../../Http/HttpCache";
-import { getRequiredEtagHeader } from "../../Utility/HttpUtil";
-import { ServerNode } from "../../Http/ServerNode";
+import { StatusCodes } from "../../Http/StatusCode.js";
+import { HttpRequestParameters, HttpResponse } from "../../Primitives/Http.js";
+import { ResponseDisposeHandling, RavenCommand } from "../../Http/RavenCommand.js";
+import { throwError } from "../../Exceptions/index.js";
+import { HttpCache } from "../../Http/HttpCache.js";
+import { getRequiredEtagHeader } from "../../Utility/HttpUtil.js";
+import { ServerNode } from "../../Http/ServerNode.js";
 import { Readable } from "node:stream";
-import { HEADERS } from "../../Constants";
+import { HEADERS } from "../../Constants.js";
 
 export class HeadDocumentCommand extends RavenCommand<string> {
 

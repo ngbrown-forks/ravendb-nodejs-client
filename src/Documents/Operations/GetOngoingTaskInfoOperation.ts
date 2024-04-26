@@ -1,20 +1,20 @@
-import { IMaintenanceOperation, OperationResultType } from "./OperationAbstractions";
-import { OngoingTask } from "./OngoingTasks/OngoingTask";
-import { OngoingTaskType } from "./OngoingTasks/OngoingTaskType";
-import { TypeUtil } from "../../Utility/TypeUtil";
-import { HttpRequestParameters } from "../../Primitives/Http";
+import { IMaintenanceOperation, OperationResultType } from "./OperationAbstractions.js";
+import { OngoingTask } from "./OngoingTasks/OngoingTask.js";
+import { OngoingTaskType } from "./OngoingTasks/OngoingTaskType.js";
+import { TypeUtil } from "../../Utility/TypeUtil.js";
+import { HttpRequestParameters } from "../../Primitives/Http.js";
 import { Stream } from "node:stream";
-import { NestedTypes } from "../../Mapping/ObjectMapper";
-import { DocumentConventions } from "../Conventions/DocumentConventions";
-import { RavenCommand } from "../../Http/RavenCommand";
-import { ServerNode } from "../../Http/ServerNode";
-import { throwError } from "../../Exceptions";
-import { RavenEtlConfiguration } from "./Etl/RavenEtlConfiguration";
-import { SqlEtlConfiguration } from "./Etl/Sql/SqlEtlConfiguration";
-import { OlapEtlConfiguration } from "./Etl/Olap/OlapEtlConfiguration";
-import { ElasticSearchEtlConfiguration } from "./Etl/ElasticSearch/ElasticSearchEtlConfiguration";
-import { QueueEtlConfiguration } from "./Etl/Queue/QueueEtlConfiguration";
-import { Transformation } from "./Etl/Transformation";
+import { NestedTypes } from "../../Mapping/ObjectMapper.js";
+import { DocumentConventions } from "../Conventions/DocumentConventions.js";
+import { RavenCommand } from "../../Http/RavenCommand.js";
+import { ServerNode } from "../../Http/ServerNode.js";
+import { throwError } from "../../Exceptions/index.js";
+import { RavenEtlConfiguration } from "./Etl/RavenEtlConfiguration.js";
+import { SqlEtlConfiguration } from "./Etl/Sql/SqlEtlConfiguration.js";
+import { OlapEtlConfiguration } from "./Etl/Olap/OlapEtlConfiguration.js";
+import { ElasticSearchEtlConfiguration } from "./Etl/ElasticSearch/ElasticSearchEtlConfiguration.js";
+import { QueueEtlConfiguration } from "./Etl/Queue/QueueEtlConfiguration.js";
+import { Transformation } from "./Etl/Transformation.js";
 
 export class GetOngoingTaskInfoOperation implements IMaintenanceOperation<OngoingTask> {
     private readonly _taskName: string;

@@ -1,13 +1,13 @@
-import { testContext, disposeTestDocumentStore } from "../Utils/TestUtil";
+import { testContext, disposeTestDocumentStore } from "../Utils/TestUtil.js";
 
 import {
     IDocumentStore,
-} from "../../src";
+} from "../../src/index.js";
 import assert from "node:assert"
-import { getStringWritable } from "../Utils/Streams";
-import { parseJsonVerbose } from "../Utils/Json";
+import { getStringWritable } from "../Utils/Streams.js";
+import { parseJsonVerbose } from "../Utils/Json.js";
 import { Writable } from "node:stream";
-import { finishedAsync } from "../../src/Utility/StreamUtil";
+import { finishedAsync } from "../../src/Utility/StreamUtil.js";
 
 class Employee {
     public firstName: string;

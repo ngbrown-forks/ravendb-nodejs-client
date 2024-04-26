@@ -1,6 +1,6 @@
-import { InMemoryDocumentSessionOperations } from "../InMemoryDocumentSessionOperations";
-import { GetRequest } from "../../Commands/MultiGet/GetRequest";
-import { MultiGetCommand } from "../../Commands/MultiGet/MultiGetCommand";
+import { InMemoryDocumentSessionOperations } from "../InMemoryDocumentSessionOperations.js";
+import { GetRequest } from "../../Commands/MultiGet/GetRequest.js";
+import { MultiGetCommand } from "../../Commands/MultiGet/MultiGetCommand.js";
 
 export class MultiGetOperation {
     private readonly _session: InMemoryDocumentSessionOperations;

@@ -1,4 +1,4 @@
-import { throwError } from "../../Exceptions";
+import { throwError } from "../../Exceptions/index.js";
 
 // about 4.78 meters at equator, should be good enough 
 // (see: http://unterbahn.com/2009/11/metric-dimensions-of-geohash-partitions-at-the-equator/)

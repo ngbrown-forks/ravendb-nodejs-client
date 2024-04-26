@@ -1,14 +1,14 @@
-import { throwError } from "../../../Exceptions";
-import { HttpRequestParameters } from "../../../Primitives/Http";
-import { RaftIdGenerator } from "../../../Utility/RaftIdGenerator";
-import { DatabaseAccess } from "./DatabaseAccess";
-import { SecurityClearance } from "./SecurityClearance";
-import { IServerOperation, OperationResultType } from "../../../Documents/Operations/OperationAbstractions";
-import { DocumentConventions } from "../../../Documents/Conventions/DocumentConventions";
-import { RavenCommand } from "../../../Http/RavenCommand";
-import { IRaftCommand } from "../../../Http/IRaftCommand";
-import { ServerNode } from "../../../Http/ServerNode";
-import { CertificateDefinition } from "./CertificateDefinition";
+import { throwError } from "../../../Exceptions/index.js";
+import { HttpRequestParameters } from "../../../Primitives/Http.js";
+import { RaftIdGenerator } from "../../../Utility/RaftIdGenerator.js";
+import { DatabaseAccess } from "./DatabaseAccess.js";
+import { SecurityClearance } from "./SecurityClearance.js";
+import { IServerOperation, OperationResultType } from "../../../Documents/Operations/OperationAbstractions.js";
+import { DocumentConventions } from "../../../Documents/Conventions/DocumentConventions.js";
+import { RavenCommand } from "../../../Http/RavenCommand.js";
+import { IRaftCommand } from "../../../Http/IRaftCommand.js";
+import { ServerNode } from "../../../Http/ServerNode.js";
+import { CertificateDefinition } from "./CertificateDefinition.js";
 
 export class EditClientCertificateOperation implements IServerOperation<void> {
     private readonly _thumbprint: string;

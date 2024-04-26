@@ -1,11 +1,11 @@
 import assert from "node:assert"
-import { testContext, disposeTestDocumentStore, RavenTestContext } from "../Utils/TestUtil";
+import { testContext, disposeTestDocumentStore, RavenTestContext } from "../Utils/TestUtil.js";
 
 import {
     IDocumentStore,
-} from "../../src";
-import { Company } from "../Assets/Entities";
-import { delay } from "../../src/Utility/PromiseUtil";
+} from "../../src/index.js";
+import { Company } from "../Assets/Entities.js";
+import { delay } from "../../src/Utility/PromiseUtil.js";
 
 (RavenTestContext.isPullRequest ? describe.skip : describe)("RavenDB_11770Test", function () {
 

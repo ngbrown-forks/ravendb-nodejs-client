@@ -1,4 +1,4 @@
-import { IMetadataDictionary } from "../../Session/IMetadataDictionary";
+import { IMetadataDictionary } from "../../Session/IMetadataDictionary.js";
 
 export interface ICompareExchangeValue {
     key: string;

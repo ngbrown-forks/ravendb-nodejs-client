@@ -1,9 +1,9 @@
-import { ServerNode } from "../../Http/ServerNode";
-import { HttpRequestParameters } from "../../Primitives/Http";
-import { RavenCommand, IRavenResponse } from "../../Http/RavenCommand";
-import { IMaintenanceOperation, OperationResultType } from "./OperationAbstractions";
+import { ServerNode } from "../../Http/ServerNode.js";
+import { HttpRequestParameters } from "../../Primitives/Http.js";
+import { RavenCommand, IRavenResponse } from "../../Http/RavenCommand.js";
+import { IMaintenanceOperation, OperationResultType } from "./OperationAbstractions.js";
 import { Stream } from "node:stream";
-import { DocumentConventions } from "../Conventions/DocumentConventions";
+import { DocumentConventions } from "../Conventions/DocumentConventions.js";
 
 export class GetOperationStateOperation implements IMaintenanceOperation<IRavenResponse> {
 

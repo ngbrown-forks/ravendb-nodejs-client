@@ -1,11 +1,11 @@
 import assert from "node:assert"
-import { testContext, disposeTestDocumentStore } from "../../Utils/TestUtil";
+import { testContext, disposeTestDocumentStore } from "../../Utils/TestUtil.js";
 
 import {
     IDocumentStore,
     DeleteDocumentCommand,
-} from "../../../src";
-import { User } from "../../Assets/Entities";
+} from "../../../src/index.js";
+import { User } from "../../Assets/Entities.js";
 
 describe("DeleteDocumentCommand", function () {
     

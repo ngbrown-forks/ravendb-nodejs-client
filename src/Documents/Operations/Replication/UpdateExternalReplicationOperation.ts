@@ -1,14 +1,14 @@
-import { HttpRequestParameters } from "../../../Primitives/Http";
-import { IMaintenanceOperation, OperationResultType } from "../OperationAbstractions";
-import { ModifyOngoingTaskResult } from "../../../ServerWide/ModifyOnGoingTaskResult";
-import { ExternalReplication } from "../../Replication/ExternalReplication";
-import { RavenCommand } from "../../../Http/RavenCommand";
-import { DocumentConventions } from "../../Conventions/DocumentConventions";
-import { ServerNode } from "../../../Http/ServerNode";
+import { HttpRequestParameters } from "../../../Primitives/Http.js";
+import { IMaintenanceOperation, OperationResultType } from "../OperationAbstractions.js";
+import { ModifyOngoingTaskResult } from "../../../ServerWide/ModifyOnGoingTaskResult.js";
+import { ExternalReplication } from "../../Replication/ExternalReplication.js";
+import { RavenCommand } from "../../../Http/RavenCommand.js";
+import { DocumentConventions } from "../../Conventions/DocumentConventions.js";
+import { ServerNode } from "../../../Http/ServerNode.js";
 import { Stream } from "node:stream";
-import { IRaftCommand } from "../../../Http/IRaftCommand";
-import { RaftIdGenerator } from "../../../Utility/RaftIdGenerator";
-import { throwError } from "../../../Exceptions";
+import { IRaftCommand } from "../../../Http/IRaftCommand.js";
+import { RaftIdGenerator } from "../../../Utility/RaftIdGenerator.js";
+import { throwError } from "../../../Exceptions/index.js";
 
 export class UpdateExternalReplicationOperation implements IMaintenanceOperation<ModifyOngoingTaskResult> {
 

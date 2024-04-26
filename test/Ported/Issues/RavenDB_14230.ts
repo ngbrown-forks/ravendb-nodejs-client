@@ -1,9 +1,9 @@
-import { disposeTestDocumentStore, testContext } from "../../Utils/TestUtil";
-import { IDocumentStore, TimeSeriesChange } from "../../../src";
-import { AsyncQueue } from "../../Utils/AsyncQueue";
-import { throwError } from "../../../src/Exceptions";
-import { User } from "../../Assets/Entities";
-import { assertThat, assertThrows } from "../../Utils/AssertExtensions";
+import { disposeTestDocumentStore, testContext } from "../../Utils/TestUtil.js";
+import { IDocumentStore, TimeSeriesChange } from "../../../src/index.js";
+import { AsyncQueue } from "../../Utils/AsyncQueue.js";
+import { throwError } from "../../../src/Exceptions.js";
+import { User } from "../../Assets/Entities.js";
+import { assertThat, assertThrows } from "../../Utils/AssertExtensions.js";
 import moment from "moment";
 
 describe("RavenDB_14230", function () {

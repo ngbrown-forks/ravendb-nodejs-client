@@ -1,13 +1,13 @@
-import { TypeUtil } from "./TypeUtil";
-import { DocumentConventions } from "../Documents/Conventions/DocumentConventions";
-import { CONSTANTS } from "../Constants";
-import { MetadataObject } from "../Documents/Session/MetadataObject";
-import { CompareExchangeResultItem } from "../Documents/Operations/CompareExchange/CompareExchangeValueResultParser";
-import { ServerCasing, ServerResponse } from "../Types";
-import { TimeSeriesRangeResult } from "../Documents/Operations/TimeSeries/TimeSeriesRangeResult";
-import { TimeSeriesEntry } from "../Documents/Session/TimeSeries/TimeSeriesEntry";
-import { CounterDetail } from "../Documents/Operations/Counters/CounterDetail";
-import { AttachmentDetails } from "../Documents/Attachments";
+import { TypeUtil } from "./TypeUtil.js";
+import { DocumentConventions } from "../Documents/Conventions/DocumentConventions.js";
+import { CONSTANTS } from "../Constants.js";
+import { MetadataObject } from "../Documents/Session/MetadataObject.js";
+import { CompareExchangeResultItem } from "../Documents/Operations/CompareExchange/CompareExchangeValueResultParser.js";
+import { ServerCasing, ServerResponse } from "../Types/index.js";
+import { TimeSeriesRangeResult } from "../Documents/Operations/TimeSeries/TimeSeriesRangeResult.js";
+import { TimeSeriesEntry } from "../Documents/Session/TimeSeries/TimeSeriesEntry.js";
+import { CounterDetail } from "../Documents/Operations/Counters/CounterDetail.js";
+import { AttachmentDetails } from "../Documents/Attachments/index.js";
 
 function iden(x, locale) {
     return x;

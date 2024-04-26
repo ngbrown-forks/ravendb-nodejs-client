@@ -1,12 +1,12 @@
-import {ClusterTestContext, disposeTestDocumentStore, RavenTestContext} from "../Utils/TestUtil";
+import {ClusterTestContext, disposeTestDocumentStore, RavenTestContext} from "../Utils/TestUtil.js";
 import assert from "node:assert"
-import {assertThat} from "../Utils/AssertExtensions";
+import {assertThat} from "../Utils/AssertExtensions.js";
 import {
     AddDatabaseNodeOperation,
     CreateDatabaseOperation, DocumentStore,
     getAllNodesFromTopology,
     IDocumentStore
-} from "../../src";
+} from "../../src/index.js";
 
 (RavenTestContext.isPullRequest ? describe.skip : describe)("RDBC-658", function () {
 

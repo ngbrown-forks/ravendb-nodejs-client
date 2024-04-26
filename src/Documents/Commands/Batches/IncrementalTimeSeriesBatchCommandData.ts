@@ -1,6 +1,6 @@
-import { CommandType } from "../CommandData";
-import { TimeSeriesCommandData } from "./TimeSeriesCommandData";
-import { IncrementOperation } from "../../Operations/TimeSeries/TimeSeriesOperation";
+import { CommandType } from "../CommandData.js";
+import { TimeSeriesCommandData } from "./TimeSeriesCommandData.js";
+import { IncrementOperation } from "../../Operations/TimeSeries/TimeSeriesOperation.js";
 
 
 export class IncrementalTimeSeriesBatchCommandData extends TimeSeriesCommandData {

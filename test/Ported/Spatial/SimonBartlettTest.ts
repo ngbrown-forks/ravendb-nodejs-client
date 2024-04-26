@@ -1,12 +1,12 @@
 import assert from "node:assert"
-import { testContext, disposeTestDocumentStore } from "../../Utils/TestUtil";
+import { testContext, disposeTestDocumentStore } from "../../Utils/TestUtil.js";
 
 import {
     AbstractJavaScriptIndexCreationTask,
     IDocumentStore,
     SpatialOptions,
-} from "../../../src";
-import { SpatialField } from "../../../src/Documents/Indexes/StronglyTyped";
+} from "../../../src/index.js";
+import { SpatialField } from "../../../src/Documents/Indexes/StronglyTyped.js";
 
 describe("SimonBartlettTest", function () {
 

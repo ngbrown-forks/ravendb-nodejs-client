@@ -1,8 +1,8 @@
-import { ILoaderWithInclude } from "./ILoaderWithInclude";
-import { IDocumentSessionImpl } from "../IDocumentSession";
-import { DocumentType } from "../../DocumentAbstractions";
-import { TypeUtil } from "../../../Utility/TypeUtil";
-import { EntitiesCollectionObject } from "../../../Types";
+import { ILoaderWithInclude } from "./ILoaderWithInclude.js";
+import { IDocumentSessionImpl } from "../IDocumentSession.js";
+import { DocumentType } from "../../DocumentAbstractions.js";
+import { TypeUtil } from "../../../Utility/TypeUtil.js";
+import { EntitiesCollectionObject } from "../../../Types/index.js";
 
 /**
  * Fluent implementation for specifying include paths

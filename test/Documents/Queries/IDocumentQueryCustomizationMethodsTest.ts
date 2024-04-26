@@ -1,5 +1,5 @@
-import {AbstractJavaScriptIndexCreationTask, IDocumentStore, IndexQuery } from "../../../src";
-import { disposeTestDocumentStore, testContext } from "../../Utils/TestUtil";
+import {AbstractJavaScriptIndexCreationTask, IDocumentStore, IndexQuery } from "../../../src/index.js";
+import { disposeTestDocumentStore, testContext } from "../../Utils/TestUtil.js";
 import assert from "node:assert"
 
 describe("IDocumentQueryCustomizationMethodsTest", function () {

@@ -1,4 +1,4 @@
-import { IMoreLikeThisOperations } from "./IMoreLikeThisOperations";
+import { IMoreLikeThisOperations } from "./IMoreLikeThisOperations.js";
 
 export interface IMoreLikeThisBuilderBase<T extends object> {
     usingAnyDocument(): IMoreLikeThisOperations<T>;

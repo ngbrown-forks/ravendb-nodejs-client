@@ -1,19 +1,19 @@
-import { CompareExchangeValue } from "./CompareExchangeValue";
-import { ICompareExchangeValue } from "./ICompareExchangeValue";
-import { CompareExchangeValueState } from "./CompareExchangeValueState";
-import { throwError } from "../../../Exceptions";
-import { TypeUtil } from "../../../Utility/TypeUtil";
-import { CompareExchangeResultClass, EntityConstructor } from "../../../Types";
-import { CompareExchangeValueJsonConverter } from "./CompareExchangeValueJsonConverter";
-import { COMPARE_EXCHANGE, CONSTANTS } from "../../../Constants";
-import { StringUtil } from "../../../Utility/StringUtil";
-import { DocumentConventions } from "../../Conventions/DocumentConventions";
-import { EntityToJson } from "../../Session/EntityToJson";
-import { ICommandData } from "../../Commands/CommandData";
-import { PutCompareExchangeCommandData } from "../../Commands/Batches/PutCompareExchangeCommandData";
-import { DeleteCompareExchangeCommandData } from "../../Commands/Batches/DeleteCompareExchangeCommandData";
-import { ITypesAwareObjectMapper } from "../../../Mapping/ObjectMapper";
-import { IMetadataDictionary } from "../../Session/IMetadataDictionary";
+import { CompareExchangeValue } from "./CompareExchangeValue.js";
+import { ICompareExchangeValue } from "./ICompareExchangeValue.js";
+import { CompareExchangeValueState } from "./CompareExchangeValueState.js";
+import { throwError } from "../../../Exceptions/index.js";
+import { TypeUtil } from "../../../Utility/TypeUtil.js";
+import { CompareExchangeResultClass, EntityConstructor } from "../../../Types/index.js";
+import { CompareExchangeValueJsonConverter } from "./CompareExchangeValueJsonConverter.js";
+import { COMPARE_EXCHANGE, CONSTANTS } from "../../../Constants.js";
+import { StringUtil } from "../../../Utility/StringUtil.js";
+import { DocumentConventions } from "../../Conventions/DocumentConventions.js";
+import { EntityToJson } from "../../Session/EntityToJson.js";
+import { ICommandData } from "../../Commands/CommandData.js";
+import { PutCompareExchangeCommandData } from "../../Commands/Batches/PutCompareExchangeCommandData.js";
+import { DeleteCompareExchangeCommandData } from "../../Commands/Batches/DeleteCompareExchangeCommandData.js";
+import { ITypesAwareObjectMapper } from "../../../Mapping/ObjectMapper.js";
+import { IMetadataDictionary } from "../../Session/IMetadataDictionary.js";
 
 export class CompareExchangeSessionValue {
     private readonly _key: string;

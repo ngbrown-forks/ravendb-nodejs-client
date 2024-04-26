@@ -1,13 +1,13 @@
-import { IMaintenanceOperation, OperationResultType } from "../OperationAbstractions";
-import { ClientConfiguration } from "./ClientConfiguration";
-import { throwError } from "../../../Exceptions";
-import { RavenCommand, RavenCommandResponseType } from "../../../Http/RavenCommand";
-import { HttpRequestParameters } from "../../../Primitives/Http";
-import { ServerNode } from "../../../Http/ServerNode";
-import { HeadersBuilder } from "../../../Utility/HttpUtil";
-import { DocumentConventions } from "../../Conventions/DocumentConventions";
-import { IRaftCommand } from "../../../Http/IRaftCommand";
-import { RaftIdGenerator } from "../../../Utility/RaftIdGenerator";
+import { IMaintenanceOperation, OperationResultType } from "../OperationAbstractions.js";
+import { ClientConfiguration } from "./ClientConfiguration.js";
+import { throwError } from "../../../Exceptions/index.js";
+import { RavenCommand, RavenCommandResponseType } from "../../../Http/RavenCommand.js";
+import { HttpRequestParameters } from "../../../Primitives/Http.js";
+import { ServerNode } from "../../../Http/ServerNode.js";
+import { HeadersBuilder } from "../../../Utility/HttpUtil.js";
+import { DocumentConventions } from "../../Conventions/DocumentConventions.js";
+import { IRaftCommand } from "../../../Http/IRaftCommand.js";
+import { RaftIdGenerator } from "../../../Utility/RaftIdGenerator.js";
 
 export class PutClientConfigurationOperation implements IMaintenanceOperation<void> {
     private readonly _configuration: ClientConfiguration;

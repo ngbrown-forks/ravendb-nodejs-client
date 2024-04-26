@@ -1,13 +1,13 @@
-import { IServerOperation, OperationResultType } from "../../Documents/Operations/OperationAbstractions";
-import { ModifyDatabaseTopologyResult } from "./ModifyDatabaseTopologyResult";
-import { DatabaseTopology } from "./index";
-import { throwError } from "../../Exceptions";
-import { DocumentConventions } from "../../Documents/Conventions/DocumentConventions";
-import { RavenCommand } from "../../Http/RavenCommand";
-import { IRaftCommand } from "../../Http/IRaftCommand";
-import { ServerNode } from "../../Http/ServerNode";
-import { HttpRequestParameters } from "../../Primitives/Http";
-import { RaftIdGenerator } from "../../Utility/RaftIdGenerator";
+import { IServerOperation, OperationResultType } from "../../Documents/Operations/OperationAbstractions.js";
+import { ModifyDatabaseTopologyResult } from "./ModifyDatabaseTopologyResult.js";
+import { DatabaseTopology } from "./index.js";
+import { throwError } from "../../Exceptions/index.js";
+import { DocumentConventions } from "../../Documents/Conventions/DocumentConventions.js";
+import { RavenCommand } from "../../Http/RavenCommand.js";
+import { IRaftCommand } from "../../Http/IRaftCommand.js";
+import { ServerNode } from "../../Http/ServerNode.js";
+import { HttpRequestParameters } from "../../Primitives/Http.js";
+import { RaftIdGenerator } from "../../Utility/RaftIdGenerator.js";
 import { Stream } from "node:stream";
 
 export class ModifyDatabaseTopologyOperation implements IServerOperation<ModifyDatabaseTopologyResult> {

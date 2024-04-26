@@ -1,6 +1,6 @@
-import { QueryToken } from "./QueryToken";
-import { StringUtil } from "../../../Utility/StringUtil";
-import { StringBuilder } from "../../../Utility/StringBuilder";
+import { QueryToken } from "./QueryToken.js";
+import { StringUtil } from "../../../Utility/StringUtil.js";
+import { StringBuilder } from "../../../Utility/StringBuilder.js";
 
 export class WithEdgesToken extends QueryToken {
     private readonly _alias: string;

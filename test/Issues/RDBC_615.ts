@@ -1,7 +1,7 @@
-import { AbstractJavaScriptIndexCreationTask, IDocumentStore, PutCompareExchangeValueOperation } from "../../src";
-import { disposeTestDocumentStore, testContext } from "../Utils/TestUtil";
-import { Address, User } from "../Assets/Entities";
-import { assertThat } from "../Utils/AssertExtensions";
+import { AbstractJavaScriptIndexCreationTask, IDocumentStore, PutCompareExchangeValueOperation } from "../../src/index.js";
+import { disposeTestDocumentStore, testContext } from "../Utils/TestUtil.js";
+import { Address, User } from "../Assets/Entities.js";
+import { assertThat } from "../Utils/AssertExtensions.js";
 
 type IndexEntry = {
     name: string;

@@ -1,8 +1,8 @@
 import { Stream, Transform, Writable } from "node:stream";
-import { RavenCommandResponsePipeline } from "../../../Http/RavenCommandResponsePipeline";
-import { DocumentConventions } from "../../../Documents/Conventions/DocumentConventions";
+import { RavenCommandResponsePipeline } from "../../../Http/RavenCommandResponsePipeline.js";
+import { DocumentConventions } from "../../../Documents/Conventions/DocumentConventions.js";
 import JsonlStringer from "stream-json/jsonl/Stringer.js";
-import { ObjectUtil } from "../../../Utility/ObjectUtil";
+import { ObjectUtil } from "../../../Utility/ObjectUtil.js";
 
 export function getDocumentResultsAsObjects(
     conventions: DocumentConventions,

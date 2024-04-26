@@ -1,4 +1,4 @@
-import { RollingIndexState } from "./RollingIndexState";
+import { RollingIndexState } from "./RollingIndexState.js";
 
 export interface RollingIndexDeployment {
     state: RollingIndexState;

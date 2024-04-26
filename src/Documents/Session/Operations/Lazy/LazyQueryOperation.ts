@@ -1,14 +1,14 @@
-import { ILazyOperation } from "./ILazyOperation";
-import { ObjectTypeDescriptor } from "../../../../Types";
-import { QueryResult } from "../../../Queries/QueryResult";
-import { QueryOperation } from "../QueryOperation";
-import { GetRequest } from "../../../Commands/MultiGet/GetRequest";
-import { writeIndexQuery } from "../../../Queries/IndexQuery";
-import { GetResponse } from "../../../Commands/MultiGet/GetResponse";
-import { QueryCommand } from "../../../Commands/QueryCommand";
-import { stringToReadable } from "../../../../Utility/StreamUtil";
-import { QueryEventsEmitter } from "../../QueryEvents";
-import { InMemoryDocumentSessionOperations } from "../../InMemoryDocumentSessionOperations";
+import { ILazyOperation } from "./ILazyOperation.js";
+import { ObjectTypeDescriptor } from "../../../../Types/index.js";
+import { QueryResult } from "../../../Queries/QueryResult.js";
+import { QueryOperation } from "../QueryOperation.js";
+import { GetRequest } from "../../../Commands/MultiGet/GetRequest.js";
+import { writeIndexQuery } from "../../../Queries/IndexQuery.js";
+import { GetResponse } from "../../../Commands/MultiGet/GetResponse.js";
+import { QueryCommand } from "../../../Commands/QueryCommand.js";
+import { stringToReadable } from "../../../../Utility/StreamUtil.js";
+import { QueryEventsEmitter } from "../../QueryEvents.js";
+import { InMemoryDocumentSessionOperations } from "../../InMemoryDocumentSessionOperations.js";
 
 export class LazyQueryOperation<T extends object> implements ILazyOperation {
     private readonly _clazz: ObjectTypeDescriptor<T>;

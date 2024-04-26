@@ -1,6 +1,6 @@
-import { DocumentInfo } from "./DocumentInfo";
-import { CaseInsensitiveKeysMap } from "../../Primitives/CaseInsensitiveKeysMap";
-import { InMemoryDocumentSessionOperations } from "./InMemoryDocumentSessionOperations";
+import { DocumentInfo } from "./DocumentInfo.js";
+import { CaseInsensitiveKeysMap } from "../../Primitives/CaseInsensitiveKeysMap.js";
+import { InMemoryDocumentSessionOperations } from "./InMemoryDocumentSessionOperations.js";
 
 export class DocumentsById {
 

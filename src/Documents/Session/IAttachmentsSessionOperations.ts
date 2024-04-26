@@ -1,5 +1,5 @@
-import { AttachmentResult } from "../Attachments";
-import { IAttachmentsSessionOperationsBase } from "./IAttachmentsSessionOperationsBase";
+import { AttachmentResult } from "../Attachments/index.js";
+import { IAttachmentsSessionOperationsBase } from "./IAttachmentsSessionOperationsBase.js";
 
 export interface IAttachmentsSessionOperations extends IAttachmentsSessionOperationsBase {
     /**

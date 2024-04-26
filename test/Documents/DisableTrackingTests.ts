@@ -1,12 +1,12 @@
 import assert from "node:assert"
-import { testContext, disposeTestDocumentStore } from "../Utils/TestUtil";
+import { testContext, disposeTestDocumentStore } from "../Utils/TestUtil.js";
 
 import {
     IDocumentStore,
     DocumentStore,
-} from "../../src";
-import {Employee} from "../Assets/Orders";
-import {assertThat, assertThrows} from "../Utils/AssertExtensions";
+} from "../../src/index.js";
+import {Employee} from "../Assets/Orders.js";
+import {assertThat, assertThrows} from "../Utils/AssertExtensions.js";
 
 describe("Disable tracking basic tests", function () {
 

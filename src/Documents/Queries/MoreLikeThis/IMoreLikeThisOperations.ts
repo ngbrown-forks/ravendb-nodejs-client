@@ -1,4 +1,4 @@
-import { MoreLikeThisOptions } from "./MoreLikeThisOptions";
+import { MoreLikeThisOptions } from "./MoreLikeThisOptions.js";
 
 export interface IMoreLikeThisOperations<T> {
     withOptions(options: MoreLikeThisOptions): IMoreLikeThisOperations<T>;

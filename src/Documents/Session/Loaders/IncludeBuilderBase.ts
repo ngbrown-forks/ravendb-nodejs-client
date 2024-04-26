@@ -1,16 +1,16 @@
-import { DocumentConventions } from "../../Conventions/DocumentConventions";
-import { CountersByDocId } from "../CounterInternalTypes";
-import { StringUtil } from "../../../Utility/StringUtil";
-import { throwError } from "../../../Exceptions";
-import { CaseInsensitiveKeysMap } from "../../../Primitives/CaseInsensitiveKeysMap";
-import { CaseInsensitiveStringSet } from "../../../Primitives/CaseInsensitiveStringSet";
-import { TimeSeriesRange } from "../../Operations/TimeSeries/TimeSeriesRange";
-import { AbstractTimeSeriesRange } from "../../Operations/TimeSeries/AbstractTimeSeriesRange";
-import { TIME_SERIES } from "../../../Constants";
-import { TimeSeriesRangeType } from "../../Operations/TimeSeries/TimeSeriesRangeType";
-import { TimeValue } from "../../../Primitives/TimeValue";
-import { TimeSeriesTimeRange } from "../../Operations/TimeSeries/TimeSeriesTimeRange";
-import { TimeSeriesCountRange } from "../../Operations/TimeSeries/TimeSeriesCountRange";
+import { DocumentConventions } from "../../Conventions/DocumentConventions.js";
+import { CountersByDocId } from "../CounterInternalTypes.js";
+import { StringUtil } from "../../../Utility/StringUtil.js";
+import { throwError } from "../../../Exceptions/index.js";
+import { CaseInsensitiveKeysMap } from "../../../Primitives/CaseInsensitiveKeysMap.js";
+import { CaseInsensitiveStringSet } from "../../../Primitives/CaseInsensitiveStringSet.js";
+import { TimeSeriesRange } from "../../Operations/TimeSeries/TimeSeriesRange.js";
+import { AbstractTimeSeriesRange } from "../../Operations/TimeSeries/AbstractTimeSeriesRange.js";
+import { TIME_SERIES } from "../../../Constants.js";
+import { TimeSeriesRangeType } from "../../Operations/TimeSeries/TimeSeriesRangeType.js";
+import { TimeValue } from "../../../Primitives/TimeValue.js";
+import { TimeSeriesTimeRange } from "../../Operations/TimeSeries/TimeSeriesTimeRange.js";
+import { TimeSeriesCountRange } from "../../Operations/TimeSeries/TimeSeriesCountRange.js";
 
 export class IncludeBuilderBase {
 

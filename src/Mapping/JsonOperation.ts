@@ -1,8 +1,8 @@
-import { TypeUtil } from "../Utility/TypeUtil";
-import { DocumentInfo } from "../Documents/Session/DocumentInfo";
-import { DocumentsChanges, ChangeType } from "../Documents/Session/DocumentsChanges";
-import { CONSTANTS } from "../Constants";
-import { throwError } from "../Exceptions";
+import { TypeUtil } from "../Utility/TypeUtil.js";
+import { DocumentInfo } from "../Documents/Session/DocumentInfo.js";
+import { DocumentsChanges, ChangeType } from "../Documents/Session/DocumentsChanges.js";
+import { CONSTANTS } from "../Constants.js";
+import { throwError } from "../Exceptions/index.js";
 
 export class JsonOperation {
 

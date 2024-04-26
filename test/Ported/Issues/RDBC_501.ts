@@ -1,7 +1,7 @@
-import { IDocumentStore, TimeSeriesAggregationResult, TimeSeriesValue } from "../../../src";
-import { disposeTestDocumentStore, testContext } from "../../Utils/TestUtil";
+import { IDocumentStore, TimeSeriesAggregationResult, TimeSeriesValue } from "../../../src/index.js";
+import { disposeTestDocumentStore, testContext } from "../../Utils/TestUtil.js";
 import moment from "moment";
-import { assertThat } from "../../Utils/AssertExtensions";
+import { assertThat } from "../../Utils/AssertExtensions.js";
 
 describe("RDBC_501Test", function () {
 

@@ -1,17 +1,17 @@
-import { ClusterTestContext, RavenTestContext } from "../../Utils/TestUtil";
-import { DocumentStore } from "../../../src/Documents/DocumentStore";
-import { NextIdentityForOperation } from "../../../src/Documents/Operations/Identities/NextIdentityForOperation";
-import { assertThat, assertThrows } from "../../Utils/AssertExtensions";
-import { Stopwatch } from "../../../src/Utility/Stopwatch";
-import { DatabaseTopology } from "../../../src/ServerWide/Operations/index";
-import { DatabaseRecord } from "../../../src/ServerWide/index";
-import { DocumentChange } from "../../../src/Documents/Changes/DocumentChange";
-import { User } from "../../Assets/Entities";
-import { GetDatabaseTopologyCommand } from "../../../src/ServerWide/Commands/GetDatabaseTopologyCommand";
-import { IDocumentStore } from "../../../src/Documents/IDocumentStore";
-import { GetDatabaseRecordOperation } from "../../../src/ServerWide/Operations/GetDatabaseRecordOperation";
-import { ReorderDatabaseMembersOperation } from "../../../src/ServerWide/Operations/ReorderDatabaseMembersOperation";
-import { TypeUtil } from "../../../src/Utility/TypeUtil";
+import { ClusterTestContext, RavenTestContext } from "../../Utils/TestUtil.js";
+import { DocumentStore } from "../../../src/Documents/DocumentStore.js";
+import { NextIdentityForOperation } from "../../../src/Documents/Operations/Identities/NextIdentityForOperation.js";
+import { assertThat, assertThrows } from "../../Utils/AssertExtensions.js";
+import { Stopwatch } from "../../../src/Utility/Stopwatch.js";
+import { DatabaseTopology } from "../../../src/ServerWide/Operations/index.js";
+import { DatabaseRecord } from "../../../src/ServerWide/index.js";
+import { DocumentChange } from "../../../src/Documents/Changes/DocumentChange.js";
+import { User } from "../../Assets/Entities.js";
+import { GetDatabaseTopologyCommand } from "../../../src/ServerWide/Commands/GetDatabaseTopologyCommand.js";
+import { IDocumentStore } from "../../../src/Documents/IDocumentStore.js";
+import { GetDatabaseRecordOperation } from "../../../src/ServerWide/Operations/GetDatabaseRecordOperation.js";
+import { ReorderDatabaseMembersOperation } from "../../../src/ServerWide/Operations/ReorderDatabaseMembersOperation.js";
+import { TypeUtil } from "../../../src/Utility/TypeUtil.js";
 
 (RavenTestContext.isPullRequest ? describe.skip : describe)("ClusterOperationTest", function () {
 

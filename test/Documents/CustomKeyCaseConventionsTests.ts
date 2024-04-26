@@ -1,10 +1,10 @@
-import { testContext, disposeTestDocumentStore } from "../Utils/TestUtil";
+import { testContext, disposeTestDocumentStore } from "../Utils/TestUtil.js";
 import assert from "node:assert"
 import DocumentStore, {
     IDocumentStore, PatchCommandData, PatchRequest,
-} from "../../src";
-import { assertThat } from "../Utils/AssertExtensions";
-import { ObjectUtil } from "../../src/Utility/ObjectUtil";
+} from "../../src/index.js";
+import { assertThat } from "../Utils/AssertExtensions.js";
+import { ObjectUtil } from "../../src/Utility/ObjectUtil.js";
 
 describe("With custom key case conventions set", function () {
 

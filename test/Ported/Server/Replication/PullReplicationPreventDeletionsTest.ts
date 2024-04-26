@@ -1,4 +1,4 @@
-import { disposeTestDocumentStore, RavenTestContext, testContext } from "../../../Utils/TestUtil";
+import { disposeTestDocumentStore, RavenTestContext, testContext } from "../../../Utils/TestUtil.js";
 import {
     ConfigureExpirationOperation,
     DocumentStore,
@@ -10,16 +10,16 @@ import {
     PutPullReplicationAsHubOperation,
     RavenConnectionString,
     UpdatePullReplicationAsSinkOperation
-} from "../../../../src";
-import { ReplicationTestContext } from "../../../Utils/ReplicationTestContext";
+} from "../../../../src.js";
+import { ReplicationTestContext } from "../../../Utils/ReplicationTestContext.js";
 import moment from "moment";
-import { GenerateCertificateOperation } from "../../../Infrastructure/GenerateCertificateOperation";
-import { ReplicationHubAccess } from "../../../../src/Documents/Operations/Replication/ReplicationHubAccess";
+import { GenerateCertificateOperation } from "../../../Infrastructure/GenerateCertificateOperation.js";
+import { ReplicationHubAccess } from "../../../../src/Documents/Operations/Replication/ReplicationHubAccess.js";
 import {
     RegisterReplicationHubAccessOperation
-} from "../../../../src/Documents/Operations/Replication/RegisterReplicationHubAccessOperation";
-import { assertThat } from "../../../Utils/AssertExtensions";
-import { delay } from "../../../../src/Utility/PromiseUtil";
+} from "../../../../src/Documents/Operations/Replication/RegisterReplicationHubAccessOperation.js";
+import { assertThat } from "../../../Utils/AssertExtensions.js";
+import { delay } from "../../../../src/Utility/PromiseUtil.js";
 
 (RavenTestContext.isPullRequest ? describe.skip : describe)("PullReplicationTest", function () {
 

@@ -1,6 +1,6 @@
-import { CommandType } from "../CommandData";
-import { AppendOperation, DeleteOperation } from "../../Operations/TimeSeries/TimeSeriesOperation";
-import { TimeSeriesCommandData } from "./TimeSeriesCommandData";
+import { CommandType } from "../CommandData.js";
+import { AppendOperation, DeleteOperation } from "../../Operations/TimeSeries/TimeSeriesOperation.js";
+import { TimeSeriesCommandData } from "./TimeSeriesCommandData.js";
 
 export class TimeSeriesBatchCommandData extends TimeSeriesCommandData {
 

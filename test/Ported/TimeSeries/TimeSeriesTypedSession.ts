@@ -1,26 +1,26 @@
-import { disposeTestDocumentStore, RavenTestContext, testContext } from "../../Utils/TestUtil";
-import { GetDatabaseRecordOperation, IDocumentStore } from "../../../src";
-import { TimeSeriesValue } from "../../../src/Documents/Session/TimeSeries/TimeSeriesValue";
-import { User } from "../../Assets/Entities";
-import { assertThat } from "../../Utils/AssertExtensions";
+import { disposeTestDocumentStore, RavenTestContext, testContext } from "../../Utils/TestUtil.js";
+import { GetDatabaseRecordOperation, IDocumentStore } from "../../../src/index.js";
+import { TimeSeriesValue } from "../../../src/Documents/Session/TimeSeries/TimeSeriesValue.js";
+import { User } from "../../Assets/Entities.js";
+import { assertThat } from "../../Utils/AssertExtensions.js";
 import moment from "moment";
-import { TimeSeriesAggregationResult } from "../../../src/Documents/Queries/TimeSeries/TimeSeriesAggregationResult";
-import { TimeSeriesRawResult } from "../../../src/Documents/Queries/TimeSeries/TimeSeriesRawResult";
-import { RawTimeSeriesPolicy } from "../../../src/Documents/Operations/TimeSeries/RawTimeSeriesPolicy";
-import { TimeValue } from "../../../src/Primitives/TimeValue";
-import { TimeSeriesPolicy } from "../../../src/Documents/Operations/TimeSeries/TimeSeriesPolicy";
-import { TimeSeriesConfiguration } from "../../../src/Documents/Operations/TimeSeries/TimeSeriesConfiguration";
+import { TimeSeriesAggregationResult } from "../../../src/Documents/Queries/TimeSeries/TimeSeriesAggregationResult.js";
+import { TimeSeriesRawResult } from "../../../src/Documents/Queries/TimeSeries/TimeSeriesRawResult.js";
+import { RawTimeSeriesPolicy } from "../../../src/Documents/Operations/TimeSeries/RawTimeSeriesPolicy.js";
+import { TimeValue } from "../../../src/Primitives/TimeValue.js";
+import { TimeSeriesPolicy } from "../../../src/Documents/Operations/TimeSeries/TimeSeriesPolicy.js";
+import { TimeSeriesConfiguration } from "../../../src/Documents/Operations/TimeSeries/TimeSeriesConfiguration.js";
 import {
     TimeSeriesCollectionConfiguration
-} from "../../../src/Documents/Operations/TimeSeries/TimeSeriesCollectionConfiguration";
+} from "../../../src/Documents/Operations/TimeSeries/TimeSeriesCollectionConfiguration.js";
 import {
     ConfigureTimeSeriesOperation
-} from "../../../src/Documents/Operations/TimeSeries/ConfigureTimeSeriesOperation";
-import { delay } from "../../../src/Utility/PromiseUtil";
+} from "../../../src/Documents/Operations/TimeSeries/ConfigureTimeSeriesOperation.js";
+import { delay } from "../../../src/Utility/PromiseUtil.js";
 import {
     ISessionDocumentRollupTypedTimeSeries
-} from "../../../src/Documents/Session/ISessionDocumentRollupTypedTimeSeries";
-import { TypedTimeSeriesRollupEntry } from "../../../src/Documents/Session/TimeSeries/TypedTimeSeriesRollupEntry";
+} from "../../../src/Documents/Session/ISessionDocumentRollupTypedTimeSeries.js";
+import { TypedTimeSeriesRollupEntry } from "../../../src/Documents/Session/TimeSeries/TypedTimeSeriesRollupEntry.js";
 
 (RavenTestContext.isPullRequest ? describe.skip : describe)("TimeSeriesTypedSessionTest", function () {
 

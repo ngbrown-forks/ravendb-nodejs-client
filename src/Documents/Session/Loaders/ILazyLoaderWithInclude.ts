@@ -1,5 +1,5 @@
-import { ObjectTypeDescriptor, EntitiesCollectionObject } from "../../../Types";
-import { Lazy } from "../../Lazy";
+import { ObjectTypeDescriptor, EntitiesCollectionObject } from "../../../Types/index.js";
+import { Lazy } from "../../Lazy.js";
 
 export interface ILazyLoaderWithInclude {
     //TBD expr overrides with expressions + maybe we TInclude, see:

@@ -1,6 +1,6 @@
-import { RangeBuilder } from "./RangeBuilder";
-import { IFacetOperations } from "./IFacetOperations";
-import { Field } from "../../../Types";
+import { RangeBuilder } from "./RangeBuilder.js";
+import { IFacetOperations } from "./IFacetOperations.js";
+import { Field } from "../../../Types/index.js";
 
 export interface IFacetBuilder<T> {
     byRanges(range: RangeBuilder<any>, ...ranges: RangeBuilder<any>[]): IFacetOperations<T>;

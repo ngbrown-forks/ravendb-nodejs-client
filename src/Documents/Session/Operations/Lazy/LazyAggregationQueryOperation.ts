@@ -1,12 +1,12 @@
-import { ILazyOperation } from "./ILazyOperation";
-import { QueryResult } from "../../../Queries/QueryResult";
-import { IndexQuery, writeIndexQuery } from "../../../Queries/IndexQuery";
-import { FacetResultObject, AggregationQueryBase } from "../../../Queries/Facets/AggregationQueryBase";
-import { GetRequest } from "../../../Commands/MultiGet/GetRequest";
-import { GetResponse } from "../../../Commands/MultiGet/GetResponse";
-import { FacetQueryCommand } from "../../../Commands/FacetQueryCommand";
-import { stringToReadable } from "../../../../Utility/StreamUtil";
-import { InMemoryDocumentSessionOperations } from "../../InMemoryDocumentSessionOperations";
+import { ILazyOperation } from "./ILazyOperation.js";
+import { QueryResult } from "../../../Queries/QueryResult.js";
+import { IndexQuery, writeIndexQuery } from "../../../Queries/IndexQuery.js";
+import { FacetResultObject, AggregationQueryBase } from "../../../Queries/Facets/AggregationQueryBase.js";
+import { GetRequest } from "../../../Commands/MultiGet/GetRequest.js";
+import { GetResponse } from "../../../Commands/MultiGet/GetResponse.js";
+import { FacetQueryCommand } from "../../../Commands/FacetQueryCommand.js";
+import { stringToReadable } from "../../../../Utility/StreamUtil.js";
+import { InMemoryDocumentSessionOperations } from "../../InMemoryDocumentSessionOperations.js";
 
 export class LazyAggregationQueryOperation implements ILazyOperation {
 

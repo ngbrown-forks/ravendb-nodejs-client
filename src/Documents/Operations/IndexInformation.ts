@@ -1,5 +1,5 @@
-import { IndexLockMode, IndexPriority, IndexState, IndexType } from "../Indexes/Enums";
-import { IndexSourceType } from "../Indexes/IndexSourceType";
+import { IndexLockMode, IndexPriority, IndexState, IndexType } from "../Indexes/Enums.js";
+import { IndexSourceType } from "../Indexes/IndexSourceType.js";
 
 export interface IndexInformation {
     name: string;

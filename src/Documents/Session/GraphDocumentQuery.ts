@@ -1,19 +1,19 @@
-import { AbstractDocumentQuery } from "./AbstractDocumentQuery";
-import { IGraphDocumentQuery } from "./IGraphDocumentQuery";
-import { DocumentType } from "../DocumentAbstractions";
-import { InMemoryDocumentSessionOperations } from "./InMemoryDocumentSessionOperations";
-import { QueryOperator } from "../Queries/QueryOperator";
-import { QueryStatistics } from "./QueryStatistics";
-import { ValueCallback } from "../../Types/Callbacks";
-import { QueryTimings } from "../Queries/Timings/QueryTimings";
-import { IDocumentQuery } from "./IDocumentQuery";
-import { TypeUtil } from "../../Utility/TypeUtil";
-import { DocumentQuery } from "./DocumentQuery";
-import { IDocumentSession } from "./IDocumentSession";
-import { DocumentQueryOptions } from "./QueryOptions";
-import { WithEdgesToken } from "./Tokens/WithEdgesToken";
-import { throwError } from "../../Exceptions";
-import { WithToken } from "./Tokens/WithToken";
+import { AbstractDocumentQuery } from "./AbstractDocumentQuery.js";
+import { IGraphDocumentQuery } from "./IGraphDocumentQuery.js";
+import { DocumentType } from "../DocumentAbstractions.js";
+import { InMemoryDocumentSessionOperations } from "./InMemoryDocumentSessionOperations.js";
+import { QueryOperator } from "../Queries/QueryOperator.js";
+import { QueryStatistics } from "./QueryStatistics.js";
+import { ValueCallback } from "../../Types/Callbacks.js";
+import { QueryTimings } from "../Queries/Timings/QueryTimings.js";
+import { IDocumentQuery } from "./IDocumentQuery.js";
+import { TypeUtil } from "../../Utility/TypeUtil.js";
+import { DocumentQuery } from "./DocumentQuery.js";
+import { IDocumentSession } from "./IDocumentSession.js";
+import { DocumentQueryOptions } from "./QueryOptions.js";
+import { WithEdgesToken } from "./Tokens/WithEdgesToken.js";
+import { throwError } from "../../Exceptions/index.js";
+import { WithToken } from "./Tokens/WithToken.js";
 
 /**
  * @deprecated Graph API will be removed in next major version of the product.

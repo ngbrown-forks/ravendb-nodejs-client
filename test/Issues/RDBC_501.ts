@@ -1,7 +1,7 @@
-import { IDocumentStore, TimeSeriesAggregationResult, TimeSeriesValue } from "../../src";
-import { disposeTestDocumentStore, testContext } from "../Utils/TestUtil";
+import { IDocumentStore, TimeSeriesAggregationResult, TimeSeriesValue } from "../../src/index.js";
+import { disposeTestDocumentStore, testContext } from "../Utils/TestUtil.js";
 
-import { assertThat } from "../Utils/AssertExtensions";
+import { assertThat } from "../Utils/AssertExtensions.js";
  
 class SymbolPrice {
     open: number;

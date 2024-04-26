@@ -1,15 +1,15 @@
-import { disposeTestDocumentStore, testContext } from "../../Utils/TestUtil";
+import { disposeTestDocumentStore, testContext } from "../../Utils/TestUtil.js";
 import {
     CreateDatabaseOperation,
     DatabaseRecord,
     DeleteDatabasesOperation,
     GetDatabaseRecordOperation,
     IDocumentStore
-} from "../../../src";
-import { ToggleDatabasesStateOperation } from "../../../src/Documents/Operations/ToggleDatabasesStateOperation";
-import { assertThat, assertThrows } from "../../Utils/AssertExtensions";
-import { AddDatabaseNodeOperation } from "../../../src/ServerWide/Operations/AddDatabaseNodeOperation";
-import { Genre } from "../../Assets/Graph";
+} from "../../../src/index.js";
+import { ToggleDatabasesStateOperation } from "../../../src/Documents/Operations/ToggleDatabasesStateOperation.js";
+import { assertThat, assertThrows } from "../../Utils/AssertExtensions.js";
+import { AddDatabaseNodeOperation } from "../../../src/ServerWide/Operations/AddDatabaseNodeOperation.js";
+import { Genre } from "../../Assets/Graph.js";
 
 describe("DatabasesTest", function () {
 

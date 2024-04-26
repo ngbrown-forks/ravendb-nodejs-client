@@ -1,11 +1,11 @@
-import { IDocumentQueryCustomization } from "./IDocumentQueryCustomization";
-import { AbstractDocumentQuery } from "./AbstractDocumentQuery";
-import { QueryOperation } from "./Operations/QueryOperation";
-import { QueryResult } from "../Queries/QueryResult";
-import { IndexQuery } from "../Queries/IndexQuery";
-import { ValueCallback } from "../../Types/Callbacks";
-import { QueryTimings } from "../Queries/Timings/QueryTimings";
-import { ProjectionBehavior } from "../Queries/ProjectionBehavior";
+import { IDocumentQueryCustomization } from "./IDocumentQueryCustomization.js";
+import { AbstractDocumentQuery } from "./AbstractDocumentQuery.js";
+import { QueryOperation } from "./Operations/QueryOperation.js";
+import { QueryResult } from "../Queries/QueryResult.js";
+import { IndexQuery } from "../Queries/IndexQuery.js";
+import { ValueCallback } from "../../Types/Callbacks.js";
+import { QueryTimings } from "../Queries/Timings/QueryTimings.js";
+import { ProjectionBehavior } from "../Queries/ProjectionBehavior.js";
 
 export class DocumentQueryCustomization
     implements IDocumentQueryCustomization {

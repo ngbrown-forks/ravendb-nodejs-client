@@ -1,10 +1,10 @@
-import { ShapeToken } from "./ShapeToken";
-import { QueryToken } from "./QueryToken";
-import { SearchOperator } from "../../Queries/SearchOperator";
-import { throwError } from "../../../Exceptions";
-import { TypeUtil } from "../../../Utility/TypeUtil";
-import { WhereOperator } from "./WhereOperator";
-import { CONSTANTS } from "../../../Constants";
+import { ShapeToken } from "./ShapeToken.js";
+import { QueryToken } from "./QueryToken.js";
+import { SearchOperator } from "../../Queries/SearchOperator.js";
+import { throwError } from "../../../Exceptions/index.js";
+import { TypeUtil } from "../../../Utility/TypeUtil.js";
+import { WhereOperator } from "./WhereOperator.js";
+import { CONSTANTS } from "../../../Constants.js";
 
 export type MethodsType = "CmpXchg";
 

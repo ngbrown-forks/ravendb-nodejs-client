@@ -1,7 +1,7 @@
-import { throwError } from "../../Exceptions";
-import { DetailedReplicationHubAccess } from "../../Documents/Operations/Replication/DetailedReplicationHubAccess";
-import { LicensedFeatures } from "./LicensedFeatures";
-import { TypeUtil } from "../../Utility/TypeUtil";
+import { throwError } from "../../Exceptions/index.js";
+import { DetailedReplicationHubAccess } from "../../Documents/Operations/Replication/DetailedReplicationHubAccess.js";
+import { LicensedFeatures } from "./LicensedFeatures.js";
+import { TypeUtil } from "../../Utility/TypeUtil.js";
 
 export interface TcpConnectionHeaderMessage {
     databaseName: string;

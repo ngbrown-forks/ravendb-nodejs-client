@@ -1,14 +1,14 @@
-import { IMaintenanceOperation, OperationResultType } from "../OperationAbstractions";
-import { ConfigureTimeSeriesOperationResult } from "./ConfigureTimeSeriesOperationResult";
-import { TimeSeriesConfiguration } from "./TimeSeriesConfiguration";
-import { throwError } from "../../../Exceptions";
-import { HttpRequestParameters } from "../../../Primitives/Http";
+import { IMaintenanceOperation, OperationResultType } from "../OperationAbstractions.js";
+import { ConfigureTimeSeriesOperationResult } from "./ConfigureTimeSeriesOperationResult.js";
+import { TimeSeriesConfiguration } from "./TimeSeriesConfiguration.js";
+import { throwError } from "../../../Exceptions/index.js";
+import { HttpRequestParameters } from "../../../Primitives/Http.js";
 import { Stream } from "node:stream";
-import { RaftIdGenerator } from "../../../Utility/RaftIdGenerator";
-import { ServerNode } from "../../../Http/ServerNode";
-import { RavenCommand } from "../../../Http/RavenCommand";
-import { DocumentConventions } from "../../Conventions/DocumentConventions";
-import { IRaftCommand } from "../../../Http/IRaftCommand";
+import { RaftIdGenerator } from "../../../Utility/RaftIdGenerator.js";
+import { ServerNode } from "../../../Http/ServerNode.js";
+import { RavenCommand } from "../../../Http/RavenCommand.js";
+import { DocumentConventions } from "../../Conventions/DocumentConventions.js";
+import { IRaftCommand } from "../../../Http/IRaftCommand.js";
 
 export class ConfigureTimeSeriesOperation implements IMaintenanceOperation<ConfigureTimeSeriesOperationResult> {
     private readonly _configuration: TimeSeriesConfiguration;

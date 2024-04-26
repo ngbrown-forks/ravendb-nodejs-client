@@ -1,5 +1,5 @@
-import { IndexInformation } from "./IndexInformation";
-import { Size } from "../../Utility/SizeUtil";
+import { IndexInformation } from "./IndexInformation.js";
+import { Size } from "../../Utility/SizeUtil.js";
 
 export interface DatabaseStatistics {
     lastDocEtag: number;

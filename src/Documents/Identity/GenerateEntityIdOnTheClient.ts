@@ -1,7 +1,7 @@
-import { DocumentConventions } from "../Conventions/DocumentConventions";
-import { DocumentType } from "../DocumentAbstractions";
-import { throwError } from "../../Exceptions";
-import { TypeUtil } from "../../Utility/TypeUtil";
+import { DocumentConventions } from "../Conventions/DocumentConventions.js";
+import { DocumentType } from "../DocumentAbstractions.js";
+import { throwError } from "../../Exceptions/index.js";
+import { TypeUtil } from "../../Utility/TypeUtil.js";
 
 export class GenerateEntityIdOnTheClient {
 

@@ -1,4 +1,4 @@
-import { testContext, disposeTestDocumentStore } from "../../Utils/TestUtil";
+import { testContext, disposeTestDocumentStore } from "../../Utils/TestUtil.js";
 
 import {
     IDocumentStore,
@@ -7,11 +7,11 @@ import {
     DeleteAttachmentCommandData,
     CopyAttachmentCommandData,
     MoveAttachmentCommandData,
-} from "../../../src";
-import { Company } from "../../Assets/Entities";
-import { assertThat } from "../../Utils/AssertExtensions";
-import { DeleteCommandData } from "../../../src/Documents/Commands/CommandData";
-import { PatchCommandData } from "../../../src/Documents/Commands/Batches/PatchCommandData";
+} from "../../../src/index.js";
+import { Company } from "../../Assets/Entities.js";
+import { assertThat } from "../../Utils/AssertExtensions.js";
+import { DeleteCommandData } from "../../../src/Documents/Commands/CommandData.js";
+import { PatchCommandData } from "../../../src/Documents/Commands/Batches/PatchCommandData.js";
 
 describe("RavenDB-11552", function () {
 

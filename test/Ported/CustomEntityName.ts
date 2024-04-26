@@ -1,6 +1,6 @@
-import { DocumentConventions, ObjectTypeDescriptor } from "../../src";
-import { disposeTestDocumentStore, testContext } from "../Utils/TestUtil";
-import { assertThat } from "../Utils/AssertExtensions";
+import { DocumentConventions, ObjectTypeDescriptor } from "../../src/index.js";
+import { disposeTestDocumentStore, testContext } from "../Utils/TestUtil.js";
+import { assertThat } from "../Utils/AssertExtensions.js";
 
 describe("CustomEntityName", function () {
 

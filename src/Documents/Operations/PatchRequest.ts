@@ -1,4 +1,4 @@
-import { DocumentConventions } from "../Conventions/DocumentConventions";
+import { DocumentConventions } from "../Conventions/DocumentConventions.js";
 
 export class PatchRequest {
     public script: string;

@@ -1,11 +1,11 @@
-import { User } from "../../Assets/Entities";
+import { User } from "../../Assets/Entities.js";
 import assert from "node:assert"
-import { testContext, disposeTestDocumentStore } from "../../Utils/TestUtil";
+import { testContext, disposeTestDocumentStore } from "../../Utils/TestUtil.js";
 
 import {
     IDocumentStore,
-} from "../../../src";
-import { AsyncQueue } from "../../Utils/AsyncQueue";
+} from "../../../src/index.js";
+import { AsyncQueue } from "../../Utils/AsyncQueue.js";
 
 describe("SecuredSubscriptionsBasicTest", function () {
 

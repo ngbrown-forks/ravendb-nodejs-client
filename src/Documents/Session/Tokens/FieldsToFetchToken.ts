@@ -1,5 +1,5 @@
-import { QueryToken } from "./QueryToken";
-import { throwError } from "../../../Exceptions";
+import { QueryToken } from "./QueryToken.js";
+import { throwError } from "../../../Exceptions/index.js";
 
 export class FieldsToFetchToken extends QueryToken {
 

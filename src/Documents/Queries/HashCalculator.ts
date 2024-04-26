@@ -1,5 +1,5 @@
-import { TypeUtil } from "../../Utility/TypeUtil";
-import { ITypesAwareObjectMapper } from "../../Mapping/ObjectMapper";
+import { TypeUtil } from "../../Utility/TypeUtil.js";
+import { ITypesAwareObjectMapper } from "../../Mapping/ObjectMapper.js";
 import { createHash } from "node:crypto";
 
 const typeSignatures = {

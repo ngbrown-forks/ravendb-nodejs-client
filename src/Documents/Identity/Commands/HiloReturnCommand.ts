@@ -1,7 +1,7 @@
-import { ServerNode } from "../../../Http/ServerNode";
-import { throwError } from "../../../Exceptions";
-import { HttpRequestParameters } from "../../../Primitives/Http";
-import { RavenCommand } from "../../../Http/RavenCommand";
+import { ServerNode } from "../../../Http/ServerNode.js";
+import { throwError } from "../../../Exceptions/index.js";
+import { HttpRequestParameters } from "../../../Primitives/Http.js";
+import { RavenCommand } from "../../../Http/RavenCommand.js";
 
 export class HiloReturnCommand extends RavenCommand<void> {
 

@@ -1,10 +1,10 @@
-import { throwError } from "../../../Exceptions";
-import { LogMode } from "./LogMode";
-import { HttpRequestParameters } from "../../../Primitives/Http";
-import { IServerOperation, OperationResultType } from "../../../Documents/Operations/OperationAbstractions";
-import { DocumentConventions } from "../../../Documents/Conventions/DocumentConventions";
-import { RavenCommand } from "../../../Http/RavenCommand";
-import { ServerNode } from "../../../Http/ServerNode";
+import { throwError } from "../../../Exceptions/index.js";
+import { LogMode } from "./LogMode.js";
+import { HttpRequestParameters } from "../../../Primitives/Http.js";
+import { IServerOperation, OperationResultType } from "../../../Documents/Operations/OperationAbstractions.js";
+import { DocumentConventions } from "../../../Documents/Conventions/DocumentConventions.js";
+import { RavenCommand } from "../../../Http/RavenCommand.js";
+import { ServerNode } from "../../../Http/ServerNode.js";
 
 export class SetLogsConfigurationOperation implements IServerOperation<void> {
     private readonly _parameters: SetLogsConfigurationParameters;

@@ -1,11 +1,11 @@
 import assert from "node:assert"
-import { testContext, disposeTestDocumentStore } from "../../Utils/TestUtil";
+import { testContext, disposeTestDocumentStore } from "../../Utils/TestUtil.js";
 
 import {
     IDocumentStore,
     PutDocumentCommand,
-} from "../../../src";
-import { assertThat } from "../../Utils/AssertExtensions";
+} from "../../../src/index.js";
+import { assertThat } from "../../Utils/AssertExtensions.js";
 
 describe("PutDocumentCommand", function () {
 

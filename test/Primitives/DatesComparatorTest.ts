@@ -1,6 +1,6 @@
 import moment from "moment";
-import { assertThat } from "../Utils/AssertExtensions";
-import { DatesComparator, leftDate, rightDate } from "../../src/Primitives/DatesComparator";
+import { assertThat } from "../Utils/AssertExtensions.js";
+import { DatesComparator, leftDate, rightDate } from "../../src/Primitives/DatesComparator.js";
 
 describe("DatesComparatorTest", function () {
 

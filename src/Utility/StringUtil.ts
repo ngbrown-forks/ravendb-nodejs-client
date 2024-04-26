@@ -1,6 +1,6 @@
-import { TypeUtil } from "./TypeUtil";
-import { throwError } from "../Exceptions";
-import { StringBuilder } from "./StringBuilder";
+import { TypeUtil } from "./TypeUtil.js";
+import { throwError } from "../Exceptions/index.js";
+import { StringBuilder } from "./StringBuilder.js";
 
 export class StringUtil {
     private static readonly letterRe: RegExp = new RegExp(/^\p{L}/,'u');

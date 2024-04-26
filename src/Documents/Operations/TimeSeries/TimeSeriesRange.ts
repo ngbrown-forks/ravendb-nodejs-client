@@ -1,4 +1,4 @@
-import { AbstractTimeSeriesRange } from "./AbstractTimeSeriesRange";
+import { AbstractTimeSeriesRange } from "./AbstractTimeSeriesRange.js";
 
 export interface TimeSeriesRange extends AbstractTimeSeriesRange {
     from: Date;

@@ -1,5 +1,5 @@
-import { IncludeBuilderBase } from "./IncludeBuilderBase";
-import { ITimeSeriesIncludeBuilder } from "./ITimeSeriesIncludeBuilder";
+import { IncludeBuilderBase } from "./IncludeBuilderBase.js";
+import { ITimeSeriesIncludeBuilder } from "./ITimeSeriesIncludeBuilder.js";
 
 export class TimeSeriesIncludeBuilder extends IncludeBuilderBase implements ITimeSeriesIncludeBuilder {
 

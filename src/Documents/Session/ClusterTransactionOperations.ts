@@ -1,10 +1,10 @@
-import { CompareExchangeValue } from "../Operations/CompareExchange/CompareExchangeValue";
-import { CompareExchangeResultClass } from "../../Types";
-import { ClusterTransactionOperationsBase } from "./ClusterTransactionOperationsBase";
-import { IClusterTransactionOperations } from "./IClusterTransactionOperations";
-import { TypeUtil } from "../../Utility/TypeUtil";
-import { LazyClusterTransactionOperations } from "./Operations/Lazy/LazyClusterTransactionOperations";
-import { DocumentSession } from "./DocumentSession";
+import { CompareExchangeValue } from "../Operations/CompareExchange/CompareExchangeValue.js";
+import { CompareExchangeResultClass } from "../../Types/index.js";
+import { ClusterTransactionOperationsBase } from "./ClusterTransactionOperationsBase.js";
+import { IClusterTransactionOperations } from "./IClusterTransactionOperations.js";
+import { TypeUtil } from "../../Utility/TypeUtil.js";
+import { LazyClusterTransactionOperations } from "./Operations/Lazy/LazyClusterTransactionOperations.js";
+import { DocumentSession } from "./DocumentSession.js";
 
 export class ClusterTransactionOperations 
     extends ClusterTransactionOperationsBase 

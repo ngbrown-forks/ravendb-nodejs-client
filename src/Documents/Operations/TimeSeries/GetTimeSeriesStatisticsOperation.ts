@@ -1,13 +1,13 @@
-import { IOperation, OperationResultType } from "../OperationAbstractions";
-import { TimeSeriesStatistics } from "./TimeSeriesStatistics";
-import { IDocumentStore } from "../../IDocumentStore";
-import { HttpCache } from "../../../Http/HttpCache";
-import { HttpRequestParameters } from "../../../Primitives/Http";
+import { IOperation, OperationResultType } from "../OperationAbstractions.js";
+import { TimeSeriesStatistics } from "./TimeSeriesStatistics.js";
+import { IDocumentStore } from "../../IDocumentStore.js";
+import { HttpCache } from "../../../Http/HttpCache.js";
+import { HttpRequestParameters } from "../../../Primitives/Http.js";
 import { Stream } from "node:stream";
-import { RavenCommand } from "../../../Http/RavenCommand";
-import { ServerNode } from "../../../Http/ServerNode";
-import { DocumentConventions } from "../../Conventions/DocumentConventions";
-import { ServerResponse } from "../../../Types";
+import { RavenCommand } from "../../../Http/RavenCommand.js";
+import { ServerNode } from "../../../Http/ServerNode.js";
+import { DocumentConventions } from "../../Conventions/DocumentConventions.js";
+import { ServerResponse } from "../../../Types/index.js";
 
 export class GetTimeSeriesStatisticsOperation implements IOperation<TimeSeriesStatistics> {
     private readonly _documentId: string;

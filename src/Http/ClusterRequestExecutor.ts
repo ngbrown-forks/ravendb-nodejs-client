@@ -1,18 +1,18 @@
-import { GetClusterTopologyCommand } from "../ServerWide/Commands/GetClusterTopologyCommand";
-import { NodeSelector } from "./NodeSelector";
+import { GetClusterTopologyCommand } from "../ServerWide/Commands/GetClusterTopologyCommand.js";
+import { NodeSelector } from "./NodeSelector.js";
 import { EOL } from "node:os";
-import { getLogger } from "../Utility/LogUtil";
-import { RequestExecutor, IRequestExecutorOptions } from "./RequestExecutor";
-import { throwError } from "../Exceptions";
-import { ServerNode } from "./ServerNode";
-import { Topology } from "./Topology";
-import { GetTcpInfoCommand } from "../ServerWide/Commands/GetTcpInfoCommand";
-import { IAuthOptions } from "../Auth/AuthOptions";
-import { acquireSemaphore } from "../Utility/SemaphoreUtil";
-import { DocumentConventions } from "../Documents/Conventions/DocumentConventions";
-import { UpdateTopologyParameters } from "./UpdateTopologyParameters";
-import { HEADERS } from "../Constants";
-import { Semaphore } from "../Utility/Semaphore";
+import { getLogger } from "../Utility/LogUtil.js";
+import { RequestExecutor, IRequestExecutorOptions } from "./RequestExecutor.js";
+import { throwError } from "../Exceptions/index.js";
+import { ServerNode } from "./ServerNode.js";
+import { Topology } from "./Topology.js";
+import { GetTcpInfoCommand } from "../ServerWide/Commands/GetTcpInfoCommand.js";
+import { IAuthOptions } from "../Auth/AuthOptions.js";
+import { acquireSemaphore } from "../Utility/SemaphoreUtil.js";
+import { DocumentConventions } from "../Documents/Conventions/DocumentConventions.js";
+import { UpdateTopologyParameters } from "./UpdateTopologyParameters.js";
+import { HEADERS } from "../Constants.js";
+import { Semaphore } from "../Utility/Semaphore.js";
 
 const log = getLogger({ module: "ClusterRequestExecutor" });
 

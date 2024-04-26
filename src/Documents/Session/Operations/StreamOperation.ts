@@ -1,16 +1,16 @@
 import { Readable } from "node:stream";
-import { InMemoryDocumentSessionOperations } from "../InMemoryDocumentSessionOperations";
-import { QueryStreamCommand } from "../../Commands/QueryStreamCommand";
-import { IndexQuery } from "../../Queries/IndexQuery";
-import { throwError } from "../../../Exceptions";
-import { StartingWithOptions } from "../IDocumentSession";
-import { StreamCommand } from "../../Commands/StreamCommand";
-import { TypeUtil } from "../../../Utility/TypeUtil";
-import { StreamResultResponse } from "../../Commands/StreamResultResponse";
-import { getDocumentResultsAsObjects } from "../../../Mapping/Json/Streams/Pipelines";
-import { StringBuilder } from "../../../Utility/StringBuilder";
-import { ObjectUtil } from "../../../Utility/ObjectUtil";
-import { RavenCommandResponsePipeline } from "../../../Http/RavenCommandResponsePipeline";
+import { InMemoryDocumentSessionOperations } from "../InMemoryDocumentSessionOperations.js";
+import { QueryStreamCommand } from "../../Commands/QueryStreamCommand.js";
+import { IndexQuery } from "../../Queries/IndexQuery.js";
+import { throwError } from "../../../Exceptions/index.js";
+import { StartingWithOptions } from "../IDocumentSession.js";
+import { StreamCommand } from "../../Commands/StreamCommand.js";
+import { TypeUtil } from "../../../Utility/TypeUtil.js";
+import { StreamResultResponse } from "../../Commands/StreamResultResponse.js";
+import { getDocumentResultsAsObjects } from "../../../Mapping/Json/Streams/Pipelines.js";
+import { StringBuilder } from "../../../Utility/StringBuilder.js";
+import { ObjectUtil } from "../../../Utility/ObjectUtil.js";
+import { RavenCommandResponsePipeline } from "../../../Http/RavenCommandResponsePipeline.js";
 
 export class StreamOperation {
     private readonly _session: InMemoryDocumentSessionOperations;

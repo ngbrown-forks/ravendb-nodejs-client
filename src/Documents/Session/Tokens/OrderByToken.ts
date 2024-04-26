@@ -1,7 +1,7 @@
-import { QueryToken } from "./QueryToken";
-import { OrderingType } from "../OrderingType";
-import { throwError } from "../../../Exceptions";
-import { CONSTANTS } from "../../../Constants";
+import { QueryToken } from "./QueryToken.js";
+import { OrderingType } from "../OrderingType.js";
+import { throwError } from "../../../Exceptions/index.js";
+import { CONSTANTS } from "../../../Constants.js";
 
 type OrderByTokenOptions = {
     ordering?: OrderingType;

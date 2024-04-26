@@ -1,4 +1,4 @@
-import { MethodCall } from "./MethodCall";
+import { MethodCall } from "./MethodCall.js";
 
 export class CmpXchg extends MethodCall {
 

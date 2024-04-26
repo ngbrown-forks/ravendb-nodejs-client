@@ -1,11 +1,10 @@
-import { DocumentType } from "../DocumentAbstractions";
-import { IAbstractIndexCreationTask } from "../Indexes/IAbstractIndexCreationTask";
-import { ClassConstructor } from "../../Types";
+import { DocumentType } from "../DocumentAbstractions.js";
+import { AbstractCommonApiForIndexes } from "../Indexes/AbstractCommonApiForIndexes.js";
 
 export interface DocumentQueryOptions<T extends object> {
     collection?: string;
     indexName?: string;
-    index?: ClassConstructor<IAbstractIndexCreationTask>;
+    index?: new () => AbstractCommonApiForIndexes;
     documentType?: DocumentType<T>;
 }
 

@@ -1,13 +1,13 @@
-import { IServerOperation, OperationResultType } from "../../../Documents/Operations/OperationAbstractions";
-import { ServerWideExternalReplicationResponse } from "./ServerWideTaskResponse";
-import { ServerWideExternalReplication } from "./ServerWideExternalReplication";
-import { throwError } from "../../../Exceptions";
-import { DocumentConventions } from "../../../Documents/Conventions/DocumentConventions";
-import { RavenCommand } from "../../../Http/RavenCommand";
-import { IRaftCommand } from "../../../Http/IRaftCommand";
-import { RaftIdGenerator } from "../../../Utility/RaftIdGenerator";
-import { ServerNode } from "../../../Http/ServerNode";
-import { HttpRequestParameters } from "../../../Primitives/Http";
+import { IServerOperation, OperationResultType } from "../../../Documents/Operations/OperationAbstractions.js";
+import { ServerWideExternalReplicationResponse } from "./ServerWideTaskResponse.js";
+import { ServerWideExternalReplication } from "./ServerWideExternalReplication.js";
+import { throwError } from "../../../Exceptions/index.js";
+import { DocumentConventions } from "../../../Documents/Conventions/DocumentConventions.js";
+import { RavenCommand } from "../../../Http/RavenCommand.js";
+import { IRaftCommand } from "../../../Http/IRaftCommand.js";
+import { RaftIdGenerator } from "../../../Utility/RaftIdGenerator.js";
+import { ServerNode } from "../../../Http/ServerNode.js";
+import { HttpRequestParameters } from "../../../Primitives/Http.js";
 import { Stream } from "node:stream";
 
 export class PutServerWideExternalReplicationOperation implements IServerOperation<ServerWideExternalReplicationResponse> {

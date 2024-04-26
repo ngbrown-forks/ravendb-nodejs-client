@@ -1,9 +1,9 @@
-import { DocumentConventions } from "../../Conventions/DocumentConventions";
-import { IMaintenanceOperation, OperationResultType } from "../OperationAbstractions";
-import { IndexStats, CollectionStats } from "../../Indexes/IndexStats";
-import { HttpRequestParameters } from "../../../Primitives/Http";
-import { ServerNode } from "../../../Http/ServerNode";
-import { RavenCommand } from "../../../Http/RavenCommand";
+import { DocumentConventions } from "../../Conventions/DocumentConventions.js";
+import { IMaintenanceOperation, OperationResultType } from "../OperationAbstractions.js";
+import { IndexStats, CollectionStats } from "../../Indexes/IndexStats.js";
+import { HttpRequestParameters } from "../../../Primitives/Http.js";
+import { ServerNode } from "../../../Http/ServerNode.js";
+import { RavenCommand } from "../../../Http/RavenCommand.js";
 import { Stream } from "node:stream";
 
 export class GetIndexesStatisticsOperation implements IMaintenanceOperation<IndexStats[]> {

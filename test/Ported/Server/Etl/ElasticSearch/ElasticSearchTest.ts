@@ -4,13 +4,13 @@ import {
     ElasticSearchConnectionString, GetOngoingTaskInfoOperation,
     IDocumentStore,
     PutConnectionStringOperation, Transformation
-} from "../../../../../src";
-import { disposeTestDocumentStore, RavenTestContext, testContext } from "../../../../Utils/TestUtil";
+} from "../../../../../src.js";
+import { disposeTestDocumentStore, RavenTestContext, testContext } from "../../../../Utils/TestUtil.js";
 import {
     ElasticSearchEtlConfiguration
-} from "../../../../../src/Documents/Operations/Etl/ElasticSearch/ElasticSearchEtlConfiguration";
-import { OngoingTaskElasticSearchEtlDetails } from "../../../../../src/Documents/Operations/OngoingTasks/OngoingTask";
-import { assertThat } from "../../../../Utils/AssertExtensions";
+} from "../../../../../src/Documents/Operations/Etl/ElasticSearch/ElasticSearchEtlConfiguration.js";
+import { OngoingTaskElasticSearchEtlDetails } from "../../../../../src/Documents/Operations/OngoingTasks/OngoingTask.js";
+import { assertThat } from "../../../../Utils/AssertExtensions.js";
 
 (RavenTestContext.isPullRequest ? describe.skip : describe)("ElasticSearchTest", () => {
 

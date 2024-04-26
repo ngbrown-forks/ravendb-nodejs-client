@@ -1,4 +1,4 @@
-import { DatabaseChange } from "./DatabaseChange";
+import { DatabaseChange } from "./DatabaseChange.js";
 
 export interface OperationStatusChange extends DatabaseChange {
     operationId: number;

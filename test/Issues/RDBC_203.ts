@@ -1,7 +1,7 @@
 import assert from "node:assert"
-import { testContext, disposeTestDocumentStore } from "../Utils/TestUtil";
+import { testContext, disposeTestDocumentStore } from "../Utils/TestUtil.js";
 
-import { DocumentStore, IDocumentStore, GetDatabaseNamesOperation } from "../../src";
+import { DocumentStore, IDocumentStore, GetDatabaseNamesOperation } from "../../src/index.js";
 
 describe("RDBC-203", function () {
 

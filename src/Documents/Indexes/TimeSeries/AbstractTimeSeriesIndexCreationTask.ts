@@ -1,4 +1,4 @@
-import { AbstractCsharpCountersIndexCreationTask } from "../Counters/AbstractCsharpCountersIndexCreationTask";
+import { AbstractCsharpCountersIndexCreationTask } from "../Counters/AbstractCsharpCountersIndexCreationTask.js";
 
 /**
  * @deprecated use AbstractCsharpCountersIndexCreationTask

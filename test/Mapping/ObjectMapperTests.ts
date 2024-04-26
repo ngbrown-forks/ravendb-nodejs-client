@@ -6,10 +6,10 @@ import {
     ObjectTypeDescriptor,
     PropsBasedObjectLiteralDescriptor,
     DocumentConventions
-} from "../../src";
-import { DateUtil } from "../../src/Utility/DateUtil";
-import { TypeInfo } from "../../src/Mapping/ObjectMapper";
-import { TypeUtil } from "../../src/Utility/TypeUtil";
+} from "../../src/index.js";
+import { DateUtil } from "../../src/Utility/DateUtil.js";
+import { TypeInfo } from "../../src/Mapping/ObjectMapper.js";
+import { TypeUtil } from "../../src/Utility/TypeUtil.js";
 
 describe("ObjectMapper", function () {
 

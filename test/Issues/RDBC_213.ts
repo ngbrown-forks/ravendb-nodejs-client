@@ -1,7 +1,7 @@
 import {
     IDocumentStore,
-} from "../../src";
-import { testContext, disposeTestDocumentStore } from "../Utils/TestUtil";
+} from "../../src/index.js";
+import { testContext, disposeTestDocumentStore } from "../Utils/TestUtil.js";
 import assert from "node:assert"
 
 describe("[RDBC-213] Metadata is not saved", function () {

@@ -1,24 +1,24 @@
 /**
  * Abstract implementation for in memory session operations
  */
-import { InMemoryDocumentSessionOperations } from "./InMemoryDocumentSessionOperations";
-import { throwError } from "../../Exceptions";
-import { TypeUtil } from "../../Utility/TypeUtil";
-import { StringUtil } from "../../Utility/StringUtil";
-import { AppendOperation, DeleteOperation, IncrementOperation } from "../Operations/TimeSeries/TimeSeriesOperation";
-import { IdTypeAndName } from "../IdTypeAndName";
-import { TimeSeriesBatchCommandData } from "../Commands/Batches/TimeSeriesBatchCommandData";
-import { TimeSeriesEntry } from "./TimeSeries/TimeSeriesEntry";
-import { TimeSeriesRangeResult } from "../Operations/TimeSeries/TimeSeriesRangeResult";
-import { DatesComparator, definedDate, leftDate, rightDate } from "../../Primitives/DatesComparator";
-import { GetTimeSeriesOperation } from "../Operations/TimeSeries/GetTimeSeriesOperation";
-import { CaseInsensitiveKeysMap } from "../../Primitives/CaseInsensitiveKeysMap";
-import { TimeSeriesRange } from "../Operations/TimeSeries/TimeSeriesRange";
-import { GetMultipleTimeSeriesOperation } from "../Operations/TimeSeries/GetMultipleTimeSeriesOperation";
-import { CONSTANTS } from "../../Constants";
-import { ITimeSeriesIncludeBuilder } from "./Loaders/ITimeSeriesIncludeBuilder";
-import { TimeSeriesDetails } from "../Operations/TimeSeries/TimeSeriesDetails";
-import { IncrementalTimeSeriesBatchCommandData } from "../Commands/Batches/IncrementalTimeSeriesBatchCommandData";
+import { InMemoryDocumentSessionOperations } from "./InMemoryDocumentSessionOperations.js";
+import { throwError } from "../../Exceptions/index.js";
+import { TypeUtil } from "../../Utility/TypeUtil.js";
+import { StringUtil } from "../../Utility/StringUtil.js";
+import { AppendOperation, DeleteOperation, IncrementOperation } from "../Operations/TimeSeries/TimeSeriesOperation.js";
+import { IdTypeAndName } from "../IdTypeAndName.js";
+import { TimeSeriesBatchCommandData } from "../Commands/Batches/TimeSeriesBatchCommandData.js";
+import { TimeSeriesEntry } from "./TimeSeries/TimeSeriesEntry.js";
+import { TimeSeriesRangeResult } from "../Operations/TimeSeries/TimeSeriesRangeResult.js";
+import { DatesComparator, definedDate, leftDate, rightDate } from "../../Primitives/DatesComparator.js";
+import { GetTimeSeriesOperation } from "../Operations/TimeSeries/GetTimeSeriesOperation.js";
+import { CaseInsensitiveKeysMap } from "../../Primitives/CaseInsensitiveKeysMap.js";
+import { TimeSeriesRange } from "../Operations/TimeSeries/TimeSeriesRange.js";
+import { GetMultipleTimeSeriesOperation } from "../Operations/TimeSeries/GetMultipleTimeSeriesOperation.js";
+import { CONSTANTS } from "../../Constants.js";
+import { ITimeSeriesIncludeBuilder } from "./Loaders/ITimeSeriesIncludeBuilder.js";
+import { TimeSeriesDetails } from "../Operations/TimeSeries/TimeSeriesDetails.js";
+import { IncrementalTimeSeriesBatchCommandData } from "../Commands/Batches/IncrementalTimeSeriesBatchCommandData.js";
 
 export class SessionTimeSeriesBase {
     protected docId: string;

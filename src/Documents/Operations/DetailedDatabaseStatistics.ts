@@ -1,4 +1,4 @@
-import { DatabaseStatistics } from "./DatabaseStatistics";
+import { DatabaseStatistics } from "./DatabaseStatistics.js";
 
 export interface DetailedDatabaseStatistics extends DatabaseStatistics {
     countOfIdentities: number;

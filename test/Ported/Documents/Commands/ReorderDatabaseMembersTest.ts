@@ -1,6 +1,6 @@
-import { IDocumentStore } from "../../../../src";
-import { disposeTestDocumentStore, testContext } from "../../../Utils/TestUtil";
-import { ReorderDatabaseMembersOperation } from "../../../../src/ServerWide/Operations/ReorderDatabaseMembersOperation";
+import { IDocumentStore } from "../../../../src.js";
+import { disposeTestDocumentStore, testContext } from "../../../Utils/TestUtil.js";
+import { ReorderDatabaseMembersOperation } from "../../../../src/ServerWide/Operations/ReorderDatabaseMembersOperation.js";
 
 describe("ReorderDatabaseMembersTest", function () {
 

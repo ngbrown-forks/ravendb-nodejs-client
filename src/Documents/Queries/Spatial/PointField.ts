@@ -1,4 +1,4 @@
-import { DynamicSpatialField } from "./DynamicSpatialField";
+import { DynamicSpatialField } from "./DynamicSpatialField.js";
 
 export class PointField extends DynamicSpatialField {
     public latitude: string;

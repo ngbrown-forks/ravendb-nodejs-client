@@ -1,4 +1,4 @@
-import { SuggestionBase } from "./SuggestionBase";
+import { SuggestionBase } from "./SuggestionBase.js";
 
 export class SuggestionWithTerms extends SuggestionBase {
     public terms: string[];

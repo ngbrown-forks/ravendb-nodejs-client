@@ -1,4 +1,4 @@
-import { HEADERS } from "../../../src/Constants";
+import { HEADERS } from "../../../src/Constants.js";
 import {
     ConfigureTimeSeriesOperation, GetTimeSeriesOperation,
     IDocumentStore,
@@ -6,12 +6,12 @@ import {
     TimeSeriesConfiguration,
     TimeSeriesEntry,
     TimeSeriesPolicy
-} from "../../../src";
-import { disposeTestDocumentStore, RavenTestContext, testContext } from "../../Utils/TestUtil";
-import { User } from "../../Assets/Entities";
-import { assertThat, assertThrows } from "../../Utils/AssertExtensions";
-import { TimeValue } from "../../../src/Primitives/TimeValue";
-import { delay } from "../../../src/Utility/PromiseUtil";
+} from "../../../src/index.js";
+import { disposeTestDocumentStore, RavenTestContext, testContext } from "../../Utils/TestUtil.js";
+import { User } from "../../Assets/Entities.js";
+import { assertThat, assertThrows } from "../../Utils/AssertExtensions.js";
+import { TimeValue } from "../../../src/Primitives/TimeValue.js";
+import { delay } from "../../../src/Utility/PromiseUtil.js";
 
 
 const INCREMENTAL_TS_NAME = HEADERS.INCREMENTAL_TIME_SERIES_PREFIX + "HeartRate";

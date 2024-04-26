@@ -1,18 +1,18 @@
-import { SearchOperator } from "../Queries/SearchOperator";
-import { OrderingType } from "./OrderingType";
-import { MethodCall } from "./MethodCall";
-import { WhereParams } from "./WhereParams";
-import { DynamicSpatialField } from "../Queries/Spatial/DynamicSpatialField";
-import { SpatialCriteria } from "../Queries/Spatial/SpatialCriteria";
-import { GroupBy } from "../Queries/GroupBy";
-import { DocumentType } from "../DocumentAbstractions";
-import { MoreLikeThisScope } from "../Queries/MoreLikeThis/MoreLikeThisScope";
-import { SuggestionBase } from "../Queries/Suggestions/SuggestionBase";
-import { HighlightingParameters } from "../Queries/Highlighting/HighlightingParameters";
-import { ValueCallback } from "../../Types/Callbacks";
-import { Highlightings } from "../Queries/Highlighting/Hightlightings";
-import { IncludeBuilderBase } from "./Loaders/IncludeBuilderBase";
-import { DocumentConventions } from "../Conventions/DocumentConventions";
+import { SearchOperator } from "../Queries/SearchOperator.js";
+import { OrderingType } from "./OrderingType.js";
+import { MethodCall } from "./MethodCall.js";
+import { WhereParams } from "./WhereParams.js";
+import { DynamicSpatialField } from "../Queries/Spatial/DynamicSpatialField.js";
+import { SpatialCriteria } from "../Queries/Spatial/SpatialCriteria.js";
+import { GroupBy } from "../Queries/GroupBy.js";
+import { DocumentType } from "../DocumentAbstractions.js";
+import { MoreLikeThisScope } from "../Queries/MoreLikeThis/MoreLikeThisScope.js";
+import { SuggestionBase } from "../Queries/Suggestions/SuggestionBase.js";
+import { HighlightingParameters } from "../Queries/Highlighting/HighlightingParameters.js";
+import { ValueCallback } from "../../Types/Callbacks.js";
+import { Highlightings } from "../Queries/Highlighting/Hightlightings.js";
+import { IncludeBuilderBase } from "./Loaders/IncludeBuilderBase.js";
+import { DocumentConventions } from "../Conventions/DocumentConventions.js";
 
 export interface IAbstractDocumentQuery<T> {
 

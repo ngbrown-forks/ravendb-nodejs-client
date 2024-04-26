@@ -1,10 +1,10 @@
-import { OperationCompletionAwaiter } from "./OperationCompletionAwaiter";
-import { DocumentStoreBase } from "../DocumentStoreBase";
-import { IMaintenanceOperation, AwaitableMaintenanceOperation, OperationIdResult } from "./OperationAbstractions";
-import { RavenCommand } from "../../Http/RavenCommand";
-import { ServerOperationExecutor } from "./ServerOperationExecutor";
-import { throwError } from "../../Exceptions";
-import { RequestExecutor } from "../../Http/RequestExecutor";
+import { OperationCompletionAwaiter } from "./OperationCompletionAwaiter.js";
+import { DocumentStoreBase } from "../DocumentStoreBase.js";
+import { IMaintenanceOperation, AwaitableMaintenanceOperation, OperationIdResult } from "./OperationAbstractions.js";
+import { RavenCommand } from "../../Http/RavenCommand.js";
+import { ServerOperationExecutor } from "./ServerOperationExecutor.js";
+import { throwError } from "../../Exceptions/index.js";
+import { RequestExecutor } from "../../Http/RequestExecutor.js";
 
 export class MaintenanceOperationExecutor {
 

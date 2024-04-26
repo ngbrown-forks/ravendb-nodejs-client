@@ -1,4 +1,4 @@
-import { ReplicationNode } from "./ReplicationNode";
+import { ReplicationNode } from "./ReplicationNode.js";
 
 
 export interface ExternalReplicationBase extends ReplicationNode {

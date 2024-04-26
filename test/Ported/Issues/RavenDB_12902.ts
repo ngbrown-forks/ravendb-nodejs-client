@@ -1,9 +1,9 @@
-import { IDocumentStore } from "../../../src/Documents/IDocumentStore";
-import { disposeTestDocumentStore, testContext } from "../../Utils/TestUtil";
-import { QueryStatistics } from "../../../src/Documents/Session/QueryStatistics";
-import { User } from "../../Assets/Entities";
-import { assertThat } from "../../Utils/AssertExtensions";
-import { AbstractJavaScriptIndexCreationTask } from "../../../src";
+import { IDocumentStore } from "../../../src/Documents/IDocumentStore.js";
+import { disposeTestDocumentStore, testContext } from "../../Utils/TestUtil.js";
+import { QueryStatistics } from "../../../src/Documents/Session/QueryStatistics.js";
+import { User } from "../../Assets/Entities.js";
+import { assertThat } from "../../Utils/AssertExtensions.js";
+import { AbstractJavaScriptIndexCreationTask } from "../../../src/index.js";
 
 describe("RavenDB_12902", function () {
 

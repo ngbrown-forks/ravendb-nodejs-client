@@ -1,5 +1,5 @@
-import { QueryToken } from "./QueryToken";
-import { SpatialUnits } from "../../Indexes/Spatial";
+import { QueryToken } from "./QueryToken.js";
+import { SpatialUnits } from "../../Indexes/Spatial.js";
 
 export class ShapeToken extends QueryToken {
 

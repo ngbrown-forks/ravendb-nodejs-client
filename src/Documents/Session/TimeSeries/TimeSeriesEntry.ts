@@ -1,7 +1,7 @@
-import { throwError } from "../../../Exceptions";
-import { ClassConstructor } from "../../../Types";
-import { TypedTimeSeriesEntry } from "./TypedTimeSeriesEntry";
-import { TimeSeriesValuesHelper } from "./TimeSeriesValuesHelper";
+import { throwError } from "../../../Exceptions/index.js";
+import { ClassConstructor } from "../../../Types/index.js";
+import { TypedTimeSeriesEntry } from "./TypedTimeSeriesEntry.js";
+import { TimeSeriesValuesHelper } from "./TimeSeriesValuesHelper.js";
 
 export class TimeSeriesEntry {
     public timestamp: Date;

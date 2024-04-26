@@ -5,12 +5,12 @@ import {
     SessionOptions,
     TimeSeriesBatchOperation,
     TimeSeriesOperation
-} from "../../../src";
-import { disposeTestDocumentStore, testContext } from "../../Utils/TestUtil";
-import { User } from "../../Assets/Entities";
-import { AppendOperation, DeleteOperation } from "../../../src/Documents/Operations/TimeSeries/TimeSeriesOperation";
-import { assertThat, assertThrows } from "../../Utils/AssertExtensions";
-import { RawQueryResult } from "./TimeSeriesRawQuery";
+} from "../../../src/index.js";
+import { disposeTestDocumentStore, testContext } from "../../Utils/TestUtil.js";
+import { User } from "../../Assets/Entities.js";
+import { AppendOperation, DeleteOperation } from "../../../src/Documents/Operations/TimeSeries/TimeSeriesOperation.js";
+import { assertThat, assertThrows } from "../../Utils/AssertExtensions.js";
+import { RawQueryResult } from "./TimeSeriesRawQuery.js";
 
 describe("TimeSeriesOperations", function () {
 

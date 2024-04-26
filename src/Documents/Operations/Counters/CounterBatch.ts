@@ -1,4 +1,4 @@
-import { DocumentCountersOperation } from "./DocumentCountersOperation";
+import { DocumentCountersOperation } from "./DocumentCountersOperation.js";
 
 export class CounterBatch {
     public replyWithAllNodesValues: boolean;

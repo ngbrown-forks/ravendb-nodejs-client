@@ -1,6 +1,6 @@
-import { DatabaseChange } from "./DatabaseChange";
-import { DocumentChange } from "./DocumentChange";
-import { IndexChange } from "./IndexChange";
+import { DatabaseChange } from "./DatabaseChange.js";
+import { DocumentChange } from "./DocumentChange.js";
+import { IndexChange } from "./IndexChange.js";
 
 export class AggressiveCacheChange implements DatabaseChange {
     public static readonly INSTANCE = new AggressiveCacheChange();

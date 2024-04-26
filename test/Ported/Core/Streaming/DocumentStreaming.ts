@@ -1,14 +1,14 @@
-import { testContext, disposeTestDocumentStore } from "../../../Utils/TestUtil";
+import { testContext, disposeTestDocumentStore } from "../../../Utils/TestUtil.js";
 
 import {
     DocumentStore,
     IDocumentStore,
     StreamResult,
-} from "../../../../src";
+} from "../../../../src.js";
 import assert from "node:assert"
-import { User } from "../../../Assets/Entities";
-import { CONSTANTS } from "../../../../src/Constants";
-import { ObjectUtil } from "../../../../src/Utility/ObjectUtil";
+import { User } from "../../../Assets/Entities.js";
+import { CONSTANTS } from "../../../../src/Constants.js";
+import { ObjectUtil } from "../../../../src/Utility/ObjectUtil.js";
 
 describe("document streaming", function () {
 

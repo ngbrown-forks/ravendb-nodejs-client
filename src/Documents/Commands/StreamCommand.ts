@@ -1,10 +1,10 @@
 import { Readable } from "node:stream";
-import { RavenCommand, ResponseDisposeHandling } from "../../Http/RavenCommand";
-import { StreamResultResponse } from "./StreamResultResponse";
-import { throwError } from "../../Exceptions";
-import { ServerNode } from "../../Http/ServerNode";
-import { HttpRequestParameters, HttpResponse } from "../../Primitives/Http";
-import { HttpCache } from "../../Http/HttpCache";
+import { RavenCommand, ResponseDisposeHandling } from "../../Http/RavenCommand.js";
+import { StreamResultResponse } from "./StreamResultResponse.js";
+import { throwError } from "../../Exceptions/index.js";
+import { ServerNode } from "../../Http/ServerNode.js";
+import { HttpRequestParameters, HttpResponse } from "../../Primitives/Http.js";
+import { HttpCache } from "../../Http/HttpCache.js";
 
 export class StreamCommand extends RavenCommand<StreamResultResponse> {
     private readonly _url: string;

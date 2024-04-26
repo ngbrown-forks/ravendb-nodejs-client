@@ -3,15 +3,15 @@ import {
     IDocumentStore,
     DatabaseSmugglerExportOptions,
     DatabaseSmugglerImportOptions
-} from "../../src";
-import { disposeTestDocumentStore, TemporaryDirContext, testContext } from "../Utils/TestUtil";
-import { User } from "../Assets/Entities";
-import { UsersByName } from "./QueryTest";
-import { assertThat } from "../Utils/AssertExtensions";
+} from "../../src/index.js";
+import { disposeTestDocumentStore, TemporaryDirContext, testContext } from "../Utils/TestUtil.js";
+import { User } from "../Assets/Entities.js";
+import { UsersByName } from "./QueryTest.js";
+import { assertThat } from "../Utils/AssertExtensions.js";
 import fs from "node:fs";
-import { CONSTANTS } from "../../src/Constants";
+import { CONSTANTS } from "../../src/Constants.js";
 import path from "node:path";
-import { BackupUtils } from "../../src/Documents/Smuggler/BackupUtils";
+import { BackupUtils } from "../../src/Documents/Smuggler/BackupUtils.js";
 
 describe("SmugglerTest", function () {
 

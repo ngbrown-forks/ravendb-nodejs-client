@@ -1,13 +1,13 @@
 import assert from "node:assert"
-import { User } from "../../Assets/Entities";
-import { testContext, disposeTestDocumentStore } from "../../Utils/TestUtil";
+import { User } from "../../Assets/Entities.js";
+import { testContext, disposeTestDocumentStore } from "../../Utils/TestUtil.js";
 
 import {
     SessionOptions,
     IDocumentStore, CONSTANTS, GetCompareExchangeValueOperation, PutCompareExchangeValueOperation,
-} from "../../../src";
-import { assertThat, assertThrows } from "../../Utils/AssertExtensions";
-import { COMPARE_EXCHANGE } from "../../../src/Constants";
+} from "../../../src/index.js";
+import { assertThat, assertThrows } from "../../Utils/AssertExtensions.js";
+import { COMPARE_EXCHANGE } from "../../../src/Constants.js";
 
 describe("ClusterTransactionTest", function () {
 

@@ -1,5 +1,5 @@
-import { RetentionPolicy } from "./RetentionPolicy";
-import { BackupConfiguration } from "./BackupConfiguration";
+import { RetentionPolicy } from "./RetentionPolicy.js";
+import { BackupConfiguration } from "./BackupConfiguration.js";
 
 export interface PeriodicBackupConfiguration extends BackupConfiguration {
     name?: string;

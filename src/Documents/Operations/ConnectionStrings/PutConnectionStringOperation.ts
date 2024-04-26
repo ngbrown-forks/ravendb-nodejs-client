@@ -1,13 +1,13 @@
-import { HttpRequestParameters } from "../../../Primitives/Http";
-import { ConnectionString } from "../Etl/ConnectionString";
-import { IMaintenanceOperation, OperationResultType } from "../OperationAbstractions";
-import { DocumentConventions } from "../../Conventions/DocumentConventions";
-import { RavenCommand } from "../../../Http/RavenCommand";
-import { ServerNode } from "../../../Http/ServerNode";
+import { HttpRequestParameters } from "../../../Primitives/Http.js";
+import { ConnectionString } from "../Etl/ConnectionString.js";
+import { IMaintenanceOperation, OperationResultType } from "../OperationAbstractions.js";
+import { DocumentConventions } from "../../Conventions/DocumentConventions.js";
+import { RavenCommand } from "../../../Http/RavenCommand.js";
+import { ServerNode } from "../../../Http/ServerNode.js";
 import { Stream } from "node:stream";
-import { IRaftCommand } from "../../../Http/IRaftCommand";
-import { RaftIdGenerator } from "../../../Utility/RaftIdGenerator";
-import { throwError } from "../../../Exceptions";
+import { IRaftCommand } from "../../../Http/IRaftCommand.js";
+import { RaftIdGenerator } from "../../../Utility/RaftIdGenerator.js";
+import { throwError } from "../../../Exceptions/index.js";
 
 export interface PutConnectionStringResult {
     raftCommandIndex: number;

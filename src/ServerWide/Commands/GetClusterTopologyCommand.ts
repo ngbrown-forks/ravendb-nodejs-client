@@ -1,10 +1,10 @@
-import { RavenCommand } from "../../Http/RavenCommand";
-import { ClusterTopology } from "../../Http/ClusterTopology";
-import { HttpRequestParameters } from "../../Primitives/Http";
-import { ServerNode, ServerNodeRole } from "../../Http/ServerNode";
+import { RavenCommand } from "../../Http/RavenCommand.js";
+import { ClusterTopology } from "../../Http/ClusterTopology.js";
+import { HttpRequestParameters } from "../../Primitives/Http.js";
+import { ServerNode, ServerNodeRole } from "../../Http/ServerNode.js";
 import { Stream } from "node:stream";
-import { NodeStatus } from "../../Http/RequestExecutor";
-import { ObjectUtil } from "../../Utility/ObjectUtil";
+import { NodeStatus } from "../../Http/RequestExecutor.js";
+import { ObjectUtil } from "../../Utility/ObjectUtil.js";
 
 export class ClusterTopologyResponse {
     public leader: string;

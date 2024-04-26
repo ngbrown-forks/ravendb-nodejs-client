@@ -1,5 +1,5 @@
-import { pascalCaseReplacer } from "./Replacers";
-import { camelCaseReviver } from "./Revivers";
+import { pascalCaseReplacer } from "./Replacers.js";
+import { camelCaseReviver } from "./Revivers.js";
 
 export type ReviverFunction = (key: string, value: any) => any;
 export type ReplacerFunction = (key: string, value: any) => any;

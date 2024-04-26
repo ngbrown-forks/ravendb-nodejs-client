@@ -1,9 +1,9 @@
-import { AbstractTimeSeriesIndexCreationTask, IDocumentStore, StreamResult } from "../../../src";
-import { disposeTestDocumentStore, testContext } from "../../Utils/TestUtil";
+import { AbstractTimeSeriesIndexCreationTask, IDocumentStore, StreamResult } from "../../../src/index.js";
+import { disposeTestDocumentStore, testContext } from "../../Utils/TestUtil.js";
 import moment from "moment";
-import { Company } from "../../Assets/Orders";
-import { finishedAsync } from "../../../src/Utility/StreamUtil";
-import { assertThat } from "../../Utils/AssertExtensions";
+import { Company } from "../../Assets/Orders.js";
+import { finishedAsync } from "../../../src/Utility/StreamUtil.js";
+import { assertThat } from "../../Utils/AssertExtensions.js";
 
 describe("TimeSeriesIndexStreamTest", function () {
 

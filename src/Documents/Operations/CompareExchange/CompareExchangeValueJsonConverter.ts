@@ -1,6 +1,6 @@
-import { TypeUtil } from "../../../Utility/TypeUtil";
-import { DocumentConventions } from "../../Conventions/DocumentConventions";
-import { EntityToJson } from "../../Session/EntityToJson";
+import { TypeUtil } from "../../../Utility/TypeUtil.js";
+import { DocumentConventions } from "../../Conventions/DocumentConventions.js";
+import { EntityToJson } from "../../Session/EntityToJson.js";
 
 export class CompareExchangeValueJsonConverter {
     public static convertToJson(value: object, conventions: DocumentConventions) {

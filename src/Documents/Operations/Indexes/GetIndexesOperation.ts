@@ -1,11 +1,11 @@
-import { HttpRequestParameters } from "../../../Primitives/Http";
-import { ServerNode } from "../../../Http/ServerNode";
-import { RavenCommand } from "../../../Http/RavenCommand";
-import { IndexDefinition } from "../../Indexes/IndexDefinition";
-import { IMaintenanceOperation, OperationResultType } from "../OperationAbstractions";
-import { DocumentConventions } from "../../Conventions/DocumentConventions";
+import { HttpRequestParameters } from "../../../Primitives/Http.js";
+import { ServerNode } from "../../../Http/ServerNode.js";
+import { RavenCommand } from "../../../Http/RavenCommand.js";
+import { IndexDefinition } from "../../Indexes/IndexDefinition.js";
+import { IMaintenanceOperation, OperationResultType } from "../OperationAbstractions.js";
+import { DocumentConventions } from "../../Conventions/DocumentConventions.js";
 import { Stream } from "node:stream";
-import { ObjectUtil } from "../../../Utility/ObjectUtil";
+import { ObjectUtil } from "../../../Utility/ObjectUtil.js";
 
 export class GetIndexesOperation implements IMaintenanceOperation<IndexDefinition[]> {
 

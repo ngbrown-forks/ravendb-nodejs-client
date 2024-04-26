@@ -1,13 +1,13 @@
 import sinon from "sinon";
-import { User, GeekPerson } from "../Assets/Entities";
+import { User, GeekPerson } from "../Assets/Entities.js";
 import assert from "node:assert"
-import { testContext, disposeTestDocumentStore } from "../Utils/TestUtil";
+import { testContext, disposeTestDocumentStore } from "../Utils/TestUtil.js";
 
 import {
     IDocumentStore,
-} from "../../src";
-import { ReleaseCacheItem } from "../../src/Http/HttpCache";
-import { assertThat } from "../Utils/AssertExtensions";
+} from "../../src/index.js";
+import { ReleaseCacheItem } from "../../src/Http/HttpCache.js";
+import { assertThat } from "../Utils/AssertExtensions.js";
 
 describe("LoadTest - ported", function () {
 

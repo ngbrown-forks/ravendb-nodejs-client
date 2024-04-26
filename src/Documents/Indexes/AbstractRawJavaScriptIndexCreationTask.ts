@@ -1,5 +1,5 @@
-import { IndexDefinition } from "./IndexDefinition";
-import { AbstractIndexCreationTaskBase } from "./AbstractIndexCreationTaskBase";
+import { IndexDefinition } from "./IndexDefinition.js";
+import { AbstractIndexCreationTaskBase } from "./AbstractIndexCreationTaskBase.js";
 
 /**
  * Utility class to create javascript based indexes using not-strongly typed syntax.

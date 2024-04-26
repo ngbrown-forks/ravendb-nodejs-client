@@ -1,7 +1,7 @@
-import { closeHttpResponse } from "../Utility/HttpUtil";
-import { StatusCodes } from "../Http/StatusCode";
-import { HttpResponse } from "../Primitives/Http";
-import { JsonSerializer } from "../Mapping/Json/Serializer";
+import { closeHttpResponse } from "../Utility/HttpUtil.js";
+import { StatusCodes } from "../Http/StatusCode.js";
+import { HttpResponse } from "../Primitives/Http.js";
+import { JsonSerializer } from "../Mapping/Json/Serializer.js";
 import { EOL } from "node:os";
 
 export function throwError(errName: RavenErrorType): never;

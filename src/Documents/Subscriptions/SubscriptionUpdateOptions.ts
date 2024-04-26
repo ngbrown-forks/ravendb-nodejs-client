@@ -1,4 +1,4 @@
-import { SubscriptionCreationOptions } from "./SubscriptionCreationOptions";
+import { SubscriptionCreationOptions } from "./SubscriptionCreationOptions.js";
 
 export interface SubscriptionUpdateOptions extends SubscriptionCreationOptions {
     id?: number;

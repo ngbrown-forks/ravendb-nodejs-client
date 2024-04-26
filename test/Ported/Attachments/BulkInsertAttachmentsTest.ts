@@ -1,9 +1,9 @@
-import { disposeTestDocumentStore, testContext } from "../../Utils/TestUtil";
-import { ConflictSolver, GetCountersOperation, IDocumentStore } from "../../../src";
-import { User } from "../../Assets/Entities";
-import { assertThat, assertThrows } from "../../Utils/AssertExtensions";
-import { readToBuffer } from "../../../src/Utility/StreamUtil";
-import { IAttachmentsBulkInsert } from "../../../src/Documents/BulkInsertOperation";
+import { disposeTestDocumentStore, testContext } from "../../Utils/TestUtil.js";
+import { ConflictSolver, GetCountersOperation, IDocumentStore } from "../../../src/index.js";
+import { User } from "../../Assets/Entities.js";
+import { assertThat, assertThrows } from "../../Utils/AssertExtensions.js";
+import { readToBuffer } from "../../../src/Utility/StreamUtil.js";
+import { IAttachmentsBulkInsert } from "../../../src/Documents/BulkInsertOperation.js";
 
 describe("BulkInsertAttachmentsTest", function () {
 

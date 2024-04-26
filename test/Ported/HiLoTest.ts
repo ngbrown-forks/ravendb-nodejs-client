@@ -1,13 +1,13 @@
-import { User } from "../Assets/Entities";
+import { User } from "../Assets/Entities.js";
 import assert from "node:assert"
-import { testContext, disposeTestDocumentStore } from "../Utils/TestUtil";
+import { testContext, disposeTestDocumentStore } from "../Utils/TestUtil.js";
 
 import {
     HiloIdGenerator,
     DocumentStore, MultiDatabaseHiLoIdGenerator,
-} from "../../src";
-import { ArrayUtil } from "../../src/Utility/ArrayUtil";
-import { assertThat } from "../Utils/AssertExtensions";
+} from "../../src/index.js";
+import { ArrayUtil } from "../../src/Utility/ArrayUtil.js";
+import { assertThat } from "../Utils/AssertExtensions.js";
 
 describe("HiLo", function () {
 

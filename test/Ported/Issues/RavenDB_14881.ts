@@ -1,11 +1,11 @@
-import { IDocumentStore } from "../../../src/Documents/IDocumentStore";
-import { disposeTestDocumentStore, testContext } from "../../Utils/TestUtil";
-import { RevisionsConfiguration } from "../../../src/Documents/Operations/RevisionsConfiguration";
-import { RevisionsCollectionConfiguration } from "../../../src/Documents/Operations/RevisionsCollectionConfiguration";
-import { ConfigureRevisionsOperation } from "../../../src/Documents/Operations/Revisions/ConfigureRevisionsOperation";
-import { Company } from "../../Assets/Orders";
-import { GetDetailedCollectionStatisticsOperation } from "../../../src/Documents/Operations/GetDetailedCollectionStatisticsOperation";
-import { assertThat } from "../../Utils/AssertExtensions";
+import { IDocumentStore } from "../../../src/Documents/IDocumentStore.js";
+import { disposeTestDocumentStore, testContext } from "../../Utils/TestUtil.js";
+import { RevisionsConfiguration } from "../../../src/Documents/Operations/RevisionsConfiguration.js";
+import { RevisionsCollectionConfiguration } from "../../../src/Documents/Operations/RevisionsCollectionConfiguration.js";
+import { ConfigureRevisionsOperation } from "../../../src/Documents/Operations/Revisions/ConfigureRevisionsOperation.js";
+import { Company } from "../../Assets/Orders.js";
+import { GetDetailedCollectionStatisticsOperation } from "../../../src/Documents/Operations/GetDetailedCollectionStatisticsOperation.js";
+import { assertThat } from "../../Utils/AssertExtensions.js";
 
 describe("RavenDB_14881", function () {
 

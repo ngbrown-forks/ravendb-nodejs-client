@@ -1,4 +1,4 @@
-import { BackupStatus } from "./BackupStatus";
+import { BackupStatus } from "./BackupStatus.js";
 
 export interface GoogleCloudSettings extends BackupStatus {
 

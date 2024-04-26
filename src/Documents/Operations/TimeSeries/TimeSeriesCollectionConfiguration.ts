@@ -1,6 +1,6 @@
-import { TimeSeriesPolicy } from "./TimeSeriesPolicy";
-import { RawTimeSeriesPolicy } from "./RawTimeSeriesPolicy";
-import { TimeSeriesCollectionConfigurationRaw } from "./RawTimeSeriesTypes";
+import { TimeSeriesPolicy } from "./TimeSeriesPolicy.js";
+import { RawTimeSeriesPolicy } from "./RawTimeSeriesPolicy.js";
+import { TimeSeriesCollectionConfigurationRaw } from "./RawTimeSeriesTypes.js";
 
 export class TimeSeriesCollectionConfiguration {
     public disabled: boolean;
