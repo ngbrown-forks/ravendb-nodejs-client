@@ -839,13 +839,12 @@ export class DocumentConventions {
         return collectionName;
     }
 
-    /* TBD 4.1 custom serializers
     public registerQueryValueConverter<T extends object>(type: EntityConstructor<T>,
                                                          converter: IValueForQueryConverter<T>) {
         this._assertNotFrozen();
 
-        let index;
-        for (index = 0; index < this._listOfQueryValueToObjectConverters.length; index++) {
+        let index: number;
+        for (let index = 0; index < this._listOfQueryValueToObjectConverters.length; index++) {
             const entry = this._listOfQueryValueToObjectConverters[index];
             if (type instanceof entry.Type) {
                 break;
@@ -863,7 +862,7 @@ export class DocumentConventions {
             }
         });
     }
-    */
+
 
     public tryConvertValueToObjectForQuery(fieldName: string, value: any, forRange: boolean, strValue: (value: any) => void) {
         for (const queryValueConverter of this._listOfQueryValueToObjectConverters) {

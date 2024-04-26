@@ -70,7 +70,7 @@ export class TypesAwareObjectMapper implements ITypesAwareObjectMapper {
 
     private _applyNestedTypes<TResult extends object>(
         obj: TResult, nestedTypes?: NestedTypes, knownTypes?: Map<string, ObjectTypeDescriptor>) {
-        if (!nestedTypes) {
+        if (!nestedTypes || Object.keys(nestedTypes).length === 0) {
             return obj;
         }
 

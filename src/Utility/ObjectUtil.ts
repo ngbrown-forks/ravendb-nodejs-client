@@ -289,7 +289,7 @@ function setDefaults(object, defaults) {
     return object;
 }
 
-function isObject(value) {
+function isObject(value: any) {
     if (!value) {
         return false;
     }
@@ -300,7 +300,7 @@ function isArray(value: any): value is Array<any> {
     return Array.isArray(value);
 }
 
-function computeNewValue(value, options, forceRecurse, stack) {
+function computeNewValue(value, options, forceRecurse: boolean, stack: string[]) {
     const valueIsArray = isArray(value);
     if (valueIsArray && options.arrayRecursive) {
         return transformArray(value, options, stack);
@@ -311,7 +311,7 @@ function computeNewValue(value, options, forceRecurse, stack) {
     }
 }
 
-function transformArray(array, options: ObjectChangeCaseOptions, stack) {
+function transformArray(array: any[], options: ObjectChangeCaseOptions, stack) {
     if (!isArray(array)) {
         throw new Error("transformArray expects an array");
     }
@@ -326,11 +326,11 @@ function transformArray(array, options: ObjectChangeCaseOptions, stack) {
     return result;
 }
 
-function makeKeyPath(keyStack) {
+function makeKeyPath(keyStack: string[]) {
     return keyStack.join(".");
 }
 
-function shouldTransformKey(currentKey, currentPath, opts) {
+function shouldTransformKey(currentKey: string, currentPath: string, opts) {
     for (const x of opts.ignoreKeys) {
         if ("test" in x ? x.test(currentKey) : x === currentKey) {
             return false;
@@ -364,7 +364,7 @@ function getTransformFunc(key, currentPath, opts: InternalObjectChangeCaseOption
     return opts.defaultTransform ?? iden;
 }
 
-function transformObjectKeys(object, options: InternalObjectChangeCaseOptions, stack) {
+function transformObjectKeys(object: any, options: InternalObjectChangeCaseOptions, stack: string[]) {
     if (!object) {
         return object;
     }

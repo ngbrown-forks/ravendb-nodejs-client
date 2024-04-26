@@ -23,9 +23,8 @@ export interface IRavenArrayResult {
 export type CompareExchangeResultClass<T> = T extends object ? EntityConstructor<T> : unknown;
 
 export interface ClassConstructor<T extends object = object> {
-    name: string;
-
     new(...args: any[]): any;
+    name: string;
 }
 
 export interface EntityConstructor<T extends object = object> {

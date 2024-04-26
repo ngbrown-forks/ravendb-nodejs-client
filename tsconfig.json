@@ -9,6 +9,7 @@
     "declarationMap": true,
     "outDir": "dist",
     "declaration": true,
+    "experimentalDecorators": true,
     "removeComments": true,
     "sourceMap": true,
     "noEmit": true,
