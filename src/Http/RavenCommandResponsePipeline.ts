@@ -75,6 +75,7 @@ export class RavenCommandResponsePipeline<TStreamResult> extends EventEmitter {
         return this;
     }
 
+    //TODO: remove this function
     public objectKeysTransform(defaultTransform: FieldNameConversion): this;
     public objectKeysTransform(opts: ObjectKeyCaseTransformStreamOptions): this;
     public objectKeysTransform(

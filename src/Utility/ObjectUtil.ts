@@ -76,6 +76,7 @@ export class ObjectUtil {
             ), {});
     }
 
+    //TODO: avoid using?
     public static transformObjectKeys(
         obj: object, opts?: ObjectChangeCaseOptions): object {
         const options: any = setDefaults(opts, DEFAULT_CHANGE_CASE_OPTIONS);
@@ -249,6 +250,8 @@ export class ObjectUtil {
 /*
     This code is a modified version of https://github.com/claudetech/js-change-object-case
 */
+
+//TODO: review those methods
 
 export type FieldNameConversion = (fieldName: string) => string;
 
