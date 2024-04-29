@@ -18,7 +18,6 @@ import { TimeUtil } from "../../../Utility/TimeUtil.js";
 import { PutAttachmentCommandHelper } from "./PutAttachmentCommandHelper.js";
 import { TypeUtil } from "../../../Utility/TypeUtil.js";
 import { ObjectUtil } from "../../../Utility/ObjectUtil.js";
-import { FormData } from "node-fetch";
 import { Agent } from "node:http";
 import { readToBuffer } from "../../../Utility/StreamUtil.js";
 

@@ -1,7 +1,7 @@
-import { Response as HttpResponse } from "node-fetch"
 import { HEADERS } from "../Constants.js";
 import { IncomingHttpHeaders } from "node:http";
 import { throwError } from "../Exceptions/index.js";
+import { HttpResponse } from "../Primitives/Http.js";
 
 export function getRequiredEtagHeader(response: HttpResponse) {
     let etagHeader = response.headers.get(HEADERS.ETAG);

@@ -2,7 +2,6 @@ import { ServerNode } from "./ServerNode.js";
 import { HttpCache } from "./HttpCache.js";
 import { StatusCodes } from "./StatusCode.js";
 import { Stream, Readable, PassThrough } from "node:stream";
-import { Response, RequestInit, RequestInfo } from "node-fetch";
 import { HttpRequestParameters, HttpResponse } from "../Primitives/Http.js";
 import { getLogger } from "../Utility/LogUtil.js";
 import { throwError } from "../Exceptions/index.js";
@@ -16,8 +15,6 @@ import { Agent } from "node:http";
 import { ObjectTypeDescriptor } from "../Types/index.js";
 import { ReadableWebToNodeStream } from "../Utility/ReadableWebToNodeStream.js";
 import { ObjectUtil } from "../Utility/ObjectUtil.js";
-
-const fetch = ( url: RequestInfo, init?: RequestInit) => import("node-fetch").then(({default: fetch}) => fetch(url, init));
 
 const log = getLogger({ module: "RavenCommand" });
 

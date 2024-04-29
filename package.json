@@ -83,7 +83,6 @@
     "@types/stream-json": "^1.7.2",
     "@types/ws": "^8.5.10",
     "moment": "^2.29.4",
-    "node-fetch": "^3.3.2",
     "pluralize": "^8.0.0",
     "safe-memory-cache": "^2.0.0",
     "stream-json": "^1.8.0",

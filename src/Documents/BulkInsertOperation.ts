@@ -956,6 +956,7 @@ export class BulkInsertCommand extends RavenCommand<void> {
             method: "POST",
             uri,
             body: this._stream,
+            duplex: "half",
             headers
         };
     }

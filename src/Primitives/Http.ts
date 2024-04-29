@@ -1,4 +1,3 @@
-import { Request, RequestInit, Response } from "node-fetch";
 
 export type HttpRequestParameters = RequestInit & {
   uri: string;
