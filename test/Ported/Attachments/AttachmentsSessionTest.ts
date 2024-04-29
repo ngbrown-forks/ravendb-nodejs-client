@@ -1,16 +1,15 @@
 import assert from "node:assert"
 import { testContext, disposeTestDocumentStore } from "../../Utils/TestUtil.js";
-
 import {
     AttachmentName,
     IDocumentStore,
     DeleteAttachmentOperation,
-    DeleteCommandData
+    DeleteCommandData, AttachmentData
 } from "../../../src/index.js";
 import { Readable, Writable } from "node:stream";
 import { User } from "../../Assets/Entities.js";
 import { CONSTANTS } from "../../../src/Constants.js";
-import { finishedAsync } from "../../../src/Utility/StreamUtil.js";
+import { bufferToReadable, finishedAsync } from "../../../src/Utility/StreamUtil.js";
 
 describe("Attachments Session", function () {
 
@@ -130,7 +129,15 @@ describe("Attachments Session", function () {
         }
     });
 
-    it("can get & delete attachments", async () => {
+    it("can get & delete attachments - buffer", async () => {
+        await getGetAndDeleteAttachments(x => x);
+    });
+
+    it("can get & delete attachments - readable", async () => {
+        await getGetAndDeleteAttachments(bufferToReadable);
+    });
+
+    async function getGetAndDeleteAttachments(attachmentContentCreator: (buffer: Buffer) => AttachmentData) {
         const stream1 = Buffer.from([1, 2, 3]);
         const stream2 = Buffer.from([1, 2, 3, 4, 5, 6]);
         const stream3 = Buffer.from([1, 2, 3, 4, 5, 6, 7, 8, 9]);
@@ -143,10 +150,10 @@ describe("Attachments Session", function () {
             user.name = "Fitzchak";
             await session.store(user, "users/1");
 
-            session.advanced.attachments.store(user, "file1", stream1, "image/png");
-            session.advanced.attachments.store(user, "file2", stream2, "image/png");
-            session.advanced.attachments.store(user, "file3", stream3, "image/png");
-            session.advanced.attachments.store(user, "file4", stream4, "image/png");
+            session.advanced.attachments.store(user, "file1", attachmentContentCreator(stream1), "image/png");
+            session.advanced.attachments.store(user, "file2", attachmentContentCreator(stream2), "image/png");
+            session.advanced.attachments.store(user, "file3", attachmentContentCreator(stream3), "image/png");
+            session.advanced.attachments.store(user, "file4", attachmentContentCreator(stream4), "image/png");
             await session.saveChanges();
         }
 
@@ -200,7 +207,7 @@ describe("Attachments Session", function () {
             result.dispose();
             assert.ok(Buffer.compare(bufResult, stream1) === 0);
         }
-    });
+    }
 
     it("can delete attachment using command", async () => {
         {

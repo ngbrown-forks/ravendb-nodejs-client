@@ -79,34 +79,6 @@ describe("SmugglerTest", function () {
         }
     });
 
-    it("can use between option", async () => {
-        const sourceStore = await testContext.getDocumentStore();
-
-        try {
-            await addUsers(sourceStore);
-
-            const targetStore = await testContext.getDocumentStore();
-            try {
-                const options = new DatabaseSmugglerExportOptions();
-                options.operateOnTypes = ["Documents"];
-                const exportOperation = await sourceStore.smuggler.export(options, targetStore.smuggler);
-
-                await exportOperation.waitForCompletion();
-
-                const stats = await targetStore.maintenance.send(new GetStatisticsOperation());
-                assertThat(stats.countOfIndexes)
-                    .isEqualTo(0);  // we didn't request indexes to be copied
-                assertThat(stats.countOfDocuments)
-                    .isEqualTo(3);
-
-            } finally {
-                targetStore.dispose();
-            }
-        } finally {
-            sourceStore.dispose();
-        }
-    });
-
     it("can sort files", () => {
         const files = [
             "2018-11-08-10-47.ravendb-incremental-backup",

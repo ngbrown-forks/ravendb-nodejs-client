@@ -8,17 +8,19 @@ import { BatchOptions } from "./BatchOptions.js";
 import { TransactionMode } from "../../Session/TransactionMode.js";
 import { throwError } from "../../../Exceptions/index.js";
 import { PutAttachmentCommandData } from "./PutAttachmentCommandData.js";
-import { HttpRequestParameters } from "../../../Primitives/Http.js";
+import { HttpRequestParameters, HttpResponse } from "../../../Primitives/Http.js";
 import { HeadersBuilder } from "../../../Utility/HttpUtil.js";
 import { JsonSerializer } from "../../../Mapping/Json/Serializer.js";
 import { ServerNode } from "../../../Http/ServerNode.js";
 import { RavenCommandResponsePipeline } from "../../../Http/RavenCommandResponsePipeline.js";
-import { Stream } from "node:stream";
+import { Readable, Stream } from "node:stream";
 import { TimeUtil } from "../../../Utility/TimeUtil.js";
 import { PutAttachmentCommandHelper } from "./PutAttachmentCommandHelper.js";
 import { TypeUtil } from "../../../Utility/TypeUtil.js";
 import { ObjectUtil } from "../../../Utility/ObjectUtil.js";
 import { FormData } from "node-fetch";
+import { Agent } from "node:http";
+import { readToBuffer } from "../../../Utility/StreamUtil.js";
 
 export class SingleNodeBatchCommand extends RavenCommand<BatchCommandResult> implements IDisposable {
     private _supportsAtomicWrites: boolean | null;
@@ -71,6 +73,32 @@ export class SingleNodeBatchCommand extends RavenCommand<BatchCommandResult> imp
         }
     }
 
+    async send(agent: Agent, requestOptions: HttpRequestParameters): Promise<{
+        response: HttpResponse;
+        bodyStream: Readable
+    }> {
+        const { body } = requestOptions;
+        if (body instanceof FormData) {
+            const attachments = [...this._attachmentStreams]
+                .map(attStream => {
+                    return {
+                        body: attStream,
+                        headers: {
+                            "Command-Type": "AttachmentStream"
+                        }
+                    };
+                });
+
+            for (let i = 0; i < attachments.length; i++) {
+                const part = attachments[i].body;
+                const payload = part instanceof Readable ?  await readToBuffer(part) : part;
+                body.append("attachment_" + i, payload);
+            }
+        }
+
+        return super.send(agent, requestOptions);
+    }
+
     public createRequest(node: ServerNode): HttpRequestParameters {
         const uri = node.url + "/databases/" + node.database + "/bulk_docs?";
         const headers = HeadersBuilder.create().typeAppJson().build();
@@ -100,15 +128,7 @@ export class SingleNodeBatchCommand extends RavenCommand<BatchCommandResult> imp
         };
 
         if (this._attachmentStreams && this._attachmentStreams.size > 0) {
-            const attachments = [...this._attachmentStreams]
-                .map(attStream => {
-                    return {
-                        body: attStream,
-                        headers: {
-                            "Command-Type": "AttachmentStream"
-                        }
-                    };
-                });
+            // NOTE: payload is created in send method in async fashion - to support conversion from readable to buffers
 
             // strip out content type, see: https://stackoverflow.com/questions/39280438/fetch-missing-boundary-in-multipart-form-data-post
             if (request.headers && "Content-Type" in request.headers) {
@@ -117,10 +137,8 @@ export class SingleNodeBatchCommand extends RavenCommand<BatchCommandResult> imp
             }
 
             const multipart = new FormData();
-            multipart.append("main", body/*, { header: { ...headers, "Content-Type": "multipart/form-data" } }*/);
-            for (let i = 0; i < attachments.length; i++) {
-                multipart.append("attachment_" + i, attachments[i].body/*, { header: attachments[i].headers }*/);
-            }
+            multipart.append("main", new Blob([body], { type: "application/json" }));
+
             request.body = multipart;
 
         } else {
