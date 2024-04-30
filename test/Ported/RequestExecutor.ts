@@ -3,9 +3,9 @@ import { ClusterTestContext, disposeTestDocumentStore, RavenTestContext, testCon
 import { throwError } from "../../src/Exceptions/index.js";
 import { HttpRequestParameters, HttpResponse } from "../../src/Primitives/Http.js";
 import { Readable } from "node:stream";
-import { Agent } from "node:http";
 import { User } from "../Assets/Entities.js";
 import { assertThat } from "../Utils/AssertExtensions.js";
+import { Agent } from "undici";
 
 (RavenTestContext.isPullRequest ? describe.skip : describe)("RequestExecutor", function () {
 

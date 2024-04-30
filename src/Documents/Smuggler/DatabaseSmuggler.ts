@@ -7,7 +7,7 @@ import { DatabaseSmugglerExportOptions } from "./DatabaseSmugglerExportOptions.j
 import { HttpCache } from "../../Http/HttpCache.js";
 import { HeadersBuilder } from "../../Utility/HttpUtil.js";
 import { DatabaseSmugglerOptions } from "./DatabaseSmugglerOptions.js";
-import { existsSync, mkdirSync, createWriteStream, readdirSync, createReadStream } from "node:fs";
+import { existsSync, mkdirSync, createWriteStream, readdirSync, readFileSync } from "node:fs";
 import { pipelineAsync } from "../../Utility/StreamUtil.js";
 import { dirname, resolve, extname } from "node:path";
 import { BackupUtils } from "./BackupUtils.js";
@@ -18,8 +18,6 @@ import { RavenCommand, ResponseDisposeHandling } from "../../Http/RavenCommand.j
 import { DocumentConventions } from "../Conventions/DocumentConventions.js";
 import { ServerNode } from "../../Http/ServerNode.js";
 import { Readable } from "node:stream";
-import { FormData } from "node-fetch";
-import { fileFromSync } from "fetch-blob/from.js";
 
 export class DatabaseSmuggler {
     private readonly _store: IDocumentStore;
@@ -259,7 +257,8 @@ class ImportCommand extends RavenCommand<void> {
 
         const multipart = new FormData();
         multipart.append("importOptions", this._serializer.serialize(this._options));
-        multipart.append("name", fileFromSync(this._file));
+        const buffer = readFileSync(this._file);
+        multipart.append("name", new Blob([buffer], { type: "text/plain" }));
 
         return {
             method: "POST",

@@ -20,7 +20,7 @@ export class TcpUtils {
 
         if (serverCertificate && clientCertificate) {
             return new Promise<Socket>((resolve, reject) => {
-                const agentOptions = Certificate.createFromOptions(clientCertificate).toAgentOptions();
+                const agentOptions = Certificate.createFromOptions(clientCertificate).toSocketOptions();
                 agentOptions.checkServerIdentity = (host: string, peerCertificate: PeerCertificate) => {
                     const remoteCert = peerCertificate.raw;
                     const expectedCert = Buffer.from(serverCertificate, "base64");

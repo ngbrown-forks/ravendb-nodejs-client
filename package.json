@@ -78,7 +78,6 @@
   },
   "dependencies": {
     "@types/node": "^20.12.4",
-    "@types/node-fetch": "^2.6.2",
     "@types/pluralize": "^0.0.33",
     "@types/stream-json": "^1.7.2",
     "@types/ws": "^8.5.10",
@@ -86,6 +85,7 @@
     "pluralize": "^8.0.0",
     "safe-memory-cache": "^2.0.0",
     "stream-json": "^1.8.0",
+    "undici": "^6.15.0",
     "ws": "^8.16.0"
   }
 }

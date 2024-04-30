@@ -1,8 +1,6 @@
 import fs from "node:fs";
 import path from "node:path";
 import url from "node:url";
-import http from "node:http";
-import https from "node:https";
 import { IDisposable, IDocumentStore, IAuthOptions } from "../../src/index.js";
 import { RavenTestDriver } from "../TestDriver/index.js";
 import { RavenServerLocator } from "../TestDriver/RavenServerLocator.js";
@@ -31,6 +29,7 @@ import { Stopwatch } from "../../src/Utility/Stopwatch.js";
 import { delay, wrapWithTimeout } from "../../src/Utility/PromiseUtil.js";
 import moment from "moment";
 import { INDEXES } from "../../src/Constants.js";
+import { Agent } from "undici";
 
 const log = getLogger({ module: "TestDriver" });
 
@@ -750,20 +749,6 @@ setupRavenDbTestContext();
 
 export let clusterTestContext: ClusterTestContext;
 
-function checkAgent(agentName: string, agent: http.Agent) {
-    const reqKeys = Object.keys(agent.requests);
-    if (reqKeys.length) {
-        // eslint-disable-next-line no-console
-        console.log(`${agentName} dangling requests: ${reqKeys}`);
-    }
-
-    const sockKeys = Object.keys(agent.sockets);
-    if (sockKeys.length) {
-        // eslint-disable-next-line no-console
-        console.log(`${agentName} dangling sockets: ${sockKeys}`);
-    }
-}
-
 function setupRavenDbTestContext() {
 
     before(() => {
@@ -779,11 +764,6 @@ function setupRavenDbTestContext() {
 
     after(() => {
         testContext.dispose();
-
-        process.on("beforeExit", () => {
-            checkAgent("http", http.globalAgent);
-            checkAgent("https", https.globalAgent);
-        });
     });
 
     return testContext;

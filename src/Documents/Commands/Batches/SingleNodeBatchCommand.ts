@@ -18,8 +18,8 @@ import { TimeUtil } from "../../../Utility/TimeUtil.js";
 import { PutAttachmentCommandHelper } from "./PutAttachmentCommandHelper.js";
 import { TypeUtil } from "../../../Utility/TypeUtil.js";
 import { ObjectUtil } from "../../../Utility/ObjectUtil.js";
-import { Agent } from "node:http";
 import { readToBuffer } from "../../../Utility/StreamUtil.js";
+import { Agent } from "undici";
 
 export class SingleNodeBatchCommand extends RavenCommand<BatchCommandResult> implements IDisposable {
     private _supportsAtomicWrites: boolean | null;

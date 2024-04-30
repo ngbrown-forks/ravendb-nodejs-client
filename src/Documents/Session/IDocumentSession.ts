@@ -24,6 +24,7 @@ import { AbstractCommonApiForIndexes } from "../Indexes/AbstractCommonApiForInde
 import { AbstractTimeSeriesRange } from "../Operations/TimeSeries/AbstractTimeSeriesRange.js";
 import { ISessionDocumentTypedIncrementalTimeSeries } from "./ISessionDocumentTypedIncrementalTimeSeries.js";
 import { ISessionDocumentIncrementalTimeSeries } from "./ISessionDocumentIncrementalTimeSeries.js";
+import { Buffer} from "node:buffer";
 
 export class SessionInfo {
     private static _clientSessionIdCounter: number = 0;

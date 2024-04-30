@@ -11,10 +11,9 @@ import { TypeInfo } from "../Mapping/ObjectMapper.js";
 import { JsonSerializer } from "../Mapping/Json/Serializer.js";
 import { RavenCommandResponsePipeline } from "./RavenCommandResponsePipeline.js";
 import { DocumentConventions } from "../Documents/Conventions/DocumentConventions.js";
-import { Agent } from "node:http";
 import { ObjectTypeDescriptor } from "../Types/index.js";
-import { ReadableWebToNodeStream } from "../Utility/ReadableWebToNodeStream.js";
 import { ObjectUtil } from "../Utility/ObjectUtil.js";
+import { Agent } from "undici";
 
 const log = getLogger({ module: "RavenCommand" });
 
@@ -141,8 +140,8 @@ export abstract class RavenCommand<TResult> {
         const response = await fetchFn(uri, optionsToUse);
 
         const effectiveStream: Readable =
-            fetcher && response.body
-                ? new ReadableWebToNodeStream(response.body)
+            response.body
+                ? Readable.fromWeb(response.body)
                 : (response.body ?? new Stream());
 
         effectiveStream
