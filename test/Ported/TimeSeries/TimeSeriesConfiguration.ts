@@ -1,22 +1,29 @@
-import { disposeTestDocumentStore, RavenTestContext, testContext } from "../../Utils/TestUtil";
-import { GetDatabaseRecordOperation, IDocumentStore } from "../../../src";
-import { TimeSeriesConfiguration } from "../../../src/Documents/Operations/TimeSeries/TimeSeriesConfiguration";
-import { ConfigureTimeSeriesOperation } from "../../../src/Documents/Operations/TimeSeries/ConfigureTimeSeriesOperation";
-import { CaseInsensitiveKeysMap } from "../../../src/Primitives/CaseInsensitiveKeysMap";
-import { TimeSeriesCollectionConfiguration } from "../../../src/Documents/Operations/TimeSeries/TimeSeriesCollectionConfiguration";
-import { TimeValue } from "../../../src/Primitives/TimeValue";
-import { TimeSeriesPolicy } from "../../../src/Documents/Operations/TimeSeries/TimeSeriesPolicy";
-import { RawTimeSeriesPolicy } from "../../../src/Documents/Operations/TimeSeries/RawTimeSeriesPolicy";
-import { assertThat, assertThrows } from "../../Utils/AssertExtensions";
-import moment = require("moment");
-import { User } from "../../Assets/Entities";
-import { delay } from "../../../src/Utility/PromiseUtil";
-import { ConfigureTimeSeriesPolicyOperation } from "../../../src/Documents/Operations/TimeSeries/ConfigureTimeSeriesPolicyOperation";
-import { ConfigureRawTimeSeriesPolicyOperation } from "../../../src/Documents/Operations/TimeSeries/ConfigureRawTimeSeriesPolicyOperation";
+import { disposeTestDocumentStore, RavenTestContext, testContext } from "../../Utils/TestUtil.js";
+import { GetDatabaseRecordOperation, IDocumentStore } from "../../../src/index.js";
+import { TimeSeriesConfiguration } from "../../../src/Documents/Operations/TimeSeries/TimeSeriesConfiguration.js";
+import {
+    ConfigureTimeSeriesOperation
+} from "../../../src/Documents/Operations/TimeSeries/ConfigureTimeSeriesOperation.js";
+import { CaseInsensitiveKeysMap } from "../../../src/Primitives/CaseInsensitiveKeysMap.js";
+import {
+    TimeSeriesCollectionConfiguration
+} from "../../../src/Documents/Operations/TimeSeries/TimeSeriesCollectionConfiguration.js";
+import { TimeValue } from "../../../src/Primitives/TimeValue.js";
+import { TimeSeriesPolicy } from "../../../src/Documents/Operations/TimeSeries/TimeSeriesPolicy.js";
+import { RawTimeSeriesPolicy } from "../../../src/Documents/Operations/TimeSeries/RawTimeSeriesPolicy.js";
+import { assertThat, assertThrows } from "../../Utils/AssertExtensions.js";
+import { User } from "../../Assets/Entities.js";
+import { delay } from "../../../src/Utility/PromiseUtil.js";
+import {
+    ConfigureTimeSeriesPolicyOperation
+} from "../../../src/Documents/Operations/TimeSeries/ConfigureTimeSeriesPolicyOperation.js";
+import {
+    ConfigureRawTimeSeriesPolicyOperation
+} from "../../../src/Documents/Operations/TimeSeries/ConfigureRawTimeSeriesPolicyOperation.js";
 import {
     ConfigureTimeSeriesValueNamesOperation,
     ConfigureTimeSeriesValueNamesParameters
-} from "../../../src/Documents/Operations/TimeSeries/ConfigureTimeSeriesValueNamesOperation";
+} from "../../../src/Documents/Operations/TimeSeries/ConfigureTimeSeriesValueNamesOperation.js";
 
 (RavenTestContext.isPullRequest ? describe.skip : describe)("TimeSeriesConfiguration", function () {
 
@@ -209,11 +216,11 @@ import {
             const session = store.openSession();
             const ts = await session.timeSeriesFor("users/karmel", "Heartrate").get();
 
-            const tsMillis = ts[ts.length - 1].timestamp.getTime() - ts[0].timestamp.getTime();
+            const tsMillis = ts.at(-1).timestamp.getTime() - ts[0].timestamp.getTime();
 
             const ts1 = await session.timeSeriesFor("users/karmel", p1.getTimeSeriesName("Heartrate")).get();
 
-            const ts1Millis = ts1[ts1.length - 1].timestamp.getTime() - ts1[0].timestamp.getTime();
+            const ts1Millis = ts1.at(-1).timestamp.getTime() - ts1[0].timestamp.getTime();
 
             assertThat(ts1Millis)
                 .isEqualTo(tsMillis - 600);

@@ -1,21 +1,21 @@
-import { HttpRequestParameters } from "../../../Primitives/Http";
-import { IOperation, OperationResultType } from "../OperationAbstractions";
-import { CompareExchangeResult, CompareExchangeResultResponse } from "./CompareExchangeResult";
-import { RavenCommand } from "../../../Http/RavenCommand";
-import { IDocumentStore } from "../../IDocumentStore";
-import { DocumentConventions } from "../../Conventions/DocumentConventions";
-import { HttpCache } from "../../../Http/HttpCache";
-import { throwError } from "../../../Exceptions";
-import { ServerNode } from "../../../Http/ServerNode";
-import { JsonSerializer } from "../../../Mapping/Json/Serializer";
-import { TypeUtil } from "../../../Utility/TypeUtil";
-import * as stream from "readable-stream";
-import { ObjectTypeDescriptor, CompareExchangeResultClass, ServerResponse, ServerCasing } from "../../../Types";
-import { IRaftCommand } from "../../../Http/IRaftCommand";
-import { RaftIdGenerator } from "../../../Utility/RaftIdGenerator";
-import { COMPARE_EXCHANGE, CONSTANTS } from "../../../Constants";
-import { CompareExchangeSessionValue } from "./CompareExchangeSessionValue";
-import { IMetadataDictionary } from "../../Session/IMetadataDictionary";
+import { HttpRequestParameters } from "../../../Primitives/Http.js";
+import { IOperation, OperationResultType } from "../OperationAbstractions.js";
+import { CompareExchangeResult, CompareExchangeResultResponse } from "./CompareExchangeResult.js";
+import { RavenCommand } from "../../../Http/RavenCommand.js";
+import { IDocumentStore } from "../../IDocumentStore.js";
+import { DocumentConventions } from "../../Conventions/DocumentConventions.js";
+import { HttpCache } from "../../../Http/HttpCache.js";
+import { throwError } from "../../../Exceptions/index.js";
+import { ServerNode } from "../../../Http/ServerNode.js";
+import { JsonSerializer } from "../../../Mapping/Json/Serializer.js";
+import { TypeUtil } from "../../../Utility/TypeUtil.js";
+import { Stream } from "node:stream";
+import { ObjectTypeDescriptor, CompareExchangeResultClass, ServerResponse, ServerCasing } from "../../../Types/index.js";
+import { IRaftCommand } from "../../../Http/IRaftCommand.js";
+import { RaftIdGenerator } from "../../../Utility/RaftIdGenerator.js";
+import { COMPARE_EXCHANGE, CONSTANTS } from "../../../Constants.js";
+import { CompareExchangeSessionValue } from "./CompareExchangeSessionValue.js";
+import { IMetadataDictionary } from "../../Session/IMetadataDictionary.js";
 
 export class PutCompareExchangeValueOperation<T> implements IOperation<CompareExchangeResult<T>> {
 
@@ -100,7 +100,7 @@ export class PutCompareExchangeValueCommand<T> extends RavenCommand<CompareExcha
         };
     }
 
-    public async setResponseAsync(bodyStream: stream.Stream, fromCache: boolean): Promise<string> {
+    public async setResponseAsync(bodyStream: Stream, fromCache: boolean): Promise<string> {
         let body: string = null;
 
         const resObj = await this._pipeline<ServerCasing<ServerResponse<CompareExchangeResultResponse>>>()

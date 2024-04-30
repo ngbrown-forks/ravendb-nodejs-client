@@ -1,12 +1,9 @@
-import * as XRegExp from "xregexp";
-import { TypeUtil } from "./TypeUtil";
-import { throwError } from "../Exceptions";
-import * as changeCase from "change-case";
-import { CasingConvention } from "./ObjectUtil";
-import { StringBuilder } from "./StringBuilder";
+import { TypeUtil } from "./TypeUtil.js";
+import { throwError } from "../Exceptions/index.js";
+import { StringBuilder } from "./StringBuilder.js";
 
 export class StringUtil {
-    private static readonly letterRe: RegExp = XRegExp("^\\p{L}$") as RegExp;
+    private static readonly letterRe: RegExp = new RegExp(/^\p{L}/,'u');
     private static readonly digitRe: RegExp = /\d/;
 
     public static leftPad(s: string, length: number, char: string) {
@@ -42,7 +39,7 @@ export class StringUtil {
         return s.replace(
             /\{([\d]+)\}/g,
             (match: string, placeholder: string): string => {
-                const value: any = inputVars[parseInt(placeholder, 10)];
+                const value: any = inputVars[Number.parseInt(placeholder, 10)];
 
                 return (TypeUtil.isNullOrUndefined(value) ? "" : value).toString();
             });
@@ -69,7 +66,7 @@ export class StringUtil {
             const c: string = field[i];
 
             if (i === 0) {
-                if (!this.isLetter(c) && ["_", "@"].indexOf(c) === -1) {
+                if (!this.isLetter(c) && !["_", "@"].includes(c)) {
                     escape = true;
                     break;
                 }
@@ -77,7 +74,7 @@ export class StringUtil {
                 continue;
             }
 
-            if (!this.isLetterOrDigit(c) && ["_", "@", ".", "[", "]"].indexOf(c) === -1) {
+            if (!this.isLetterOrDigit(c) && !["_", "@", ".", "[", "]"].includes(c)) {
                 escape = true;
                 break;
             }
@@ -91,11 +88,11 @@ export class StringUtil {
     }
 
     public static capitalize(s: string): string {
-        return s.charAt(0).toUpperCase() + s.substring(1);
+        return s.charAt(0).toUpperCase() + s.slice(1);
     }
 
     public static uncapitalize(s: string): string {
-        return s.charAt(0).toLowerCase() + s.substring(1);
+        return s.charAt(0).toLowerCase() + s.slice(1);
     }
 
     public static isCharacter(character: string): boolean {
@@ -123,10 +120,6 @@ export class StringUtil {
 
     public static isNullOrWhitespace(s?: string): boolean {
         return !(s || "").trim().length;
-    }
-
-    public static changeCase(transformName: CasingConvention, s: string) {
-        return changeCase[transformName](s);
     }
 
     public static equalsIgnoreCase(s1: string, s2: string) {

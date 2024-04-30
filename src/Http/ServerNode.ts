@@ -1,6 +1,6 @@
-import { IRavenObject } from "../Types/IRavenObject";
-import { UriUtility } from "./UriUtility";
-import { ClusterTopology } from "./ClusterTopology";
+import { IRavenObject } from "../Types/IRavenObject.js";
+import { UriUtility } from "./UriUtility.js";
+import { ClusterTopology } from "./ClusterTopology.js";
 
 export type ServerNodeRole = "None" | "Promotable" | "Member" | "Rehab";
 
@@ -40,8 +40,8 @@ export class ServerNode {
         if (serverVersion) {
             const tokens = serverVersion.split(".");
             try {
-                const major = parseInt(tokens[0], 10);
-                const minor = parseInt(tokens[1], 10);
+                const major = Number.parseInt(tokens[0], 10);
+                const minor = Number.parseInt(tokens[1], 10);
 
                 if (major > 5 || (major === 5 && minor >= 2)) {
                     this.supportsAtomicClusterWrites = true;
@@ -64,7 +64,7 @@ export class ServerNode {
             return nodes;
         }
 
-        Object.keys(topology.members).forEach(node => {
+        for (const node of Object.keys(topology.members)) {
             const member = topology.members[node];
 
             nodes.push(new ServerNode({
@@ -72,9 +72,9 @@ export class ServerNode {
                 clusterTag: node,
                 serverRole: "Member"
             }));
-        });
+        }
 
-        Object.keys(topology.watchers).forEach(node => {
+        for (const node of Object.keys(topology.watchers)) {
             const watcher = topology.watchers[node];
 
             nodes.push(new ServerNode({
@@ -82,7 +82,7 @@ export class ServerNode {
                 clusterTag: node,
                 serverRole: "Member"
             }));
-        });
+        }
 
         return nodes;
     }

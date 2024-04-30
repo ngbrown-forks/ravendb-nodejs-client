@@ -1,5 +1,5 @@
-import { FieldsToFetchToken } from "./Tokens/FieldsToFetchToken";
-import { QueryOperation } from "./Operations/QueryOperation";
+import { FieldsToFetchToken } from "./Tokens/FieldsToFetchToken.js";
+import { QueryOperation } from "./Operations/QueryOperation.js";
 
 /**
  * This is used as an abstraction for the implementation

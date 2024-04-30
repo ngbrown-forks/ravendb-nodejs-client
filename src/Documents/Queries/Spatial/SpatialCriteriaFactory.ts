@@ -1,16 +1,16 @@
-import { SpatialCriteria } from "./SpatialCriteria";
-import { SpatialRelation, SpatialUnits } from "../../Indexes/Spatial";
-import { CONSTANTS } from "../../../Constants";
-import { WktCriteria } from "./WktCriteria";
-import { CircleCriteria } from "./CircleCriteria";
-import { TypeUtil } from "../../../Utility/TypeUtil";
+import { SpatialCriteria } from "./SpatialCriteria.js";
+import { SpatialRelation, SpatialUnits } from "../../Indexes/Spatial.js";
+import { CONSTANTS } from "../../../Constants.js";
+import { WktCriteria } from "./WktCriteria.js";
+import { CircleCriteria } from "./CircleCriteria.js";
+import { TypeUtil } from "../../../Utility/TypeUtil.js";
 
 export class SpatialCriteriaFactory {
 
     public static INSTANCE = new SpatialCriteriaFactory();
 
-    // eslint-disable-next-line @typescript-eslint/no-empty-function
     private constructor() {
+        // empty
     }
 
     public relatesToShape(shapeWkt: string, relation: SpatialRelation): SpatialCriteria;

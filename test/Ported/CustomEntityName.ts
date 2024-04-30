@@ -1,11 +1,11 @@
-import { DocumentConventions, ObjectTypeDescriptor } from "../../src";
-import { disposeTestDocumentStore, testContext } from "../Utils/TestUtil";
-import { assertThat } from "../Utils/AssertExtensions";
+import { DocumentConventions, ObjectTypeDescriptor } from "../../src/index.js";
+import { disposeTestDocumentStore, testContext } from "../Utils/TestUtil.js";
+import { assertThat } from "../Utils/AssertExtensions.js";
 
 describe("CustomEntityName", function () {
 
     const getChars = () => {
-        const basicChars = [...Array(31).keys()].map(x => {
+        const basicChars = [...new Array(31).keys()].map(x => {
             return String.fromCodePoint(x + 1);
         });
 

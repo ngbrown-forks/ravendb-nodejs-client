@@ -1,11 +1,11 @@
-import { IServerOperation, OperationIdResult, OperationResultType } from "../OperationAbstractions";
-import { HttpRequestParameters } from "../../../Primitives/Http";
-import * as stream from "readable-stream";
-import { DocumentConventions } from "../../Conventions/DocumentConventions";
-import { RavenCommand } from "../../../Http/RavenCommand";
-import { ServerNode } from "../../../Http/ServerNode";
-import { RestoreBackupConfigurationBase } from "./RestoreBackupConfigurationBase";
-import { throwError } from "../../../Exceptions";
+import { IServerOperation, OperationIdResult, OperationResultType } from "../OperationAbstractions.js";
+import { HttpRequestParameters } from "../../../Primitives/Http.js";
+import { Stream } from "node:stream";
+import { DocumentConventions } from "../../Conventions/DocumentConventions.js";
+import { RavenCommand } from "../../../Http/RavenCommand.js";
+import { ServerNode } from "../../../Http/ServerNode.js";
+import { RestoreBackupConfigurationBase } from "./RestoreBackupConfigurationBase.js";
+import { throwError } from "../../../Exceptions/index.js";
 
 export class RestoreBackupOperation implements IServerOperation<OperationIdResult> {
     private readonly _restoreConfiguration: RestoreBackupConfigurationBase;
@@ -60,7 +60,7 @@ class RestoreBackupCommand extends RavenCommand<OperationIdResult> {
         }
     }
 
-    async setResponseAsync(bodyStream: stream.Stream, fromCache: boolean): Promise<string> {
+    async setResponseAsync(bodyStream: Stream, fromCache: boolean): Promise<string> {
         if (!bodyStream) {
             this._throwInvalidResponse();
         }

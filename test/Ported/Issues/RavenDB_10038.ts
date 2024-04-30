@@ -1,13 +1,13 @@
-import { testContext, disposeTestDocumentStore } from "../../Utils/TestUtil";
+import { testContext, disposeTestDocumentStore } from "../../Utils/TestUtil.js";
 
 import {
     IDocumentStore,
     GetDetailedStatisticsOperation,
     PutCompareExchangeValueOperation,
     DeleteCompareExchangeValueOperation,
-} from "../../../src";
-import { assertThat } from "../../Utils/AssertExtensions";
-import { Person, User } from "../../Assets/Entities";
+} from "../../../src/index.js";
+import { assertThat } from "../../Utils/AssertExtensions.js";
+import { Person, User } from "../../Assets/Entities.js";
 
 describe("RavenDB_10038Test", function () {
 

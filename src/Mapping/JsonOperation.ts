@@ -1,8 +1,8 @@
-import { TypeUtil } from "../Utility/TypeUtil";
-import { DocumentInfo } from "../Documents/Session/DocumentInfo";
-import { DocumentsChanges, ChangeType } from "../Documents/Session/DocumentsChanges";
-import { CONSTANTS } from "../Constants";
-import { throwError } from "../Exceptions";
+import { TypeUtil } from "../Utility/TypeUtil.js";
+import { DocumentInfo } from "../Documents/Session/DocumentInfo.js";
+import { DocumentsChanges, ChangeType } from "../Documents/Session/DocumentsChanges.js";
+import { CONSTANTS } from "../Constants.js";
+import { throwError } from "../Exceptions/index.js";
 
 export class JsonOperation {
 
@@ -37,11 +37,11 @@ export class JsonOperation {
         newJson: object,
         changes: { [id: string]: DocumentsChanges[] },
         docChanges: DocumentsChanges[]): boolean {
-        const newJsonProps: string[] = Object.keys(newJson);
-        const oldJsonProps: string[] = Object.keys(originalJson);
+        const newJsonProps: string[] = Object.entries(newJson).filter(([_, value]) => typeof value !== "undefined").map(x => x[0]);
+        const oldJsonProps: string[] = Object.entries(originalJson).filter(([_, value]) => typeof value !== "undefined").map(x => x[0]);
 
-        const newFields = newJsonProps.filter(x => !oldJsonProps.find(y => y === x));
-        const removedFields = oldJsonProps.filter(x => !newJsonProps.find(y => y === x));
+        const newFields = new Set(newJsonProps.filter(x => !oldJsonProps.includes(x)));
+        const removedFields = oldJsonProps.filter(x => !newJsonProps.includes(x));
 
         for (const field of removedFields) {
             if (!changes) {
@@ -61,7 +61,7 @@ export class JsonOperation {
                 continue;
             }
 
-            if (newFields.find(x => x === prop)) {
+            if (newFields.has(prop)) {
                 if (!changes) {
                     return true;
                 }

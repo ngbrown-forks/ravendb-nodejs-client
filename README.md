@@ -2,7 +2,7 @@
 
 [![NPM](https://nodei.co/npm/ravendb.png?compact=true)](https://nodei.co/npm/ravendb/)
 
-[![build status](https://github.com/ravendb/ravendb-nodejs-client/workflows/tests/node/badge.svg?branch=v5.4)](https://github.com/ravendb/ravendb-nodejs-client/actions) [![Known Vulnerabilities](https://snyk.io/test/github/ravendb/ravendb-nodejs-client/badge.svg)](https://snyk.io/test/github/ravendb/ravendb-nodejs-client)
+[![build status](https://github.com/ravendb/ravendb-nodejs-client/workflows/tests/node/badge.svg?branch=v6.0)](https://github.com/ravendb/ravendb-nodejs-client/actions) [![Known Vulnerabilities](https://snyk.io/test/github/ravendb/ravendb-nodejs-client/badge.svg)](https://snyk.io/test/github/ravendb/ravendb-nodejs-client)
 
 
 ## Installation
@@ -12,8 +12,6 @@ npm install --save ravendb
 ```
 
 ## Releases
-
-* All client versions 5.4.x are fully compatible with and support RavenDB server releases 5.4 and 6.0.
 
 * [Click here](https://github.com/ravendb/ravendb-nodejs-client/releases) to view all Releases and Changelog.
 

@@ -1,14 +1,14 @@
-import { ILazyOperation } from "./ILazyOperation";
-import { ObjectTypeDescriptor } from "../../../../Types";
-import { InMemoryDocumentSessionOperations } from "../../InMemoryDocumentSessionOperations";
-import { LoadOperation } from "../LoadOperation";
-import { GetRequest } from "../../../Commands/MultiGet/GetRequest";
-import { QueryResult } from "../../../Queries/QueryResult";
-import { GetResponse } from "../../../Commands/MultiGet/GetResponse";
-import { GetDocumentsResult, GetDocumentsCommand } from "../../../Commands/GetDocumentsCommand";
-import { stringToReadable } from "../../../../Utility/StreamUtil";
-import { StringUtil } from "../../../../Utility/StringUtil";
-import { StringBuilder } from "../../../../Utility/StringBuilder";
+import { ILazyOperation } from "./ILazyOperation.js";
+import { ObjectTypeDescriptor } from "../../../../Types/index.js";
+import { InMemoryDocumentSessionOperations } from "../../InMemoryDocumentSessionOperations.js";
+import { LoadOperation } from "../LoadOperation.js";
+import { GetRequest } from "../../../Commands/MultiGet/GetRequest.js";
+import { QueryResult } from "../../../Queries/QueryResult.js";
+import { GetResponse } from "../../../Commands/MultiGet/GetResponse.js";
+import { GetDocumentsResult, GetDocumentsCommand } from "../../../Commands/GetDocumentsCommand.js";
+import { stringToReadable } from "../../../../Utility/StreamUtil.js";
+import { StringUtil } from "../../../../Utility/StringUtil.js";
+import { StringBuilder } from "../../../../Utility/StringBuilder.js";
 
 export class LazyLoadOperation<T extends object> implements ILazyOperation {
     private readonly _clazz: ObjectTypeDescriptor<T>;

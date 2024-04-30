@@ -1,19 +1,19 @@
-import { CompareExchangeValue } from "./CompareExchangeValue";
-import { ICompareExchangeValue } from "./ICompareExchangeValue";
-import { CompareExchangeValueState } from "./CompareExchangeValueState";
-import { throwError } from "../../../Exceptions";
-import { TypeUtil } from "../../../Utility/TypeUtil";
-import { CompareExchangeResultClass, EntityConstructor } from "../../../Types";
-import { CompareExchangeValueJsonConverter } from "./CompareExchangeValueJsonConverter";
-import { COMPARE_EXCHANGE, CONSTANTS } from "../../../Constants";
-import { StringUtil } from "../../../Utility/StringUtil";
-import { DocumentConventions } from "../../Conventions/DocumentConventions";
-import { EntityToJson } from "../../Session/EntityToJson";
-import { ICommandData } from "../../Commands/CommandData";
-import { PutCompareExchangeCommandData } from "../../Commands/Batches/PutCompareExchangeCommandData";
-import { DeleteCompareExchangeCommandData } from "../../Commands/Batches/DeleteCompareExchangeCommandData";
-import { TypesAwareObjectMapper } from "../../../Mapping/ObjectMapper";
-import { IMetadataDictionary } from "../../Session/IMetadataDictionary";
+import { CompareExchangeValue } from "./CompareExchangeValue.js";
+import { ICompareExchangeValue } from "./ICompareExchangeValue.js";
+import { CompareExchangeValueState } from "./CompareExchangeValueState.js";
+import { throwError } from "../../../Exceptions/index.js";
+import { TypeUtil } from "../../../Utility/TypeUtil.js";
+import { CompareExchangeResultClass, EntityConstructor } from "../../../Types/index.js";
+import { CompareExchangeValueJsonConverter } from "./CompareExchangeValueJsonConverter.js";
+import { COMPARE_EXCHANGE, CONSTANTS } from "../../../Constants.js";
+import { StringUtil } from "../../../Utility/StringUtil.js";
+import { DocumentConventions } from "../../Conventions/DocumentConventions.js";
+import { EntityToJson } from "../../Session/EntityToJson.js";
+import { ICommandData } from "../../Commands/CommandData.js";
+import { PutCompareExchangeCommandData } from "../../Commands/Batches/PutCompareExchangeCommandData.js";
+import { DeleteCompareExchangeCommandData } from "../../Commands/Batches/DeleteCompareExchangeCommandData.js";
+import { ITypesAwareObjectMapper } from "../../../Mapping/ObjectMapper.js";
+import { IMetadataDictionary } from "../../Session/IMetadataDictionary.js";
 
 export class CompareExchangeSessionValue {
     private readonly _key: string;
@@ -73,10 +73,12 @@ export class CompareExchangeSessionValue {
                 return value;
             }
             case "Missing":
-            case "Deleted":
+            case "Deleted": {
                 return null;
-            default:
+            }
+            default: {
                 throwError("NotSupportedException", "Not supported state: " + this._state);
+            }
 
         }
     }
@@ -105,13 +107,16 @@ export class CompareExchangeSessionValue {
     private _assertState() {
         switch (this._state) {
             case "None":
-            case "Missing":
+            case "Missing": {
                 return;
-            case "Created":
+            }
+            case "Created": {
                 throwError("InvalidOperationException", "The compare exchange value with key '" + this._key + "' was already stored.");
                 break;
-            case "Deleted":
+            }
+            case "Deleted": {
                 throwError("InvalidOperationException", "The compare exchange value with key '" + this._key + "' was already deleted.");
+            }
         }
     }
 
@@ -152,16 +157,19 @@ export class CompareExchangeSessionValue {
 
                 return new PutCompareExchangeCommandData(newValue.key, entityToInsert, newValue.index);
             }
-            case "Deleted":
+            case "Deleted": {
                 return new DeleteCompareExchangeCommandData(this._key, this._index);
-            case "Missing":
+            }
+            case "Missing": {
                 return null;
-            default:
+            }
+            default: {
                 throwError("InvalidOperationException", "Not supported state: " + this._state);
+            }
         }
     }
 
-    private _convertEntity(key: string, entity: any, objectMapper: TypesAwareObjectMapper, metadata: any) {
+    private _convertEntity(key: string, entity: any, objectMapper: ITypesAwareObjectMapper, metadata: any) {
         return {
             [COMPARE_EXCHANGE.OBJECT_FIELD_NAME]: entity,
             [CONSTANTS.Documents.Metadata.KEY]: metadata ?? undefined
@@ -197,7 +205,7 @@ export class CompareExchangeSessionValue {
         }
     }
 
-    public updateValue(value: CompareExchangeValue<object>, mapper: TypesAwareObjectMapper) {
+    public updateValue(value: CompareExchangeValue<object>, mapper: ITypesAwareObjectMapper) {
         this._index = value.index;
         this._state = value.index >= 0 ? "None" : "Missing";
 

@@ -1,10 +1,10 @@
-import { testContext, disposeTestDocumentStore } from "../Utils/TestUtil";
+import { testContext, disposeTestDocumentStore } from "../Utils/TestUtil.js";
 
 import {
     IDocumentStore,
     AbstractJavaScriptIndexCreationTask, IndexDefinitionHelper,
-} from "../../src";
-import { assertThat } from "../Utils/AssertExtensions";
+} from "../../src/index.js";
+import { assertThat } from "../Utils/AssertExtensions.js";
 
 enum RoleString {
     Admin = "admin",

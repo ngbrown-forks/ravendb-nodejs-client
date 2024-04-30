@@ -1,15 +1,15 @@
-import { HttpRequestParameters } from "../../Primitives/Http";
-import { IOperation, OperationIdResult, OperationResultType } from "./OperationAbstractions";
-import { IndexQuery, writeIndexQuery } from "../Queries/IndexQuery";
-import { QueryOperationOptions } from "../Queries/QueryOperationOptions";
-import { TypeUtil } from "../../Utility/TypeUtil";
-import { throwError } from "../../Exceptions";
-import { IDocumentStore } from "../IDocumentStore";
-import { DocumentConventions } from "../Conventions/DocumentConventions";
-import { HttpCache } from "../../Http/HttpCache";
-import { RavenCommand } from "../../Http/RavenCommand";
-import { ServerNode } from "../../Http/ServerNode";
-import * as stream from "readable-stream";
+import { HttpRequestParameters } from "../../Primitives/Http.js";
+import { IOperation, OperationIdResult, OperationResultType } from "./OperationAbstractions.js";
+import { IndexQuery, writeIndexQuery } from "../Queries/IndexQuery.js";
+import { QueryOperationOptions } from "../Queries/QueryOperationOptions.js";
+import { TypeUtil } from "../../Utility/TypeUtil.js";
+import { throwError } from "../../Exceptions/index.js";
+import { IDocumentStore } from "../IDocumentStore.js";
+import { DocumentConventions } from "../Conventions/DocumentConventions.js";
+import { HttpCache } from "../../Http/HttpCache.js";
+import { RavenCommand } from "../../Http/RavenCommand.js";
+import { ServerNode } from "../../Http/ServerNode.js";
+import { Stream } from "node:stream";
 
 export class PatchByQueryOperation implements IOperation<OperationIdResult> {
 
@@ -89,7 +89,7 @@ export class PatchByQueryCommand extends RavenCommand<OperationIdResult> {
         };
     }
 
-    public async setResponseAsync(bodyStream: stream.Stream, fromCache: boolean): Promise<string> {
+    public async setResponseAsync(bodyStream: Stream, fromCache: boolean): Promise<string> {
         if (!bodyStream) {
             this._throwInvalidResponse();
         }

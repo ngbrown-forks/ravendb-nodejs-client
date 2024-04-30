@@ -1,13 +1,13 @@
-import { HttpRequestParameters } from "../../../Primitives/Http";
-import { IMaintenanceOperation, OperationResultType } from "../OperationAbstractions";
-import { IndexLockMode } from "../../Indexes/Enums";
-import { RavenCommand } from "../../../Http/RavenCommand";
-import { DocumentConventions } from "../../Conventions/DocumentConventions";
-import { throwError } from "../../../Exceptions";
-import { ServerNode } from "../../../Http/ServerNode";
-import { TypeUtil } from "../../../Utility/TypeUtil";
-import { IRaftCommand } from "../../../Http/IRaftCommand";
-import { RaftIdGenerator } from "../../../Utility/RaftIdGenerator";
+import { HttpRequestParameters } from "../../../Primitives/Http.js";
+import { IMaintenanceOperation, OperationResultType } from "../OperationAbstractions.js";
+import { IndexLockMode } from "../../Indexes/Enums.js";
+import { RavenCommand } from "../../../Http/RavenCommand.js";
+import { DocumentConventions } from "../../Conventions/DocumentConventions.js";
+import { throwError } from "../../../Exceptions/index.js";
+import { ServerNode } from "../../../Http/ServerNode.js";
+import { TypeUtil } from "../../../Utility/TypeUtil.js";
+import { IRaftCommand } from "../../../Http/IRaftCommand.js";
+import { RaftIdGenerator } from "../../../Utility/RaftIdGenerator.js";
 
 export class SetIndexesLockOperation implements IMaintenanceOperation<void> {
 
@@ -44,7 +44,7 @@ export class SetIndexesLockOperation implements IMaintenanceOperation<void> {
 
     private _filterAutoIndexes() {
         // Check for auto-indexes - we do not set lock for auto-indexes
-        if (this._parameters.indexNames.find(x => x.toLocaleLowerCase().startsWith("auto/"))) {
+        if (this._parameters.indexNames.some(x => x.toLocaleLowerCase().startsWith("auto/"))) {
             throwError("InvalidArgumentException", "Indexes list contains Auto-Indexes. " +
                 "Lock Mode is not set for Auto-Indexes.");
         }

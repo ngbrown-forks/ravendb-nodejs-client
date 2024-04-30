@@ -1,12 +1,12 @@
-import { HttpRequestParameters } from "../../../Primitives/Http";
-import * as stream from "readable-stream";
-import { RavenCommand } from "../../../Http/RavenCommand";
-import { DocumentConventions } from "../../Conventions/DocumentConventions";
-import { IMaintenanceOperation, OperationResultType } from "../OperationAbstractions";
-import { ConnectionString } from "../Etl/ConnectionString";
-import { ServerNode } from "../../../Http/ServerNode";
-import { IRaftCommand } from "../../../Http/IRaftCommand";
-import { RaftIdGenerator } from "../../../Utility/RaftIdGenerator";
+import { HttpRequestParameters } from "../../../Primitives/Http.js";
+import { Stream } from "node:stream";
+import { RavenCommand } from "../../../Http/RavenCommand.js";
+import { DocumentConventions } from "../../Conventions/DocumentConventions.js";
+import { IMaintenanceOperation, OperationResultType } from "../OperationAbstractions.js";
+import { ConnectionString } from "../Etl/ConnectionString.js";
+import { ServerNode } from "../../../Http/ServerNode.js";
+import { IRaftCommand } from "../../../Http/IRaftCommand.js";
+import { RaftIdGenerator } from "../../../Utility/RaftIdGenerator.js";
 
 export class RemoveConnectionStringOperation<T extends ConnectionString>
     implements IMaintenanceOperation<RemoveConnectionStringResult> {
@@ -50,7 +50,7 @@ export class RemoveConnectionStringCommand<T extends ConnectionString>
         }
     }
 
-    async setResponseAsync(bodyStream: stream.Stream, fromCache: boolean): Promise<string> {
+    async setResponseAsync(bodyStream: Stream, fromCache: boolean): Promise<string> {
         if (!bodyStream) {
             this._throwInvalidResponse();
         }

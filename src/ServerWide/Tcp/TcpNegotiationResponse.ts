@@ -1,4 +1,4 @@
-import { LicensedFeatures } from "./LicensedFeatures";
+import { LicensedFeatures } from "./LicensedFeatures.js";
 
 
 export interface TcpNegotiationResponse {

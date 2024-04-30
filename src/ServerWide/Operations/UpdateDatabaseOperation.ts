@@ -1,11 +1,11 @@
 
-import { CreateDatabaseCommand } from "./CreateDatabaseOperation";
-import { IServerOperation, OperationResultType } from "../../Documents/Operations/OperationAbstractions";
-import { DatabasePutResult } from "./index";
-import { DatabaseRecord } from "../index";
-import { DocumentConventions } from "../../Documents/Conventions/DocumentConventions";
-import { RavenCommand } from "../../Http/RavenCommand";
-import { throwError } from "../../Exceptions";
+import { CreateDatabaseCommand } from "./CreateDatabaseOperation.js";
+import { IServerOperation, OperationResultType } from "../../Documents/Operations/OperationAbstractions.js";
+import { DatabasePutResult } from "./index.js";
+import { DatabaseRecord } from "../index.js";
+import { DocumentConventions } from "../../Documents/Conventions/DocumentConventions.js";
+import { RavenCommand } from "../../Http/RavenCommand.js";
+import { throwError } from "../../Exceptions/index.js";
 
 export class UpdateDatabaseOperation implements IServerOperation<DatabasePutResult> {
     private readonly _databaseRecord: DatabaseRecord;

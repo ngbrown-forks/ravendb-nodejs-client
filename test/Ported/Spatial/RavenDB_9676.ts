@@ -1,10 +1,10 @@
-import * as assert from "assert";
-import { testContext, disposeTestDocumentStore } from "../../Utils/TestUtil";
+import assert from "node:assert"
+import { testContext, disposeTestDocumentStore } from "../../Utils/TestUtil.js";
 
 import {
     IDocumentStore,
     PointField,
-} from "../../../src";
+} from "../../../src/index.js";
 
 describe("RavenDB_9676", function () {
 

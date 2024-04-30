@@ -1,14 +1,14 @@
-import { IMaintenanceOperation, OperationResultType } from "../OperationAbstractions";
-import { ConfigureTimeSeriesOperationResult } from "./ConfigureTimeSeriesOperationResult";
-import { TimeSeriesPolicy } from "./TimeSeriesPolicy";
-import { throwError } from "../../../Exceptions";
-import { HttpRequestParameters } from "../../../Primitives/Http";
-import * as stream from "readable-stream";
-import { RaftIdGenerator } from "../../../Utility/RaftIdGenerator";
-import { DocumentConventions } from "../../Conventions/DocumentConventions";
-import { RavenCommand } from "../../../Http/RavenCommand";
-import { IRaftCommand } from "../../../Http/IRaftCommand";
-import { ServerNode } from "../../../Http/ServerNode";
+import { IMaintenanceOperation, OperationResultType } from "../OperationAbstractions.js";
+import { ConfigureTimeSeriesOperationResult } from "./ConfigureTimeSeriesOperationResult.js";
+import { TimeSeriesPolicy } from "./TimeSeriesPolicy.js";
+import { throwError } from "../../../Exceptions/index.js";
+import { HttpRequestParameters } from "../../../Primitives/Http.js";
+import { Stream } from "node:stream";
+import { RaftIdGenerator } from "../../../Utility/RaftIdGenerator.js";
+import { DocumentConventions } from "../../Conventions/DocumentConventions.js";
+import { RavenCommand } from "../../../Http/RavenCommand.js";
+import { IRaftCommand } from "../../../Http/IRaftCommand.js";
+import { ServerNode } from "../../../Http/ServerNode.js";
 
 export class ConfigureTimeSeriesPolicyOperation implements IMaintenanceOperation<ConfigureTimeSeriesOperationResult> {
     private readonly _collection: string;
@@ -64,7 +64,7 @@ class ConfigureTimeSeriesPolicyCommand extends RavenCommand<ConfigureTimeSeriesO
         }
     }
 
-    async setResponseAsync(bodyStream: stream.Stream, fromCache: boolean): Promise<string> {
+    async setResponseAsync(bodyStream: Stream, fromCache: boolean): Promise<string> {
         if (!bodyStream) {
             this._throwInvalidResponse();
         }

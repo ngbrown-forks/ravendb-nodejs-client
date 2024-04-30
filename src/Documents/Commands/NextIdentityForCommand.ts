@@ -1,12 +1,12 @@
-import { RavenCommand } from "../../Http/RavenCommand";
-import { throwError } from "../../Exceptions";
-import { ServerNode } from "../../Http/ServerNode";
-import { HttpRequestParameters } from "../../Primitives/Http";
-import * as stream from "readable-stream";
-import { IRaftCommand } from "../../Http/IRaftCommand";
-import { IBroadcast } from "../../Http/IBroadcast";
-import { RaftIdGenerator } from "../../Utility/RaftIdGenerator";
-import { DocumentConventions } from "../Conventions/DocumentConventions";
+import { RavenCommand } from "../../Http/RavenCommand.js";
+import { throwError } from "../../Exceptions/index.js";
+import { ServerNode } from "../../Http/ServerNode.js";
+import { HttpRequestParameters } from "../../Primitives/Http.js";
+import { Stream } from "node:stream";
+import { IRaftCommand } from "../../Http/IRaftCommand.js";
+import { IBroadcast } from "../../Http/IBroadcast.js";
+import { RaftIdGenerator } from "../../Utility/RaftIdGenerator.js";
+import { DocumentConventions } from "../Conventions/DocumentConventions.js";
 
 export class NextIdentityForCommand extends RavenCommand<number> implements IRaftCommand, IBroadcast {
 
@@ -37,7 +37,7 @@ export class NextIdentityForCommand extends RavenCommand<number> implements IRaf
         };
     }
 
-    public async setResponseAsync(bodyStream: stream.Stream, fromCache: boolean): Promise<string> {
+    public async setResponseAsync(bodyStream: Stream, fromCache: boolean): Promise<string> {
         if (!bodyStream) {
             this._throwInvalidResponse();
         }

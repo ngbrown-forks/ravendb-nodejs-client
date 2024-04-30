@@ -1,11 +1,11 @@
-import { DocumentStore, EntityToJson, IDocumentStore, PutDocumentCommand } from "../../src";
-import { ClusterTestContext, disposeTestDocumentStore, RavenTestContext, testContext } from "../Utils/TestUtil";
-import { throwError } from "../../src/Exceptions";
-import { HttpRequestParameters, HttpResponse } from "../../src/Primitives/Http";
-import * as stream from "readable-stream";
-import * as http from "http";
-import { User } from "../Assets/Entities";
-import { assertThat } from "../Utils/AssertExtensions";
+import { DocumentStore, EntityToJson, IDocumentStore, PutDocumentCommand } from "../../src/index.js";
+import { ClusterTestContext, disposeTestDocumentStore, RavenTestContext, testContext } from "../Utils/TestUtil.js";
+import { throwError } from "../../src/Exceptions/index.js";
+import { HttpRequestParameters, HttpResponse } from "../../src/Primitives/Http.js";
+import { Readable } from "node:stream";
+import { User } from "../Assets/Entities.js";
+import { assertThat } from "../Utils/AssertExtensions.js";
+import { Agent } from "undici";
 
 (RavenTestContext.isPullRequest ? describe.skip : describe)("RequestExecutor", function () {
 
@@ -49,21 +49,21 @@ async function onBeforeAfterAndFailRequestInternal(failCount: number, clusterSiz
             const store = new DocumentStore(leader.url, databaseName);
             try {
                 store.addSessionListener("beforeRequest", e => {
-                    if (!e.url.match(urlRegex)) {
+                    if (!urlRegex.test(e.url)) {
                         return;
                     }
                     sessionActual.push("OnBeforeRequest");
                 });
 
                 store.addSessionListener("succeedRequest", e => {
-                    if (!e.url.match(urlRegex)) {
+                    if (!urlRegex.test(e.url)) {
                         return;
                     }
                     sessionActual.push("OnAfterRequests");
                 });
 
                 store.addSessionListener("failedRequest", e => {
-                    if (!e.url.match(urlRegex)) {
+                    if (!urlRegex.test(e.url)) {
                         return;
                     }
                     sessionActual.push("OnFailedRequest");
@@ -74,21 +74,21 @@ async function onBeforeAfterAndFailRequestInternal(failCount: number, clusterSiz
                 const requestExecutor = store.getRequestExecutor();
 
                 requestExecutor.on("beforeRequest", e => {
-                    if (!e.url.match(urlRegex)) {
+                    if (!urlRegex.test(e.url)) {
                         return;
                     }
                     actual.push("OnBeforeRequest");
                 });
 
                 requestExecutor.on("succeedRequest", e => {
-                    if (!e.url.match(urlRegex)) {
+                    if (!urlRegex.test(e.url)) {
                         return;
                     }
                     actual.push("OnAfterRequests");
                 });
 
                 requestExecutor.on("failedRequest", e => {
-                    if (!e.url.match(urlRegex)) {
+                    if (!urlRegex.test(e.url)) {
                         return;
                     }
                     actual.push("OnFailedRequest");
@@ -98,7 +98,7 @@ async function onBeforeAfterAndFailRequestInternal(failCount: number, clusterSiz
                 const command = new FirstFailCommand("User/1", null, documentJson, failCount);
                 try {
                     await requestExecutor.execute(command);
-                } catch (e) {
+                } catch {
                     // ignored
                 }
 
@@ -126,7 +126,7 @@ class FirstFailCommand extends PutDocumentCommand {
         this._timeToFail = timeToFail;
     }
 
-    send(agent: http.Agent, requestOptions: HttpRequestParameters): Promise<{ response: HttpResponse; bodyStream: stream.Readable }> {
+    send(agent: Agent, requestOptions: HttpRequestParameters): Promise<{ response: HttpResponse; bodyStream: Readable }> {
         this._timeToFail--;
         if (this._timeToFail < 0) {
             return super.send(agent, requestOptions);

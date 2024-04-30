@@ -1,10 +1,10 @@
-import { IDocumentStore } from "../../../../src/Documents/IDocumentStore";
-import { disposeTestDocumentStore, RavenTestContext, testContext } from "../../../Utils/TestUtil";
-import { ReplicationTestContext } from "../../../Utils/ReplicationTestContext";
-import { RevisionsCollectionConfiguration } from "../../../../src/Documents/Operations/RevisionsCollectionConfiguration";
-import { ConfigureRevisionsForConflictsOperation } from "../../../../src/ServerWide/Operations/ConfigureRevisionsForConflictsOperation";
-import { assertThat } from "../../../Utils/AssertExtensions";
-import { Company, User } from "../../../Assets/Entities";
+import { IDocumentStore } from "../../../../src/Documents/IDocumentStore.js";
+import { disposeTestDocumentStore, RavenTestContext, testContext } from "../../../Utils/TestUtil.js";
+import { ReplicationTestContext } from "../../../Utils/ReplicationTestContext.js";
+import { RevisionsCollectionConfiguration } from "../../../../src/Documents/Operations/RevisionsCollectionConfiguration.js";
+import { ConfigureRevisionsForConflictsOperation } from "../../../../src/ServerWide/Operations/ConfigureRevisionsForConflictsOperation.js";
+import { assertThat } from "../../../Utils/AssertExtensions.js";
+import { Company, User } from "../../../Assets/Entities.js";
 
 (RavenTestContext.isPullRequest ? describe.skip : describe)("ReplicationWithRevisions", function () {
 

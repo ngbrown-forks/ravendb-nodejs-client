@@ -1,7 +1,7 @@
-import { RavenCommand } from "../../Http/RavenCommand";
-import { HttpRequestParameters } from "../../Primitives/Http";
-import { ServerNode } from "../../Http/ServerNode";
-import { StringUtil } from "../../Utility/StringUtil";
+import { RavenCommand } from "../../Http/RavenCommand.js";
+import { HttpRequestParameters } from "../../Primitives/Http.js";
+import { ServerNode } from "../../Http/ServerNode.js";
+import { StringUtil } from "../../Utility/StringUtil.js";
 
 export class DropSubscriptionConnectionCommand extends RavenCommand<void> {
 

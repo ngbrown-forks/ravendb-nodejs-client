@@ -1,10 +1,10 @@
-import { ShapeToken } from "./ShapeToken";
-import { QueryToken } from "./QueryToken";
-import { SearchOperator } from "../../Queries/SearchOperator";
-import { throwError } from "../../../Exceptions";
-import { TypeUtil } from "../../../Utility/TypeUtil";
-import { WhereOperator } from "./WhereOperator";
-import { CONSTANTS } from "../../../Constants";
+import { ShapeToken } from "./ShapeToken.js";
+import { QueryToken } from "./QueryToken.js";
+import { SearchOperator } from "../../Queries/SearchOperator.js";
+import { throwError } from "../../../Exceptions/index.js";
+import { TypeUtil } from "../../../Utility/TypeUtil.js";
+import { WhereOperator } from "./WhereOperator.js";
+import { CONSTANTS } from "../../../Constants.js";
 
 export type MethodsType = "CmpXchg";
 
@@ -131,12 +131,14 @@ export class WhereToken extends QueryToken {
     private _writeMethod(writer): boolean {
         if (this.options.method) {
             switch (this.options.method.methodType) {
-                case "CmpXchg":
+                case "CmpXchg": {
                     writer.append("cmpxchg(");
                     break;
-                default:
+                }
+                default: {
                     throwError("InvalidArgumentException",
                         "Unsupported method: " + this.options.method.methodType);
+                }
             }
 
             let first: boolean = true;
@@ -178,36 +180,46 @@ export class WhereToken extends QueryToken {
         }
 
         switch (this.whereOperator) {
-            case "Search":
+            case "Search": {
                 writer.append("search(");
                 break;
-            case "Lucene":
+            }
+            case "Lucene": {
                 writer.append("lucene(");
                 break;
-            case "StartsWith":
+            }
+            case "StartsWith": {
                 writer.append("startsWith(");
                 break;
-            case "EndsWith":
+            }
+            case "EndsWith": {
                 writer.append("endsWith(");
                 break;
-            case "Exists":
+            }
+            case "Exists": {
                 writer.append("exists(");
                 break;
-            case "SpatialWithin":
+            }
+            case "SpatialWithin": {
                 writer.append("spatial.within(");
                 break;
-            case "SpatialContains":
+            }
+            case "SpatialContains": {
                 writer.append("spatial.contains(");
                 break;
-            case "SpatialDisjoint":
+            }
+            case "SpatialDisjoint": {
                 writer.append("spatial.disjoint(");
                 break;
-            case "SpatialIntersects":
+            }
+            case "SpatialIntersects": {
                 writer.append("spatial.intersects(");
                 break;
-            case "Regex":
+            }
+            case "Regex": {
                 writer.append("regex(");
                 break;
+            }
         }
 
         this._writeInnerWhere(writer);
@@ -242,32 +254,39 @@ export class WhereToken extends QueryToken {
         QueryToken.writeField(writer, this.fieldName);
 
         switch (this.whereOperator) {
-            case "Equals":
+            case "Equals": {
                 writer.append(" = ");
                 break;
+            }
 
-            case "NotEquals":
+            case "NotEquals": {
                 writer.append(" != ");
                 break;
-            case "GreaterThan":
+            }
+            case "GreaterThan": {
                 writer
                     .append(" > ");
                 break;
-            case "GreaterThanOrEqual":
+            }
+            case "GreaterThanOrEqual": {
                 writer
                     .append(" >= ");
                 break;
-            case "LessThan":
+            }
+            case "LessThan": {
                 writer
                     .append(" < ");
                 break;
-            case "LessThanOrEqual":
+            }
+            case "LessThanOrEqual": {
                 writer
                     .append(" <= ");
                 break;
-            default:
+            }
+            default: {
                 this._specialOperator(writer);
                 return;
+            }
         }
 
         if (!this._writeMethod(writer)) {
@@ -277,27 +296,30 @@ export class WhereToken extends QueryToken {
 
     private _specialOperator(writer): void {
         switch (this.whereOperator) {
-            case "In":
+            case "In": {
                 writer
                     .append(" in ($")
                     .append(this.parameterName)
                     .append(")");
                 break;
-            case "AllIn":
+            }
+            case "AllIn": {
                 writer
                     .append(" all in ($")
                     .append(this.parameterName)
                     .append(")");
                 break;
-            case "Between":
+            }
+            case "Between": {
                 writer
                     .append(" between $")
                     .append(this.options.fromParameterName)
                     .append(" and $")
                     .append(this.options.toParameterName);
                 break;
+            }
 
-            case "Search":
+            case "Search": {
                 writer
                     .append(", $")
                     .append(this.parameterName);
@@ -306,23 +328,26 @@ export class WhereToken extends QueryToken {
                 }
                 writer.append(")");
                 break;
+            }
             case "Lucene":
             case "StartsWith":
             case "EndsWith":
-            case "Regex":
+            case "Regex": {
                 writer
                     .append(", $")
                     .append(this.parameterName)
                     .append(")");
                 break;
-            case "Exists":
+            }
+            case "Exists": {
                 writer
                     .append(")");
                 break;
+            }
             case "SpatialWithin":
             case "SpatialContains":
             case "SpatialDisjoint":
-            case "SpatialIntersects":
+            case "SpatialIntersects": {
                 writer
                     .append(", ");
                 this.options.whereShape.writeTo(writer);
@@ -334,8 +359,10 @@ export class WhereToken extends QueryToken {
                 writer
                     .append(")");
                 break;
-            default:
+            }
+            default: {
                 throwError("InvalidArgumentException");
+            }
         }
     }
 }

@@ -1,12 +1,12 @@
-import * as assert from "assert";
-import { User } from "../Assets/Entities";
-import { assertThrows } from "../Utils/AssertExtensions";
-import { testContext, disposeTestDocumentStore } from "../Utils/TestUtil";
+import assert from "node:assert"
+import { User } from "../Assets/Entities.js";
+import { assertThrows } from "../Utils/AssertExtensions.js";
+import { testContext, disposeTestDocumentStore } from "../Utils/TestUtil.js";
 
 import {
     IDocumentStore,
     IDocumentSession,
-} from "../../src";
+} from "../../src/index.js";
 
 describe("RDBC-247", function () {
 

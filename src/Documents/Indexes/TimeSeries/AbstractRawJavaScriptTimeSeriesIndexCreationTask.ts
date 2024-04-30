@@ -1,6 +1,6 @@
-import { AbstractIndexCreationTaskBase } from "../AbstractIndexCreationTaskBase";
-import { TimeSeriesIndexDefinition } from "./TimeSeriesIndexDefinition";
-import { IndexDefinition } from "../IndexDefinition";
+import { AbstractIndexCreationTaskBase } from "../AbstractIndexCreationTaskBase.js";
+import { TimeSeriesIndexDefinition } from "./TimeSeriesIndexDefinition.js";
+import { IndexDefinition } from "../IndexDefinition.js";
 
 export abstract class AbstractRawJavaScriptTimeSeriesIndexCreationTask extends AbstractIndexCreationTaskBase<TimeSeriesIndexDefinition> {
     private readonly _definition = new TimeSeriesIndexDefinition();

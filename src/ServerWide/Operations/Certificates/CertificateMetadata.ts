@@ -1,5 +1,5 @@
-import { SecurityClearance } from "./SecurityClearance";
-import { DatabaseAccess } from "./DatabaseAccess";
+import { SecurityClearance } from "./SecurityClearance.js";
+import { DatabaseAccess } from "./DatabaseAccess.js";
 
 export interface CertificateMetadata {
     name: string;

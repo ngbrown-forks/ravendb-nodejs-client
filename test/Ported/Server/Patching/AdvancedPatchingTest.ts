@@ -1,5 +1,5 @@
-import * as assert from "assert";
-import { testContext, disposeTestDocumentStore } from "../../../Utils/TestUtil";
+import assert from "node:assert"
+import { testContext, disposeTestDocumentStore } from "../../../Utils/TestUtil.js";
 
 import {
     IDocumentStore,
@@ -7,7 +7,7 @@ import {
     PutIndexesOperation,
     PatchRequest,
     PatchByQueryOperation, PatchOperation,
-} from "../../../../src";
+} from "../../../../src/index.js";
 
 describe("AdvancedPatchingTest", function () {
 

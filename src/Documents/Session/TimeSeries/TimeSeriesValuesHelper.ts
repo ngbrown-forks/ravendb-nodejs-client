@@ -1,7 +1,7 @@
-import { ClassConstructor } from "../../../Types";
-import { throwError } from "../../../Exceptions";
-import { TypeUtil } from "../../../Utility/TypeUtil";
-import { TimeSeriesValue } from "./TimeSeriesValue";
+import { ClassConstructor } from "../../../Types/index.js";
+import { throwError } from "../../../Exceptions/index.js";
+import { TypeUtil } from "../../../Utility/TypeUtil.js";
+import { TimeSeriesValue } from "./TimeSeriesValue.js";
 
 type TimeSeriesFieldsMapping = { field: string; name: string }[];
 
@@ -33,7 +33,7 @@ export class TimeSeriesValuesHelper {
                         throwError("InvalidOperationException", "Invalid field mapping. Expected string or { field: string, name: string } object. Got: " + value);
                     }
 
-                    const nameAlreadyUsed = !!mapping.find(x => x.field === field || x.name === name);
+                    const nameAlreadyUsed = mapping.some(x => x.field === field || x.name === name);
                     if (nameAlreadyUsed) {
                         throwError("InvalidOperationException", "All fields and names must be unique.");
                     }

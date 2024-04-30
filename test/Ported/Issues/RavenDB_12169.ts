@@ -1,13 +1,13 @@
-import * as assert from "assert";
-import { Company } from "../../Assets/Entities";
-import { assertThat, assertThrows } from "../../Utils/AssertExtensions";
-import { testContext, disposeTestDocumentStore } from "../../Utils/TestUtil";
+import assert from "node:assert"
+import { Company } from "../../Assets/Entities.js";
+import { assertThat, assertThrows } from "../../Utils/AssertExtensions.js";
+import { testContext, disposeTestDocumentStore } from "../../Utils/TestUtil.js";
 
 import {
     IDocumentStore,
     BatchPatchCommandData,
     PatchRequest,
-} from "../../../src";
+} from "../../../src/index.js";
 
 describe("RavenDB-12169", function () {
 

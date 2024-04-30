@@ -1,10 +1,10 @@
-import { DocumentConventions } from "../../Conventions/DocumentConventions";
-import { IncludeBuilderBase } from "./IncludeBuilderBase";
-import { IIncludeBuilder } from "./IIncludeBuilder";
-import { TimeSeriesRangeType } from "../../Operations/TimeSeries/TimeSeriesRangeType";
-import { TimeValue } from "../../../Primitives/TimeValue";
-import { TypeUtil } from "../../../Utility/TypeUtil";
-import { TIME_SERIES } from "../../../Constants";
+import { DocumentConventions } from "../../Conventions/DocumentConventions.js";
+import { IncludeBuilderBase } from "./IncludeBuilderBase.js";
+import { IIncludeBuilder } from "./IIncludeBuilder.js";
+import { TimeSeriesRangeType } from "../../Operations/TimeSeries/TimeSeriesRangeType.js";
+import { TimeValue } from "../../../Primitives/TimeValue.js";
+import { TypeUtil } from "../../../Utility/TypeUtil.js";
+import { TIME_SERIES } from "../../../Constants.js";
 
 export class IncludeBuilder extends IncludeBuilderBase implements IIncludeBuilder {
     public constructor(conventions: DocumentConventions) {

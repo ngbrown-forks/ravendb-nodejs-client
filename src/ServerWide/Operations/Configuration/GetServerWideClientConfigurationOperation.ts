@@ -1,10 +1,10 @@
-import { HttpRequestParameters } from "../../../Primitives/Http";
-import * as stream from "readable-stream";
-import { RavenCommand } from "../../../Http/RavenCommand";
-import { IServerOperation, OperationResultType } from "../../../Documents/Operations/OperationAbstractions";
-import { ClientConfiguration } from "../../../Documents/Operations/Configuration/ClientConfiguration";
-import { DocumentConventions } from "../../../Documents/Conventions/DocumentConventions";
-import { ServerNode } from "../../../Http/ServerNode";
+import { HttpRequestParameters } from "../../../Primitives/Http.js";
+import { Stream } from "node:stream";
+import { RavenCommand } from "../../../Http/RavenCommand.js";
+import { IServerOperation, OperationResultType } from "../../../Documents/Operations/OperationAbstractions.js";
+import { ClientConfiguration } from "../../../Documents/Operations/Configuration/ClientConfiguration.js";
+import { DocumentConventions } from "../../../Documents/Conventions/DocumentConventions.js";
+import { ServerNode } from "../../../Http/ServerNode.js";
 
 export class GetServerWideClientConfigurationOperation implements IServerOperation<ClientConfiguration> {
     public get resultType(): OperationResultType {
@@ -31,7 +31,7 @@ class GetServerWideClientConfigurationCommand extends RavenCommand<ClientConfigu
         }
     }
 
-    async setResponseAsync(bodyStream: stream.Stream, fromCache: boolean): Promise<string> {
+    async setResponseAsync(bodyStream: Stream, fromCache: boolean): Promise<string> {
         if (!bodyStream) {
             this._throwInvalidResponse();
         }

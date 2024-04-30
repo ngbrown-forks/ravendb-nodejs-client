@@ -1,5 +1,5 @@
-import { ICommandData, CommandType } from "../CommandData";
-import { DocumentConventions } from "../../Conventions/DocumentConventions";
+import { ICommandData, CommandType } from "../CommandData.js";
+import { DocumentConventions } from "../../Conventions/DocumentConventions.js";
 
 export class DeleteCompareExchangeCommandData implements ICommandData {
     private readonly _index: number;

@@ -1,13 +1,13 @@
-import { IFacetBuilder } from "./IFacetBuilder";
-import { IFacetOperations } from "./IFacetOperations";
-import { GenericRangeFacet } from "./GenericRangeFacet";
-import { Facet } from "./Facet";
-import { RangeBuilder } from "./RangeBuilder";
-import { throwError } from "../../../Exceptions";
-import { FacetOptions } from ".";
-import { FacetBase } from "./FacetBase";
-import { FacetAggregationField } from "./FacetAggregationField";
-import { Field } from "../../../Types";
+import { IFacetBuilder } from "./IFacetBuilder.js";
+import { IFacetOperations } from "./IFacetOperations.js";
+import { GenericRangeFacet } from "./GenericRangeFacet.js";
+import { Facet } from "./Facet.js";
+import { RangeBuilder } from "./RangeBuilder.js";
+import { throwError } from "../../../Exceptions/index.js";
+import { FacetOptions } from "./index.js";
+import { FacetBase } from "./FacetBase.js";
+import { FacetAggregationField } from "./FacetAggregationField.js";
+import { Field } from "../../../Types/index.js";
 
 export class FacetBuilder<T> implements IFacetBuilder<T>, IFacetOperations<T> {
     private _range: GenericRangeFacet;

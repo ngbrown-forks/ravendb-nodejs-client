@@ -1,9 +1,9 @@
-import { IServerOperation, OperationResultType } from "../../src/Documents/Operations/OperationAbstractions";
-import { RavenCommand } from "../../src/Http/RavenCommand";
-import { HttpRequestParameters } from "../../src/Primitives/Http";
-import { DocumentConventions } from "../../src/Documents/Conventions/DocumentConventions";
-import { ServerNode } from "../../src/Http/ServerNode";
-import * as stream from "readable-stream";
+import { IServerOperation, OperationResultType } from "../../src/Documents/Operations/OperationAbstractions.js";
+import { RavenCommand } from "../../src/Http/RavenCommand.js";
+import { HttpRequestParameters } from "../../src/Primitives/Http.js";
+import { DocumentConventions } from "../../src/Documents/Conventions/DocumentConventions.js";
+import { ServerNode } from "../../src/Http/ServerNode.js";
+import { Stream } from "node:stream";
 
 export class AdminJsConsoleOperation implements IServerOperation<any> {
     private readonly _script: string;
@@ -49,7 +49,7 @@ class AdminJsConsoleCommand extends RavenCommand<any> {
         return false;
     }
 
-    async setResponseAsync(bodyStream: stream.Stream, fromCache: boolean): Promise<string> {
+    async setResponseAsync(bodyStream: Stream, fromCache: boolean): Promise<string> {
         return this._parseResponseDefaultAsync(bodyStream);
     }
 }

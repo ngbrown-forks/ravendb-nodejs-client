@@ -1,4 +1,4 @@
-import { ResponseTimeInformation } from "../../ResponseTimeInformation";
+import { ResponseTimeInformation } from "../../ResponseTimeInformation.js";
 
 /**
  * Allow to perform eager operations on the session

@@ -1,13 +1,13 @@
-import { IMaintenanceOperation, OperationResultType } from "../OperationAbstractions";
-import { TypeUtil } from "../../../Utility/TypeUtil";
-import { throwError } from "../../../Exceptions";
-import { RavenCommand } from "../../../Http/RavenCommand";
-import { DocumentConventions } from "../../Conventions/DocumentConventions";
-import { IndexPriority } from "../../Indexes/Enums";
-import { ServerNode } from "../../../Http/ServerNode";
-import { HttpRequestParameters } from "../../../Primitives/Http";
-import { IRaftCommand } from "../../../Http/IRaftCommand";
-import { RaftIdGenerator } from "../../../Utility/RaftIdGenerator";
+import { IMaintenanceOperation, OperationResultType } from "../OperationAbstractions.js";
+import { TypeUtil } from "../../../Utility/TypeUtil.js";
+import { throwError } from "../../../Exceptions/index.js";
+import { RavenCommand } from "../../../Http/RavenCommand.js";
+import { DocumentConventions } from "../../Conventions/DocumentConventions.js";
+import { IndexPriority } from "../../Indexes/Enums.js";
+import { ServerNode } from "../../../Http/ServerNode.js";
+import { HttpRequestParameters } from "../../../Primitives/Http.js";
+import { IRaftCommand } from "../../../Http/IRaftCommand.js";
+import { RaftIdGenerator } from "../../../Utility/RaftIdGenerator.js";
 
 export class SetIndexesPriorityOperation implements IMaintenanceOperation<void> {
 

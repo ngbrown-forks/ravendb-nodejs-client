@@ -1,16 +1,16 @@
-import { ILazySessionOperations } from "./ILazySessionOperations";
-import { DocumentSession } from "../../DocumentSession";
-import { ILazyLoaderWithInclude } from "../../Loaders/ILazyLoaderWithInclude";
-import { LazyMultiLoaderWithInclude } from "../../Loaders/LazyMultiLoaderWithInclude";
-import { ObjectTypeDescriptor, EntitiesCollectionObject } from "../../../../Types";
-import { Lazy } from "../../../Lazy";
-import { SessionLoadStartingWithOptions } from "../../IDocumentSession";
-import { LazyStartsWithOperation } from "./LazyStartsWithOperation";
-import { LoadStartingWithOperation } from "../LoadStartingWithOperation";
-import { ConditionalLoadResult } from "../../ConditionalLoadResult";
-import { StringUtil } from "../../../../Utility/StringUtil";
-import { throwError } from "../../../../Exceptions";
-import { LazyConditionalLoadOperation } from "./LazyConditionalLoadOperation";
+import { ILazySessionOperations } from "./ILazySessionOperations.js";
+import { DocumentSession } from "../../DocumentSession.js";
+import { ILazyLoaderWithInclude } from "../../Loaders/ILazyLoaderWithInclude.js";
+import { LazyMultiLoaderWithInclude } from "../../Loaders/LazyMultiLoaderWithInclude.js";
+import { ObjectTypeDescriptor, EntitiesCollectionObject } from "../../../../Types/index.js";
+import { Lazy } from "../../../Lazy.js";
+import { SessionLoadStartingWithOptions } from "../../IDocumentSession.js";
+import { LazyStartsWithOperation } from "./LazyStartsWithOperation.js";
+import { LoadStartingWithOperation } from "../LoadStartingWithOperation.js";
+import { ConditionalLoadResult } from "../../ConditionalLoadResult.js";
+import { StringUtil } from "../../../../Utility/StringUtil.js";
+import { throwError } from "../../../../Exceptions/index.js";
+import { LazyConditionalLoadOperation } from "./LazyConditionalLoadOperation.js";
 
 export class LazySessionOperations implements ILazySessionOperations {
 
@@ -57,6 +57,7 @@ export class LazySessionOperations implements ILazySessionOperations {
         idPrefix: string,
         opts?: SessionLoadStartingWithOptions<TEntity>):
         Lazy<EntitiesCollectionObject<TEntity>> {
+        // eslint-disable-next-line unicorn/prefer-default-parameters
         opts = opts || null;
         opts = Object.assign({}, LoadStartingWithOperation.DEFAULT, opts);
         const operation = new LazyStartsWithOperation<TEntity>(idPrefix, opts, this._delegate);

@@ -1,8 +1,8 @@
-import { EtlConfiguration } from "../EtlConfiguration";
-import { EtlType, OlapConnectionString } from "../ConnectionString";
-import { OlapEtlFileFormat } from "./OlapEtlFileFormat";
-import { OlapEtlTable } from "./OlapEtlTable";
-import { DocumentConventions } from "../../../Conventions/DocumentConventions";
+import { EtlConfiguration } from "../EtlConfiguration.js";
+import { EtlType, OlapConnectionString } from "../ConnectionString.js";
+import { OlapEtlFileFormat } from "./OlapEtlFileFormat.js";
+import { OlapEtlTable } from "./OlapEtlTable.js";
+import { DocumentConventions } from "../../../Conventions/DocumentConventions.js";
 
 export class OlapEtlConfiguration extends EtlConfiguration<OlapConnectionString> {
     public runFrequency: string;

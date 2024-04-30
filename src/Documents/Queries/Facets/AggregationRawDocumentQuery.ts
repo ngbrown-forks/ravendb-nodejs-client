@@ -1,9 +1,9 @@
-import { AggregationQueryBase } from "./AggregationQueryBase";
-import { IRawDocumentQuery } from "../../Session/IRawDocumentQuery";
-import { InMemoryDocumentSessionOperations } from "../../Session/InMemoryDocumentSessionOperations";
-import { throwError } from "../../../Exceptions";
-import { IndexQuery } from "../IndexQuery";
-import { QueryResult } from "../QueryResult";
+import { AggregationQueryBase } from "./AggregationQueryBase.js";
+import { IRawDocumentQuery } from "../../Session/IRawDocumentQuery.js";
+import { InMemoryDocumentSessionOperations } from "../../Session/InMemoryDocumentSessionOperations.js";
+import { throwError } from "../../../Exceptions/index.js";
+import { IndexQuery } from "../IndexQuery.js";
+import { QueryResult } from "../QueryResult.js";
 
 export class AggregationRawDocumentQuery<T extends object> extends AggregationQueryBase {
     private readonly _source: IRawDocumentQuery<T>;

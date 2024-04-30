@@ -1,7 +1,7 @@
-import { ConfigureRevisionsOperation, IDocumentStore, RevisionsConfiguration } from "../../../src";
-import { disposeTestDocumentStore, RavenTestContext, testContext } from "../../Utils/TestUtil";
-import { User } from "../../Assets/Entities";
-import { assertThat } from "../../Utils/AssertExtensions";
+import { ConfigureRevisionsOperation, IDocumentStore, RevisionsConfiguration } from "../../../src/index.js";
+import { disposeTestDocumentStore, RavenTestContext, testContext } from "../../Utils/TestUtil.js";
+import { User } from "../../Assets/Entities.js";
+import { assertThat } from "../../Utils/AssertExtensions.js";
 
 (RavenTestContext.isPullRequest ? describe.skip : describe)("RavenDB_14724", function () {
 

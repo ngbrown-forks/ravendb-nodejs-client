@@ -1,8 +1,8 @@
-import { RavenCommand } from "../../../Http/RavenCommand";
-import { IRaftCommand } from "../../../Http/IRaftCommand";
-import { ServerNode } from "../../../Http/ServerNode";
-import { HttpRequestParameters } from "../../../Primitives/Http";
-import { RaftIdGenerator } from "../../../Utility/RaftIdGenerator";
+import { RavenCommand } from "../../../Http/RavenCommand.js";
+import { IRaftCommand } from "../../../Http/IRaftCommand.js";
+import { ServerNode } from "../../../Http/ServerNode.js";
+import { HttpRequestParameters } from "../../../Primitives/Http.js";
+import { RaftIdGenerator } from "../../../Utility/RaftIdGenerator.js";
 
 export class AddClusterNodeCommand extends RavenCommand<void> implements IRaftCommand {
     private readonly _url: string;

@@ -1,10 +1,10 @@
-import { IMaintenanceOperation, OperationResultType } from "../OperationAbstractions";
-import { GetPeriodicBackupStatusOperationResult } from "./GetPeriodicBackupStatusOperationResult";
-import { HttpRequestParameters } from "../../../Primitives/Http";
-import * as stream from "readable-stream";
-import { DocumentConventions } from "../../Conventions/DocumentConventions";
-import { RavenCommand } from "../../../Http/RavenCommand";
-import { ServerNode } from "../../../Http/ServerNode";
+import { IMaintenanceOperation, OperationResultType } from "../OperationAbstractions.js";
+import { GetPeriodicBackupStatusOperationResult } from "./GetPeriodicBackupStatusOperationResult.js";
+import { HttpRequestParameters } from "../../../Primitives/Http.js";
+import { Stream } from "node:stream";
+import { DocumentConventions } from "../../Conventions/DocumentConventions.js";
+import { RavenCommand } from "../../../Http/RavenCommand.js";
+import { ServerNode } from "../../../Http/ServerNode.js";
 
 export class GetPeriodicBackupStatusOperation implements IMaintenanceOperation<GetPeriodicBackupStatusOperationResult> {
     private readonly _taskId: number;
@@ -46,7 +46,7 @@ class GetPeriodicBackupStatusCommand extends RavenCommand<GetPeriodicBackupStatu
         return true;
     }
 
-    async setResponseAsync(bodyStream: stream.Stream, fromCache: boolean): Promise<string> {
+    async setResponseAsync(bodyStream: Stream, fromCache: boolean): Promise<string> {
         if (!bodyStream) {
             this._throwInvalidResponse();
         }

@@ -1,13 +1,13 @@
-import { throwError } from "../../Exceptions";
-import { IndexLockMode, IndexType } from "./Enums";
-import { IndexFieldOptions } from "./IndexFieldOptions";
-import { DocumentConventions } from "../Conventions/DocumentConventions";
-import { IndexDefinitionHelper } from "./IndexDefinitionHelper";
-import { AbstractIndexDefinitionBuilder } from "./AbstractIndexDefinitionBuilder";
-import { IndexSourceType } from "./IndexSourceType";
-import { AdditionalAssembly } from "./AdditionalAssembly";
-import { IndexDeploymentMode } from "./IndexDeploymentMode";
-import { IndexDefinitionBase } from "./IndexDefinitionBase";
+import { throwError } from "../../Exceptions/index.js";
+import { IndexLockMode, IndexType } from "./Enums.js";
+import { IndexFieldOptions } from "./IndexFieldOptions.js";
+import { DocumentConventions } from "../Conventions/DocumentConventions.js";
+import { IndexDefinitionHelper } from "./IndexDefinitionHelper.js";
+import { AbstractIndexDefinitionBuilder } from "./AbstractIndexDefinitionBuilder.js";
+import { IndexSourceType } from "./IndexSourceType.js";
+import { AdditionalAssembly } from "./AdditionalAssembly.js";
+import { IndexDeploymentMode } from "./IndexDeploymentMode.js";
+import { IndexDefinitionBase } from "./IndexDefinitionBase.js";
 
 export interface IndexConfiguration {
     [key: string]: string;

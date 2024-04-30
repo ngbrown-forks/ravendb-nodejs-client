@@ -1,4 +1,4 @@
-import { DatabaseChange } from "./DatabaseChange";
+import { DatabaseChange } from "./DatabaseChange.js";
 
 export type TimeSeriesChangeTypes = "None" | "Put" | "Delete" | "Mixed";
 

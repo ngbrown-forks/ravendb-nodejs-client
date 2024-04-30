@@ -1,9 +1,9 @@
-import { IMaintenanceOperation, OperationResultType } from "../OperationAbstractions";
-import { RavenCommand } from "../../../Http/RavenCommand";
-import { HttpRequestParameters } from "../../../Primitives/Http";
-import * as stream from "readable-stream";
-import { DocumentConventions } from "../../Conventions/DocumentConventions";
-import { ServerNode } from "../../../Http/ServerNode";
+import { IMaintenanceOperation, OperationResultType } from "../OperationAbstractions.js";
+import { RavenCommand } from "../../../Http/RavenCommand.js";
+import { HttpRequestParameters } from "../../../Primitives/Http.js";
+import { Stream } from "node:stream";
+import { DocumentConventions } from "../../Conventions/DocumentConventions.js";
+import { ServerNode } from "../../../Http/ServerNode.js";
 
 export class GetIndexNamesOperation implements IMaintenanceOperation<string[]> {
 
@@ -41,7 +41,7 @@ export class GetIndexNamesCommand extends RavenCommand<string[]> {
         return { uri };
     }
 
-    public async setResponseAsync(bodyStream: stream.Stream, fromCache: boolean): Promise<string> {
+    public async setResponseAsync(bodyStream: Stream, fromCache: boolean): Promise<string> {
         if (!bodyStream) {
             this._throwInvalidResponse();
         }

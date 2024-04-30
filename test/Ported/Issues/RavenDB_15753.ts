@@ -1,7 +1,7 @@
-import { IDocumentStore, IndexDefinition, PutIndexesOperation } from "../../../src";
-import { disposeTestDocumentStore, RavenTestContext, testContext } from "../../Utils/TestUtil";
-import { AdditionalAssembly } from "../../../src/Documents/Indexes/AdditionalAssembly";
-import { assertThat, assertThrows } from "../../Utils/AssertExtensions";
+import { IDocumentStore, IndexDefinition, PutIndexesOperation } from "../../../src/index.js";
+import { disposeTestDocumentStore, RavenTestContext, testContext } from "../../Utils/TestUtil.js";
+import { AdditionalAssembly } from "../../../src/Documents/Indexes/AdditionalAssembly.js";
+import { assertThat, assertThrows } from "../../Utils/AssertExtensions.js";
 
 (RavenTestContext.isPullRequest ? describe.skip : describe)("RavenDB_15753", function () {
 

@@ -3,16 +3,16 @@ import {
     ExternalReplication,
     GetDatabaseRecordOperation,
     IDocumentStore, PutConnectionStringOperation, RavenConnectionString, UpdateExternalReplicationOperation
-} from "../../../../../src";
-import { disposeTestDocumentStore, RavenTestContext, testContext } from "../../../../Utils/TestUtil";
-import { ServerWideExternalReplication } from "../../../../../src/ServerWide/Operations/OngoingTasks/ServerWideExternalReplication";
-import { PutServerWideExternalReplicationOperation } from "../../../../../src/ServerWide/Operations/OngoingTasks/PutServerWideExternalReplicationOperation";
-import { GetServerWideExternalReplicationOperation } from "../../../../../src/ServerWide/Operations/OngoingTasks/GetServerWideExternalReplicationOperation";
-import { ServerWideExternalReplicationResponse } from "../../../../../src/ServerWide/Operations/OngoingTasks/ServerWideTaskResponse";
-import { assertThat } from "../../../../Utils/AssertExtensions";
-import { DeleteServerWideTaskOperation } from "../../../../../src/ServerWide/Operations/OngoingTasks/DeleteServerWideTaskOperation";
-import { v4 as uuidv4 } from "uuid";
-import { PutConnectionStringResult } from "../../../../../src/Documents/Operations/ConnectionStrings/PutConnectionStringOperation";
+} from "../../../../../src/index.js";
+import { disposeTestDocumentStore, RavenTestContext, testContext } from "../../../../Utils/TestUtil.js";
+import { ServerWideExternalReplication } from "../../../../../src/ServerWide/Operations/OngoingTasks/ServerWideExternalReplication.js";
+import { PutServerWideExternalReplicationOperation } from "../../../../../src/ServerWide/Operations/OngoingTasks/PutServerWideExternalReplicationOperation.js";
+import { GetServerWideExternalReplicationOperation } from "../../../../../src/ServerWide/Operations/OngoingTasks/GetServerWideExternalReplicationOperation.js";
+import { ServerWideExternalReplicationResponse } from "../../../../../src/ServerWide/Operations/OngoingTasks/ServerWideTaskResponse.js";
+import { assertThat } from "../../../../Utils/AssertExtensions.js";
+import { DeleteServerWideTaskOperation } from "../../../../../src/ServerWide/Operations/OngoingTasks/DeleteServerWideTaskOperation.js";
+import { randomUUID } from "node:crypto";
+import { PutConnectionStringResult } from "../../../../../src/Documents/Operations/ConnectionStrings/PutConnectionStringOperation.js";
 
 (RavenTestContext.isPullRequest ? describe.skip : describe)("ServerWideReplicationTest", function () {
 
@@ -111,8 +111,8 @@ import { PutConnectionStringResult } from "../../../../../src/Documents/Operatio
             assertThat(record.ravenConnectionStrings)
                 .hasSize(1);
 
-            const dbName = "db/" + uuidv4();
-            const csName = "cs/" + uuidv4();
+            const dbName = "db/" + randomUUID();
+            const csName = "cs/" + randomUUID();
 
             const connectionString: RavenConnectionString = {
                 name: csName,

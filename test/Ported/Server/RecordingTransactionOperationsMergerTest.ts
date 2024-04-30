@@ -1,11 +1,11 @@
-import { IDocumentStore } from "../../../src";
-import { disposeTestDocumentStore, TemporaryDirContext, testContext } from "../../Utils/TestUtil";
-import * as path from "path";
-import { StartTransactionsRecordingOperation } from "../../../src/Documents/Operations/TransactionsRecording/StartTransactionsRecordingOperation";
-import { StopTransactionsRecordingOperation } from "../../../src/Documents/Operations/TransactionsRecording/StopTransactionsRecordingOperation";
-import { assertThat } from "../../Utils/AssertExtensions";
-import * as fs from "fs";
-import { CreateSampleDataOperation } from "../../Utils/CreateSampleDataOperation";
+import { IDocumentStore } from "../../../src/index.js";
+import { disposeTestDocumentStore, TemporaryDirContext, testContext } from "../../Utils/TestUtil.js";
+import path from "node:path";
+import { StartTransactionsRecordingOperation } from "../../../src/Documents/Operations/TransactionsRecording/StartTransactionsRecordingOperation.js";
+import { StopTransactionsRecordingOperation } from "../../../src/Documents/Operations/TransactionsRecording/StopTransactionsRecordingOperation.js";
+import { assertThat } from "../../Utils/AssertExtensions.js";
+import fs from "node:fs";
+import { CreateSampleDataOperation } from "../../Utils/CreateSampleDataOperation.js";
 
 describe("RecordingTransactionOperationsMergerTest", function () {
 

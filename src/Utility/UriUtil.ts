@@ -1,8 +1,8 @@
-import { throwError } from "../Exceptions";
-import * as url from "url";
+import { throwError } from "../Exceptions/index.js";
+import { parse } from "node:url";
 
 export function isValidUri(uriString: string): boolean {
-    const parsed = url.parse(uriString);
+    const parsed = parse(uriString);
     return !!(parsed.host && parsed.protocol);
 }
 

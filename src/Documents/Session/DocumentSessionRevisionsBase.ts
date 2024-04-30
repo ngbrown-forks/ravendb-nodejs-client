@@ -1,8 +1,8 @@
-import { ForceRevisionStrategy } from "./ForceRevisionStrategy";
-import { throwError } from "../../Exceptions";
-import { TypeUtil } from "../../Utility/TypeUtil";
-import { StringUtil } from "../../Utility/StringUtil";
-import { AdvancedSessionExtensionBase } from "./AdvancedSessionExtensionBase";
+import { ForceRevisionStrategy } from "./ForceRevisionStrategy.js";
+import { throwError } from "../../Exceptions/index.js";
+import { TypeUtil } from "../../Utility/TypeUtil.js";
+import { StringUtil } from "../../Utility/StringUtil.js";
+import { AdvancedSessionExtensionBase } from "./AdvancedSessionExtensionBase.js";
 
 export class DocumentSessionRevisionsBase extends AdvancedSessionExtensionBase {
     forceRevisionCreationFor<T extends object>(entity: T)

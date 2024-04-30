@@ -1,13 +1,13 @@
-import { IServerOperation, OperationResultType } from "../../../Documents/Operations/OperationAbstractions";
-import { AnalyzerDefinition } from "../../../Documents/Indexes/Analysis/AnalyzerDefinition";
-import { throwError } from "../../../Exceptions";
-import { DocumentConventions } from "../../../Documents/Conventions/DocumentConventions";
-import { RavenCommand } from "../../../Http/RavenCommand";
-import { IRaftCommand } from "../../../Http/IRaftCommand";
-import { ServerNode } from "../../../Http/ServerNode";
-import { HttpRequestParameters } from "../../../Primitives/Http";
-import { HeadersBuilder } from "../../../Utility/HttpUtil";
-import { RaftIdGenerator } from "../../../Utility/RaftIdGenerator";
+import { IServerOperation, OperationResultType } from "../../../Documents/Operations/OperationAbstractions.js";
+import { AnalyzerDefinition } from "../../../Documents/Indexes/Analysis/AnalyzerDefinition.js";
+import { throwError } from "../../../Exceptions/index.js";
+import { DocumentConventions } from "../../../Documents/Conventions/DocumentConventions.js";
+import { RavenCommand } from "../../../Http/RavenCommand.js";
+import { IRaftCommand } from "../../../Http/IRaftCommand.js";
+import { ServerNode } from "../../../Http/ServerNode.js";
+import { HttpRequestParameters } from "../../../Primitives/Http.js";
+import { HeadersBuilder } from "../../../Utility/HttpUtil.js";
+import { RaftIdGenerator } from "../../../Utility/RaftIdGenerator.js";
 
 export class PutServerWideAnalyzersOperation implements IServerOperation<void> {
     private readonly _analyzersToAdd: AnalyzerDefinition[];

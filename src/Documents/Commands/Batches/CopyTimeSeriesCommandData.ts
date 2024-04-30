@@ -1,9 +1,9 @@
-import { CommandType, ICommandData } from "../CommandData";
-import { StringUtil } from "../../../Utility/StringUtil";
-import { throwError } from "../../../Exceptions";
-import { DocumentConventions } from "../../Conventions/DocumentConventions";
-import { InMemoryDocumentSessionOperations } from "../../Session/InMemoryDocumentSessionOperations";
-import { DateUtil } from "../../../Utility/DateUtil";
+import { CommandType, ICommandData } from "../CommandData.js";
+import { StringUtil } from "../../../Utility/StringUtil.js";
+import { throwError } from "../../../Exceptions/index.js";
+import { DocumentConventions } from "../../Conventions/DocumentConventions.js";
+import { InMemoryDocumentSessionOperations } from "../../Session/InMemoryDocumentSessionOperations.js";
+import { DateUtil } from "../../../Utility/DateUtil.js";
 
 export class CopyTimeSeriesCommandData implements ICommandData {
     public readonly id: string;

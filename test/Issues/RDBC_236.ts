@@ -1,13 +1,13 @@
-import * as assert from "assert";
-import * as moment from "moment";
-import { testContext, disposeTestDocumentStore } from "../Utils/TestUtil";
+import assert from "node:assert"
+import moment from "moment";
+import { testContext, disposeTestDocumentStore } from "../Utils/TestUtil.js";
 
 import {
     IDocumentStore,
-} from "../../src";
-import { DateUtil } from "../../src/Utility/DateUtil";
-import { GetDocumentsCommand } from "../../src/Documents/Commands/GetDocumentsCommand";
-import { StringUtil } from "../../src/Utility/StringUtil";
+} from "../../src/index.js";
+import { DateUtil } from "../../src/Utility/DateUtil.js";
+import { GetDocumentsCommand } from "../../src/Documents/Commands/GetDocumentsCommand.js";
+import { StringUtil } from "../../src/Utility/StringUtil.js";
 
 // getTimezoneOffset() returns reversed offset, hence the "-"
 const LOCAL_TIMEZONE_OFFSET = -(new Date(2018, 7, 1).getTimezoneOffset()); 

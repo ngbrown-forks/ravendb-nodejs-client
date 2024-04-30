@@ -1,12 +1,12 @@
-import { GetOperationStateCommand } from "./GetOperationStateOperation";
-import { RavenCommand, IRavenResponse } from "../../Http/RavenCommand";
-import { throwError } from "../../Exceptions";
-import { OperationExceptionResult } from "./OperationAbstractions";
-import { ExceptionDispatcher } from "../../Exceptions";
-import { DocumentConventions } from "../Conventions/DocumentConventions";
-import { RequestExecutor } from "../../Http/RequestExecutor";
-import { delay } from "../../Utility/PromiseUtil";
-import { KillOperationCommand } from "../Commands/KillOperationCommand";
+import { GetOperationStateCommand } from "./GetOperationStateOperation.js";
+import { RavenCommand, IRavenResponse } from "../../Http/RavenCommand.js";
+import { throwError } from "../../Exceptions/index.js";
+import { OperationExceptionResult } from "./OperationAbstractions.js";
+import { ExceptionDispatcher } from "../../Exceptions/index.js";
+import { DocumentConventions } from "../Conventions/DocumentConventions.js";
+import { RequestExecutor } from "../../Http/RequestExecutor.js";
+import { delay } from "../../Utility/PromiseUtil.js";
+import { KillOperationCommand } from "../Commands/KillOperationCommand.js";
 
 type OperationStatus = "Completed" | "Canceled" | "Faulted";
 
@@ -53,12 +53,14 @@ export class OperationCompletionAwaiter {
                 .then((operationStatusResult) => {
                     const operationStatus = operationStatusResult.status as OperationStatus;
                     switch (operationStatus) {
-                        case "Completed":
+                        case "Completed": {
                             return;
-                        case "Canceled":
+                        }
+                        case "Canceled": {
                             throwError("OperationCanceledException",
                                 `Operation of ID ${this._id} has been canceled.`);
                             break;
+                        }
                         case "Faulted": {
                             const faultResult: OperationExceptionResult = operationStatusResult.result;
                             const errorSchema = Object.assign({}, faultResult, {url: this._requestExecutor.getUrl()});

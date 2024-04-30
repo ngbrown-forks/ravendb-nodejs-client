@@ -1,20 +1,20 @@
-import { TransactionMode } from "./TransactionMode";
-import { throwError } from "../../Exceptions";
-import { CompareExchangeValue } from "../Operations/CompareExchange/CompareExchangeValue";
-import { CompareExchangeResultClass } from "../../Types";
-import { TypeUtil } from "../../Utility/TypeUtil";
-import { DocumentSession } from "./DocumentSession";
-import { CaseInsensitiveKeysMap } from "../../Primitives/CaseInsensitiveKeysMap";
-import { CompareExchangeSessionValue } from "../Operations/CompareExchange/CompareExchangeSessionValue";
+import { TransactionMode } from "./TransactionMode.js";
+import { throwError } from "../../Exceptions/index.js";
+import { CompareExchangeValue } from "../Operations/CompareExchange/CompareExchangeValue.js";
+import { CompareExchangeResultClass } from "../../Types/index.js";
+import { TypeUtil } from "../../Utility/TypeUtil.js";
+import { DocumentSession } from "./DocumentSession.js";
+import { CaseInsensitiveKeysMap } from "../../Primitives/CaseInsensitiveKeysMap.js";
+import { CompareExchangeSessionValue } from "../Operations/CompareExchange/CompareExchangeSessionValue.js";
 import {
     CompareExchangeResultItem,
     CompareExchangeValueResultParser
-} from "../Operations/CompareExchange/CompareExchangeValueResultParser";
-import { GetCompareExchangeValueOperation } from "../Operations/CompareExchange/GetCompareExchangeValueOperation";
-import { GetCompareExchangeValuesOperation } from "../Operations/CompareExchange/GetCompareExchangeValuesOperation";
-import { SaveChangesData } from "../Commands/CommandData";
-import { StringUtil } from "../../Utility/StringUtil";
-import { COMPARE_EXCHANGE } from "../../Constants";
+} from "../Operations/CompareExchange/CompareExchangeValueResultParser.js";
+import { GetCompareExchangeValueOperation } from "../Operations/CompareExchange/GetCompareExchangeValueOperation.js";
+import { GetCompareExchangeValuesOperation } from "../Operations/CompareExchange/GetCompareExchangeValuesOperation.js";
+import { SaveChangesData } from "../Commands/CommandData.js";
+import { StringUtil } from "../../Utility/StringUtil.js";
+import { COMPARE_EXCHANGE } from "../../Constants.js";
 
 export class StoredCompareExchange {
     public readonly entity: any;

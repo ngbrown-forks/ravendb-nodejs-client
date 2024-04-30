@@ -1,7 +1,7 @@
-import { SuggestionsResponseObject } from "../../../Types";
-import { Lazy } from "../../Lazy";
-import { SuggestionBase } from "./SuggestionBase";
-import { ISuggestionBuilder } from "./ISuggestionBuilder";
+import { SuggestionsResponseObject } from "../../../Types/index.js";
+import { Lazy } from "../../Lazy.js";
+import { SuggestionBase } from "./SuggestionBase.js";
+import { ISuggestionBuilder } from "./ISuggestionBuilder.js";
 
 export interface ISuggestionDocumentQuery<T> {
     execute(): Promise<SuggestionsResponseObject>;

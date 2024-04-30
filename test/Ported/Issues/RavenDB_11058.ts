@@ -1,12 +1,12 @@
-import * as assert from "assert";
-import { testContext, disposeTestDocumentStore } from "../../Utils/TestUtil";
+import assert from "node:assert"
+import { testContext, disposeTestDocumentStore } from "../../Utils/TestUtil.js";
 
 import {
     IDocumentStore,
     GetStatisticsOperation,
-} from "../../../src";
-import { Company } from "../../Assets/Entities";
-import { assertThat, assertThrows } from "../../Utils/AssertExtensions";
+} from "../../../src/index.js";
+import { Company } from "../../Assets/Entities.js";
+import { assertThat, assertThrows } from "../../Utils/AssertExtensions.js";
 
 describe("RavenDB-11058", function () {
 

@@ -1,6 +1,6 @@
-import { IGenericIncludeBuilder } from "./IGenericIncludeBuilder";
-import { TimeSeriesRangeType } from "../../Operations/TimeSeries/TimeSeriesRangeType";
-import { TimeValue } from "../../../Primitives/TimeValue";
+import { IGenericIncludeBuilder } from "./IGenericIncludeBuilder.js";
+import { TimeSeriesRangeType } from "../../Operations/TimeSeries/TimeSeriesRangeType.js";
+import { TimeValue } from "../../../Primitives/TimeValue.js";
 
 export interface IQueryIncludeBuilder extends IGenericIncludeBuilder<IQueryIncludeBuilder> {
 

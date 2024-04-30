@@ -1,5 +1,5 @@
-import { throwError } from "../../Exceptions";
-import { StringUtil } from "../../Utility/StringUtil";
+import { throwError } from "../../Exceptions/index.js";
+import { StringUtil } from "../../Utility/StringUtil.js";
 
 
 export class AdditionalAssembly {
@@ -11,8 +11,8 @@ export class AdditionalAssembly {
     public packageSourceUrl: string;
     public usings: string[];
 
-    // eslint-disable-next-line @typescript-eslint/no-empty-function
     private constructor() {
+        // empty
     }
 
     public static onlyUsings(usings: string[]) {

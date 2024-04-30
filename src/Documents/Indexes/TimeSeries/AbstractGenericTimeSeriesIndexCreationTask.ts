@@ -1,8 +1,8 @@
-import { TimeSeriesIndexDefinition } from "./TimeSeriesIndexDefinition";
-import { AbstractIndexCreationTaskBase } from "../AbstractIndexCreationTaskBase";
-import { FieldIndexing, FieldStorage, FieldTermVector } from "../Enums";
-import { SpatialOptions, SpatialOptionsFactory } from "../Spatial";
-import { CONSTANTS } from "../../../Constants";
+import { TimeSeriesIndexDefinition } from "./TimeSeriesIndexDefinition.js";
+import { AbstractIndexCreationTaskBase } from "../AbstractIndexCreationTaskBase.js";
+import { FieldIndexing, FieldStorage, FieldTermVector } from "../Enums.js";
+import { SpatialOptions, SpatialOptionsFactory } from "../Spatial.js";
+import { CONSTANTS } from "../../../Constants.js";
 
 /**
  * Abstract class used to provide infrastructure service for actual creation tasks

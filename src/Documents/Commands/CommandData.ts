@@ -1,10 +1,10 @@
-import { throwError } from "../../Exceptions";
-import { BatchOptions } from "./Batches/BatchOptions";
-import { InMemoryDocumentSessionOperations } from "../Session/InMemoryDocumentSessionOperations";
-import { DocumentConventions } from "../Conventions/DocumentConventions";
-import { DocumentInfo } from "../Session/DocumentInfo";
-import { ForceRevisionStrategy } from "../Session/ForceRevisionStrategy";
-import { SessionBeforeDeleteEventArgs } from "../Session/SessionEvents";
+import { throwError } from "../../Exceptions/index.js";
+import { BatchOptions } from "./Batches/BatchOptions.js";
+import { InMemoryDocumentSessionOperations } from "../Session/InMemoryDocumentSessionOperations.js";
+import { DocumentConventions } from "../Conventions/DocumentConventions.js";
+import { DocumentInfo } from "../Session/DocumentInfo.js";
+import { ForceRevisionStrategy } from "../Session/ForceRevisionStrategy.js";
+import { SessionBeforeDeleteEventArgs } from "../Session/SessionEvents.js";
 
 export type CommandType =
     "None"

@@ -1,5 +1,5 @@
-import { SetupDocumentBase } from "../SetupDocumentBase";
-import { ObjectUtil } from "../../Utility/ObjectUtil";
+import { SetupDocumentBase } from "../SetupDocumentBase.js";
+import { ObjectUtil } from "../../Utility/ObjectUtil.js";
 
 export class RevisionsCollectionConfiguration extends SetupDocumentBase {
 
@@ -10,6 +10,6 @@ export class RevisionsCollectionConfiguration extends SetupDocumentBase {
     public maximumRevisionsToDeleteUponDocumentUpdate?: number;
 
     public toRemoteFieldNames() {
-        return ObjectUtil.transformObjectKeys(this, { defaultTransform: "pascal" });
+        return ObjectUtil.transformObjectKeys(this, { defaultTransform: ObjectUtil.pascal });
     }
 }

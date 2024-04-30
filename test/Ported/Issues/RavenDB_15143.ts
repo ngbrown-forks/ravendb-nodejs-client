@@ -1,8 +1,8 @@
-import { IDocumentStore, SessionOptions } from "../../../src";
-import { disposeTestDocumentStore, testContext } from "../../Utils/TestUtil";
-import { assertThat } from "../../Utils/AssertExtensions";
-import { DateUtil } from "../../../src/Utility/DateUtil";
-import moment = require("moment");
+import { IDocumentStore, SessionOptions } from "../../../src/index.js";
+import { disposeTestDocumentStore, testContext } from "../../Utils/TestUtil.js";
+import { assertThat } from "../../Utils/AssertExtensions.js";
+import { DateUtil } from "../../../src/Utility/DateUtil.js";
+import moment from "moment";
 
 describe("RavenDB_15143", function () {
 

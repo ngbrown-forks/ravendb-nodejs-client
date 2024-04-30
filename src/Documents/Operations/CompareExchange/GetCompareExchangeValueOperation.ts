@@ -1,16 +1,16 @@
-import { HttpRequestParameters } from "../../../Primitives/Http";
-import { IOperation, OperationResultType } from "../OperationAbstractions";
-import { CompareExchangeValue } from "./CompareExchangeValue";
-import { RavenCommand } from "../../../Http/RavenCommand";
-import { HttpCache } from "../../../Http/HttpCache";
-import { DocumentConventions } from "../../Conventions/DocumentConventions";
-import { IDocumentStore } from "../../IDocumentStore";
-import { throwError } from "../../../Exceptions";
-import { ServerNode } from "../../../Http/ServerNode";
-import { CompareExchangeResultClass, ServerCasing, ServerResponse } from "../../../Types";
-import { CompareExchangeValueResultParser, GetCompareExchangeValuesResponse } from "./CompareExchangeValueResultParser";
-import * as stream from "readable-stream";
-import { GetCompareExchangeValuesCommand } from "./GetCompareExchangeValuesOperation";
+import { HttpRequestParameters } from "../../../Primitives/Http.js";
+import { IOperation, OperationResultType } from "../OperationAbstractions.js";
+import { CompareExchangeValue } from "./CompareExchangeValue.js";
+import { RavenCommand } from "../../../Http/RavenCommand.js";
+import { HttpCache } from "../../../Http/HttpCache.js";
+import { DocumentConventions } from "../../Conventions/DocumentConventions.js";
+import { IDocumentStore } from "../../IDocumentStore.js";
+import { throwError } from "../../../Exceptions/index.js";
+import { ServerNode } from "../../../Http/ServerNode.js";
+import { CompareExchangeResultClass, ServerCasing, ServerResponse } from "../../../Types/index.js";
+import { CompareExchangeValueResultParser, GetCompareExchangeValuesResponse } from "./CompareExchangeValueResultParser.js";
+import { Stream } from "node:stream";
+import { GetCompareExchangeValuesCommand } from "./GetCompareExchangeValuesOperation.js";
 
 export class GetCompareExchangeValueOperation<T> implements IOperation<CompareExchangeValue<T>> {
 
@@ -64,7 +64,7 @@ export class GetCompareExchangeValueCommand<T> extends RavenCommand<CompareExcha
         return {uri};
     }
 
-    public async setResponseAsync(bodyStream: stream.Stream, fromCache: boolean): Promise<string> {
+    public async setResponseAsync(bodyStream: Stream, fromCache: boolean): Promise<string> {
         if (!bodyStream) {
             return null;
         }

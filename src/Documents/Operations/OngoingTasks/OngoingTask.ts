@@ -1,14 +1,14 @@
-import { NodeId } from "../../Subscriptions/NodeId";
-import { RunningBackup } from "./RunningBackup";
-import { NextBackup } from "./NextBackup";
-import { OngoingTaskType } from "./OngoingTaskType";
-import { BackupType } from "../Backups/Enums";
-import { RavenEtlConfiguration } from "../Etl/RavenEtlConfiguration";
-import { SqlEtlConfiguration } from "../Etl/Sql/SqlEtlConfiguration";
-import { RetentionPolicy } from "../Backups/RetentionPolicy";
-import { ElasticSearchEtlConfiguration } from "../Etl/ElasticSearch/ElasticSearchEtlConfiguration";
-import { OlapEtlConfiguration } from "../Etl/Olap/OlapEtlConfiguration";
-import { QueueEtlConfiguration } from "../Etl/Queue/QueueEtlConfiguration";
+import { NodeId } from "../../Subscriptions/NodeId.js";
+import { RunningBackup } from "./RunningBackup.js";
+import { NextBackup } from "./NextBackup.js";
+import { OngoingTaskType } from "./OngoingTaskType.js";
+import { BackupType } from "../Backups/Enums.js";
+import { RavenEtlConfiguration } from "../Etl/RavenEtlConfiguration.js";
+import { SqlEtlConfiguration } from "../Etl/Sql/SqlEtlConfiguration.js";
+import { RetentionPolicy } from "../Backups/RetentionPolicy.js";
+import { ElasticSearchEtlConfiguration } from "../Etl/ElasticSearch/ElasticSearchEtlConfiguration.js";
+import { OlapEtlConfiguration } from "../Etl/Olap/OlapEtlConfiguration.js";
+import { QueueEtlConfiguration } from "../Etl/Queue/QueueEtlConfiguration.js";
 
 export interface OngoingTask {
     taskId: number;

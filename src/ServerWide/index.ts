@@ -1,35 +1,35 @@
-import { DatabaseTopology } from "./Operations";
-import { SorterDefinition } from "../Documents/Queries/Sorting/SorterDefinition";
-import { DeletionInProgressStatus } from "./DeletionInProgressStatus";
-import { AutoIndexDefinition } from "../Documents/Indexes/AutoIndexDefinition";
-import { ExpirationConfiguration } from "../Documents/Operations/Expiration/ExpirationConfiguration";
-import { PeriodicBackupConfiguration } from "../Documents/Operations/Backups/PeriodicBackupConfiguration";
-import { PullReplicationAsSink } from "../Documents/Operations/Replication/PullReplicationAsSink";
-import { PullReplicationDefinition } from "../Documents/Operations/Replication/PullReplicationDefinition";
-import { RavenEtlConfiguration } from "../Documents/Operations/Etl/RavenEtlConfiguration";
-import { SqlEtlConfiguration } from "../Documents/Operations/Etl/Sql/SqlEtlConfiguration";
-import { StudioConfiguration } from "../Documents/Operations/Configuration/StudioConfiguration";
-import { IndexDefinition } from "../Documents/Indexes/IndexDefinition";
-import { RevisionsConfiguration } from "../Documents/Operations/RevisionsConfiguration";
-import { ExternalReplication } from "../Documents/Replication/ExternalReplication";
+import { DatabaseTopology } from "./Operations/index.js";
+import { SorterDefinition } from "../Documents/Queries/Sorting/SorterDefinition.js";
+import { DeletionInProgressStatus } from "./DeletionInProgressStatus.js";
+import { AutoIndexDefinition } from "../Documents/Indexes/AutoIndexDefinition.js";
+import { ExpirationConfiguration } from "../Documents/Operations/Expiration/ExpirationConfiguration.js";
+import { PeriodicBackupConfiguration } from "../Documents/Operations/Backups/PeriodicBackupConfiguration.js";
+import { PullReplicationAsSink } from "../Documents/Operations/Replication/PullReplicationAsSink.js";
+import { PullReplicationDefinition } from "../Documents/Operations/Replication/PullReplicationDefinition.js";
+import { RavenEtlConfiguration } from "../Documents/Operations/Etl/RavenEtlConfiguration.js";
+import { SqlEtlConfiguration } from "../Documents/Operations/Etl/Sql/SqlEtlConfiguration.js";
+import { StudioConfiguration } from "../Documents/Operations/Configuration/StudioConfiguration.js";
+import { IndexDefinition } from "../Documents/Indexes/IndexDefinition.js";
+import { RevisionsConfiguration } from "../Documents/Operations/RevisionsConfiguration.js";
+import { ExternalReplication } from "../Documents/Replication/ExternalReplication.js";
 import {
     ElasticSearchConnectionString,
     OlapConnectionString, QueueConnectionString,
     RavenConnectionString,
     SqlConnectionString
-} from "../Documents/Operations/Etl/ConnectionString";
-import { ClientConfiguration } from "../Documents/Operations/Configuration/ClientConfiguration";
-import { RefreshConfiguration } from "../Documents/Operations/Refresh/RefreshConfiguration";
-import { RevisionsCollectionConfiguration } from "../Documents/Operations/RevisionsCollectionConfiguration";
-import { DocumentsCompressionConfiguration } from "./DocumentsCompressionConfiguration";
-import { TimeSeriesConfiguration } from "../Documents/Operations/TimeSeries/TimeSeriesConfiguration";
-import { RollingIndexDeployment } from "../Documents/Indexes/RollingIndexDeployment";
-import { RollingIndex } from "../Documents/Indexes/RollingIndex";
-import { AnalyzerDefinition } from "../Documents/Indexes/Analysis/AnalyzerDefinition";
-import { OlapEtlConfiguration } from "../Documents/Operations/Etl/Olap/OlapEtlConfiguration";
-import { IntegrationConfigurations } from "./Operations/Integrations/PostgreSql/IntegrationConfigurations";
-import { ElasticSearchEtlConfiguration } from "../Documents/Operations/Etl/ElasticSearch/ElasticSearchEtlConfiguration";
-import { QueueEtlConfiguration } from "../Documents/Operations/Etl/Queue/QueueEtlConfiguration";
+} from "../Documents/Operations/Etl/ConnectionString.js";
+import { ClientConfiguration } from "../Documents/Operations/Configuration/ClientConfiguration.js";
+import { RefreshConfiguration } from "../Documents/Operations/Refresh/RefreshConfiguration.js";
+import { RevisionsCollectionConfiguration } from "../Documents/Operations/RevisionsCollectionConfiguration.js";
+import { DocumentsCompressionConfiguration } from "./DocumentsCompressionConfiguration.js";
+import { TimeSeriesConfiguration } from "../Documents/Operations/TimeSeries/TimeSeriesConfiguration.js";
+import { RollingIndexDeployment } from "../Documents/Indexes/RollingIndexDeployment.js";
+import { RollingIndex } from "../Documents/Indexes/RollingIndex.js";
+import { AnalyzerDefinition } from "../Documents/Indexes/Analysis/AnalyzerDefinition.js";
+import { OlapEtlConfiguration } from "../Documents/Operations/Etl/Olap/OlapEtlConfiguration.js";
+import { IntegrationConfigurations } from "./Operations/Integrations/PostgreSql/IntegrationConfigurations.js";
+import { ElasticSearchEtlConfiguration } from "../Documents/Operations/Etl/ElasticSearch/ElasticSearchEtlConfiguration.js";
+import { QueueEtlConfiguration } from "../Documents/Operations/Etl/Queue/QueueEtlConfiguration.js";
 
 export interface ScriptResolver {
     script: string;

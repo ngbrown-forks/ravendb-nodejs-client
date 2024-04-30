@@ -1,10 +1,10 @@
-import { IDocumentStore, TypedTimeSeriesEntry } from "../../../src";
-import { disposeTestDocumentStore, testContext } from "../../Utils/TestUtil";
-import moment = require("moment");
-import { User } from "../../Assets/Entities";
-import { assertThat } from "../../Utils/AssertExtensions";
-import { HeartRateMeasure } from "../FilteredReplicationTest";
-import { StockPrice } from "./TimeSeriesTypedSession";
+import { IDocumentStore, TypedTimeSeriesEntry } from "../../../src/index.js";
+import { disposeTestDocumentStore, testContext } from "../../Utils/TestUtil.js";
+import moment from "moment";
+import { User } from "../../Assets/Entities.js";
+import { assertThat } from "../../Utils/AssertExtensions.js";
+import { HeartRateMeasure } from "../FilteredReplicationTest.js";
+import { StockPrice } from "./TimeSeriesTypedSession.js";
 
 describe("TypedBulkInsert", function () {
 

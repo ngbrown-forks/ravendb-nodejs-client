@@ -1,4 +1,4 @@
-import { LogMode } from "./LogMode";
+import { LogMode } from "./LogMode.js";
 
 export interface GetLogsConfigurationResult {
     currentMode: LogMode;

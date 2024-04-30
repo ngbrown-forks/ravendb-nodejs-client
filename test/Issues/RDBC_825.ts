@@ -1,7 +1,7 @@
-import { AbstractJavaScriptIndexCreationTask, IDocumentStore, PutCompareExchangeValueOperation } from "../../src";
-import { disposeTestDocumentStore, testContext } from "../Utils/TestUtil";
-import { User } from "../Assets/Entities";
-import { assertThat } from "../Utils/AssertExtensions";
+import { AbstractJavaScriptIndexCreationTask, IDocumentStore, PutCompareExchangeValueOperation } from "../../src/index.js";
+import { disposeTestDocumentStore, testContext } from "../Utils/TestUtil.js";
+import { User } from "../Assets/Entities.js";
+import { assertThat } from "../Utils/AssertExtensions.js";
 
 describe("[RDBC-825] Load all attachments in js index", function () {
 

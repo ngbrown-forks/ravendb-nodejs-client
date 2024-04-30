@@ -1,4 +1,4 @@
-import * as Parser from "stream-json/Parser";
+import Parser from "stream-json/Parser.js";
 
 export function parseJsonVerbose(jsonString: string) {
     if (!jsonString) {
@@ -13,7 +13,6 @@ export function parseJsonVerbose(jsonString: string) {
         throw err;
     }
 }
-
 
 export async function parseJsonStreamVerbose(jsonString: string) {
     if (!jsonString) {

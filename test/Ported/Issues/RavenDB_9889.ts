@@ -1,11 +1,11 @@
-import { disposeTestDocumentStore, testContext } from "../../Utils/TestUtil";
-import { IDocumentStore } from "../../../src/Documents/IDocumentStore";
+import { disposeTestDocumentStore, testContext } from "../../Utils/TestUtil.js";
+import { IDocumentStore } from "../../../src/Documents/IDocumentStore.js";
 import {
     AfterConversionToDocumentEventArgs, AfterConversionToEntityEventArgs,
     BeforeConversionToDocumentEventArgs, BeforeConversionToEntityEventArgs
-} from "../../../src/Documents/Session/SessionEvents";
-import { ObjectUtil } from "../../../src/Utility/ObjectUtil";
-import { assertThat } from "../../Utils/AssertExtensions";
+} from "../../../src/Documents/Session/SessionEvents.js";
+import { ObjectUtil } from "../../../src/Utility/ObjectUtil.js";
+import { assertThat } from "../../Utils/AssertExtensions.js";
 
 describe("RavenDB_9889", function () {
 

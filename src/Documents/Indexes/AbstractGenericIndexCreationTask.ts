@@ -1,10 +1,10 @@
-import { AbstractIndexCreationTaskBase } from "./AbstractIndexCreationTaskBase";
-import { FieldStorage, FieldIndexing, FieldTermVector } from "./Enums";
-import { SpatialOptions, SpatialOptionsFactory } from "./Spatial";
-import { CONSTANTS } from "../../Constants";
-import { IndexDefinition } from "./IndexDefinition";
-import { AdditionalAssembly } from "./AdditionalAssembly";
-import { throwError } from "../../Exceptions";
+import { AbstractIndexCreationTaskBase } from "./AbstractIndexCreationTaskBase.js";
+import { FieldStorage, FieldIndexing, FieldTermVector } from "./Enums.js";
+import { SpatialOptions, SpatialOptionsFactory } from "./Spatial.js";
+import { CONSTANTS } from "../../Constants.js";
+import { IndexDefinition } from "./IndexDefinition.js";
+import { AdditionalAssembly } from "./AdditionalAssembly.js";
+import { throwError } from "../../Exceptions/index.js";
 
 type FieldOrAllFields<TField> = TField | "__all_fields";
 

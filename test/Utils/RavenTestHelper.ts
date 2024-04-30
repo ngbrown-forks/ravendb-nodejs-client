@@ -1,7 +1,7 @@
-import { GetIndexErrorsOperation, IDocumentStore } from "../../src";
-import * as os from "os";
-import { throwError } from "../../src/Exceptions";
-import { StringBuilder } from "../../src/Utility/StringBuilder";
+import { GetIndexErrorsOperation, IDocumentStore } from "../../src/index.js";
+import os from "node:os";
+import { throwError } from "../../src/Exceptions/index.js";
+import { StringBuilder } from "../../src/Utility/StringBuilder.js";
 
 export class RavenTestHelper {
     public static async assertNoIndexErrors(store: IDocumentStore, databaseName?: string) {

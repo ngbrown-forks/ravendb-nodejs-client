@@ -1,9 +1,9 @@
-import { ShapeToken } from "../../Session/Tokens/ShapeToken";
-import { SpatialRelation } from "../../Indexes/Spatial";
-import { QueryToken } from "../../Session/Tokens/QueryToken";
-import { throwError } from "../../../Exceptions";
-import { WhereOperator } from "../../Session/Tokens/WhereOperator";
-import { WhereToken, WhereOptions } from "../../Session/Tokens/WhereToken";
+import { ShapeToken } from "../../Session/Tokens/ShapeToken.js";
+import { SpatialRelation } from "../../Indexes/Spatial.js";
+import { QueryToken } from "../../Session/Tokens/QueryToken.js";
+import { throwError } from "../../../Exceptions/index.js";
+import { WhereOperator } from "../../Session/Tokens/WhereOperator.js";
+import { WhereToken, WhereOptions } from "../../Session/Tokens/WhereToken.js";
 
 export abstract class SpatialCriteria {
 
@@ -23,20 +23,25 @@ export abstract class SpatialCriteria {
         let whereOperator: WhereOperator;
 
         switch (this._relation) {
-            case "Within":
+            case "Within": {
                 whereOperator = "SpatialWithin";
                 break;
-            case "Contains":
+            }
+            case "Contains": {
                 whereOperator = "SpatialContains";
                 break;
-            case "Disjoint":
+            }
+            case "Disjoint": {
                 whereOperator = "SpatialDisjoint";
                 break;
-            case "Intersects":
+            }
+            case "Intersects": {
                 whereOperator = "SpatialIntersects";
                 break;
-            default:
+            }
+            default: {
                 throwError("InvalidArgumentException");
+            }
         }
 
         return WhereToken.create(whereOperator, fieldName, null, new WhereOptions({

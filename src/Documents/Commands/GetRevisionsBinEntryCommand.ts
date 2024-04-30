@@ -1,11 +1,11 @@
-import { HttpRequestParameters } from "../../Primitives/Http";
-import { TypeUtil } from "../../Utility/TypeUtil";
-import * as stream from "readable-stream";
-import { GetDocumentsCommand } from "./GetDocumentsCommand";
-import { RavenCommand } from "../../Http/RavenCommand";
-import { IRavenArrayResult } from "../../Types";
-import { ServerNode } from "../../Http/ServerNode";
-import { DocumentConventions } from "../Conventions/DocumentConventions";
+import { HttpRequestParameters } from "../../Primitives/Http.js";
+import { TypeUtil } from "../../Utility/TypeUtil.js";
+import { Stream } from "node:stream";
+import { GetDocumentsCommand } from "./GetDocumentsCommand.js";
+import { RavenCommand } from "../../Http/RavenCommand.js";
+import { IRavenArrayResult } from "../../Types/index.js";
+import { ServerNode } from "../../Http/ServerNode.js";
+import { DocumentConventions } from "../Conventions/DocumentConventions.js";
 
 export class GetRevisionsBinEntryCommand extends RavenCommand<IRavenArrayResult> {
     private readonly _conventions: DocumentConventions;
@@ -32,7 +32,7 @@ export class GetRevisionsBinEntryCommand extends RavenCommand<IRavenArrayResult>
         };
     }
 
-    public async setResponseAsync(bodyStream: stream.Stream, fromCache: boolean): Promise<string> {
+    public async setResponseAsync(bodyStream: Stream, fromCache: boolean): Promise<string> {
         if (!bodyStream) {
             this.result = null;
             return;

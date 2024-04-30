@@ -1,13 +1,13 @@
-import { IOperation, OperationResultType } from "../OperationAbstractions";
-import { TimeSeriesStatistics } from "./TimeSeriesStatistics";
-import { IDocumentStore } from "../../IDocumentStore";
-import { HttpCache } from "../../../Http/HttpCache";
-import { HttpRequestParameters } from "../../../Primitives/Http";
-import * as stream from "readable-stream";
-import { RavenCommand } from "../../../Http/RavenCommand";
-import { ServerNode } from "../../../Http/ServerNode";
-import { DocumentConventions } from "../../Conventions/DocumentConventions";
-import { ServerResponse } from "../../../Types";
+import { IOperation, OperationResultType } from "../OperationAbstractions.js";
+import { TimeSeriesStatistics } from "./TimeSeriesStatistics.js";
+import { IDocumentStore } from "../../IDocumentStore.js";
+import { HttpCache } from "../../../Http/HttpCache.js";
+import { HttpRequestParameters } from "../../../Primitives/Http.js";
+import { Stream } from "node:stream";
+import { RavenCommand } from "../../../Http/RavenCommand.js";
+import { ServerNode } from "../../../Http/ServerNode.js";
+import { DocumentConventions } from "../../Conventions/DocumentConventions.js";
+import { ServerResponse } from "../../../Types/index.js";
 
 export class GetTimeSeriesStatisticsOperation implements IOperation<TimeSeriesStatistics> {
     private readonly _documentId: string;
@@ -53,7 +53,7 @@ class GetTimeSeriesStatisticsCommand extends RavenCommand<TimeSeriesStatistics> 
         }
     }
 
-    async setResponseAsync(bodyStream: stream.Stream, fromCache: boolean): Promise<string> {
+    async setResponseAsync(bodyStream: Stream, fromCache: boolean): Promise<string> {
         let body: string = null;
         const results = await this._defaultPipeline<ServerResponse<TimeSeriesStatistics>>(_ => body = _).process(bodyStream);
 

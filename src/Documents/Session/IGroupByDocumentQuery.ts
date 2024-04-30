@@ -1,6 +1,6 @@
-import { GroupByField } from "./GroupByField";
-import { IDocumentQuery } from "./IDocumentQuery";
-import { IFilterFactory } from "../Queries/IFilterFactory";
+import { GroupByField } from "./GroupByField.js";
+import { IDocumentQuery } from "./IDocumentQuery.js";
+import { IFilterFactory } from "../Queries/IFilterFactory.js";
 
 export interface IGroupByDocumentQuery<T extends object> {
 

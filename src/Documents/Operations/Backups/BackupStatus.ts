@@ -1,6 +1,6 @@
-import { UploadProgress } from "./UploadProgress";
-import { CompressionLevel } from "./CompressionLevel";
-import { SnapshotBackupCompressionAlgorithm } from "./Enums";
+import { UploadProgress } from "./UploadProgress.js";
+import { CompressionLevel } from "./CompressionLevel.js";
+import { SnapshotBackupCompressionAlgorithm } from "./Enums.js";
 
 export interface BackupStatus {
     lastFullBackup: Date;

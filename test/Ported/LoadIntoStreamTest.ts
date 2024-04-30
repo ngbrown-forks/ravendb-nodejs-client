@@ -1,13 +1,13 @@
-import { testContext, disposeTestDocumentStore } from "../Utils/TestUtil";
+import { testContext, disposeTestDocumentStore } from "../Utils/TestUtil.js";
 
 import {
     IDocumentStore,
-} from "../../src";
-import * as assert from "assert";
-import { getStringWritable } from "../Utils/Streams";
-import { parseJsonVerbose } from "../Utils/Json";
-import * as stream from "readable-stream";
-import * as StreamUtil from "../../src/Utility/StreamUtil";
+} from "../../src/index.js";
+import assert from "node:assert"
+import { getStringWritable } from "../Utils/Streams.js";
+import { parseJsonVerbose } from "../Utils/Json.js";
+import { Writable } from "node:stream";
+import { finishedAsync } from "../../src/Utility/StreamUtil.js";
 
 class Employee {
     public firstName: string;
@@ -32,9 +32,9 @@ describe("load into stream", function () {
 
             const ids = ["employees/1-A", "employees/4-A", "employees/7-A"];
 
-            const targetStream: stream.Writable = getStringWritable();
+            const targetStream: Writable = getStringWritable();
             session.advanced.loadIntoStream(ids, targetStream);
-            await StreamUtil.finishedAsync(targetStream);
+            await finishedAsync(targetStream);
 
             const result = targetStream["string"];
             assert.ok(result);
@@ -58,7 +58,7 @@ describe("load into stream", function () {
             const session = store.openSession();
             const targetStream = getStringWritable();
             session.advanced.loadStartingWithIntoStream("employees/", targetStream);
-            await StreamUtil.finishedAsync(targetStream);
+            await finishedAsync(targetStream);
             const result = targetStream["string"];
             assert.ok(result);
             assert.ok(!targetStream.writable);

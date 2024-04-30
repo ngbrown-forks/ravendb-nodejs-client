@@ -1,12 +1,12 @@
-import { InMemoryDocumentSessionOperations } from "../InMemoryDocumentSessionOperations";
-import { GetRevisionsCommand } from "../../Commands/GetRevisionsCommand";
-import { throwError } from "../../../Exceptions";
-import { TypeUtil } from "../../../Utility/TypeUtil";
-import { IRavenArrayResult, IRavenObject, RevisionsCollectionObject } from "../../../Types";
-import { DocumentInfo } from "../DocumentInfo";
-import { MetadataAsDictionary } from "../../../Mapping/MetadataAsDictionary";
-import { CONSTANTS } from "../../../Constants";
-import { DocumentType } from "../../DocumentAbstractions";
+import { InMemoryDocumentSessionOperations } from "../InMemoryDocumentSessionOperations.js";
+import { GetRevisionsCommand } from "../../Commands/GetRevisionsCommand.js";
+import { throwError } from "../../../Exceptions/index.js";
+import { TypeUtil } from "../../../Utility/TypeUtil.js";
+import { IRavenArrayResult, IRavenObject, RevisionsCollectionObject } from "../../../Types/index.js";
+import { DocumentInfo } from "../DocumentInfo.js";
+import { MetadataAsDictionary } from "../../../Mapping/MetadataAsDictionary.js";
+import { CONSTANTS } from "../../../Constants.js";
+import { DocumentType } from "../../DocumentAbstractions.js";
 
 export class GetRevisionOperation {
 

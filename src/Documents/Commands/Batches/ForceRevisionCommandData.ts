@@ -1,6 +1,6 @@
-import { CommandType, ICommandData } from "../CommandData";
-import { throwError } from "../../../Exceptions";
-import { DocumentConventions } from "../../Conventions/DocumentConventions";
+import { CommandType, ICommandData } from "../CommandData.js";
+import { throwError } from "../../../Exceptions/index.js";
+import { DocumentConventions } from "../../Conventions/DocumentConventions.js";
 
 export class ForceRevisionCommandData implements ICommandData {
     public id: string;

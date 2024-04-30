@@ -1,12 +1,12 @@
-import { ISuggestionDocumentQuery } from "./ISuggestionDocumentQuery";
-import { SuggestionQueryBase } from "./SuggestionQueryBase";
-import { QueryResult } from "../QueryResult";
-import { DocumentQuery } from "../../Session/DocumentQuery";
-import { InMemoryDocumentSessionOperations } from "../../Session/InMemoryDocumentSessionOperations";
-import { IndexQuery } from "../IndexQuery";
-import { SuggestionBase } from "./SuggestionBase";
-import { ISuggestionBuilder } from "./ISuggestionBuilder";
-import { SuggestionBuilder } from "./SuggestionBuilder";
+import { ISuggestionDocumentQuery } from "./ISuggestionDocumentQuery.js";
+import { SuggestionQueryBase } from "./SuggestionQueryBase.js";
+import { QueryResult } from "../QueryResult.js";
+import { DocumentQuery } from "../../Session/DocumentQuery.js";
+import { InMemoryDocumentSessionOperations } from "../../Session/InMemoryDocumentSessionOperations.js";
+import { IndexQuery } from "../IndexQuery.js";
+import { SuggestionBase } from "./SuggestionBase.js";
+import { ISuggestionBuilder } from "./ISuggestionBuilder.js";
+import { SuggestionBuilder } from "./SuggestionBuilder.js";
 
 export class SuggestionDocumentQuery<T extends object>
     extends SuggestionQueryBase implements ISuggestionDocumentQuery<T> {

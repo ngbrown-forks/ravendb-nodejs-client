@@ -1,15 +1,15 @@
-import { IDisposable } from "../../Types/Contracts";
-import { DocumentStoreBase } from "../DocumentStoreBase";
-import { IServerOperation, AwaitableServerOperation, OperationIdResult } from "./OperationAbstractions";
-import { ClusterRequestExecutor } from "../../Http/ClusterRequestExecutor";
-import { RavenCommand } from "../../Http/RavenCommand";
-import { ServerWideOperationCompletionAwaiter } from "../../ServerWide/Operations/ServerWideOperationCompletionAwaiter";
-import { getLogger } from "../../Utility/LogUtil";
-import { throwError } from "../../Exceptions";
-import { StringUtil } from "../../Utility/StringUtil";
-import { Topology } from "../../Http/Topology";
-import { GetBuildNumberOperation } from "../../ServerWide/Operations/GetBuildNumberOperation";
-import { IRequestExecutorOptions } from "../../Http/RequestExecutor";
+import { IDisposable } from "../../Types/Contracts.js";
+import { DocumentStoreBase } from "../DocumentStoreBase.js";
+import { IServerOperation, AwaitableServerOperation, OperationIdResult } from "./OperationAbstractions.js";
+import { ClusterRequestExecutor } from "../../Http/ClusterRequestExecutor.js";
+import { RavenCommand } from "../../Http/RavenCommand.js";
+import { ServerWideOperationCompletionAwaiter } from "../../ServerWide/Operations/ServerWideOperationCompletionAwaiter.js";
+import { getLogger } from "../../Utility/LogUtil.js";
+import { throwError } from "../../Exceptions/index.js";
+import { StringUtil } from "../../Utility/StringUtil.js";
+import { Topology } from "../../Http/Topology.js";
+import { GetBuildNumberOperation } from "../../ServerWide/Operations/GetBuildNumberOperation.js";
+import { IRequestExecutorOptions } from "../../Http/RequestExecutor.js";
 
 const log = getLogger({ module: "ServerOperationExecutor" });
 

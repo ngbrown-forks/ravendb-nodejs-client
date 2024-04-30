@@ -1,10 +1,10 @@
-import { IGroupByDocumentQuery } from "./IGroupByDocumentQuery";
-import { DocumentQuery } from "./DocumentQuery";
-import { GroupByField } from "./GroupByField";
-import { throwError } from "../../Exceptions";
-import { IDocumentQuery } from "./IDocumentQuery";
-import { IFilterFactory } from "../Queries/IFilterFactory";
-import { FilterFactory } from "../Queries/FilterFactory";
+import { IGroupByDocumentQuery } from "./IGroupByDocumentQuery.js";
+import { DocumentQuery } from "./DocumentQuery.js";
+import { GroupByField } from "./GroupByField.js";
+import { throwError } from "../../Exceptions/index.js";
+import { IDocumentQuery } from "./IDocumentQuery.js";
+import { IFilterFactory } from "../Queries/IFilterFactory.js";
+import { FilterFactory } from "../Queries/FilterFactory.js";
 
 export class GroupByDocumentQuery<T extends object> implements IGroupByDocumentQuery<T> {
 

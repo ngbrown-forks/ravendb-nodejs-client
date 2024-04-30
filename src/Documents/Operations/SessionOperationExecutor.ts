@@ -1,6 +1,6 @@
-import { OperationExecutor } from "./OperationExecutor";
-import { InMemoryDocumentSessionOperations } from "../Session/InMemoryDocumentSessionOperations";
-import { throwError } from "../../Exceptions";
+import { OperationExecutor } from "./OperationExecutor.js";
+import { InMemoryDocumentSessionOperations } from "../Session/InMemoryDocumentSessionOperations.js";
+import { throwError } from "../../Exceptions/index.js";
 
 /**
  * For internal session use only

@@ -1,6 +1,6 @@
-import { ClassConstructor } from "../../../Types";
-import { TimeSeriesValuesHelper } from "./TimeSeriesValuesHelper";
-import { TimeSeriesEntry } from "./TimeSeriesEntry";
+import { ClassConstructor } from "../../../Types/index.js";
+import { TimeSeriesValuesHelper } from "./TimeSeriesValuesHelper.js";
+import { TimeSeriesEntry } from "./TimeSeriesEntry.js";
 
 export class TypedTimeSeriesRollupEntry<TValues extends object> {
     private _clazz: ClassConstructor<TValues>;
@@ -90,7 +90,7 @@ export class TypedTimeSeriesRollupEntry<TValues extends object> {
 
         for (let i = 0; i < valuesCount; i++) {
             if (!counts[i]) {
-                averages[i] = NaN;
+                averages[i] = Number.NaN;
             } else {
                 averages[i] = sums[i] / counts[i];
             }

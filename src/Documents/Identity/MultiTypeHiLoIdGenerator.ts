@@ -1,13 +1,13 @@
-import { HiloIdGenerator } from "./HiloIdGenerator";
-import * as semaphore from "semaphore";
-import { acquireSemaphore } from "../../Utility/SemaphoreUtil";
-import { IRavenObject } from "../../Types/IRavenObject";
-import { DocumentStore } from "../DocumentStore";
-import { DocumentConventions } from "../Conventions/DocumentConventions";
-import { DefaultHiLoIdGenerator } from "./DefaultHiLoIdGenerator";
+import { HiloIdGenerator } from "./HiloIdGenerator.js";
+import { acquireSemaphore } from "../../Utility/SemaphoreUtil.js";
+import { IRavenObject } from "../../Types/IRavenObject.js";
+import { DocumentStore } from "../DocumentStore.js";
+import { DocumentConventions } from "../Conventions/DocumentConventions.js";
+import { DefaultHiLoIdGenerator } from "./DefaultHiLoIdGenerator.js";
+import { Semaphore } from "../../Utility/Semaphore.js";
 
 export class MultiTypeHiLoIdGenerator {
-    private readonly _sem: semaphore.Semaphore;
+    private readonly _sem: Semaphore;
     protected _idGeneratorsByTag: IRavenObject<HiloIdGenerator> = {};
     protected readonly _store: DocumentStore;
     protected readonly _dbName: string;
@@ -17,7 +17,7 @@ export class MultiTypeHiLoIdGenerator {
     constructor(store: DocumentStore, dbName?: string) {
         this._store = store;
         this._dbName = dbName;
-        this._sem = semaphore();
+        this._sem = new Semaphore();
         this._conventions = store.getRequestExecutor(dbName).conventions;
         this._identityPartsSeparator = this._conventions.identityPartsSeparator;
     }
@@ -33,7 +33,7 @@ export class MultiTypeHiLoIdGenerator {
             : this._conventions.getCollectionNameForEntity(entity);
 
         if (!typeTagName) {
-            return Promise.resolve(null);
+            return null;
         }
 
         const tag = await this._conventions.transformClassCollectionNameToDocumentIdPrefix(typeTagName);

@@ -1,9 +1,9 @@
-import { IDocumentStore } from "../../../src/Documents/IDocumentStore";
-import { disposeTestDocumentStore, RavenTestContext, testContext } from "../../Utils/TestUtil";
-import { DocumentType } from "../../../src/Documents/DocumentAbstractions";
-import { CreateSampleDataOperation } from "../../Utils/CreateSampleDataOperation";
-import { assertThat } from "../../Utils/AssertExtensions";
-import { Movie } from "../../Assets/Graph";
+import { IDocumentStore } from "../../../src/Documents/IDocumentStore.js";
+import { disposeTestDocumentStore, RavenTestContext, testContext } from "../../Utils/TestUtil.js";
+import { DocumentType } from "../../../src/Documents/DocumentAbstractions.js";
+import { CreateSampleDataOperation } from "../../Utils/CreateSampleDataOperation.js";
+import { assertThat } from "../../Utils/AssertExtensions.js";
+import { Movie } from "../../Assets/Graph.js";
 
 (RavenTestContext.is60Server ? describe.skip : describe)("BasicGraphQueriesTest", function () {
 

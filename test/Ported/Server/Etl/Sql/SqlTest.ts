@@ -6,11 +6,11 @@ import {
     UpdateEtlOperation,
     ResetEtlOperation,
     SqlEtlConfiguration, SqlEtlTable, Transformation, GetOngoingTaskInfoOperation
-} from "../../../../../src";
-import { disposeTestDocumentStore, RavenTestContext, testContext } from "../../../../Utils/TestUtil";
-import { User } from "../../../../Assets/Entities";
-import { assertThat } from "../../../../Utils/AssertExtensions";
-import { OngoingTaskSqlEtlDetails } from "../../../../../src/Documents/Operations/OngoingTasks/OngoingTask";
+} from "../../../../../src/index.js";
+import { disposeTestDocumentStore, RavenTestContext, testContext } from "../../../../Utils/TestUtil.js";
+import { User } from "../../../../Assets/Entities.js";
+import { assertThat } from "../../../../Utils/AssertExtensions.js";
+import { OngoingTaskSqlEtlDetails } from "../../../../../src/Documents/Operations/OngoingTasks/OngoingTask.js";
 
 (RavenTestContext.isPullRequest ? describe.skip : describe)(
     `${RavenTestContext.isPullRequest ? "[Skipped on PR] " : ""}` +

@@ -1,5 +1,5 @@
-import { FacetBase } from "./FacetBase";
-import { FacetToken } from "../../Session/Tokens/FacetToken";
+import { FacetBase } from "./FacetBase.js";
+import { FacetToken } from "../../Session/Tokens/FacetToken.js";
 
 export class RangeFacet extends FacetBase {
 

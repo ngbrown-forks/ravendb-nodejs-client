@@ -1,10 +1,10 @@
-import { IMaintenanceOperation, OperationResultType } from "./OperationAbstractions";
-import { DetailedDatabaseStatistics } from "./DetailedDatabaseStatistics";
-import { RavenCommand } from "../../Http/RavenCommand";
-import { DocumentConventions } from "../Conventions/DocumentConventions";
-import { ServerNode } from "../../Http/ServerNode";
-import { HttpRequestParameters } from "../../Primitives/Http";
-import * as stream from "readable-stream";
+import { IMaintenanceOperation, OperationResultType } from "./OperationAbstractions.js";
+import { DetailedDatabaseStatistics } from "./DetailedDatabaseStatistics.js";
+import { RavenCommand } from "../../Http/RavenCommand.js";
+import { DocumentConventions } from "../Conventions/DocumentConventions.js";
+import { ServerNode } from "../../Http/ServerNode.js";
+import { HttpRequestParameters } from "../../Primitives/Http.js";
+import { Stream } from "node:stream";
 
 export class GetDetailedStatisticsOperation implements IMaintenanceOperation<DetailedDatabaseStatistics> {
     private readonly _debugTag: string;
@@ -40,7 +40,7 @@ export class DetailedDatabaseStatisticsCommand extends RavenCommand<DetailedData
         return { uri };
     }
 
-    public async setResponseAsync(bodyStream: stream.Stream, fromCache: boolean): Promise<string> {
+    public async setResponseAsync(bodyStream: Stream, fromCache: boolean): Promise<string> {
         return await this._parseResponseDefaultAsync(bodyStream);
     }
 

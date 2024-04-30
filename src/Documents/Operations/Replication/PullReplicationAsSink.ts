@@ -1,5 +1,5 @@
-import { ExternalReplicationBase } from "../../Replication/ExternalReplicationBase";
-import { PullReplicationMode } from "./PullReplicationMode";
+import { ExternalReplicationBase } from "../../Replication/ExternalReplicationBase.js";
+import { PullReplicationMode } from "./PullReplicationMode.js";
 
 export interface PullReplicationAsSink extends ExternalReplicationBase {
     mode: PullReplicationMode;

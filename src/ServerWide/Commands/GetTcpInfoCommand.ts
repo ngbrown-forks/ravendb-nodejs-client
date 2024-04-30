@@ -1,7 +1,7 @@
-import { RavenCommand } from "../../Http/RavenCommand";
-import { ServerNode } from "../../Http/ServerNode";
-import { HttpRequestParameters } from "../../Primitives/Http";
-import * as stream from "readable-stream";
+import { RavenCommand } from "../../Http/RavenCommand.js";
+import { ServerNode } from "../../Http/ServerNode.js";
+import { HttpRequestParameters } from "../../Primitives/Http.js";
+import { Stream } from "node:stream";
 
 export class TcpConnectionInfo {
     public url: string;
@@ -41,7 +41,7 @@ export class GetTcpInfoCommand extends RavenCommand<TcpConnectionInfo> {
         };
     }
 
-    public async setResponseAsync(bodyStream: stream.Stream, fromCache: boolean): Promise<string> {
+    public async setResponseAsync(bodyStream: Stream, fromCache: boolean): Promise<string> {
         if (!bodyStream) {
             this._throwInvalidResponse();
         }

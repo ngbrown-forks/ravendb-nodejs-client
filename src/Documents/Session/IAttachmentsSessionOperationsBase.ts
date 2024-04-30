@@ -1,5 +1,4 @@
-import { AttachmentName } from "../Attachments";
-import { AttachmentData } from "../Attachments";
+import { AttachmentName, AttachmentData } from "../Attachments/index.js";
 
 export interface IAttachmentsSessionOperationsBase {
     /**

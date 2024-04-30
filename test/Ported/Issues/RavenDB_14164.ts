@@ -1,8 +1,7 @@
-import { IDocumentStore } from "../../../src";
-import { disposeTestDocumentStore, testContext } from "../../Utils/TestUtil";
-import moment = require("moment");
-import { User } from "../../Assets/Entities";
-import { assertThat } from "../../Utils/AssertExtensions";
+import { IDocumentStore } from "../../../src/index.js";
+import { disposeTestDocumentStore, testContext } from "../../Utils/TestUtil.js";
+import { User } from "../../Assets/Entities.js";
+import { assertThat } from "../../Utils/AssertExtensions.js";
 
 describe("RavenDB_14164Test", function () {
 
@@ -68,7 +67,7 @@ describe("RavenDB_14164Test", function () {
                 .hasSize(121);
             assertThat(getResults[0].timestamp.getTime())
                 .isEqualTo(baseLine.toDate().getTime());
-            assertThat(getResults[getResults.length - 1].timestamp.getTime())
+            assertThat(getResults.at(-1).timestamp.getTime())
                 .isEqualTo(baseLine.clone().add(2, "hours").toDate().getTime());
 
             // should not go to server
@@ -157,7 +156,7 @@ describe("RavenDB_14164Test", function () {
                 .hasSize(121);
             assertThat(getResults[0].timestamp.getTime())
                 .isEqualTo(baseLine.toDate().getTime());
-            assertThat(getResults[getResults.length - 1].timestamp.getTime())
+            assertThat(getResults.at(-1).timestamp.getTime())
                 .isEqualTo(baseLine.clone().add(2, "hours").toDate().getTime());
 
             // should not go to server
@@ -260,7 +259,7 @@ describe("RavenDB_14164Test", function () {
                 .hasSize(61);
             assertThat(getResults[0].timestamp.getTime())
                 .isEqualTo(baseLine.toDate().getTime());
-            assertThat(getResults[getResults.length - 1].timestamp.getTime())
+            assertThat(getResults.at(-1).timestamp.getTime())
                 .isEqualTo(baseLine.clone().add(1, "hours").toDate().getTime());
 
             // get [01:15 - 02:00] with includes
@@ -277,7 +276,7 @@ describe("RavenDB_14164Test", function () {
                 .hasSize(46);
             assertThat(getResults[0].timestamp.getTime())
                 .isEqualTo(baseLine.clone().add(75, "minutes").toDate().getTime());
-            assertThat(getResults[getResults.length - 1].timestamp.getTime())
+            assertThat(getResults.at(-1).timestamp.getTime())
                 .isEqualTo(baseLine.clone().add(2, "hours").toDate().getTime());
 
             // should not go to server
@@ -376,7 +375,7 @@ describe("RavenDB_14164Test", function () {
                 .hasSize(61);
             assertThat(getResults[0].timestamp.getTime())
                 .isEqualTo(baseLine.toDate().getTime());
-            assertThat(getResults[getResults.length - 1].timestamp.getTime())
+            assertThat(getResults.at(-1).timestamp.getTime())
                 .isEqualTo(baseLine.clone().add(1, "hours").toDate().getTime());
 
             // get [01:30 - 02:00]
@@ -390,7 +389,7 @@ describe("RavenDB_14164Test", function () {
                 .hasSize(31);
             assertThat(getResults[0].timestamp.getTime())
                 .isEqualTo(baseLine.clone().add(90, "minutes").toDate().getTime());
-            assertThat(getResults[getResults.length - 1].timestamp.getTime())
+            assertThat(getResults.at(-1).timestamp.getTime())
                 .isEqualTo(baseLine.clone().add(2, "hours").toDate().getTime());
 
             // get [01:00 - 01:15] with includes
@@ -407,7 +406,7 @@ describe("RavenDB_14164Test", function () {
                 .hasSize(16);
             assertThat(getResults[0].timestamp.getTime())
                 .isEqualTo(baseLine.clone().add(1, "hours").toDate().getTime());
-            assertThat(getResults[getResults.length - 1].timestamp.getTime())
+            assertThat(getResults.at(-1).timestamp.getTime())
                 .isEqualTo(baseLine.clone().add(75, "minutes").toDate().getTime());
 
             // should not go to server
@@ -499,7 +498,7 @@ describe("RavenDB_14164Test", function () {
                 .hasSize(31);
             assertThat(getResults[0].timestamp.getTime())
                 .isEqualTo(baseLine.toDate().getTime());
-            assertThat(getResults[getResults.length - 1].timestamp.getTime())
+            assertThat(getResults.at(-1).timestamp.getTime())
                 .isEqualTo(baseLine.clone().add(30, "minutes").toDate().getTime());
 
             // get range [00:45 - 00:60]
@@ -513,7 +512,7 @@ describe("RavenDB_14164Test", function () {
                 .hasSize(16);
             assertThat(getResults[0].timestamp.getTime())
                 .isEqualTo(baseLine.clone().add(45, "minutes").toDate().getTime());
-            assertThat(getResults[getResults.length - 1].timestamp.getTime())
+            assertThat(getResults.at(-1).timestamp.getTime())
                 .isEqualTo(baseLine.clone().add(1, "hour").toDate().getTime());
 
             // get range [01:30 - 02:00]
@@ -526,7 +525,7 @@ describe("RavenDB_14164Test", function () {
                 .hasSize(31);
             assertThat(getResults[0].timestamp.getTime())
                 .isEqualTo(baseLine.clone().add(90, "minutes").toDate().getTime());
-            assertThat(getResults[getResults.length - 1].timestamp.getTime())
+            assertThat(getResults.at(-1).timestamp.getTime())
                 .isEqualTo(baseLine.clone().add(2, "hour").toDate().getTime());
 
             // get multiple ranges with includes
@@ -546,7 +545,7 @@ describe("RavenDB_14164Test", function () {
 
             assertThat(getResults[0].timestamp.getTime())
                 .isEqualTo(baseLine.toDate().getTime());
-            assertThat(getResults[getResults.length - 1].timestamp.getTime())
+            assertThat(getResults.at(-1).timestamp.getTime())
                 .isEqualTo(baseLine.clone().add(2, "hours").toDate().getTime());
 
             // should not go to server
@@ -642,7 +641,7 @@ describe("RavenDB_14164Test", function () {
                 .hasSize(121);
             assertThat(getResults[0].timestamp.getTime())
                 .isEqualTo(baseLine.toDate().getTime());
-            assertThat(getResults[getResults.length - 1].timestamp.getTime())
+            assertThat(getResults.at(-1).timestamp.getTime())
                 .isEqualTo(baseLine.clone().add(2, "hours").toDate().getTime());
 
             // should not go to server
@@ -730,7 +729,7 @@ describe("RavenDB_14164Test", function () {
                 .hasSize(121);
             assertThat(getResults[0].timestamp.getTime())
                 .isEqualTo(baseLine.toDate().getTime());
-            assertThat(getResults[getResults.length - 1].timestamp.getTime())
+            assertThat(getResults.at(-1).timestamp.getTime())
                 .isEqualTo(baseLine.clone().add(2, "hours").toDate().getTime());
 
             // should not go to server
@@ -788,7 +787,7 @@ describe("RavenDB_14164Test", function () {
                 .hasSize(121);
             assertThat(getResults[0].timestamp.getTime())
                 .isEqualTo(baseLine.toDate().getTime());
-            assertThat(getResults[getResults.length - 1].timestamp.getTime())
+            assertThat(getResults.at(-1).timestamp.getTime())
                 .isEqualTo(baseLine.clone().add(2, "hours").toDate().getTime());
 
             // should not go to server
@@ -844,7 +843,7 @@ describe("RavenDB_14164Test", function () {
                 .hasSize(121);
             assertThat(getResults[0].timestamp.getTime())
                 .isEqualTo(baseLine.toDate().getTime());
-            assertThat(getResults[getResults.length - 1].timestamp.getTime())
+            assertThat(getResults.at(-1).timestamp.getTime())
                 .isEqualTo(baseLine.clone().add(2, "hours").toDate().getTime());
 
             // should not go to server

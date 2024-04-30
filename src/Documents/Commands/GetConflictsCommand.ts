@@ -1,10 +1,10 @@
-import { HttpRequestParameters } from "../../Primitives/Http";
-import { RavenCommand } from "../../Http/RavenCommand";
-import { GetConflictsResult } from "./GetConflictsResult";
-import { ServerNode } from "../../Http/ServerNode";
-import * as stream from "readable-stream";
-import { DocumentConventions } from "../Conventions/DocumentConventions";
-import { ServerResponse } from "../../Types";
+import { HttpRequestParameters } from "../../Primitives/Http.js";
+import { RavenCommand } from "../../Http/RavenCommand.js";
+import { GetConflictsResult } from "./GetConflictsResult.js";
+import { ServerNode } from "../../Http/ServerNode.js";
+import { Stream } from "node:stream";
+import { DocumentConventions } from "../Conventions/DocumentConventions.js";
+import { ServerResponse } from "../../Types/index.js";
 
 export class GetConflictsCommand extends RavenCommand<GetConflictsResult> {
 
@@ -30,7 +30,7 @@ export class GetConflictsCommand extends RavenCommand<GetConflictsResult> {
         };
     }
 
-    public async setResponseAsync(bodyStream: stream.Stream, fromCache: boolean): Promise<string> {
+    public async setResponseAsync(bodyStream: Stream, fromCache: boolean): Promise<string> {
         if (!bodyStream) {
             this._throwInvalidResponse();
         }

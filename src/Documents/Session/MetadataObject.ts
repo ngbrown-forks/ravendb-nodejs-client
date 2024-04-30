@@ -1,4 +1,4 @@
-import { AttachmentDetails } from "../Attachments";
+import { AttachmentDetails } from "../Attachments/index.js";
 
 export interface MetadataObject {
     "@attachments"?: AttachmentDetails[];

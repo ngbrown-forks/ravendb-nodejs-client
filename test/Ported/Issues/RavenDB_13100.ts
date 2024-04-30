@@ -1,5 +1,5 @@
-import { IndexDefinitionHelper } from "../../../src";
-import { assertThat } from "../../Utils/AssertExtensions";
+import { IndexDefinitionHelper } from "../../../src/index.js";
+import { assertThat } from "../../Utils/AssertExtensions.js";
 
 describe("RavenDB_13100", function () {
 

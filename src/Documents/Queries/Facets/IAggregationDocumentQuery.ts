@@ -1,7 +1,7 @@
-import { FacetResultObject } from "./AggregationQueryBase";
-import { FacetBase } from "./FacetBase";
-import { IFacetBuilder } from "./IFacetBuilder";
-import { Lazy } from "../../Lazy";
+import { FacetResultObject } from "./AggregationQueryBase.js";
+import { FacetBase } from "./FacetBase.js";
+import { IFacetBuilder } from "./IFacetBuilder.js";
+import { Lazy } from "../../Lazy.js";
 
 export interface IAggregationDocumentQuery<T> {
     andAggregateBy(builder: (facetBuilder: IFacetBuilder<T>) => void): IAggregationDocumentQuery<T>;

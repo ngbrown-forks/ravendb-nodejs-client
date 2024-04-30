@@ -1,4 +1,4 @@
-import { StudioEnvironment } from "./StudioEnvironment";
+import { StudioEnvironment } from "./StudioEnvironment.js";
 
 export interface StudioConfiguration {
     disabled: boolean;

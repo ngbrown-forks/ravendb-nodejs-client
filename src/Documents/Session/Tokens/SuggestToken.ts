@@ -1,7 +1,7 @@
-import { QueryToken } from "./QueryToken";
-import { throwError } from "../../../Exceptions";
-import { StringUtil } from "../../../Utility/StringUtil";
-import { QueryFieldUtil } from "../../Queries/QueryFieldUtil";
+import { QueryToken } from "./QueryToken.js";
+import { throwError } from "../../../Exceptions/index.js";
+import { StringUtil } from "../../../Utility/StringUtil.js";
+import { QueryFieldUtil } from "../../Queries/QueryFieldUtil.js";
 
 export class SuggestToken extends QueryToken {
 

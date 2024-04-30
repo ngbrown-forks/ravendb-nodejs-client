@@ -1,16 +1,16 @@
-import { IMaintenanceOperation, OperationResultType } from "../OperationAbstractions";
-import { StringUtil } from "../../../Utility/StringUtil";
-import { throwError } from "../../../Exceptions";
-import { PullReplicationDefinition } from "./PullReplicationDefinition";
-import { TypeUtil } from "../../../Utility/TypeUtil";
-import { ModifyOngoingTaskResult } from "../../../ServerWide/ModifyOnGoingTaskResult";
-import { DocumentConventions } from "../../Conventions/DocumentConventions";
-import { RavenCommand } from "../../../Http/RavenCommand";
-import { IRaftCommand } from "../../../Http/IRaftCommand";
-import { HttpRequestParameters } from "../../../Primitives/Http";
-import { ServerNode } from "../../../Http/ServerNode";
-import * as stream from "readable-stream";
-import { RaftIdGenerator } from "../../../Utility/RaftIdGenerator";
+import { IMaintenanceOperation, OperationResultType } from "../OperationAbstractions.js";
+import { StringUtil } from "../../../Utility/StringUtil.js";
+import { throwError } from "../../../Exceptions/index.js";
+import { PullReplicationDefinition } from "./PullReplicationDefinition.js";
+import { TypeUtil } from "../../../Utility/TypeUtil.js";
+import { ModifyOngoingTaskResult } from "../../../ServerWide/ModifyOnGoingTaskResult.js";
+import { DocumentConventions } from "../../Conventions/DocumentConventions.js";
+import { RavenCommand } from "../../../Http/RavenCommand.js";
+import { IRaftCommand } from "../../../Http/IRaftCommand.js";
+import { HttpRequestParameters } from "../../../Primitives/Http.js";
+import { ServerNode } from "../../../Http/ServerNode.js";
+import { Stream } from "node:stream";
+import { RaftIdGenerator } from "../../../Utility/RaftIdGenerator.js";
 
 export class PutPullReplicationAsHubOperation implements IMaintenanceOperation<ModifyOngoingTaskResult> {
     private readonly _pullReplicationDefinition: PullReplicationDefinition;
@@ -67,7 +67,7 @@ class UpdatePullReplicationDefinitionCommand extends RavenCommand<ModifyOngoingT
         }
     }
 
-    async setResponseAsync(bodyStream: stream.Stream, fromCache: boolean): Promise<string> {
+    async setResponseAsync(bodyStream: Stream, fromCache: boolean): Promise<string> {
         if (!bodyStream) {
             this._throwInvalidResponse();
         }

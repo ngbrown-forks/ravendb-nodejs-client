@@ -1,5 +1,5 @@
-import { assertThat } from "../Utils/AssertExtensions";
-import { TimeUtil } from "../../src/Utility/TimeUtil";
+import { assertThat } from "../Utils/AssertExtensions.js";
+import { TimeUtil } from "../../src/Utility/TimeUtil.js";
 
 describe("TimeUtil", function () {
 

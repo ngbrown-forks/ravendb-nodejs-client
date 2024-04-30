@@ -1,8 +1,8 @@
-import * as assert from "assert";
+import assert from "node:assert"
 import {
     testContext,
     disposeTestDocumentStore, RavenTestContext
-} from "../../Utils/TestUtil";
+} from "../../Utils/TestUtil.js";
 
 import {
     ClientConfiguration,
@@ -10,8 +10,8 @@ import {
     IDocumentStore, IRavenResponse, PutClientConfigurationOperation,
     PutServerWideClientConfigurationOperation,
     GetServerWideClientConfigurationOperation
-} from "../../../src";
-import { assertThat } from "../../Utils/AssertExtensions";
+} from "../../../src/index.js";
+import { assertThat } from "../../Utils/AssertExtensions.js";
 
 (RavenTestContext.isPullRequest ? describe.skip : describe)("Client configuration", function () {
 

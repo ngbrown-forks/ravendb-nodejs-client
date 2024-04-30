@@ -1,5 +1,6 @@
-import { StreamResult } from "../Commands/StreamResult";
-import { StreamQueryStatistics } from "./StreamQueryStatistics";
+import { StreamResult } from "../Commands/StreamResult.js";
+import { StreamQueryStatistics } from "./StreamQueryStatistics.js";
+import { Readable } from "node:stream";
 
 export interface DocumentStreamResultEvents<TEntity extends object> {
     data: StreamResult<TEntity>;
@@ -8,4 +9,4 @@ export interface DocumentStreamResultEvents<TEntity extends object> {
     end: void;
 }
 
-export type DocumentResultStream<T extends object> = NodeJS.ReadableStream;
+export type DocumentResultStream<T extends object> = Readable;

@@ -1,17 +1,17 @@
-import { IDocumentStore } from "../../../src/Documents/IDocumentStore";
-import { disposeTestDocumentStore, RavenTestContext, testContext } from "../../Utils/TestUtil";
-import { ServerWideBackupConfiguration } from "../../../src/ServerWide/Operations/Configuration/ServerWideBackupConfiguration";
-import { PutServerWideBackupConfigurationOperation } from "../../../src/ServerWide/Operations/Configuration/PutServerWideBackupConfigurationOperation";
-import { FtpSettings } from "../../../src/Documents/Operations/Backups/FtpSettings";
-import { AzureSettings } from "../../../src/Documents/Operations/Backups/AzureSettings";
-import { GetServerWideBackupConfigurationsOperation } from "../../../src/ServerWide/Operations/Configuration/GetServerWideBackupConfigurationsOperation";
-import { assertThat } from "../../Utils/AssertExtensions";
-import { GetDatabaseRecordOperation } from "../../../src/ServerWide/Operations/GetDatabaseRecordOperation";
-import { CreateDatabaseOperation } from "../../../src/ServerWide/Operations/CreateDatabaseOperation";
-import { DatabaseRecord } from "../../../src/ServerWide/index";
-import { GetServerWideBackupConfigurationOperation } from "../../../src/ServerWide/Operations/Configuration/GetServerWideBackupConfigurationOperation";
-import { DeleteServerWideTaskOperation } from "../../../src/ServerWide/Operations/OngoingTasks/DeleteServerWideTaskOperation";
-import { DeleteDatabasesOperation } from "../../../src";
+import { IDocumentStore } from "../../../src/Documents/IDocumentStore.js";
+import { disposeTestDocumentStore, RavenTestContext, testContext } from "../../Utils/TestUtil.js";
+import { ServerWideBackupConfiguration } from "../../../src/ServerWide/Operations/Configuration/ServerWideBackupConfiguration.js";
+import { PutServerWideBackupConfigurationOperation } from "../../../src/ServerWide/Operations/Configuration/PutServerWideBackupConfigurationOperation.js";
+import { FtpSettings } from "../../../src/Documents/Operations/Backups/FtpSettings.js";
+import { AzureSettings } from "../../../src/Documents/Operations/Backups/AzureSettings.js";
+import { GetServerWideBackupConfigurationsOperation } from "../../../src/ServerWide/Operations/Configuration/GetServerWideBackupConfigurationsOperation.js";
+import { assertThat } from "../../Utils/AssertExtensions.js";
+import { GetDatabaseRecordOperation } from "../../../src/ServerWide/Operations/GetDatabaseRecordOperation.js";
+import { CreateDatabaseOperation } from "../../../src/ServerWide/Operations/CreateDatabaseOperation.js";
+import { DatabaseRecord } from "../../../src/ServerWide/index.js";
+import { GetServerWideBackupConfigurationOperation } from "../../../src/ServerWide/Operations/Configuration/GetServerWideBackupConfigurationOperation.js";
+import { DeleteServerWideTaskOperation } from "../../../src/ServerWide/Operations/OngoingTasks/DeleteServerWideTaskOperation.js";
+import { DeleteDatabasesOperation } from "../../../src/index.js";
 
 (RavenTestContext.isPullRequest ? describe.skip : describe)("ServerWideBackup", function () {
 

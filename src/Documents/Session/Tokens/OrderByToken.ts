@@ -1,7 +1,7 @@
-import { QueryToken } from "./QueryToken";
-import { OrderingType } from "../OrderingType";
-import { throwError } from "../../../Exceptions";
-import { CONSTANTS } from "../../../Constants";
+import { QueryToken } from "./QueryToken.js";
+import { OrderingType } from "../OrderingType.js";
+import { throwError } from "../../../Exceptions/index.js";
+import { CONSTANTS } from "../../../Constants.js";
 
 type OrderByTokenOptions = {
     ordering?: OrderingType;
@@ -115,15 +115,18 @@ export class OrderByToken extends QueryToken {
                 .append("')");
         } else {
             switch (this._ordering) {
-                case "Long":
+                case "Long": {
                     writer.append(" as long");
                     break;
-                case "Double":
+                }
+                case "Double": {
                     writer.append(" as double");
                     break;
-                case "AlphaNumeric":
+                }
+                case "AlphaNumeric": {
                     writer.append(" as alphaNumeric");
                     break;
+                }
             }
         }
 

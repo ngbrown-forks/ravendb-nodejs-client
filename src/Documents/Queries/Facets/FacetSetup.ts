@@ -1,7 +1,7 @@
-import { Facet } from "./Facet";
-import { RangeFacet } from "./RangeFacet";
-import { SetupDocumentBase } from "../../SetupDocumentBase";
-import { ObjectUtil } from "../../../Utility/ObjectUtil";
+import { Facet } from "./Facet.js";
+import { RangeFacet } from "./RangeFacet.js";
+import { SetupDocumentBase } from "../../SetupDocumentBase.js";
+import { ObjectUtil } from "../../../Utility/ObjectUtil.js";
 
 export class FacetSetup extends SetupDocumentBase {
     public id: string;
@@ -10,7 +10,7 @@ export class FacetSetup extends SetupDocumentBase {
 
     public toRemoteFieldNames() {
         return ObjectUtil.transformObjectKeys(this, {
-            defaultTransform: "pascal"
+            defaultTransform: ObjectUtil.pascal
         });
     }
 }

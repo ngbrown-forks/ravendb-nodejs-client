@@ -1,6 +1,6 @@
-import { Transformation, serializeTransformation } from "./Transformation";
-import { ConnectionString } from "./ConnectionString";
-import { DocumentConventions } from "../../Conventions/DocumentConventions";
+import { Transformation, serializeTransformation } from "./Transformation.js";
+import { ConnectionString } from "./ConnectionString.js";
+import { DocumentConventions } from "../../Conventions/DocumentConventions.js";
 
 export class EtlConfiguration<T extends ConnectionString> {
     public taskId?: number;

@@ -1,8 +1,7 @@
-import { IDocumentStore, TimeSeriesAggregationResult, TimeSeriesValue } from "../../src";
-import { disposeTestDocumentStore, testContext } from "../Utils/TestUtil";
+import { IDocumentStore, TimeSeriesAggregationResult, TimeSeriesValue } from "../../src/index.js";
+import { disposeTestDocumentStore, testContext } from "../Utils/TestUtil.js";
 
-import moment = require("moment");
-import { assertThat } from "../Utils/AssertExtensions";
+import { assertThat } from "../Utils/AssertExtensions.js";
  
 class SymbolPrice {
     open: number;
@@ -19,7 +18,7 @@ class SymbolPrice {
 }
 
 class MarketSymbol {
-
+    // empty
 }
 
 describe("RDBC-501", function () {

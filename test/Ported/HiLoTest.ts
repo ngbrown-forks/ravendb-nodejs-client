@@ -1,13 +1,13 @@
-import { User } from "../Assets/Entities";
-import * as assert from "assert";
-import { testContext, disposeTestDocumentStore } from "../Utils/TestUtil";
+import { User } from "../Assets/Entities.js";
+import assert from "node:assert"
+import { testContext, disposeTestDocumentStore } from "../Utils/TestUtil.js";
 
 import {
     HiloIdGenerator,
     DocumentStore, MultiDatabaseHiLoIdGenerator,
-} from "../../src";
-import { ArrayUtil } from "../../src/Utility/ArrayUtil";
-import { assertThat } from "../Utils/AssertExtensions";
+} from "../../src/index.js";
+import { ArrayUtil } from "../../src/Utility/ArrayUtil.js";
+import { assertThat } from "../Utils/AssertExtensions.js";
 
 describe("HiLo", function () {
 
@@ -40,12 +40,11 @@ describe("HiLo", function () {
         const userIds = users.map(x => x.id);
         assert.strictEqual(new Set(userIds).size, userIds.length, `Ids are not unique: ${userIds}`);
 
-        userIds
-            .map(id => id.split("/")[1])
-            .forEach(numericPart => {
-                assert.ok(parseInt(numericPart, 10) < 33,
+        for (const numericPart of userIds
+            .map(id => id.split("/")[1])) {
+                assert.ok(Number.parseInt(numericPart, 10) < 33,
                     "Obtained ids should be less than 33, though they are:" + users.map(x => x.id).toString());
-            });
+            }
 
     });
 
@@ -197,9 +196,9 @@ describe("HiLo", function () {
 
     it("does not get another range when doing parallel requests", async () => {
         const parallelLevel = 32;
-        const users = Array.from(Array(parallelLevel).keys()).map(x => new User());
+        const users = Array.from(new Array(parallelLevel).keys()).map(x => new User());
 
-        const tasks = Array.from(Array(parallelLevel).keys()).map(async i => {
+        const tasks = Array.from(new Array(parallelLevel).keys()).map(async i => {
             const user = users[i];
             const session = store.openSession();
             await session.store(user);
@@ -208,21 +207,20 @@ describe("HiLo", function () {
 
         await Promise.all(tasks);
 
-        users
+        for (const numericPart of users
             .map(x => x.id)
             .map(id => id.split("/")[1])
-            .map(x => x.split("-")[0])
-            .forEach(numericPart => {
+            .map(x => x.split("-")[0])) {
                 assert.ok(numericPart);
-                assert.ok(parseInt(numericPart, 10) < 33);
-            });
+                assert.ok(Number.parseInt(numericPart, 10) < 33);
+            }
     });
 
     it("does get another range when gets over max and leaves no gaps", async () => {
         const parallelLevel = 40;
-        const users = Array.from(Array(parallelLevel).keys()).map(x => new User());
+        const users = Array.from(new Array(parallelLevel).keys()).map(x => new User());
 
-        const tasks = Array.from(Array(parallelLevel).keys()).map(async i => {
+        const tasks = Array.from(new Array(parallelLevel).keys()).map(async i => {
             const user = users[i];
             const session = store.openSession();
             await session.store(user);
@@ -234,7 +232,7 @@ describe("HiLo", function () {
         const idNumbers = users
             .map(x => x.id)
             .map(id => id.split("/")[1])
-            .map(x => parseInt(x.split("-")[0], 10));
+            .map(x => Number.parseInt(x.split("-")[0], 10));
         
         assert.strictEqual(idNumbers.length, 40);
 

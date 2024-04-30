@@ -1,5 +1,4 @@
-import { debuglog } from "util";
-import { printError } from "../Exceptions";
+import { debuglog } from "node:util";
 
 const isDebug = !!process.env.NODE_DEBUG;
 
@@ -16,6 +15,7 @@ export function getLogger({ name = "ravendb", module = "" }): ILogger {
     if (!isDebug) {
         // eslint-disable-next-line @typescript-eslint/no-empty-function
         const noop = (msg: string) => {
+            // empty
         };
         return {
             error: noop,
@@ -48,9 +48,7 @@ class Logger {
     }
 
     private _logWithError(err: string | Error, additionalMsg: string, level) {
-        let msg: string = err && (err as Error).stack
-            ? printError(err as Error)
-            : err as string;
+        let msg: string = err?.toString();
         if (additionalMsg) {
             msg = `${additionalMsg} ${msg}`;
         }

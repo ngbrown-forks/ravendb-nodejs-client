@@ -1,14 +1,14 @@
-import { testContext, disposeTestDocumentStore } from "../../../Utils/TestUtil";
+import { testContext, disposeTestDocumentStore } from "../../../Utils/TestUtil.js";
 
 import {
     DocumentStore,
     IDocumentStore,
     StreamResult,
-} from "../../../../src";
-import * as assert from "assert";
-import * as StreamUtil from "../../../../src/Utility/StreamUtil";
-import { User } from "../../../Assets/Entities";
-import { CONSTANTS } from "../../../../src/Constants";
+} from "../../../../src/index.js";
+import assert from "node:assert"
+import { User } from "../../../Assets/Entities.js";
+import { CONSTANTS } from "../../../../src/Constants.js";
+import { ObjectUtil } from "../../../../src/Utility/ObjectUtil.js";
 
 describe("document streaming", function () {
 
@@ -37,14 +37,13 @@ describe("document streaming", function () {
         await session.saveChanges();
     }
 
-    async function streamDocuments(format: "json" | "jsonl", remoteCasing : "camel" | "pascal" = "camel") {
+    async function streamDocuments(remoteCasing : "camel" | "pascal" = "camel") {
         const newStore = new DocumentStore(store.urls, store.database);
-        newStore.conventions.useJsonlStreaming = format === "jsonl";
 
         if (remoteCasing === "pascal") {
             newStore.conventions.findCollectionNameForObjectLiteral = (o) => o["collection"];
-            newStore.conventions.entityFieldNameConvention = "camel";
-            newStore.conventions.remoteEntityFieldNameConvention = "pascal";
+            newStore.conventions.serverToLocalFieldNameConverter = ObjectUtil.camel;
+            newStore.conventions.localToServerFieldNameConverter = ObjectUtil.pascal;
             newStore.conventions.identityProperty = "Id";
             newStore.conventions.registerEntityIdPropertyName(Object, "Id");
         }
@@ -60,40 +59,34 @@ describe("document streaming", function () {
                 const queryStream = await session.advanced.stream<User>("users/");
 
                 const items = [];
-                queryStream.on("data", item => {
-                    items.push(item);
-                });
 
-                await StreamUtil.finishedAsync(queryStream);
+                for await (const item of queryStream) {
+                    items.push(item);
+                }
 
                 assert.strictEqual(items.length, 200);
-                items.forEach(item => {
+                for (const item of items) {
                     assertStreamResultEntry(item, (doc: any) => {
                         assert.ok(doc);
                         assert.ok(doc.name);
                         assert.ok(doc.lastName);
                     });
-                });
+                }
             }
         } finally {
             newStore.dispose();
         }
     }
 
-    it("can stream documents starting with - json - camel", async () => {
-        await streamDocuments("json");
-    });
+
 
     it("can stream documents starting with - jsonl - camel", async () => {
-        await streamDocuments("jsonl");
+        await streamDocuments();
     });
 
-    it("can stream documents starting with - json - pascal", async () => {
-        await streamDocuments("json", "pascal");
-    });
 
     it("can stream documents starting with - jsonl - pascal", async () => {
-        await streamDocuments("jsonl", "pascal");
+        await streamDocuments("pascal");
     });
     
     it("[TODO] can stream starting with prefix using opts");

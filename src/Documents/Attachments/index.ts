@@ -1,7 +1,7 @@
-import * as stream from "readable-stream";
-import { HttpResponse } from "../../Primitives/Http";
-import { closeHttpResponse } from "../../Utility/HttpUtil";
-import { CapitalizeType } from "../../Types";
+import { Stream, Readable } from "node:stream";
+import { HttpResponse } from "../../Primitives/Http.js";
+import { closeHttpResponse } from "../../Utility/HttpUtil.js";
+import { CapitalizeType } from "../../Types/index.js";
 
 export type AttachmentType = "Document" | "Revision";
 
@@ -26,9 +26,10 @@ export interface AttachmentDetails extends AttachmentName {
 export class AttachmentResult {
 
     constructor(
-        public data: stream.Readable,
+        public data: Readable,
         public details: AttachmentDetails,
         private _response: HttpResponse) {
+        // empty
     }
 
     public dispose() {
@@ -36,4 +37,4 @@ export class AttachmentResult {
     }
 }
 
-export type AttachmentData = stream.Readable | Buffer;
+export type AttachmentData = Readable | Buffer;

@@ -1,17 +1,17 @@
-import { CertificateRawData } from "./CertificateRawData";
-import { DatabaseAccess } from "./DatabaseAccess";
-import { SecurityClearance } from "./SecurityClearance";
-import { throwError } from "../../../Exceptions";
-import { HttpRequestParameters, HttpResponse } from "../../../Primitives/Http";
-import { getHeaders } from "../../../Utility/HttpUtil";
-import * as stream from "readable-stream";
-import { readToBuffer } from "../../../Utility/StreamUtil";
-import { IServerOperation, OperationResultType } from "../../../Documents/Operations/OperationAbstractions";
-import { DocumentConventions } from "../../../Documents/Conventions/DocumentConventions";
-import { RavenCommand } from "../../../Http/RavenCommand";
-import { ServerNode } from "../../../Http/ServerNode";
-import { IRaftCommand } from "../../../Http/IRaftCommand";
-import { RaftIdGenerator } from "../../../Utility/RaftIdGenerator";
+import { CertificateRawData } from "./CertificateRawData.js";
+import { DatabaseAccess } from "./DatabaseAccess.js";
+import { SecurityClearance } from "./SecurityClearance.js";
+import { throwError } from "../../../Exceptions/index.js";
+import { HttpRequestParameters, HttpResponse } from "../../../Primitives/Http.js";
+import { getHeaders } from "../../../Utility/HttpUtil.js";
+import { Stream } from "node:stream";
+import { readToBuffer } from "../../../Utility/StreamUtil.js";
+import { IServerOperation, OperationResultType } from "../../../Documents/Operations/OperationAbstractions.js";
+import { DocumentConventions } from "../../../Documents/Conventions/DocumentConventions.js";
+import { RavenCommand } from "../../../Http/RavenCommand.js";
+import { ServerNode } from "../../../Http/ServerNode.js";
+import { IRaftCommand } from "../../../Http/IRaftCommand.js";
+import { RaftIdGenerator } from "../../../Utility/RaftIdGenerator.js";
 
 export class CreateClientCertificateOperation implements IServerOperation<CertificateRawData> {
     private readonly _name: string;
@@ -97,7 +97,7 @@ class CreateClientCertificateCommand extends RavenCommand<CertificateRawData> im
         super.setResponseRaw(response, body);
     }
 
-    async setResponseAsync(bodyStream: stream.Stream, fromCache: boolean): Promise<string> {
+    async setResponseAsync(bodyStream: Stream, fromCache: boolean): Promise<string> {
         if (!bodyStream) {
             this._throwInvalidResponse();
         }

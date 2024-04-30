@@ -1,4 +1,4 @@
-import { SuggestionResult } from "../Documents/Queries/Suggestions/SuggestionResult";
+import { SuggestionResult } from "../Documents/Queries/Suggestions/SuggestionResult.js";
 
 export interface EntitiesCollectionObject<TEntity> extends IRavenObject<TEntity | null> {
     [id: string]: TEntity | null;
@@ -25,7 +25,7 @@ export type CompareExchangeResultClass<T> = T extends object ? EntityConstructor
 export interface ClassConstructor<T extends object = object> {
     name: string;
 
-    new(...args: any[]): any;
+    new(...args: any[]): T;
 }
 
 export interface EntityConstructor<T extends object = object> {

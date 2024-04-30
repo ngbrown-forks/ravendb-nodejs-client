@@ -1,9 +1,10 @@
-import { RavenCommand } from "../../Http/RavenCommand";
-import { ClusterTopology } from "../../Http/ClusterTopology";
-import { HttpRequestParameters } from "../../Primitives/Http";
-import { ServerNode, ServerNodeRole } from "../../Http/ServerNode";
-import * as stream from "readable-stream";
-import { NodeStatus } from "../../Http/RequestExecutor";
+import { RavenCommand } from "../../Http/RavenCommand.js";
+import { ClusterTopology } from "../../Http/ClusterTopology.js";
+import { HttpRequestParameters } from "../../Primitives/Http.js";
+import { ServerNode, ServerNodeRole } from "../../Http/ServerNode.js";
+import { Stream } from "node:stream";
+import { NodeStatus } from "../../Http/RequestExecutor.js";
+import { ObjectUtil } from "../../Utility/ObjectUtil.js";
 
 export class ClusterTopologyResponse {
     public leader: string;
@@ -34,7 +35,7 @@ export class GetClusterTopologyCommand extends RavenCommand<ClusterTopologyRespo
         return { uri };
     }
 
-    public async setResponseAsync(bodyStream: stream.Stream, fromCache: boolean): Promise<string> {
+    public async setResponseAsync(bodyStream: Stream, fromCache: boolean): Promise<string> {
         if (!bodyStream) {
             this._throwInvalidResponse();
         }
@@ -44,7 +45,7 @@ export class GetClusterTopologyCommand extends RavenCommand<ClusterTopologyRespo
             .collectBody(b => body = b)
             .parseJsonSync()
             .objectKeysTransform({
-                defaultTransform: "camel",
+                defaultTransform: ObjectUtil.camel,
                 ignorePaths: [/topology\.(members|promotables|watchers|allNodes)\./i]
             })
             .process(bodyStream);

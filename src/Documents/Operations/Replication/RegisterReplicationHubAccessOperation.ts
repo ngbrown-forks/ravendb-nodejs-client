@@ -1,16 +1,16 @@
-import { IMaintenanceOperation, OperationResultType } from "../OperationAbstractions";
-import { ReplicationHubAccess } from "./ReplicationHubAccess";
-import { StringUtil } from "../../../Utility/StringUtil";
-import { throwError } from "../../../Exceptions";
-import { DocumentConventions } from "../../Conventions/DocumentConventions";
-import { RavenCommand, ResponseDisposeHandling } from "../../../Http/RavenCommand";
-import { IRaftCommand } from "../../../Http/IRaftCommand";
-import { RaftIdGenerator } from "../../../Utility/RaftIdGenerator";
-import { ServerNode } from "../../../Http/ServerNode";
-import { HttpRequestParameters, HttpResponse } from "../../../Primitives/Http";
-import { HttpCache } from "../../../Http/HttpCache";
-import * as stream from "readable-stream";
-import { StatusCodes } from "../../../Http/StatusCode";
+import { IMaintenanceOperation, OperationResultType } from "../OperationAbstractions.js";
+import { ReplicationHubAccess } from "./ReplicationHubAccess.js";
+import { StringUtil } from "../../../Utility/StringUtil.js";
+import { throwError } from "../../../Exceptions/index.js";
+import { DocumentConventions } from "../../Conventions/DocumentConventions.js";
+import { RavenCommand, ResponseDisposeHandling } from "../../../Http/RavenCommand.js";
+import { IRaftCommand } from "../../../Http/IRaftCommand.js";
+import { RaftIdGenerator } from "../../../Utility/RaftIdGenerator.js";
+import { ServerNode } from "../../../Http/ServerNode.js";
+import { HttpRequestParameters, HttpResponse } from "../../../Primitives/Http.js";
+import { HttpCache } from "../../../Http/HttpCache.js";
+import { Readable } from "node:stream";
+import { StatusCodes } from "../../../Http/StatusCode.js";
 
 export class RegisterReplicationHubAccessOperation implements IMaintenanceOperation<void> {
     private readonly _hubName: string;
@@ -78,7 +78,7 @@ class RegisterReplicationHubAccessCommand extends RavenCommand<void> implements 
         }
     }
 
-    async processResponse(cache: HttpCache, response: HttpResponse, bodyStream: stream.Readable, url: string): Promise<ResponseDisposeHandling> {
+    async processResponse(cache: HttpCache, response: HttpResponse, bodyStream: Readable, url: string): Promise<ResponseDisposeHandling> {
         if (response.status === StatusCodes.NotFound) {
             throwError("ReplicationHubNotFoundException",
                 "The replication hub " + this._hubName + " was not found on the database. Did you forget to define it first?");

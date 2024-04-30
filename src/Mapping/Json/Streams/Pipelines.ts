@@ -1,11 +1,8 @@
-import * as stream from "readable-stream";
-import { RavenCommandResponsePipeline } from "../../../Http/RavenCommandResponsePipeline";
-import { DocumentConventions } from "../../../Documents/Conventions/DocumentConventions";
-import { stringer as jsonlStringer } from "stream-json/jsonl/Stringer";
-import { stringer } from "stream-json/Stringer";
-import { pick } from "stream-json/filters/Pick";
-import { streamArray } from "stream-json/streamers/StreamArray";
-import { ObjectUtil } from "../../../Utility/ObjectUtil";
+import { Stream, Transform, Writable } from "node:stream";
+import { RavenCommandResponsePipeline } from "../../../Http/RavenCommandResponsePipeline.js";
+import { DocumentConventions } from "../../../Documents/Conventions/DocumentConventions.js";
+import JsonlStringer from "stream-json/jsonl/Stringer.js";
+import { ObjectUtil } from "../../../Utility/ObjectUtil.js";
 
 export function getDocumentResultsAsObjects(
     conventions: DocumentConventions,
@@ -13,7 +10,7 @@ export function getDocumentResultsAsObjects(
 ): RavenCommandResponsePipeline<object[]> {
     const pipeline = RavenCommandResponsePipeline.create<object[]>();
 
-    const keysTransform = new stream.Transform({
+    const keysTransform = new Transform({
         objectMode: true,
         transform(chunk, encoding, callback) {
             let value = chunk["value"];
@@ -29,15 +26,9 @@ export function getDocumentResultsAsObjects(
         }
     });
 
-    return conventions.useJsonlStreaming
-        ? pipeline.parseJsonlAsync(queryStream ? x => x["Item"] : x => x, {
-            transforms: [keysTransform]
-        })
-        : pipeline.parseJsonAsync([
-            pick({ filter: "Results" }),
-            streamArray(),
-            keysTransform
-        ]);
+    return pipeline.parseJsonlAsync(queryStream ? x => x["Item"] : x => x, {
+        transforms: [keysTransform]
+    });
 }
 
 export function getDocumentStreamResultsIntoStreamPipeline(
@@ -45,22 +36,17 @@ export function getDocumentStreamResultsIntoStreamPipeline(
 ): RavenCommandResponsePipeline<object[]> {
     const pipeline = RavenCommandResponsePipeline.create<object[]>();
 
-    return conventions.useJsonlStreaming
-        ? pipeline.parseJsonlAsync(x => x["Item"], {
+    return pipeline.parseJsonlAsync(x => x["Item"], {
             transforms: [
-                jsonlStringer({ replacer: (key, value) => key === '' ? value.value : value }),
+                new JsonlStringer({ replacer: (key, value) => key === '' ? value.value : value }),
             ]
-        })
-        : pipeline
-            .parseJsonAsync([
-                stringer({ useValues: true })
-            ]);
+        });
 }
 
 export async function streamResultsIntoStream(
-    bodyStream: stream.Stream,
+    bodyStream: Stream,
     conventions: DocumentConventions,
-    writable: stream.Writable): Promise<void> {
+    writable: Writable): Promise<void> {
 
     return new Promise<void>((resolve, reject) => {
         getDocumentStreamResultsIntoStreamPipeline(conventions)

@@ -1,11 +1,12 @@
-import { IMaintenanceOperation, OperationResultType } from "../OperationAbstractions";
-import { IndexDefinition } from "../../Indexes/IndexDefinition";
-import { throwError } from "../../../Exceptions";
-import { RavenCommand } from "../../../Http/RavenCommand";
-import { DocumentConventions } from "../../Conventions/DocumentConventions";
-import { HttpRequestParameters } from "../../../Primitives/Http";
-import { ServerNode } from "../../../Http/ServerNode";
-import * as stream from "readable-stream";
+import { IMaintenanceOperation, OperationResultType } from "../OperationAbstractions.js";
+import { IndexDefinition } from "../../Indexes/IndexDefinition.js";
+import { throwError } from "../../../Exceptions/index.js";
+import { RavenCommand } from "../../../Http/RavenCommand.js";
+import { DocumentConventions } from "../../Conventions/DocumentConventions.js";
+import { HttpRequestParameters } from "../../../Primitives/Http.js";
+import { ServerNode } from "../../../Http/ServerNode.js";
+import { Stream } from "node:stream";
+import { ObjectUtil } from "../../../Utility/ObjectUtil.js";
 
 export class GetIndexOperation implements IMaintenanceOperation<IndexDefinition> {
 
@@ -50,7 +51,7 @@ export class GetIndexCommand extends RavenCommand<IndexDefinition> {
         return { uri };
     }
 
-    public async setResponseAsync(bodyStream: stream.Stream, fromCache: boolean): Promise<string> {
+    public async setResponseAsync(bodyStream: Stream, fromCache: boolean): Promise<string> {
         if (!bodyStream) {
             return;
         }
@@ -60,7 +61,7 @@ export class GetIndexCommand extends RavenCommand<IndexDefinition> {
             .collectBody(b => body = b)
             .parseJsonSync()
             .objectKeysTransform({
-                defaultTransform: "camel",
+                defaultTransform: ObjectUtil.camel,
                 ignorePaths: [/fields\.[^.]+$/i]
             })
             .process(bodyStream);

@@ -1,7 +1,6 @@
-import { Response as HttpResponse } from "node-fetch"
-import { HEADERS } from "../Constants";
-import { IncomingHttpHeaders } from "http";
-import { throwError } from "../Exceptions";
+import { HEADERS } from "../Constants.js";
+import { throwError } from "../Exceptions/index.js";
+import { HttpResponse } from "../Primitives/Http.js";
 
 export function getRequiredEtagHeader(response: HttpResponse) {
     let etagHeader = response.headers.get(HEADERS.ETAG);
@@ -16,12 +15,12 @@ export function getRequiredEtagHeader(response: HttpResponse) {
     return etagHeaderToChangeVector(etagHeader);
 }
 
-export function getEtagHeader(responseOrHeaders: HttpResponse | IncomingHttpHeaders | object): string {
+export function getEtagHeader(responseOrHeaders: HttpResponse | object): string {
     let etagHeaders: string[] | string;
     if ("headers" in responseOrHeaders) {
         etagHeaders = (responseOrHeaders as HttpResponse).headers.get(HEADERS.ETAG);
     } else if (HEADERS.ETAG in responseOrHeaders) {
-        etagHeaders = (responseOrHeaders as IncomingHttpHeaders)[HEADERS.ETAG];
+        etagHeaders = responseOrHeaders[HEADERS.ETAG] as string;
     } else {
         etagHeaders = null;
     }

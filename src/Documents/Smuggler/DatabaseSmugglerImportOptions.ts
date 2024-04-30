@@ -1,9 +1,7 @@
-import { IDatabaseSmugglerImportOptions } from "./IDatabaseSmugglerImportOptions";
-import { DatabaseSmugglerOptions } from "./DatabaseSmugglerOptions";
+import { IDatabaseSmugglerImportOptions } from "./IDatabaseSmugglerImportOptions.js";
+import { DatabaseSmugglerOptions } from "./DatabaseSmugglerOptions.js";
 
 export class DatabaseSmugglerImportOptions extends DatabaseSmugglerOptions implements IDatabaseSmugglerImportOptions {
-
-    public skipRevisionCreation: boolean;
 
     constructor()
     constructor(options: DatabaseSmugglerOptions)

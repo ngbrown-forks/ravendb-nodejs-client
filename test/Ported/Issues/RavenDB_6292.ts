@@ -1,15 +1,15 @@
-import * as assert from "assert";
-import { RavenTestContext, testContext, disposeTestDocumentStore } from "../../Utils/TestUtil";
+import assert from "node:assert"
+import { RavenTestContext, testContext, disposeTestDocumentStore } from "../../Utils/TestUtil.js";
 
 import {
     IDocumentStore,
     ConflictSolver,
     DocumentStore, InMemoryDocumentSessionOperations,
-} from "../../../src";
-import { ReplicationTestContext } from "../../Utils/ReplicationTestContext";
-import { Address, User } from "../../Assets/Entities";
-import { QueryCommand } from "../../../src/Documents/Commands/QueryCommand";
-import { tryGetConflict } from "../../../src/Mapping/Json";
+} from "../../../src/index.js";
+import { ReplicationTestContext } from "../../Utils/ReplicationTestContext.js";
+import { Address, User } from "../../Assets/Entities.js";
+import { QueryCommand } from "../../../src/Documents/Commands/QueryCommand.js";
+import { tryGetConflict } from "../../../src/Mapping/Json/index.js";
 
 (RavenTestContext.isPullRequest ? describe.skip : describe)(
     `${RavenTestContext.isPullRequest ? "[Skipped on PR] " : ""}` +

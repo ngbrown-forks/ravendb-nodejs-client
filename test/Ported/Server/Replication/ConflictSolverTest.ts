@@ -1,8 +1,8 @@
-import { GetConflictsCommand, IDocumentStore, ModifyConflictSolverOperation } from "../../../../src";
-import { disposeTestDocumentStore, RavenTestContext, testContext } from "../../../Utils/TestUtil";
-import { assertThat } from "../../../Utils/AssertExtensions";
-import { User } from "../../../Assets/Entities";
-import { ReplicationTestContext } from "../../../Utils/ReplicationTestContext";
+import { GetConflictsCommand, IDocumentStore, ModifyConflictSolverOperation } from "../../../../src/index.js";
+import { disposeTestDocumentStore, RavenTestContext, testContext } from "../../../Utils/TestUtil.js";
+import { assertThat } from "../../../Utils/AssertExtensions.js";
+import { User } from "../../../Assets/Entities.js";
+import { ReplicationTestContext } from "../../../Utils/ReplicationTestContext.js";
 
 const _describe = RavenTestContext.isPullRequest ? describe.skip : describe;
 _describe(

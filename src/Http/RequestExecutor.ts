@@ -1,54 +1,53 @@
-import * as os from "os";
-import * as semaphore from "semaphore";
-import * as stream from "readable-stream";
-import { acquireSemaphore, SemaphoreAcquisitionContext } from "../Utility/SemaphoreUtil";
-import { getLogger, ILogger } from "../Utility/LogUtil";
-import { Timer } from "../Primitives/Timer";
-import { ServerNode } from "./ServerNode";
-import { RavenCommand, ResponseDisposeHandling } from "./RavenCommand";
-import { Topology } from "./Topology";
-import { GetDatabaseTopologyCommand } from "../ServerWide/Commands/GetDatabaseTopologyCommand";
-import { StatusCodes } from "./StatusCode";
-import { NodeSelector } from "./NodeSelector";
-import { IDisposable } from "../Types/Contracts";
-import { IRequestAuthOptions, IAuthOptions } from "../Auth/AuthOptions";
-import { Certificate, ICertificate } from "../Auth/Certificate";
-import { HttpCache, CachedItemMetadata, ReleaseCacheItem } from "./HttpCache";
-import { AggressiveCacheOptions } from "./AggressiveCacheOptions";
-import { throwError, RavenErrorType, ExceptionDispatcher, ExceptionSchema, getError } from "../Exceptions";
+import { EOL } from "node:os";
+import { Readable } from "node:stream";
+import { acquireSemaphore, SemaphoreAcquisitionContext } from "../Utility/SemaphoreUtil.js";
+import { getLogger, ILogger } from "../Utility/LogUtil.js";
+import { Timer } from "../Primitives/Timer.js";
+import { ServerNode } from "./ServerNode.js";
+import { RavenCommand, ResponseDisposeHandling } from "./RavenCommand.js";
+import { Topology } from "./Topology.js";
+import { GetDatabaseTopologyCommand } from "../ServerWide/Commands/GetDatabaseTopologyCommand.js";
+import { StatusCodes } from "./StatusCode.js";
+import { NodeSelector } from "./NodeSelector.js";
+import { IDisposable } from "../Types/Contracts.js";
+import { IRequestAuthOptions, IAuthOptions } from "../Auth/AuthOptions.js";
+import { Certificate, ICertificate } from "../Auth/Certificate.js";
+import { HttpCache, CachedItemMetadata, ReleaseCacheItem } from "./HttpCache.js";
+import { AggressiveCacheOptions } from "./AggressiveCacheOptions.js";
+import { throwError, RavenErrorType, ExceptionDispatcher, ExceptionSchema, getError } from "../Exceptions/index.js";
 import {
     GetClientConfigurationCommand,
-} from "../Documents/Operations/Configuration/GetClientConfigurationOperation";
-import CurrentIndexAndNode from "./CurrentIndexAndNode";
-import { HEADERS } from "../Constants";
-import { HttpRequestParameters, HttpResponse, HttpRequestParametersWithoutUri } from "../Primitives/Http";
-import * as PromiseUtil from "../Utility/PromiseUtil";
-import { GetStatisticsOperation } from "../Documents/Operations/GetStatisticsOperation";
-import { DocumentConventions } from "../Documents/Conventions/DocumentConventions";
-import { TypeUtil } from "../Utility/TypeUtil";
-import { SessionInfo } from "../Documents/Session/IDocumentSession";
-import { JsonSerializer } from "../Mapping/Json/Serializer";
-import { validateUri } from "../Utility/UriUtil";
-import * as StreamUtil from "../Utility/StreamUtil";
-import { closeHttpResponse } from "../Utility/HttpUtil";
-import { PromiseStatusTracker } from "../Utility/PromiseUtil";
-import type * as http from "http";
-import type * as https from "https";
-import { IBroadcast } from "./IBroadcast";
-import { StringUtil } from "../Utility/StringUtil";
-import { IRaftCommand } from "./IRaftCommand";
-import { EventEmitter } from "events";
+} from "../Documents/Operations/Configuration/GetClientConfigurationOperation.js";
+import CurrentIndexAndNode from "./CurrentIndexAndNode.js";
+import { HEADERS } from "../Constants.js";
+import { HttpRequestParameters, HttpResponse, HttpRequestParametersWithoutUri } from "../Primitives/Http.js";
+import { raceToResolution } from "../Utility/PromiseUtil.js";
+import { GetStatisticsOperation } from "../Documents/Operations/GetStatisticsOperation.js";
+import { DocumentConventions } from "../Documents/Conventions/DocumentConventions.js";
+import { TypeUtil } from "../Utility/TypeUtil.js";
+import { SessionInfo } from "../Documents/Session/IDocumentSession.js";
+import { JsonSerializer } from "../Mapping/Json/Serializer.js";
+import { validateUri } from "../Utility/UriUtil.js";
+import { readToEnd } from "../Utility/StreamUtil.js";
+import { closeHttpResponse } from "../Utility/HttpUtil.js";
+import { PromiseStatusTracker } from "../Utility/PromiseUtil.js";
+import { IBroadcast } from "./IBroadcast.js";
+import { StringUtil } from "../Utility/StringUtil.js";
+import { IRaftCommand } from "./IRaftCommand.js";
+import { EventEmitter } from "node:events";
 import {
     BeforeRequestEventArgs,
     FailedRequestEventArgs,
     SucceedRequestEventArgs,
     TopologyUpdatedEventArgs
-} from "../Documents/Session/SessionEvents";
-import { TimeUtil } from "../Utility/TimeUtil";
-import { UpdateTopologyParameters } from "./UpdateTopologyParameters";
-import { v4 as uuidv4 } from "uuid";
-import { DatabaseHealthCheckOperation } from "../Documents/Operations/DatabaseHealthCheckOperation";
-import { GetNodeInfoCommand } from "../ServerWide/Commands/GetNodeInfoCommand";
+} from "../Documents/Session/SessionEvents.js";
+import { TimeUtil } from "../Utility/TimeUtil.js";
+import { UpdateTopologyParameters } from "./UpdateTopologyParameters.js";
+import { randomUUID } from "node:crypto";
+import { DatabaseHealthCheckOperation } from "../Documents/Operations/DatabaseHealthCheckOperation.js";
+import { GetNodeInfoCommand } from "../ServerWide/Commands/GetNodeInfoCommand.js";
+import { Semaphore } from "../Utility/Semaphore.js";
+import { Agent } from "undici";
 
 const DEFAULT_REQUEST_OPTIONS = {};
 
@@ -77,9 +76,9 @@ export interface IRequestExecutorOptions {
 class IndexAndResponse {
     public readonly index: number;
     public readonly response: HttpResponse;
-    public readonly bodyStream: stream.Readable
+    public readonly bodyStream: Readable
 
-    public constructor(index: number, response: HttpResponse, bodyStream: stream.Readable) {
+    public constructor(index: number, response: HttpResponse, bodyStream: Readable) {
         this.index = index;
         this.response = response;
         this.bodyStream = bodyStream;
@@ -150,10 +149,10 @@ export class RequestExecutor implements IDisposable {
 
     private _log: ILogger;
 
-    public static readonly CLIENT_VERSION = "5.4.0";
+    public static readonly CLIENT_VERSION = "6.0.0";
 
-    private _updateDatabaseTopologySemaphore = semaphore();
-    private _updateClientConfigurationSemaphore = semaphore();
+    private _updateDatabaseTopologySemaphore = new Semaphore();
+    private _updateClientConfigurationSemaphore = new Semaphore();
 
     private static _backwardCompatibilityFailureCheckOperation = new GetStatisticsOperation("failure=check");
     private static readonly _failureCheckOperation = new DatabaseHealthCheckOperation();
@@ -183,15 +182,15 @@ export class RequestExecutor implements IDisposable {
 
     protected _firstTopologyUpdatePromiseInternal;
 
-    private _httpAgent: http.Agent;
+    private _httpAgent: Agent;
 
     /*
       we don't initialize this here due to issue with cloudflare
       see: https://github.com/cloudflare/miniflare/issues/292
     */
-    private static KEEP_ALIVE_HTTP_AGENT: http.Agent = null;
+    private static KEEP_ALIVE_HTTP_AGENT: Agent = null;
 
-    private static readonly HTTPS_AGENT_CACHE = new Map<string, https.Agent>();
+    private static readonly HTTPS_AGENT_CACHE = new Map<string, Agent>();
 
     protected get firstTopologyUpdatePromise(): Promise<void> {
         return this._firstTopologyUpdatePromiseInternal;
@@ -337,7 +336,7 @@ export class RequestExecutor implements IDisposable {
             : null;
     }
 
-    public getHttpAgent(): http.Agent {
+    public getHttpAgent(): Agent {
         if (this.conventions.customFetch) {
             return null;
         }
@@ -349,19 +348,15 @@ export class RequestExecutor implements IDisposable {
         return this._httpAgent = this._createHttpAgent();
     }
 
-    private _createHttpAgent(): http.Agent {
+    private _createHttpAgent(): Agent {
         if (this._certificate) {
             const agentOptions = this._certificate.toAgentOptions();
             const cacheKey = JSON.stringify(agentOptions, null, 0);
             if (RequestExecutor.HTTPS_AGENT_CACHE.has(cacheKey)) {
                 return RequestExecutor.HTTPS_AGENT_CACHE.get(cacheKey);
             } else {
-                // eslint-disable-next-line @typescript-eslint/no-var-requires
-                const https = require("https");
-
-                const agent = new https.Agent({
-                    keepAlive: true,
-                    ...agentOptions
+                const agent = new Agent({
+                    ...agentOptions,
                 });
 
                 RequestExecutor.HTTPS_AGENT_CACHE.set(cacheKey, agent);
@@ -375,11 +370,8 @@ export class RequestExecutor implements IDisposable {
 
     private static assertKeepAliveAgent() {
         if (!RequestExecutor.KEEP_ALIVE_HTTP_AGENT) {
-            // eslint-disable-next-line @typescript-eslint/no-var-requires
-            const http = require("http");
-
-            RequestExecutor.KEEP_ALIVE_HTTP_AGENT = new http.Agent({
-                keepAlive: true
+            RequestExecutor.KEEP_ALIVE_HTTP_AGENT = new Agent({
+                pipelining: 0
             });
         }
     }
@@ -439,7 +431,7 @@ export class RequestExecutor implements IDisposable {
         // due to cloudflare constraints we can't init GLOBAL_APPLICATION_IDENTIFIER in static
 
         if (!this.GLOBAL_APPLICATION_IDENTIFIER) {
-            this.GLOBAL_APPLICATION_IDENTIFIER = uuidv4();
+            this.GLOBAL_APPLICATION_IDENTIFIER = randomUUID();
         }
 
         return this.GLOBAL_APPLICATION_IDENTIFIER;
@@ -664,14 +656,18 @@ export class RequestExecutor implements IDisposable {
         }
 
         switch (this.conventions.readBalanceBehavior) {
-            case "None":
+            case "None": {
                 return this._nodeSelector.getPreferredNode();
-            case "RoundRobin":
+            }
+            case "RoundRobin": {
                 return this._nodeSelector.getNodeBySessionId(sessionInfo ? sessionInfo.getSessionId() : 0);
-            case "FastestNode":
+            }
+            case "FastestNode": {
                 return this._nodeSelector.getFastestNode();
-            default:
+            }
+            default: {
                 throwError("NotSupportedException", `Invalid read balance behavior: ${this.conventions.readBalanceBehavior}`);
+            }
         }
     }
 
@@ -880,11 +876,11 @@ export class RequestExecutor implements IDisposable {
     protected _throwExceptions(details: string): void {
         throwError("InvalidOperationException",
             "Failed to retrieve database topology from all known nodes"
-            + os.EOL + details);
+            + EOL + details);
     }
 
     public static validateUrls(initialUrls: string[], authOptions: IAuthOptions) {
-        const cleanUrls = [...Array(initialUrls.length)];
+        const cleanUrls = new Array(initialUrls.length);
         let requireHttps = !!authOptions?.certificate;
         for (let index = 0; index < initialUrls.length; index++) {
             const url = initialUrls[index];
@@ -923,12 +919,8 @@ export class RequestExecutor implements IDisposable {
         this._log.info("Initialize update topology timer.");
 
         const minInMs = 60 * 1000;
-        // eslint-disable-next-line @typescript-eslint/no-this-alias
-        const that = this;
         this._updateTopologyTimer =
-            new Timer(function timerActionUpdateTopology() {
-                return that._updateTopologyCallback();
-            }, minInMs, minInMs);
+            new Timer(() => this._updateTopologyCallback(), minInMs, minInMs);
     }
 
     private async _executeOnSpecificNode<TResult>( // this method is called `execute` in c# and java code
@@ -1125,6 +1117,12 @@ export class RequestExecutor implements IDisposable {
                 throw e;
             }
 
+            if (e?.cause?.code === "UNABLE_TO_VERIFY_LEAF_SIGNATURE") {
+                if (chosenNode.url.startsWith("https://") && !this.getAuthOptions()?.certificate) {
+                    throwError("AuthorizationException", "This server requires client certificate for authentication, but none was provided by the client.", e);
+                }
+            }
+
             // node.js fetch doesn't even send request to server is expected protocol is different from actual,
             // so we need handle this case differently
             // https://github.com/nodejs/node/blob/d8c4e375f21b8475d3b717d1d1120ad4eabf8f63/lib/_http_client.js#L157
@@ -1149,8 +1147,8 @@ export class RequestExecutor implements IDisposable {
         }
     }
 
-    private async _send<TResult>(chosenNode: ServerNode, command: RavenCommand<TResult>, sessionInfo: SessionInfo, request: HttpRequestParameters): Promise<{ response: HttpResponse, bodyStream: stream.Readable }> {
-        let responseAndStream: { response: HttpResponse, bodyStream: stream.Readable };
+    private async _send<TResult>(chosenNode: ServerNode, command: RavenCommand<TResult>, sessionInfo: SessionInfo, request: HttpRequestParameters): Promise<{ response: HttpResponse, bodyStream: Readable }> {
+        let responseAndStream: { response: HttpResponse, bodyStream: Readable };
 
         if (this._shouldExecuteOnAll(chosenNode, command)) {
             responseAndStream = await this._executeOnAllToFigureOutTheFastest(chosenNode, command);
@@ -1255,11 +1253,11 @@ export class RequestExecutor implements IDisposable {
             + " request via "
             + (req.method || "GET") + " "
             + req.uri + " to all configured nodes in the topology, "
-            + "none of the attempt succeeded." + os.EOL;
+            + "none of the attempt succeeded." + EOL;
 
         if (this._topologyTakenFromNode) {
             message += "I was able to fetch " + this._topologyTakenFromNode.database
-                + " topology from " + this._topologyTakenFromNode.url + "." + os.EOL;
+                + " topology from " + this._topologyTakenFromNode.url + "." + EOL;
         }
 
         let nodes: ServerNode[];
@@ -1275,7 +1273,7 @@ export class RequestExecutor implements IDisposable {
             for (const node of nodes) {
                 const error = command.failedNodes.get(node);
 
-                message += os.EOL +
+                message += EOL +
                     "[Url: " + node.url + ", " +
                     "ClusterTag: " + node.clusterTag + ", " +
                     "ServerRole: " + node.serverRole + ", " +
@@ -1304,7 +1302,7 @@ export class RequestExecutor implements IDisposable {
 
     private _executeOnAllToFigureOutTheFastest<TResult>(
         chosenNode: ServerNode,
-        command: RavenCommand<TResult>): Promise<{ response: HttpResponse, bodyStream: stream.Readable }> {
+        command: RavenCommand<TResult>): Promise<{ response: HttpResponse, bodyStream: Readable }> {
         let preferredTask: Promise<IndexAndResponse> = null;
 
         const nodes = this._nodeSelector.getTopology().nodes;
@@ -1327,7 +1325,7 @@ export class RequestExecutor implements IDisposable {
                 .then(commandResult => new IndexAndResponse(taskNumber, commandResult.response, commandResult.bodyStream))
                 .catch(err => {
                     tasks[taskNumber] = null;
-                    return Promise.reject(err);
+                    throw err;
                 });
 
             if (nodes[i].clusterTag === chosenNode.clusterTag) {
@@ -1337,7 +1335,7 @@ export class RequestExecutor implements IDisposable {
             tasks[i] = task;
         }
 
-        const result = PromiseUtil.raceToResolution(tasks)
+        const result = raceToResolution(tasks)
             .then(fastest => {
                 this._nodeSelector.recordFastest(fastest.index, nodes[fastest.index]);
             })
@@ -1430,32 +1428,36 @@ export class RequestExecutor implements IDisposable {
         command: RavenCommand<TResult>,
         req: HttpRequestParameters,
         response: HttpResponse,
-        responseBodyStream: stream.Readable,
+        responseBodyStream: Readable,
         url: string,
         sessionInfo: SessionInfo,
         shouldRetry: boolean): Promise<boolean> {
         responseBodyStream.resume();
-        const readBody = () => StreamUtil.readToEnd(responseBodyStream);
+        const readBody = () => readToEnd(responseBodyStream);
         switch (response.status) {
-            case StatusCodes.NotFound:
+            case StatusCodes.NotFound: {
                 this._cache.setNotFound(url);
                 switch (command.responseType) {
-                    case "Empty":
-                        return Promise.resolve(true);
-                    case "Object":
+                    case "Empty": {
+                        return true;
+                    }
+                    case "Object": {
                         return command.setResponseAsync(null, false)
                             .then(() => true);
-                    default:
+                    }
+                    default: {
                         command.setResponseRaw(response, null);
                         break;
+                    }
                 }
                 return true;
+            }
 
             case StatusCodes.Forbidden: {
                 const msg = await readBody();
                 throwError("AuthorizationException",
                     `Forbidden access to ${chosenNode.database}@${chosenNode.url}`
-                    + `, ${req.method || "GET"} ${req.uri}` + os.EOL + msg);
+                    + `, ${req.method || "GET"} ${req.uri}` + EOL + msg);
                 break;
             }
             case StatusCodes.Gone: {
@@ -1510,12 +1512,14 @@ export class RequestExecutor implements IDisposable {
             case StatusCodes.GatewayTimeout:
             case StatusCodes.RequestTimeout:
             case StatusCodes.BadGateway:
-            case StatusCodes.ServiceUnavailable:
+            case StatusCodes.ServiceUnavailable: {
                 return this._handleServerDown(
                     url, chosenNode, nodeIndex, command, req, response, await readBody(), null, sessionInfo, shouldRetry);
-            case StatusCodes.Conflict:
+            }
+            case StatusCodes.Conflict: {
                 RequestExecutor._handleConflict(response, await readBody());
                 break;
+            }
             case StatusCodes.TooEarly: {
                 if (!shouldRetry) {
                     return false;
@@ -1543,9 +1547,10 @@ export class RequestExecutor implements IDisposable {
 
                 return true;
             }
-            default:
+            default: {
                 command.onResponseFailure(response);
                 ExceptionDispatcher.throwException(response, await readBody());
+            }
         }
     }
 
@@ -1906,7 +1911,7 @@ export class RequestExecutor implements IDisposable {
         const exceptionSchema = {
             url: req.uri.toString(),
             message: e.message,
-            error: `An exception occurred while contacting ${ req.uri }: ${ e.message } . ${ os.EOL + e.stack }`,
+            error: `An exception occurred while contacting ${ req.uri }: ${ e.message } . ${ EOL + e.stack }`,
             type: e.name
         };
 

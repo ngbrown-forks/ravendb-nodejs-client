@@ -1,8 +1,8 @@
-import * as stream from "readable-stream";
-import * as os from "os";
-import { DocumentQuery } from "./DocumentQuery";
-import { MultiLoaderWithInclude } from "./Loaders/MultiLoaderWithInclude";
-import { BatchOperation } from "./Operations/BatchOperation";
+import { pipeline, Writable, Transform, TransformCallback, Readable } from "node:stream";
+import { EOL } from "node:os";
+import { DocumentQuery } from "./DocumentQuery.js";
+import { MultiLoaderWithInclude } from "./Loaders/MultiLoaderWithInclude.js";
+import { BatchOperation } from "./Operations/BatchOperation.js";
 import {
     ConcurrencyCheckMode,
     IDocumentSession,
@@ -10,80 +10,80 @@ import {
     LoadOptions,
     SessionLoadInternalParameters,
     SessionLoadStartingWithOptions,
-} from "./IDocumentSession";
-import { DocumentConventions } from "../Conventions/DocumentConventions";
-import { TypeUtil } from "../../Utility/TypeUtil";
-import { ClassConstructor, EntitiesCollectionObject, IRavenObject, ObjectTypeDescriptor } from "../../Types";
-import { throwError } from "../../Exceptions";
-import { DocumentType } from "../DocumentAbstractions";
-import { LoadOperation } from "./Operations/LoadOperation";
-import { InMemoryDocumentSessionOperations } from "./InMemoryDocumentSessionOperations";
-import { DocumentStore } from "../DocumentStore";
-import { GetDocumentsCommand } from "../Commands/GetDocumentsCommand";
-import { HeadDocumentCommand } from "../Commands/HeadDocumentCommand";
-import { LoadStartingWithOperation } from "./Operations/LoadStartingWithOperation";
-import { ILoaderWithInclude } from "./Loaders/ILoaderWithInclude";
-import { IRawDocumentQuery } from "./IRawDocumentQuery";
-import { RawDocumentQuery } from "./RawDocumentQuery";
-import { AdvancedDocumentQueryOptions, DocumentQueryOptions } from "./QueryOptions";
-import { IDocumentQuery } from "./IDocumentQuery";
-import { IAttachmentsSessionOperations } from "./IAttachmentsSessionOperations";
-import { DocumentSessionAttachments } from "./DocumentSessionAttachments";
-import { IEagerSessionOperations } from "./Operations/Lazy/IEagerSessionOperations";
-import { Lazy } from "../Lazy";
-import { LazyLoadOperation } from "./Operations/Lazy/LazyLoadOperation";
-import { ILazyOperation } from "./Operations/Lazy/ILazyOperation";
-import { ResponseTimeInformation } from "./ResponseTimeInformation";
-import { GetRequest } from "../Commands/MultiGet/GetRequest";
-import { MultiGetOperation } from "./Operations/MultiGetOperation";
-import { Stopwatch } from "../../Utility/Stopwatch";
-import { GetResponse } from "../Commands/MultiGet/GetResponse";
-import { CONSTANTS, HEADERS } from "../../Constants";
-import { delay } from "../../Utility/PromiseUtil";
-import { ILazySessionOperations } from "./Operations/Lazy/ILazySessionOperations";
-import { LazySessionOperations } from "./Operations/Lazy/LazySessionOperations";
-import { JavaScriptArray } from "./JavaScriptArray";
-import { PatchRequest } from "../Operations/PatchRequest";
-import { PatchCommandData } from "../Commands/Batches/PatchCommandData";
-import { IdTypeAndName } from "../IdTypeAndName";
-import { IRevisionsSessionOperations } from "./IRevisionsSessionOperations";
-import { DocumentSessionRevisions } from "./DocumentSessionRevisions";
-import * as StreamUtil from "../../Utility/StreamUtil";
-import { StreamResult } from "../Commands/StreamResult";
-import { DocumentResultStream } from "./DocumentResultStream";
-import { StreamOperation } from "./Operations/StreamOperation";
-import { QueryOperation } from "./Operations/QueryOperation";
-import { IAdvancedSessionOperations, StreamQueryStatisticsCallback } from "./IAdvancedSessionOperations";
-import { streamResultsIntoStream } from "../../Mapping/Json/Streams/Pipelines";
-import { IClusterTransactionOperations } from "./IClusterTransactionOperations";
-import { ClusterTransactionOperations } from "./ClusterTransactionOperations";
-import { ClusterTransactionOperationsBase } from "./ClusterTransactionOperationsBase";
-import { SessionOptions } from "./SessionOptions";
-import { ISessionDocumentCounters } from "./ISessionDocumentCounters";
-import { SessionDocumentCounters } from "./SessionDocumentCounters";
-import { IncludeBuilder } from "./Loaders/IncludeBuilder";
-import { IGraphDocumentQuery } from "./IGraphDocumentQuery";
-import { SingleNodeBatchCommand } from "../Commands/Batches/SingleNodeBatchCommand";
-import { GraphDocumentQuery } from "./GraphDocumentQuery";
-import { AbstractDocumentQuery } from "./AbstractDocumentQuery";
-import { ISessionDocumentTimeSeries } from "./ISessionDocumentTimeSeries";
-import { ISessionDocumentTypedTimeSeries } from "./ISessionDocumentTypedTimeSeries";
-import { ISessionDocumentRollupTypedTimeSeries } from "./ISessionDocumentRollupTypedTimeSeries";
-import { JavaScriptMap } from "./JavaScriptMap";
-import { SessionDocumentTimeSeries } from "./SessionDocumentTimeSeries";
-import { TimeSeriesOperations } from "../TimeSeries/TimeSeriesOperations";
-import { SessionDocumentTypedTimeSeries } from "./SessionDocumentTypedTimeSeries";
-import { SessionDocumentRollupTypedTimeSeries } from "./SessionDocumentRollupTypedTimeSeries";
-import { TIME_SERIES_ROLLUP_SEPARATOR } from "../Operations/TimeSeries/RawTimeSeriesTypes";
-import { AbstractCommonApiForIndexes } from "../Indexes/AbstractCommonApiForIndexes";
-import { DocumentInfo } from "./DocumentInfo";
-import { MetadataDictionary } from "../../Mapping/MetadataAsDictionary";
-import { ConditionalLoadResult } from "./ConditionalLoadResult";
-import { StringUtil } from "../../Utility/StringUtil";
-import { ConditionalGetDocumentsCommand } from "../Commands/ConditionalGetDocumentsCommand";
-import { StatusCodes } from "../../Http/StatusCode";
-import { ISessionDocumentIncrementalTimeSeries } from "./ISessionDocumentIncrementalTimeSeries";
-import { ISessionDocumentTypedIncrementalTimeSeries } from "./ISessionDocumentTypedIncrementalTimeSeries";
+} from "./IDocumentSession.js";
+import { DocumentConventions } from "../Conventions/DocumentConventions.js";
+import { TypeUtil } from "../../Utility/TypeUtil.js";
+import { ClassConstructor, EntitiesCollectionObject, IRavenObject, ObjectTypeDescriptor } from "../../Types/index.js";
+import { throwError } from "../../Exceptions/index.js";
+import { DocumentType } from "../DocumentAbstractions.js";
+import { LoadOperation } from "./Operations/LoadOperation.js";
+import { InMemoryDocumentSessionOperations } from "./InMemoryDocumentSessionOperations.js";
+import { DocumentStore } from "../DocumentStore.js";
+import { GetDocumentsCommand } from "../Commands/GetDocumentsCommand.js";
+import { HeadDocumentCommand } from "../Commands/HeadDocumentCommand.js";
+import { LoadStartingWithOperation } from "./Operations/LoadStartingWithOperation.js";
+import { ILoaderWithInclude } from "./Loaders/ILoaderWithInclude.js";
+import { IRawDocumentQuery } from "./IRawDocumentQuery.js";
+import { RawDocumentQuery } from "./RawDocumentQuery.js";
+import { AdvancedDocumentQueryOptions, DocumentQueryOptions } from "./QueryOptions.js";
+import { IDocumentQuery } from "./IDocumentQuery.js";
+import { IAttachmentsSessionOperations } from "./IAttachmentsSessionOperations.js";
+import { DocumentSessionAttachments } from "./DocumentSessionAttachments.js";
+import { IEagerSessionOperations } from "./Operations/Lazy/IEagerSessionOperations.js";
+import { Lazy } from "../Lazy.js";
+import { LazyLoadOperation } from "./Operations/Lazy/LazyLoadOperation.js";
+import { ILazyOperation } from "./Operations/Lazy/ILazyOperation.js";
+import { ResponseTimeInformation } from "./ResponseTimeInformation.js";
+import { GetRequest } from "../Commands/MultiGet/GetRequest.js";
+import { MultiGetOperation } from "./Operations/MultiGetOperation.js";
+import { Stopwatch } from "../../Utility/Stopwatch.js";
+import { GetResponse } from "../Commands/MultiGet/GetResponse.js";
+import { CONSTANTS, HEADERS } from "../../Constants.js";
+import { delay } from "../../Utility/PromiseUtil.js";
+import { ILazySessionOperations } from "./Operations/Lazy/ILazySessionOperations.js";
+import { LazySessionOperations } from "./Operations/Lazy/LazySessionOperations.js";
+import { JavaScriptArray } from "./JavaScriptArray.js";
+import { PatchRequest } from "../Operations/PatchRequest.js";
+import { PatchCommandData } from "../Commands/Batches/PatchCommandData.js";
+import { IdTypeAndName } from "../IdTypeAndName.js";
+import { IRevisionsSessionOperations } from "./IRevisionsSessionOperations.js";
+import { DocumentSessionRevisions } from "./DocumentSessionRevisions.js";
+import { stringToReadable, pipelineAsync } from "../../Utility/StreamUtil.js";
+import { StreamResult } from "../Commands/StreamResult.js";
+import { DocumentResultStream } from "./DocumentResultStream.js";
+import { StreamOperation } from "./Operations/StreamOperation.js";
+import { QueryOperation } from "./Operations/QueryOperation.js";
+import { IAdvancedSessionOperations, StreamQueryStatisticsCallback } from "./IAdvancedSessionOperations.js";
+import { streamResultsIntoStream } from "../../Mapping/Json/Streams/Pipelines.js";
+import { IClusterTransactionOperations } from "./IClusterTransactionOperations.js";
+import { ClusterTransactionOperations } from "./ClusterTransactionOperations.js";
+import { ClusterTransactionOperationsBase } from "./ClusterTransactionOperationsBase.js";
+import { SessionOptions } from "./SessionOptions.js";
+import { ISessionDocumentCounters } from "./ISessionDocumentCounters.js";
+import { SessionDocumentCounters } from "./SessionDocumentCounters.js";
+import { IncludeBuilder } from "./Loaders/IncludeBuilder.js";
+import { IGraphDocumentQuery } from "./IGraphDocumentQuery.js";
+import { SingleNodeBatchCommand } from "../Commands/Batches/SingleNodeBatchCommand.js";
+import { GraphDocumentQuery } from "./GraphDocumentQuery.js";
+import { AbstractDocumentQuery } from "./AbstractDocumentQuery.js";
+import { ISessionDocumentTimeSeries } from "./ISessionDocumentTimeSeries.js";
+import { ISessionDocumentTypedTimeSeries } from "./ISessionDocumentTypedTimeSeries.js";
+import { ISessionDocumentRollupTypedTimeSeries } from "./ISessionDocumentRollupTypedTimeSeries.js";
+import { JavaScriptMap } from "./JavaScriptMap.js";
+import { SessionDocumentTimeSeries } from "./SessionDocumentTimeSeries.js";
+import { TimeSeriesOperations } from "../TimeSeries/TimeSeriesOperations.js";
+import { SessionDocumentTypedTimeSeries } from "./SessionDocumentTypedTimeSeries.js";
+import { SessionDocumentRollupTypedTimeSeries } from "./SessionDocumentRollupTypedTimeSeries.js";
+import { TIME_SERIES_ROLLUP_SEPARATOR } from "../Operations/TimeSeries/RawTimeSeriesTypes.js";
+import { AbstractCommonApiForIndexes } from "../Indexes/AbstractCommonApiForIndexes.js";
+import { DocumentInfo } from "./DocumentInfo.js";
+import { MetadataDictionary } from "../../Mapping/MetadataAsDictionary.js";
+import { ConditionalLoadResult } from "./ConditionalLoadResult.js";
+import { StringUtil } from "../../Utility/StringUtil.js";
+import { ConditionalGetDocumentsCommand } from "../Commands/ConditionalGetDocumentsCommand.js";
+import { StatusCodes } from "../../Http/StatusCode.js";
+import { ISessionDocumentIncrementalTimeSeries } from "./ISessionDocumentIncrementalTimeSeries.js";
+import { ISessionDocumentTypedIncrementalTimeSeries } from "./ISessionDocumentTypedIncrementalTimeSeries.js";
 
 export interface IStoredRawEntityInfo {
     originalValue: object;
@@ -201,10 +201,10 @@ export class DocumentSession extends InMemoryDocumentSessionOperations
     private async _loadInternal(
         ids: string[],
         operation: LoadOperation,
-        writable: stream.Writable): Promise<void>;
+        writable: Writable): Promise<void>;
     private async _loadInternal(
         ids: string[],
-        operation: LoadOperation, writable?: stream.Writable)
+        operation: LoadOperation, writable?: Writable)
         : Promise<void> {
         if (!ids) {
             throwError("InvalidArgumentException", "Ids cannot be null");
@@ -218,8 +218,8 @@ export class DocumentSession extends InMemoryDocumentSessionOperations
             if (!writable) {
                 operation.setResult(command.result);
             } else {
-                const readable = StreamUtil.stringToReadable(JSON.stringify(command.result));
-                await StreamUtil.pipelineAsync(readable, writable);
+                const readable = stringToReadable(JSON.stringify(command.result));
+                await pipelineAsync(readable, writable);
             }
         }
     }
@@ -306,7 +306,7 @@ export class DocumentSession extends InMemoryDocumentSessionOperations
         }
 
         if (this._knownMissingIds.has(id)) {
-            return Promise.resolve(false);
+            return false;
         }
 
         if (this.documentsById.getValue(id)) {
@@ -338,14 +338,14 @@ export class DocumentSession extends InMemoryDocumentSessionOperations
 
     public async loadStartingWithIntoStream<TEntity extends object>(
         idPrefix: string,
-        writable: stream.Writable): Promise<void>;
+        writable: Writable): Promise<void>;
     public async loadStartingWithIntoStream<TEntity extends object>(
         idPrefix: string,
-        writable: stream.Writable,
+        writable: Writable,
         opts: SessionLoadStartingWithOptions<TEntity>): Promise<void>;
     public async loadStartingWithIntoStream<TEntity extends object>(
         idPrefix: string,
-        writable: stream.Writable,
+        writable: Writable,
         opts?: SessionLoadStartingWithOptions<TEntity>): Promise<void> {
 
         if (!writable) {
@@ -362,7 +362,7 @@ export class DocumentSession extends InMemoryDocumentSessionOperations
     }
 
     public async loadIntoStream(
-        ids: string[], writable: stream.Writable): Promise<void> {
+        ids: string[], writable: Writable): Promise<void> {
         return this._loadInternal(ids, new LoadOperation(this), writable);
     }
 
@@ -370,7 +370,7 @@ export class DocumentSession extends InMemoryDocumentSessionOperations
         idPrefix: string,
         operation: LoadStartingWithOperation,
         opts: SessionLoadStartingWithOptions<TEntity>,
-        writable?: stream.Writable): Promise<GetDocumentsCommand> {
+        writable?: Writable): Promise<GetDocumentsCommand> {
         const { matches, start, pageSize, exclude, startAfter } =
         opts || {} as SessionLoadStartingWithOptions<TEntity>;
         operation.withStartWith(idPrefix, {
@@ -381,8 +381,8 @@ export class DocumentSession extends InMemoryDocumentSessionOperations
         if (command) {
             await this._requestExecutor.execute(command, this._sessionInfo);
             if (writable) {
-                return StreamUtil.pipelineAsync(
-                    StreamUtil.stringToReadable(JSON.stringify(command.result)),
+                return pipelineAsync(
+                    stringToReadable(JSON.stringify(command.result)),
                     writable);
             } else {
                 operation.setResult(command.result);
@@ -663,13 +663,13 @@ export class DocumentSession extends InMemoryDocumentSessionOperations
         const newScript = oldPatch.patch.script + "\n" + patchRequest.script;
         const newVals = {};
 
-        Object.keys(oldPatch.patch.values).forEach(key => {
+        for (const key of Object.keys(oldPatch.patch.values)) {
             newVals[key] = oldPatch.patch.values[key];
-        });
+        }
 
-        Object.keys(patchRequest.values).forEach(key => {
+        for (const key of Object.keys(patchRequest.values)) {
             newVals[key] = patchRequest.values[key];
-        });
+        }
 
         const newPatchRequest = new PatchRequest();
         newPatchRequest.script = newScript;
@@ -856,7 +856,7 @@ export class DocumentSession extends InMemoryDocumentSessionOperations
                 const response = responses[i];
                 const tempReqTime = response.headers[HEADERS.REQUEST_TIME];
                 response.elapsed = sw.elapsed;
-                const totalTime = tempReqTime ? parseInt(tempReqTime, 10) : 0;
+                const totalTime = tempReqTime ? Number.parseInt(tempReqTime, 10) : 0;
                 const timeItem = {
                     url: requests[i].urlAndQuery,
                     duration: totalTime
@@ -866,7 +866,7 @@ export class DocumentSession extends InMemoryDocumentSessionOperations
                 if (response.requestHasErrors()) {
                     throwError(
                         "InvalidOperationException",
-                        "Got an error from server, status code: " + response.statusCode + os.EOL + response.result);
+                        "Got an error from server, status code: " + response.statusCode + EOL + response.result);
                 }
 
                 await this._pendingLazyOperations[i].handleResponseAsync(response);
@@ -979,7 +979,7 @@ export class DocumentSession extends InMemoryDocumentSessionOperations
             }
         });
 
-        return stream.pipeline(docsReadable, result) as DocumentResultStream<T>;
+        return pipeline(docsReadable, result, TypeUtil.NOOP) as unknown as DocumentResultStream<T>;
     }
 
     private async _streamQueryResults<T extends object>(
@@ -1012,7 +1012,7 @@ export class DocumentSession extends InMemoryDocumentSessionOperations
             }
         });
 
-        return stream.pipeline(docsReadable, result) as DocumentResultStream<T>;
+        return pipeline(docsReadable, result, TypeUtil.NOOP) as unknown as DocumentResultStream<T>;
     }
 
     private _getStreamResultTransform<TEntity extends object>(
@@ -1020,9 +1020,9 @@ export class DocumentSession extends InMemoryDocumentSessionOperations
         clazz: ObjectTypeDescriptor<TEntity>,
         fieldsToFetchToken: any,
         isProjectInto: boolean) {
-        return new stream.Transform({
+        return new Transform({
             objectMode: true,
-            transform(chunk: object, encoding: string, callback: stream.TransformCallback) {
+            transform(chunk: object, encoding: string, callback: TransformCallback) {
                 const doc = chunk["value"];
                 const metadata = doc[CONSTANTS.Documents.Metadata.KEY];
                 let changeVector: string = null;
@@ -1047,17 +1047,17 @@ export class DocumentSession extends InMemoryDocumentSessionOperations
     /**
      *  Returns the results of a query directly into stream
      */
-    public async streamInto<T extends object>(query: IDocumentQuery<T>, writable: stream.Writable): Promise<void>;
+    public async streamInto<T extends object>(query: IDocumentQuery<T>, writable: Writable): Promise<void>;
     /**
      *  Returns the results of a query directly into stream
      */
-    public async streamInto<T extends object>(query: IRawDocumentQuery<T>, writable: stream.Writable): Promise<void>;
+    public async streamInto<T extends object>(query: IRawDocumentQuery<T>, writable: Writable): Promise<void>;
     /**
      *  Returns the results of a query directly into stream
      */
     public async streamInto<T extends object>(
         query: IRawDocumentQuery<T> | IDocumentQuery<T>,
-        writable: stream.Writable): Promise<void> {
+        writable: Writable): Promise<void> {
         const streamOperation = new StreamOperation(this);
         const command = streamOperation.createRequest(query.getIndexQuery());
         await this.requestExecutor.execute(command, this._sessionInfo);
@@ -1174,17 +1174,19 @@ export class DocumentSession extends InMemoryDocumentSessionOperations
         await this.advanced.requestExecutor.execute(cmd);
 
         switch (cmd.statusCode) {
-            case StatusCodes.NotModified:
+            case StatusCodes.NotModified: {
                 return {
                     entity: null, // value not changed
                     changeVector
                 }
-            case StatusCodes.NotFound:
+            }
+            case StatusCodes.NotFound: {
                 this.registerMissing(id);
                 return {
                     entity: null,
                     changeVector: null // value is missing
                 }
+            }
         }
 
         const documentInfo = DocumentInfo.getNewDocumentInfo(cmd.result.results[0]);

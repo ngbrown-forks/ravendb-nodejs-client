@@ -1,26 +1,22 @@
-import * as stream from "readable-stream";
-import { RavenCommand } from "../../Http/RavenCommand";
-import {
-    RavenCommandResponsePipeline
-} from "../../Http/RavenCommandResponsePipeline";
-import { ServerNode } from "../../Http/ServerNode";
-import { HttpRequestParameters } from "../../Primitives/Http";
-import { getHeaders } from "../../Utility/HttpUtil";
-import { TypeUtil } from "../../Utility/TypeUtil";
-import { throwError } from "../../Exceptions";
-import { DocumentConventions } from "../Conventions/DocumentConventions";
-import { COUNTERS } from "../../Constants";
-import { HashCalculator } from "../Queries/HashCalculator";
-import { IRavenObject } from "../../Types/IRavenObject";
-import { TimeSeriesRange } from "../Operations/TimeSeries/TimeSeriesRange";
-import { DateUtil } from "../../Utility/DateUtil";
-import { readToEnd, stringToReadable } from "../../Utility/StreamUtil";
-import { ServerResponse } from "../../Types";
-import { ObjectUtil } from "../../Utility/ObjectUtil";
-import { AbstractTimeSeriesRange } from "../Operations/TimeSeries/AbstractTimeSeriesRange";
-import { TimeSeriesTimeRange } from "../Operations/TimeSeries/TimeSeriesTimeRange";
-import { TimeSeriesCountRange } from "../Operations/TimeSeries/TimeSeriesCountRange";
-import { TransactionMode } from "../Session/TransactionMode";
+import { Stream } from "node:stream";
+import { RavenCommand } from "../../Http/RavenCommand.js";
+import { ServerNode } from "../../Http/ServerNode.js";
+import { HttpRequestParameters } from "../../Primitives/Http.js";
+import { getHeaders } from "../../Utility/HttpUtil.js";
+import { TypeUtil } from "../../Utility/TypeUtil.js";
+import { throwError } from "../../Exceptions/index.js";
+import { DocumentConventions } from "../Conventions/DocumentConventions.js";
+import { COUNTERS } from "../../Constants.js";
+import { HashCalculator } from "../Queries/HashCalculator.js";
+import { IRavenObject } from "../../Types/IRavenObject.js";
+import { TimeSeriesRange } from "../Operations/TimeSeries/TimeSeriesRange.js";
+import { DateUtil } from "../../Utility/DateUtil.js";
+import { readToEnd } from "../../Utility/StreamUtil.js";
+import { ObjectUtil } from "../../Utility/ObjectUtil.js";
+import { AbstractTimeSeriesRange } from "../Operations/TimeSeries/AbstractTimeSeriesRange.js";
+import { TimeSeriesTimeRange } from "../Operations/TimeSeries/TimeSeriesTimeRange.js";
+import { TimeSeriesCountRange } from "../Operations/TimeSeries/TimeSeriesCountRange.js";
+import { TransactionMode } from "../Session/TransactionMode.js";
 
 export interface GetDocumentsCommandCounterOptions {
     counterIncludes?: string[];
@@ -283,9 +279,9 @@ export class GetDocumentsCommand extends RavenCommand<GetDocumentsResult> {
 
         let newUri = request.uri;
         if (isGet) {
-            uniqueIds.forEach(x => {
+            for (const x of uniqueIds) {
                 newUri += `&id=${encodeURIComponent(x || "")}`;
-            });
+            }
 
             return { method: "GET", uri: newUri };
         } else {
@@ -316,7 +312,7 @@ export class GetDocumentsCommand extends RavenCommand<GetDocumentsResult> {
         return hasher.getHash();
     }
 
-    public async setResponseAsync(bodyStream: stream.Stream, fromCache: boolean): Promise<string> {
+    public async setResponseAsync(bodyStream: Stream, fromCache: boolean): Promise<string> {
         if (!bodyStream) {
             this.result = null;
             return;
@@ -331,23 +327,14 @@ export class GetDocumentsCommand extends RavenCommand<GetDocumentsResult> {
     }
 
     public static async parseDocumentsResultResponseAsync(
-        bodyStream: stream.Stream,
+        bodyStream: Stream,
         conventions: DocumentConventions,
         bodyCallback?: (body: string) => void): Promise<GetDocumentsResult> {
 
         const body = await readToEnd(bodyStream);
         bodyCallback?.(body);
 
-        let parsedJson: any;
-        if (body.length > conventions.syncJsonParseLimit) {
-            const bodyStreamCopy = stringToReadable(body);
-            // response is quite big - fallback to async (slower) parsing to avoid blocking event loop
-            parsedJson = await RavenCommandResponsePipeline.create<ServerResponse<GetDocumentsResult>>()
-                .parseJsonAsync()
-                .process(bodyStreamCopy);
-        } else {
-            parsedJson = JSON.parse(body);
-        }
+        const parsedJson = JSON.parse(body);
 
         return GetDocumentsCommand._mapToLocalObject(parsedJson, conventions);
     }

@@ -1,11 +1,11 @@
-import * as assert from "assert";
-import { testContext, disposeTestDocumentStore } from "../Utils/TestUtil";
+import assert from "node:assert"
+import { testContext, disposeTestDocumentStore } from "../Utils/TestUtil.js";
 import {
     GetDatabaseTopologyCommand,
     IDocumentStore,
     ServerNodeRole,
     Topology
-} from "../../src";
+} from "../../src/index.js";
 
 describe("GetTopologyCommand", function () {
 

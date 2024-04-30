@@ -1,6 +1,6 @@
-import { CompareExchangeResultClass } from "../../Types";
-import { CompareExchangeValue } from "../Operations/CompareExchange/CompareExchangeValue";
-import { ILazyClusterTransactionOperations } from "./ILazyClusterTransactionOperations";
+import { CompareExchangeResultClass } from "../../Types/index.js";
+import { CompareExchangeValue } from "../Operations/CompareExchange/CompareExchangeValue.js";
+import { ILazyClusterTransactionOperations } from "./ILazyClusterTransactionOperations.js";
 
 export interface IClusterTransactionOperations extends IClusterTransactionOperationsBase {
     

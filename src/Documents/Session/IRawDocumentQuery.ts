@@ -1,8 +1,8 @@
-import { IQueryBase } from "./IQueryBase";
-import { IDocumentQueryBaseSingle } from "./IDocumentQueryBaseSingle";
-import { IEnumerableQuery } from "./IEnumerableQuery";
-import { FacetResult } from "../Queries/Facets";
-import { ProjectionBehavior } from "../Queries/ProjectionBehavior";
+import { IQueryBase } from "./IQueryBase.js";
+import { IDocumentQueryBaseSingle } from "./IDocumentQueryBaseSingle.js";
+import { IEnumerableQuery } from "./IEnumerableQuery.js";
+import { FacetResult } from "../Queries/Facets/index.js";
+import { ProjectionBehavior } from "../Queries/ProjectionBehavior.js";
 
 export interface IRawDocumentQuery<T extends object>
     extends IQueryBase<T, IRawDocumentQuery<T>>, IDocumentQueryBaseSingle<T>, IEnumerableQuery<T> {

@@ -2,18 +2,18 @@ import {
     IRevisionsSessionOperations,
     SessionRevisionsMetadataOptions,
     SessionRevisionsOptions
-} from "./IRevisionsSessionOperations";
-import { InMemoryDocumentSessionOperations } from "./InMemoryDocumentSessionOperations";
-import { MetadataAsDictionary } from "../../Mapping/MetadataAsDictionary";
-import { GetRevisionOperation } from "./Operations/GetRevisionOperation";
-import { TypeUtil } from "../../Utility/TypeUtil";
-import { DocumentType } from "../DocumentAbstractions";
-import { RevisionsCollectionObject } from "../../Types";
-import { DocumentSessionRevisionsBase } from "./DocumentSessionRevisionsBase";
-import { LazyRevisionOperations } from "./Operations/Lazy/LazyRevisionOperations";
-import { DocumentSession } from "./DocumentSession";
-import { GetRevisionsCountOperation } from "./Operations/GetRevisionsCountOperation";
-import { ILazyRevisionsOperations } from "./ILazyRevisionsOperations";
+} from "./IRevisionsSessionOperations.js";
+import { InMemoryDocumentSessionOperations } from "./InMemoryDocumentSessionOperations.js";
+import { MetadataAsDictionary } from "../../Mapping/MetadataAsDictionary.js";
+import { GetRevisionOperation } from "./Operations/GetRevisionOperation.js";
+import { TypeUtil } from "../../Utility/TypeUtil.js";
+import { DocumentType } from "../DocumentAbstractions.js";
+import { RevisionsCollectionObject } from "../../Types/index.js";
+import { DocumentSessionRevisionsBase } from "./DocumentSessionRevisionsBase.js";
+import { LazyRevisionOperations } from "./Operations/Lazy/LazyRevisionOperations.js";
+import { DocumentSession } from "./DocumentSession.js";
+import { GetRevisionsCountOperation } from "./Operations/GetRevisionsCountOperation.js";
+import { ILazyRevisionsOperations } from "./ILazyRevisionsOperations.js";
 
 export class DocumentSessionRevisions extends DocumentSessionRevisionsBase implements IRevisionsSessionOperations {
 

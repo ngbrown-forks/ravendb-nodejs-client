@@ -1,12 +1,12 @@
-import { ISuggestionBuilder } from "./ISuggestionBuilder";
-import { ISuggestionOperations } from "./ISuggestionOperations";
-import { SuggestionWithTerm } from "./SuggestionWithTerm";
-import { SuggestionWithTerms } from "./SuggestionWithTerms";
-import { throwError } from "../../../Exceptions";
-import { TypeUtil } from "../../../Utility/TypeUtil";
-import { SuggestionOptions } from "./SuggestionOptions";
-import { SuggestionBase } from "./SuggestionBase";
-import { Field } from "../../../Types";
+import { ISuggestionBuilder } from "./ISuggestionBuilder.js";
+import { ISuggestionOperations } from "./ISuggestionOperations.js";
+import { SuggestionWithTerm } from "./SuggestionWithTerm.js";
+import { SuggestionWithTerms } from "./SuggestionWithTerms.js";
+import { throwError } from "../../../Exceptions/index.js";
+import { TypeUtil } from "../../../Utility/TypeUtil.js";
+import { SuggestionOptions } from "./SuggestionOptions.js";
+import { SuggestionBase } from "./SuggestionBase.js";
+import { Field } from "../../../Types/index.js";
 
 export class SuggestionBuilder<T> implements ISuggestionBuilder<T>, ISuggestionOperations<T> {
 

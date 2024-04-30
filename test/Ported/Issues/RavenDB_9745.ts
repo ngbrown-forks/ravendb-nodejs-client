@@ -1,13 +1,13 @@
-import { Company } from "../../Assets/Entities";
-import { assertThat } from "../../Utils/AssertExtensions";
-import { testContext, disposeTestDocumentStore } from "../../Utils/TestUtil";
+import { Company } from "../../Assets/Entities.js";
+import { assertThat } from "../../Utils/AssertExtensions.js";
+import { testContext, disposeTestDocumentStore } from "../../Utils/TestUtil.js";
 
 import {
     IDocumentStore,
-} from "../../../src";
-import { Explanations } from "../../../src/Documents/Queries/Explanation/Explanations";
-import { ExplanationOptions } from "../../../src/Documents/Queries/Explanation/ExplanationOptions";
-import { AbstractJavaScriptIndexCreationTask } from "../../../src/Documents/Indexes/AbstractJavaScriptIndexCreationTask";
+} from "../../../src/index.js";
+import { Explanations } from "../../../src/Documents/Queries/Explanation/Explanations.js";
+import { ExplanationOptions } from "../../../src/Documents/Queries/Explanation/ExplanationOptions.js";
+import { AbstractJavaScriptIndexCreationTask } from "../../../src/Documents/Indexes/AbstractJavaScriptIndexCreationTask.js";
 
 class CompaniesByNameIndexResult {
     public key: string;

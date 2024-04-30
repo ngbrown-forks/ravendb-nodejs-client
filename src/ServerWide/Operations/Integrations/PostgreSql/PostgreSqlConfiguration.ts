@@ -1,4 +1,4 @@
-import { PostgreSqlAuthenticationConfiguration } from "./PostgreSqlAuthenticationConfiguration";
+import { PostgreSqlAuthenticationConfiguration } from "./PostgreSqlAuthenticationConfiguration.js";
 
 export interface PostgreSqlConfiguration {
     authentication: PostgreSqlAuthenticationConfiguration;

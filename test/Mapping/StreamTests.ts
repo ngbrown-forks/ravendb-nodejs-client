@@ -1,22 +1,22 @@
-import * as stream from "readable-stream";
-import * as assert from "assert";
-import { parser } from "stream-json/Parser";
-import { pick } from "stream-json/filters/Pick";
-import { streamArray } from "stream-json/streamers/StreamArray";
+import { Readable, pipeline } from "node:stream";
+import assert from "node:assert"
+import Parser from "stream-json/Parser.js";
+import Pick from "stream-json/filters/Pick.js";
+import StreamArray from "stream-json/streamers/StreamArray.js";
 
 describe("streaming tryouts", function () {
 
     it("can stream array with nulls", (done) => {
-        const readable = new stream.Readable();
+        const readable = new Readable();
         readable.push(`{"Results":[null,null],"Includes":{}}`);
         readable.push(null);
 
-        stream.pipeline([
+        pipeline([
             readable,
-            parser(),
-            pick({ filter: "Results" }),
-            streamArray()
-        ], (err) => {
+            new Parser(),
+            new Pick({ filter: "Results" }),
+            new StreamArray()
+        ], (err: NodeJS.ErrnoException) => {
             if (err) {
                 done(err);
                 return;

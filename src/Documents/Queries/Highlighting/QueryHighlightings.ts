@@ -1,5 +1,5 @@
-import { Highlightings } from "./Hightlightings";
-import { QueryResult } from "../QueryResult";
+import { Highlightings } from "./Hightlightings.js";
+import { QueryResult } from "../QueryResult.js";
 
 export class QueryHighlightings {
 

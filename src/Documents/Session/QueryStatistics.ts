@@ -1,4 +1,4 @@
-import { QueryResult } from "../Queries/QueryResult";
+import { QueryResult } from "../Queries/QueryResult.js";
 
 export class QueryStatistics {
 

@@ -1,20 +1,20 @@
-import { IMaintenanceOperation, OperationResultType } from "./OperationAbstractions";
-import { OngoingTask } from "./OngoingTasks/OngoingTask";
-import { OngoingTaskType } from "./OngoingTasks/OngoingTaskType";
-import { TypeUtil } from "../../Utility/TypeUtil";
-import { HttpRequestParameters } from "../../Primitives/Http";
-import * as stream from "readable-stream";
-import { NestedTypes } from "../../Mapping/ObjectMapper";
-import { DocumentConventions } from "../Conventions/DocumentConventions";
-import { RavenCommand } from "../../Http/RavenCommand";
-import { ServerNode } from "../../Http/ServerNode";
-import { throwError } from "../../Exceptions";
-import { RavenEtlConfiguration } from "./Etl/RavenEtlConfiguration";
-import { SqlEtlConfiguration } from "./Etl/Sql/SqlEtlConfiguration";
-import { OlapEtlConfiguration } from "./Etl/Olap/OlapEtlConfiguration";
-import { ElasticSearchEtlConfiguration } from "./Etl/ElasticSearch/ElasticSearchEtlConfiguration";
-import { QueueEtlConfiguration } from "./Etl/Queue/QueueEtlConfiguration";
-import { Transformation } from "./Etl/Transformation";
+import { IMaintenanceOperation, OperationResultType } from "./OperationAbstractions.js";
+import { OngoingTask } from "./OngoingTasks/OngoingTask.js";
+import { OngoingTaskType } from "./OngoingTasks/OngoingTaskType.js";
+import { TypeUtil } from "../../Utility/TypeUtil.js";
+import { HttpRequestParameters } from "../../Primitives/Http.js";
+import { Stream } from "node:stream";
+import { NestedTypes } from "../../Mapping/ObjectMapper.js";
+import { DocumentConventions } from "../Conventions/DocumentConventions.js";
+import { RavenCommand } from "../../Http/RavenCommand.js";
+import { ServerNode } from "../../Http/ServerNode.js";
+import { throwError } from "../../Exceptions/index.js";
+import { RavenEtlConfiguration } from "./Etl/RavenEtlConfiguration.js";
+import { SqlEtlConfiguration } from "./Etl/Sql/SqlEtlConfiguration.js";
+import { OlapEtlConfiguration } from "./Etl/Olap/OlapEtlConfiguration.js";
+import { ElasticSearchEtlConfiguration } from "./Etl/ElasticSearch/ElasticSearchEtlConfiguration.js";
+import { QueueEtlConfiguration } from "./Etl/Queue/QueueEtlConfiguration.js";
+import { Transformation } from "./Etl/Transformation.js";
 
 export class GetOngoingTaskInfoOperation implements IMaintenanceOperation<OngoingTask> {
     private readonly _taskName: string;
@@ -77,55 +77,63 @@ class GetOngoingTaskInfoCommand extends RavenCommand<OngoingTask> {
         }
     }
 
-    async setResponseAsync(bodyStream: stream.Stream, fromCache: boolean): Promise<string> {
+    async setResponseAsync(bodyStream: Stream, fromCache: boolean): Promise<string> {
         let body: string = null;
         const results = await this._defaultPipeline(_ => body = _)
             .process(bodyStream);
         let nestedTypes: NestedTypes = {};
 
         switch (this._type) {
-            case "Replication":
+            case "Replication": {
                 // nothing to do
                 break;
-            case "RavenEtl":
+            }
+            case "RavenEtl": {
                 nestedTypes = {
                     configuration: "RavenEtlConfiguration",
                     "configuration.transforms": "Transformation"
                 };
                 break;
-            case "SqlEtl":
+            }
+            case "SqlEtl": {
                 nestedTypes = {
                     configuration: "SqlEtlConfiguration",
                     "configuration.transforms": "Transformation"
                 };
                 break;
-            case "Subscription":
+            }
+            case "Subscription": {
                 nestedTypes = {
                     lastBatchAckTime: "date",
                     lastClientConnectionTime: "date"
                 }
                 break;
-            case "OlapEtl":
+            }
+            case "OlapEtl": {
                 nestedTypes = {
                     configuration: "OlapEtlConfiguration",
                     "configuration.transforms": "Transformation"
                 }
                 break;
-            case "ElasticSearchEtl":
+            }
+            case "ElasticSearchEtl": {
                 nestedTypes = {
                     configuration: "ElasticSearchEtlConfiguration",
                     "configuration.transforms": "Transformation"
                 }
                 break;
-            case "QueueEtl":
+            }
+            case "QueueEtl": {
                 nestedTypes = {
                     configuration: "QueueEtlConfiguration",
                     "configuration.transforms": "Transformation"
                 }
                 break;
-            case "PullReplicationAsSink":
+            }
+            case "PullReplicationAsSink": {
                 break;
-            case "Backup":
+            }
+            case "Backup": {
                 nestedTypes = {
                     lastFullBackup: "date",
                     delayUntil: "date",
@@ -136,6 +144,7 @@ class GetOngoingTaskInfoCommand extends RavenCommand<OngoingTask> {
                     "nextBackup.originalBackupTime": "date",
                 }
                 break;
+            }
         }
 
         this.result = this._reviveResultTypes<OngoingTask>(

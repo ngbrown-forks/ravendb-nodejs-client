@@ -1,4 +1,4 @@
-import { TimeSeriesEntry } from "../../Session/TimeSeries/TimeSeriesEntry";
+import { TimeSeriesEntry } from "../../Session/TimeSeries/TimeSeriesEntry.js";
 
 export class TimeSeriesRangeResult {
     public from: Date;

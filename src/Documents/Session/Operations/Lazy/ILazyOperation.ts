@@ -1,6 +1,6 @@
-import { GetRequest } from "../../../Commands/MultiGet/GetRequest";
-import { GetResponse } from "../../../Commands/MultiGet/GetResponse";
-import { QueryResult } from "../../../Queries/QueryResult";
+import { GetRequest } from "../../../Commands/MultiGet/GetRequest.js";
+import { GetResponse } from "../../../Commands/MultiGet/GetResponse.js";
+import { QueryResult } from "../../../Queries/QueryResult.js";
 
 export interface ILazyOperation {
     result: any;

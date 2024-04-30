@@ -1,12 +1,12 @@
-import * as moment from "moment";
-import * as assert from "assert";
-import { testContext, disposeTestDocumentStore } from "../../Utils/TestUtil";
+import moment from "moment";
+import assert from "node:assert"
+import { testContext, disposeTestDocumentStore } from "../../Utils/TestUtil.js";
 
 import {
     AbstractJavaScriptIndexCreationTask,
     IDocumentStore,
     RangeBuilder,
-} from "../../../src";
+} from "../../../src/index.js";
 
 class ItemsOrders_All extends AbstractJavaScriptIndexCreationTask<ItemsOrder, Pick<ItemsOrder, "at" | "items">> {
     public constructor() {
@@ -149,13 +149,13 @@ describe("AggregationTest", function () {
 
                 let facetResult = r["product"];
                 assert.strictEqual(facetResult.values.length, 2);
-                assert.strictEqual(facetResult.values.filter(x => x.range === "milk")[0].sum, 12);
-                assert.strictEqual(facetResult.values.filter(x => x.range === "iphone")[0].sum, 3333);
+                assert.strictEqual(facetResult.values.find(x => x.range === "milk").sum, 12);
+                assert.strictEqual(facetResult.values.find(x => x.range === "iphone").sum, 3333);
 
                 facetResult = r["currency"];
                 assert.strictEqual(facetResult.values.length, 2);
-                assert.strictEqual(facetResult.values.filter(x => x.range === "eur")[0].sum, 3336);
-                assert.strictEqual(facetResult.values.filter(x => x.range === "nis")[0].sum, 9);
+                assert.strictEqual(facetResult.values.find(x => x.range === "eur").sum, 3336);
+                assert.strictEqual(facetResult.values.find(x => x.range === "nis").sum, 9);
             }
         });
 
@@ -193,10 +193,10 @@ describe("AggregationTest", function () {
 
                 const facetResult = r["product"];
                 assert.strictEqual(facetResult.values.length, 2);
-                assert.strictEqual(facetResult.values.filter(x => x.range === "milk")[0].max, 9);
-                assert.strictEqual(facetResult.values.filter(x => x.range === "milk")[0].min, 3);
-                assert.strictEqual(facetResult.values.filter(x => x.range === "iphone")[0].max, 3333);
-                assert.strictEqual(facetResult.values.filter(x => x.range === "iphone")[0].min, 3333);
+                assert.strictEqual(facetResult.values.find(x => x.range === "milk").max, 9);
+                assert.strictEqual(facetResult.values.find(x => x.range === "milk").min, 3);
+                assert.strictEqual(facetResult.values.find(x => x.range === "iphone").max, 3333);
+                assert.strictEqual(facetResult.values.find(x => x.range === "iphone").min, 3333);
             }
         });
 
@@ -286,16 +286,16 @@ describe("AggregationTest", function () {
 
                 let facetResult = r["product"];
                 assert.strictEqual(Object.keys(r).length, 2);
-                assert.strictEqual(facetResult.values.filter(x => x.range === "milk")[0].sum, 12);
-                assert.strictEqual(facetResult.values.filter(x => x.range === "iphone")[0].sum, 3333);
+                assert.strictEqual(facetResult.values.find(x => x.range === "milk").sum, 12);
+                assert.strictEqual(facetResult.values.find(x => x.range === "iphone").sum, 3333);
 
                 facetResult = r["total"];
                 assert.strictEqual(facetResult.values.length, 4);
 
                 assert.strictEqual(
-                    facetResult.values.filter(x => x.range === "total < 100")[0].sum, 12);
+                    facetResult.values.find(x => x.range === "total < 100").sum, 12);
                 assert.strictEqual(
-                    facetResult.values.filter(x => x.range === "total >= 1500")[0].sum, 3333);
+                    facetResult.values.find(x => x.range === "total >= 1500").sum, 3333);
             }
 
         });

@@ -1,8 +1,8 @@
-import { throwError } from "../../../Exceptions";
-import { CountersIndexDefinitionBuilder } from "../Counters/CountersIndexDefinitionBuilder";
-import { TimeSeriesIndexDefinition } from "./TimeSeriesIndexDefinition";
-import { AbstractGenericTimeSeriesIndexCreationTask } from "./AbstractGenericTimeSeriesIndexCreationTask";
-import { DocumentConventions } from "../../Conventions/DocumentConventions";
+import { throwError } from "../../../Exceptions/index.js";
+import { CountersIndexDefinitionBuilder } from "../Counters/CountersIndexDefinitionBuilder.js";
+import { TimeSeriesIndexDefinition } from "./TimeSeriesIndexDefinition.js";
+import { AbstractGenericTimeSeriesIndexCreationTask } from "./AbstractGenericTimeSeriesIndexCreationTask.js";
+import { DocumentConventions } from "../../Conventions/DocumentConventions.js";
 
 export abstract class AbstractMultiMapTimeSeriesIndexCreationTask extends AbstractGenericTimeSeriesIndexCreationTask {
     private readonly maps: string[] = [];

@@ -1,4 +1,4 @@
-import { CounterOperation } from "./CounterOperation";
+import { CounterOperation } from "./CounterOperation.js";
 
 export class DocumentCountersOperation {
     public operations: CounterOperation[];

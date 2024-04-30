@@ -1,26 +1,26 @@
-import { InMemoryDocumentSessionOperations } from "../InMemoryDocumentSessionOperations";
-import { IndexQuery } from "../../Queries/IndexQuery";
-import { QueryResult } from "../../Queries/QueryResult";
-import { FieldsToFetchToken } from "../Tokens/FieldsToFetchToken";
-import { Stopwatch } from "../../../Utility/Stopwatch";
-import { getLogger } from "../../../Utility/LogUtil";
-import { QueryCommand } from "../../Commands/QueryCommand";
-import { throwError } from "../../../Exceptions";
+import { InMemoryDocumentSessionOperations } from "../InMemoryDocumentSessionOperations.js";
+import { IndexQuery } from "../../Queries/IndexQuery.js";
+import { QueryResult } from "../../Queries/QueryResult.js";
+import { FieldsToFetchToken } from "../Tokens/FieldsToFetchToken.js";
+import { Stopwatch } from "../../../Utility/Stopwatch.js";
+import { getLogger } from "../../../Utility/LogUtil.js";
+import { QueryCommand } from "../../Commands/QueryCommand.js";
+import { throwError } from "../../../Exceptions/index.js";
 import {
     DocumentType,
-} from "../../DocumentAbstractions";
-import { CONSTANTS, TIME_SERIES } from "../../../Constants";
-import { TypeUtil } from "../../../Utility/TypeUtil";
-import { StringUtil } from "../../../Utility/StringUtil";
-import { Reference } from "../../../Utility/Reference";
-import { NESTED_OBJECT_TYPES_PROJECTION_FIELD } from "../DocumentQuery";
-import { TimeSeriesAggregationResult } from "../../Queries/TimeSeries/TimeSeriesAggregationResult";
-import { TimeSeriesRawResult } from "../../Queries/TimeSeries/TimeSeriesRawResult";
-import { TimeSeriesRangeAggregation } from "../../Queries/TimeSeries/TimeSeriesRangeAggregation";
-import { ObjectUtil } from "../../../Utility/ObjectUtil";
-import { TimeSeriesEntry } from "../TimeSeries/TimeSeriesEntry";
-import { StringBuilder } from "../../../Utility/StringBuilder";
-import { DocumentConventions } from "../../Conventions/DocumentConventions";
+} from "../../DocumentAbstractions.js";
+import { CONSTANTS, TIME_SERIES } from "../../../Constants.js";
+import { TypeUtil } from "../../../Utility/TypeUtil.js";
+import { StringUtil } from "../../../Utility/StringUtil.js";
+import { Reference } from "../../../Utility/Reference.js";
+import { NESTED_OBJECT_TYPES_PROJECTION_FIELD } from "../DocumentQuery.js";
+import { TimeSeriesAggregationResult } from "../../Queries/TimeSeries/TimeSeriesAggregationResult.js";
+import { TimeSeriesRawResult } from "../../Queries/TimeSeries/TimeSeriesRawResult.js";
+import { TimeSeriesRangeAggregation } from "../../Queries/TimeSeries/TimeSeriesRangeAggregation.js";
+import { ObjectChangeCaseOptions, ObjectUtil } from "../../../Utility/ObjectUtil.js";
+import { TimeSeriesEntry } from "../TimeSeries/TimeSeriesEntry.js";
+import { StringBuilder } from "../../../Utility/StringBuilder.js";
+import { DocumentConventions } from "../../Conventions/DocumentConventions.js";
 
 const log = getLogger({ module: "QueryOperation" });
 
@@ -211,7 +211,6 @@ export class QueryOperation {
         timeSeriesFields?: string[]
     ) {
         const { conventions } = session;
-        const { entityFieldNameConvention } = conventions;
         const projection = metadata["@projection"];
         if (TypeUtil.isNullOrUndefined(projection) || projection === false) {
             const entityType = conventions.getJsTypeByDocumentType(clazz);
@@ -239,8 +238,8 @@ export class QueryOperation {
                     projectionField = projectionField.substring(1, projectionField.length - 1);
                 }
             }
-            if (entityFieldNameConvention) {
-                projectionField = StringUtil.changeCase(entityFieldNameConvention, projectionField);
+            if (conventions.serverToLocalFieldNameConverter) {
+                projectionField = conventions.serverToLocalFieldNameConverter(projectionField);
             }
 
             const jsonNode = document[projectionField];
@@ -283,8 +282,8 @@ export class QueryOperation {
             Object.assign(result, QueryOperation._reviveTimeSeriesRawResult(raw, conventions));
         } else {
             if (fieldsToFetch && fieldsToFetch.projections && fieldsToFetch.projections.length) {
-                const keys = conventions.entityFieldNameConvention
-                    ? fieldsToFetch.projections.map(x => StringUtil.changeCase(conventions.entityFieldNameConvention, x))
+                const keys = conventions.serverToLocalFieldNameConverter
+                    ? fieldsToFetch.projections.map(x => conventions.serverToLocalFieldNameConverter(x))
                     : fieldsToFetch.projections;
 
                 const nestedTypes = raw[NESTED_OBJECT_TYPES_PROJECTION_FIELD];
@@ -299,8 +298,21 @@ export class QueryOperation {
                     result[key] = mapped[key];
                 }
             } else {
-                Object.assign(result, !entityFieldNameConvention
-                    ? raw : conventions.transformObjectKeysToLocalFieldNameConvention(raw));
+                if (conventions.serverToLocalFieldNameConverter) {
+                    const options: ObjectChangeCaseOptions = {
+                        recursive: true,
+                        arrayRecursive: true,
+                        ignorePaths: [
+                            CONSTANTS.Documents.Metadata.IGNORE_CASE_TRANSFORM_REGEX,
+                            /@projection/
+                        ],
+                        defaultTransform: conventions.serverToLocalFieldNameConverter
+                    };
+
+                    Object.assign(result, ObjectUtil.transformObjectKeys(raw, options));
+                } else {
+                    Object.assign(result, raw);
+                }
             }
         }
 
@@ -335,7 +347,7 @@ export class QueryOperation {
     }
 
     private static _reviveTimeSeriesAggregationResult(raw: object, conventions: DocumentConventions) {
-        const rawLower = ObjectUtil.transformObjectKeys(raw, { defaultTransform: "camel" }) as any;
+        const rawLower = ObjectUtil.transformObjectKeys(raw, { defaultTransform: ObjectUtil.camel }) as any;
 
         const { results, ...otherProps } = rawLower;
 
@@ -357,7 +369,7 @@ export class QueryOperation {
     }
 
     private static _reviveTimeSeriesRawResult(raw: object, conventions: DocumentConventions) {
-        const rawLower = ObjectUtil.transformObjectKeys(raw, { defaultTransform: "camel" }) as any;
+        const rawLower = ObjectUtil.transformObjectKeys(raw, { defaultTransform: ObjectUtil.camel }) as any;
 
         const { results, ...otherProps } = rawLower;
 

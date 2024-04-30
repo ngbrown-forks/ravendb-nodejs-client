@@ -1,4 +1,4 @@
-import { SubscriptionConnectionServerMessage } from "./SubscriptionConnectionServerMessage";
+import { SubscriptionConnectionServerMessage } from "./SubscriptionConnectionServerMessage.js";
 
 export interface BatchFromServer {
     messages: SubscriptionConnectionServerMessage[];

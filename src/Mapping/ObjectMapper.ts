@@ -1,11 +1,11 @@
-import { ObjectTypeDescriptor, ObjectLiteralDescriptor, EntityConstructor } from "../Types";
-import { throwError } from "../Exceptions";
-import { TypeUtil } from "../Utility/TypeUtil";
-import { getLogger } from "../Utility/LogUtil";
-import { StringUtil } from "../Utility/StringUtil";
-import { DocumentConventions } from "../Documents/Conventions/DocumentConventions";
-import { ObjectUtil } from "../Utility/ObjectUtil";
-import { CONSTANTS } from "../Constants";
+import { ObjectTypeDescriptor, ObjectLiteralDescriptor, EntityConstructor } from "../Types/index.js";
+import { throwError } from "../Exceptions/index.js";
+import { TypeUtil } from "../Utility/TypeUtil.js";
+import { getLogger } from "../Utility/LogUtil.js";
+import { StringUtil } from "../Utility/StringUtil.js";
+import { DocumentConventions } from "../Documents/Conventions/DocumentConventions.js";
+import { ObjectUtil } from "../Utility/ObjectUtil.js";
+import { CONSTANTS } from "../Constants.js";
 
 const log = getLogger({ module: "ObjectMapper" });
 
@@ -19,9 +19,12 @@ export interface NestedTypes {
 }
 
 export interface ITypesAwareObjectMapper {
-    fromObjectLiteral<TResult extends object>(raw: object, typeInfo?: TypeInfo): TResult;
+    fromObjectLiteral<TResult extends object>(rawResult: object, typeInfo?: TypeInfo, knownTypes?: Map<string, ObjectTypeDescriptor>): TResult;
 
-    toObjectLiteral<TFrom extends object>(obj: TFrom, typeInfo?: (typeInfo: TypeInfo) => void): object;
+    toObjectLiteral<TFrom extends object>(obj: TFrom,
+                                          typeInfoCallback?: (typeInfo: TypeInfo) => void,
+                                          knownTypes?: Map<string, ObjectTypeDescriptor>
+    ): object;
 }
 
 export class TypesAwareObjectMapper implements ITypesAwareObjectMapper {
@@ -50,9 +53,6 @@ export class TypesAwareObjectMapper implements ITypesAwareObjectMapper {
         this._throwMappingErrors = value;
     }
 
-    public fromObjectLiteral<TResult extends object>(rawResult: object, typeInfo?: TypeInfo): TResult;
-    public fromObjectLiteral<TResult extends object>(
-        rawResult: object, typeInfo?: TypeInfo, knownTypes?: Map<string, ObjectTypeDescriptor>): TResult;
     public fromObjectLiteral<TResult extends object>(
         rawResult: object, typeInfo?: TypeInfo, knownTypes?: Map<string, ObjectTypeDescriptor>): TResult {
 
@@ -70,7 +70,7 @@ export class TypesAwareObjectMapper implements ITypesAwareObjectMapper {
 
     private _applyNestedTypes<TResult extends object>(
         obj: TResult, nestedTypes?: NestedTypes, knownTypes?: Map<string, ObjectTypeDescriptor>) {
-        if (!nestedTypes) {
+        if (!nestedTypes || Object.keys(nestedTypes).length === 0) {
             return obj;
         }
 
@@ -85,21 +85,14 @@ export class TypesAwareObjectMapper implements ITypesAwareObjectMapper {
                 .split(/[!.]/g);
             const fieldContext = this._getFieldContext(obj, objPathSegments);
             const fieldContexts = Array.isArray(fieldContext) ? fieldContext : [fieldContext];
-            fieldContexts.forEach(
-                (c, i) => this._applyTypeToNestedProperty(typeName, c, knownTypes));
+            for (const [i, c] of fieldContexts.entries()) {
+                this._applyTypeToNestedProperty(typeName, c, knownTypes);
+            }
         }
 
         return obj;
     }
 
-    public toObjectLiteral<TFrom extends object>(obj: TFrom): object;
-    public toObjectLiteral<TFrom extends object>(
-        obj: TFrom,
-        typeInfoCallback?: (typeInfo: TypeInfo) => void): object;
-    public toObjectLiteral<TFrom extends object>(
-        obj: TFrom,
-        typeInfoCallback?: (typeInfo: TypeInfo) => void,
-        knownTypes?: Map<string, ObjectTypeDescriptor>): object;
     public toObjectLiteral<TFrom extends object>(
         obj: TFrom,
         typeInfoCallback?: (typeInfo: TypeInfo) => void,
@@ -156,9 +149,9 @@ export class TypesAwareObjectMapper implements ITypesAwareObjectMapper {
             field = field.replace(/\$MAP$/g, "");
         }
 
-        const fieldNameConvention = this._conventions.entityFieldNameConvention;
+        const fieldNameConvention = this._conventions.serverToLocalFieldNameConverter;
         if (fieldNameConvention) {
-            field = StringUtil.changeCase(fieldNameConvention, field);
+            field = fieldNameConvention(field);
         }
 
         let fieldVal = parent[field];
@@ -315,14 +308,14 @@ export class TypesAwareObjectMapper implements ITypesAwareObjectMapper {
         }
 
         if (Array.isArray(fieldVal)) {
-            fieldVal.forEach((item, i) => {
+            for (const [i, item] of fieldVal.entries()) {
                 this._applyTypeToNestedProperty(fieldTypeName, {
                     field: i.toString(),
                     parent: fieldVal,
                     getValue: () => fieldVal[i],
                     setValue: (val) => fieldVal[i] = val
                 }, knownTypes);
-            });
+            }
 
             return;
         }
@@ -440,8 +433,8 @@ export class TypesAwareObjectMapper implements ITypesAwareObjectMapper {
             return Object.keys(obj)
                 .reduce((result, key) => {
                     let nestedTypeInfoKey = key;
-                    if (this._conventions.remoteEntityFieldNameConvention) {
-                        nestedTypeInfoKey = ObjectUtil[this._conventions.remoteEntityFieldNameConvention](key);
+                    if (this._conventions.localToServerFieldNameConverter) {
+                        nestedTypeInfoKey = this._conventions.localToServerFieldNameConverter(key);
                     }
 
                     let innerSkipTypes = skipTypes
@@ -468,7 +461,7 @@ interface ObjectPropertyContext {
     parent: any;
     field: string;
 
-    getValue();
+    getValue(): any;
 
-    setValue(val: any);
+    setValue(val: any): void;
 }

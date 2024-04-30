@@ -1,13 +1,13 @@
-import * as assert from "assert";
-import { testContext, disposeTestDocumentStore } from "../Utils/TestUtil";
+import assert from "node:assert";
+import { testContext, disposeTestDocumentStore } from "../Utils/TestUtil.js";
 
 import DocumentStore, {
     IDocumentStore,
     TypesAwareObjectMapper,
     DocumentConventions,
     PatchOperation,
-} from "../../src";
-import { PatchRequest } from "../../src/Documents/Operations/PatchRequest";
+} from "../../src/index.js";
+import { PatchRequest } from "../../src/Documents/Operations/PatchRequest.js";
 
 describe("RDBC-233", function () {
 

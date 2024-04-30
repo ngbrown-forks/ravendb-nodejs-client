@@ -1,11 +1,11 @@
-import { CertificateDefinition } from "./CertificateDefinition";
-import { throwError } from "../../../Exceptions";
-import { HttpRequestParameters } from "../../../Primitives/Http";
-import * as stream from "readable-stream";
-import { IServerOperation, OperationResultType } from "../../../Documents/Operations/OperationAbstractions";
-import { DocumentConventions } from "../../../Documents/Conventions/DocumentConventions";
-import { RavenCommand } from "../../../Http/RavenCommand";
-import { ServerNode } from "../../../Http/ServerNode";
+import { CertificateDefinition } from "./CertificateDefinition.js";
+import { throwError } from "../../../Exceptions/index.js";
+import { HttpRequestParameters } from "../../../Primitives/Http.js";
+import { Stream } from "node:stream";
+import { IServerOperation, OperationResultType } from "../../../Documents/Operations/OperationAbstractions.js";
+import { DocumentConventions } from "../../../Documents/Conventions/DocumentConventions.js";
+import { RavenCommand } from "../../../Http/RavenCommand.js";
+import { ServerNode } from "../../../Http/ServerNode.js";
 
 export class GetCertificateOperation implements IServerOperation<CertificateDefinition> {
     private readonly _thumbprint: string;
@@ -54,7 +54,7 @@ class GetCertificateCommand extends RavenCommand<CertificateDefinition> {
         }
     }
 
-    async setResponseAsync(bodyStream: stream.Stream, fromCache: boolean): Promise<string> {
+    async setResponseAsync(bodyStream: Stream, fromCache: boolean): Promise<string> {
         if (!bodyStream) {
             return;
         }

@@ -1,8 +1,8 @@
-import * as assert from "assert";
+import assert from "node:assert"
 
-import { IDocumentStore, IndexDefinition, IndexFieldOptions, PutIndexesOperation } from "../../../src";
-import { disposeTestDocumentStore, testContext } from "../../Utils/TestUtil";
-import { User } from "../../Assets/Entities";
+import { IDocumentStore, IndexDefinition, IndexFieldOptions, PutIndexesOperation } from "../../../src/index.js";
+import { disposeTestDocumentStore, testContext } from "../../Utils/TestUtil.js";
+import { User } from "../../Assets/Entities.js";
 
 describe("SuggestionsLazyTest", function () {
 

@@ -1,10 +1,10 @@
-import { ClusterTransactionOperationsBase } from "../../ClusterTransactionOperationsBase";
-import { ILazyClusterTransactionOperations } from "../../ILazyClusterTransactionOperations";
-import { LazyGetCompareExchangeValueOperation } from "./LazyGetCompareExchangeValueOperation";
-import { LazyGetCompareExchangeValuesOperation } from "./LazyGetCompareExchangeValuesOperation";
-import { Lazy } from "../../../Lazy";
-import { CompareExchangeValue } from "../../../Operations/CompareExchange/CompareExchangeValue";
-import { CompareExchangeResultClass } from "../../../../Types";
+import { ClusterTransactionOperationsBase } from "../../ClusterTransactionOperationsBase.js";
+import { ILazyClusterTransactionOperations } from "../../ILazyClusterTransactionOperations.js";
+import { LazyGetCompareExchangeValueOperation } from "./LazyGetCompareExchangeValueOperation.js";
+import { LazyGetCompareExchangeValuesOperation } from "./LazyGetCompareExchangeValuesOperation.js";
+import { Lazy } from "../../../Lazy.js";
+import { CompareExchangeValue } from "../../../Operations/CompareExchange/CompareExchangeValue.js";
+import { CompareExchangeResultClass } from "../../../../Types/index.js";
 
 export class LazyClusterTransactionOperations extends ClusterTransactionOperationsBase implements ILazyClusterTransactionOperations {
 

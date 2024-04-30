@@ -1,9 +1,9 @@
-import { IncludeBuilderBase } from "./IncludeBuilderBase";
-import { ISubscriptionIncludeBuilder } from "./ISubscriptionIncludeBuilder";
-import { TimeSeriesRangeType } from "../../Operations/TimeSeries/TimeSeriesRangeType";
-import { TimeValue } from "../../../Primitives/TimeValue";
-import { TypeUtil } from "../../../Utility/TypeUtil";
-import { TIME_SERIES } from "../../../Constants";
+import { IncludeBuilderBase } from "./IncludeBuilderBase.js";
+import { ISubscriptionIncludeBuilder } from "./ISubscriptionIncludeBuilder.js";
+import { TimeSeriesRangeType } from "../../Operations/TimeSeries/TimeSeriesRangeType.js";
+import { TimeValue } from "../../../Primitives/TimeValue.js";
+import { TypeUtil } from "../../../Utility/TypeUtil.js";
+import { TIME_SERIES } from "../../../Constants.js";
 
 export class SubscriptionIncludeBuilder extends IncludeBuilderBase implements ISubscriptionIncludeBuilder {
 

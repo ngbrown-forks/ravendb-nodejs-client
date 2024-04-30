@@ -1,5 +1,5 @@
-import { getError } from "../Exceptions";
-import { clearTimeout } from "timers";
+import { getError } from "../Exceptions/index.js";
+import { clearTimeout } from "node:timers";
 
 export interface IDefer<TResult> {
     resolve: (value: TResult) => void;

@@ -1,5 +1,5 @@
-import { UploadType } from "./BackupStatus";
-import { UploadState } from "./UploadState";
+import { UploadType } from "./BackupStatus.js";
+import { UploadState } from "./UploadState.js";
 
 export interface UploadProgress {
     uploadType: UploadType;

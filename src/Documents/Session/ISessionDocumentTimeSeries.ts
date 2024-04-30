@@ -1,10 +1,10 @@
 /**
  * Time series synchronous session operations
  */
-import { ISessionDocumentDeleteTimeSeriesBase } from "./ISessionDocumentDeleteTimeSeriesBase";
-import { ISessionDocumentAppendTimeSeriesBase } from "./ISessionDocumentAppendTimeSeriesBase";
-import { TimeSeriesEntry } from "./TimeSeries/TimeSeriesEntry";
-import { ITimeSeriesIncludeBuilder } from "./Loaders/ITimeSeriesIncludeBuilder";
+import { ISessionDocumentDeleteTimeSeriesBase } from "./ISessionDocumentDeleteTimeSeriesBase.js";
+import { ISessionDocumentAppendTimeSeriesBase } from "./ISessionDocumentAppendTimeSeriesBase.js";
+import { TimeSeriesEntry } from "./TimeSeries/TimeSeriesEntry.js";
+import { ITimeSeriesIncludeBuilder } from "./Loaders/ITimeSeriesIncludeBuilder.js";
 
 export interface ISessionDocumentTimeSeries extends ISessionDocumentAppendTimeSeriesBase, ISessionDocumentDeleteTimeSeriesBase {
     /**

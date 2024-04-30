@@ -1,7 +1,7 @@
-import * as assert from "assert";
-import { EntitiesCollectionObject, IDocumentStore } from "../../../src";
-import { disposeTestDocumentStore, testContext } from "../../Utils/TestUtil";
-import { Lazy } from "../../../src/Documents/Lazy";
+import assert from "node:assert"
+import { EntitiesCollectionObject, IDocumentStore } from "../../../src/index.js";
+import { disposeTestDocumentStore, testContext } from "../../Utils/TestUtil.js";
+import { Lazy } from "../../../src/Documents/Lazy.js";
 
 export class Abc {
     public id: string;

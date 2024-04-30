@@ -1,8 +1,8 @@
-import { CloseSubclauseToken } from "./Tokens/CloseSubclauseToken";
-import { QueryToken } from "./Tokens/QueryToken";
-import { OpenSubclauseToken } from "./Tokens/OpenSubclauseToken";
-import { IntersectMarkerToken } from "./Tokens/IntersectMarkerToken";
-import { StringBuilder } from "../../Utility/StringBuilder";
+import { CloseSubclauseToken } from "./Tokens/CloseSubclauseToken.js";
+import { QueryToken } from "./Tokens/QueryToken.js";
+import { OpenSubclauseToken } from "./Tokens/OpenSubclauseToken.js";
+import { IntersectMarkerToken } from "./Tokens/IntersectMarkerToken.js";
+import { StringBuilder } from "../../Utility/StringBuilder.js";
 
 export class DocumentQueryHelper {
     public static addSpaceIfNeeded(

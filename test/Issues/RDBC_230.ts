@@ -1,11 +1,11 @@
-import * as assert from "assert";
-import { testContext, disposeTestDocumentStore } from "../Utils/TestUtil";
-import { User } from "../Assets/Entities";
+import assert from "node:assert"
+import { testContext, disposeTestDocumentStore } from "../Utils/TestUtil.js";
+import { User } from "../Assets/Entities.js";
 
 import {
     IDocumentStore,
     DocumentSession,
-} from "../../src";
+} from "../../src/index.js";
 
 describe("[RDBC-230] DocumentInfo", function () {
 

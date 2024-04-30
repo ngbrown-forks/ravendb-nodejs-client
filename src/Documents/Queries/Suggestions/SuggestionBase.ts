@@ -1,4 +1,4 @@
-import { SuggestionOptions } from "./SuggestionOptions";
+import { SuggestionOptions } from "./SuggestionOptions.js";
 
 export abstract class SuggestionBase {
     public field: string;

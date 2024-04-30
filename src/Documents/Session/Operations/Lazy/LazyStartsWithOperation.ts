@@ -1,13 +1,13 @@
-import { ILazyOperation } from "./ILazyOperation";
-import { ObjectTypeDescriptor } from "../../../../Types";
-import { InMemoryDocumentSessionOperations } from "../../InMemoryDocumentSessionOperations";
-import { SessionLoadStartingWithOptions } from "../../IDocumentSession";
-import { GetRequest } from "../../../Commands/MultiGet/GetRequest";
-import { QueryResult } from "../../../Queries/QueryResult";
-import { GetResponse } from "../../../Commands/MultiGet/GetResponse";
-import { GetDocumentsCommand } from "../../../Commands/GetDocumentsCommand";
-import { stringToReadable } from "../../../../Utility/StreamUtil";
-import { DocumentInfo } from "../../DocumentInfo";
+import { ILazyOperation } from "./ILazyOperation.js";
+import { ObjectTypeDescriptor } from "../../../../Types/index.js";
+import { InMemoryDocumentSessionOperations } from "../../InMemoryDocumentSessionOperations.js";
+import { SessionLoadStartingWithOptions } from "../../IDocumentSession.js";
+import { GetRequest } from "../../../Commands/MultiGet/GetRequest.js";
+import { QueryResult } from "../../../Queries/QueryResult.js";
+import { GetResponse } from "../../../Commands/MultiGet/GetResponse.js";
+import { GetDocumentsCommand } from "../../../Commands/GetDocumentsCommand.js";
+import { stringToReadable } from "../../../../Utility/StreamUtil.js";
+import { DocumentInfo } from "../../DocumentInfo.js";
 
 const enc = encodeURIComponent;
 

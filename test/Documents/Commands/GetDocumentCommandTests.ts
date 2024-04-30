@@ -1,10 +1,11 @@
-import * as assert from "assert";
-import { testContext, disposeTestDocumentStore } from "../../Utils/TestUtil";
+import assert from "node:assert"
+import { testContext, disposeTestDocumentStore } from "../../Utils/TestUtil.js";
 import {
     IDocumentStore,
     DocumentStore
-} from "../../../src";
-import { GetDocumentsCommand } from "../../../src/Documents/Commands/GetDocumentsCommand";
+} from "../../../src/index.js";
+import { GetDocumentsCommand } from "../../../src/Documents/Commands/GetDocumentsCommand.js";
+import { ObjectUtil } from "../../../src/Utility/ObjectUtil.js";
 
 describe("GetDocumentCommand streaming", function () {
 
@@ -26,8 +27,8 @@ describe("GetDocumentCommand streaming", function () {
         let customStore: DocumentStore;
         try {
             customStore = new DocumentStore(store.urls, store.database);
-            customStore.conventions.entityFieldNameConvention = "pascal";
-            customStore.conventions.remoteEntityFieldNameConvention = "camel";
+            customStore.conventions.localToServerFieldNameConverter = ObjectUtil.pascal;
+            customStore.conventions.serverToLocalFieldNameConverter = ObjectUtil.camel;
             customStore.initialize();
 
             const session = store.openSession();

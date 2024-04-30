@@ -1,5 +1,5 @@
-import { BackupEncryptionSettings } from "./BackupEncryptionSettings";
-import { RestoreType } from "./RestoreType";
+import { BackupEncryptionSettings } from "./BackupEncryptionSettings.js";
+import { RestoreType } from "./RestoreType.js";
 
 export interface RestoreBackupConfigurationBase {
     databaseName: string;

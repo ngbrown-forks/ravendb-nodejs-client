@@ -1,4 +1,4 @@
-import { GroupByMethod } from "./GroupByMethod";
+import { GroupByMethod } from "./GroupByMethod.js";
 
 export class GroupBy {
 

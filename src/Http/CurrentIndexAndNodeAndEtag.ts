@@ -1,4 +1,4 @@
-import { ServerNode } from "./ServerNode";
+import { ServerNode } from "./ServerNode.js";
 
 export interface CurrentIndexAndNodeAndEtag {
     currentIndex: number;

@@ -1,5 +1,5 @@
-import { DocumentType } from "../Documents/DocumentAbstractions";
-import { ObjectLiteralDescriptor, ObjectTypeDescriptor, ClassConstructor, EntityConstructor } from "../Types";
+import { DocumentType } from "../Documents/DocumentAbstractions.js";
+import { ObjectLiteralDescriptor, ObjectTypeDescriptor, ClassConstructor, EntityConstructor } from "../Types/index.js";
 
 export class TypeUtil {
     public static readonly MAX_INT32 = 2147483647;

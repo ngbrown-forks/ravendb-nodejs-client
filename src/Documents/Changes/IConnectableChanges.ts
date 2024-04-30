@@ -1,5 +1,5 @@
-import { IDatabaseChanges } from "./IDatabaseChanges";
-import { IDisposable } from "../../Types/Contracts";
+import { IDatabaseChanges } from "./IDatabaseChanges.js";
+import { IDisposable } from "../../Types/Contracts.js";
 
 export interface IConnectableChanges<T extends IDatabaseChanges> extends IDisposable {
 

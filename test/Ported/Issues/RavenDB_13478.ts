@@ -1,7 +1,7 @@
-import { IDocumentStore, SubscriptionCreationOptions } from "../../../src";
-import { disposeTestDocumentStore, testContext } from "../../Utils/TestUtil";
-import { Product } from "../../Assets/Orders";
-import { assertThat } from "../../Utils/AssertExtensions";
+import { IDocumentStore, SubscriptionCreationOptions } from "../../../src/index.js";
+import { disposeTestDocumentStore, testContext } from "../../Utils/TestUtil.js";
+import { Product } from "../../Assets/Orders.js";
+import { assertThat } from "../../Utils/AssertExtensions.js";
 
 describe("RavenDB_13478", function () {
 

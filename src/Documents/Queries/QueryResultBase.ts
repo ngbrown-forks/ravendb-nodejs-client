@@ -1,4 +1,4 @@
-import { QueryTimings } from "./Timings/QueryTimings";
+import { QueryTimings } from "./Timings/QueryTimings.js";
 
 export abstract class QueryResultBase<TResult, TInclude> {
 

@@ -1,14 +1,14 @@
-import { IMaintenanceOperation, OperationResultType } from "../OperationAbstractions";
-import { RefreshConfiguration } from "./RefreshConfiguration";
-import { ConfigureRefreshOperationResult } from "./ConfigureRefreshOperationResult";
-import { RavenCommand } from "../../../Http/RavenCommand";
-import { DocumentConventions } from "../../Conventions/DocumentConventions";
-import { IRaftCommand } from "../../../Http/IRaftCommand";
-import { HttpRequestParameters } from "../../../Primitives/Http";
-import { ServerNode } from "../../../Http/ServerNode";
-import * as stream from "readable-stream";
-import { RaftIdGenerator } from "../../../Utility/RaftIdGenerator";
-import { throwError } from "../../../Exceptions";
+import { IMaintenanceOperation, OperationResultType } from "../OperationAbstractions.js";
+import { RefreshConfiguration } from "./RefreshConfiguration.js";
+import { ConfigureRefreshOperationResult } from "./ConfigureRefreshOperationResult.js";
+import { RavenCommand } from "../../../Http/RavenCommand.js";
+import { DocumentConventions } from "../../Conventions/DocumentConventions.js";
+import { IRaftCommand } from "../../../Http/IRaftCommand.js";
+import { HttpRequestParameters } from "../../../Primitives/Http.js";
+import { ServerNode } from "../../../Http/ServerNode.js";
+import { Stream } from "node:stream";
+import { RaftIdGenerator } from "../../../Utility/RaftIdGenerator.js";
+import { throwError } from "../../../Exceptions/index.js";
 
 export class ConfigureRefreshOperation implements IMaintenanceOperation<ConfigureRefreshOperationResult> {
     private readonly _configuration: RefreshConfiguration;
@@ -55,7 +55,7 @@ class ConfigureRefreshCommand extends RavenCommand<ConfigureRefreshOperationResu
         }
     }
 
-    async setResponseAsync(bodyStream: stream.Stream, fromCache: boolean): Promise<string> {
+    async setResponseAsync(bodyStream: Stream, fromCache: boolean): Promise<string> {
         if (!bodyStream) {
             this._throwInvalidResponse();
         }

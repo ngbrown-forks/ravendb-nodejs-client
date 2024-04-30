@@ -1,20 +1,20 @@
-import { HttpRequestParameters } from "../../Primitives/Http";
-import { RavenCommand } from "../../Http/RavenCommand";
-import { QueryResult } from "../Queries/QueryResult";
-import { DocumentConventions } from "../Conventions/DocumentConventions";
-import { IndexQuery, writeIndexQuery } from "../Queries/IndexQuery";
-import { throwError } from "../../Exceptions";
-import { ServerNode } from "../../Http/ServerNode";
-import { JsonSerializer } from "../../Mapping/Json/Serializer";
-import * as stream from "readable-stream";
-import { RavenCommandResponsePipeline } from "../../Http/RavenCommandResponsePipeline";
-import { StringBuilder } from "../../Utility/StringBuilder";
-import { ServerCasing, ServerResponse } from "../../Types";
-import { QueryTimings } from "../Queries/Timings/QueryTimings";
-import { StringUtil } from "../../Utility/StringUtil";
-import { readToEnd, stringToReadable } from "../../Utility/StreamUtil";
-import { ObjectUtil } from "../../Utility/ObjectUtil";
-import { InMemoryDocumentSessionOperations } from "../Session/InMemoryDocumentSessionOperations";
+import { HttpRequestParameters } from "../../Primitives/Http.js";
+import { RavenCommand } from "../../Http/RavenCommand.js";
+import { QueryResult } from "../Queries/QueryResult.js";
+import { DocumentConventions } from "../Conventions/DocumentConventions.js";
+import { IndexQuery, writeIndexQuery } from "../Queries/IndexQuery.js";
+import { throwError } from "../../Exceptions/index.js";
+import { ServerNode } from "../../Http/ServerNode.js";
+import { JsonSerializer } from "../../Mapping/Json/Serializer.js";
+import { Stream } from "node:stream";
+import { RavenCommandResponsePipeline } from "../../Http/RavenCommandResponsePipeline.js";
+import { StringBuilder } from "../../Utility/StringBuilder.js";
+import { ServerCasing, ServerResponse } from "../../Types/index.js";
+import { QueryTimings } from "../Queries/Timings/QueryTimings.js";
+import { StringUtil } from "../../Utility/StringUtil.js";
+import { readToEnd, stringToReadable } from "../../Utility/StreamUtil.js";
+import { ObjectUtil } from "../../Utility/ObjectUtil.js";
+import { InMemoryDocumentSessionOperations } from "../Session/InMemoryDocumentSessionOperations.js";
 
 export interface QueryCommandOptions {
     metadataOnly?: boolean;
@@ -81,11 +81,7 @@ export class QueryCommand extends RavenCommand<QueryResult> {
         };
     }
 
-    protected get _serializer(): JsonSerializer {
-        return super._serializer;
-    }
-
-    public async setResponseAsync(bodyStream: stream.Stream, fromCache: boolean): Promise<string> {
+    public async setResponseAsync(bodyStream: Stream, fromCache: boolean): Promise<string> {
         if (!bodyStream) {
             this.result = null;
             return;
@@ -103,7 +99,7 @@ export class QueryCommand extends RavenCommand<QueryResult> {
     }
 
     public static async parseQueryResultResponseAsync(
-        bodyStream: stream.Stream,
+        bodyStream: Stream,
         conventions: DocumentConventions,
         fromCache: boolean,
         bodyCallback?: (body: string) => void): Promise<QueryResult> {
@@ -111,16 +107,7 @@ export class QueryCommand extends RavenCommand<QueryResult> {
         const body = await readToEnd(bodyStream);
         bodyCallback?.(body);
 
-        let parsedJson: any;
-        if (body.length > conventions.syncJsonParseLimit) {
-            const bodyStreamCopy = stringToReadable(body);
-            // response is quite big - fallback to async (slower) parsing to avoid blocking event loop
-            parsedJson = await RavenCommandResponsePipeline.create<ServerResponse<QueryResult>>()
-                .parseJsonAsync()
-                .process(bodyStreamCopy);
-        } else {
-            parsedJson = JSON.parse(body);
-        }
+        const parsedJson = JSON.parse(body);
 
         const queryResult = QueryCommand._mapToLocalObject(parsedJson, conventions);
 
@@ -145,9 +132,9 @@ export class QueryCommand extends RavenCommand<QueryResult> {
         mapped.durationInMs = timings.DurationInMs;
         mapped.timings = timings.Timings ? {} : undefined;
         if (timings.Timings) {
-            Object.keys(timings.Timings).forEach(time => {
+            for (const time of Object.keys(timings.Timings)) {
                 mapped.timings[StringUtil.uncapitalize(time)] = QueryCommand._mapTimingsToLocalObject(timings.Timings[time]);
-            });
+            }
         }
         return mapped;
     }

@@ -1,11 +1,11 @@
-import * as qs from "qs";
-import { ServerNode } from "../../../Http/ServerNode";
-import { DateUtil } from "../../../Utility/DateUtil";
-import { RavenCommand } from "../../../Http/RavenCommand";
-import { throwError } from "../../../Exceptions";
-import { HttpRequestParameters } from "../../../Primitives/Http";
-import * as stream from "readable-stream";
-import { DocumentConventions } from "../../Conventions/DocumentConventions";
+import { ServerNode } from "../../../Http/ServerNode.js";
+import { DateUtil } from "../../../Utility/DateUtil.js";
+import { RavenCommand } from "../../../Http/RavenCommand.js";
+import { throwError } from "../../../Exceptions/index.js";
+import { HttpRequestParameters } from "../../../Primitives/Http.js";
+import { Stream } from "node:stream";
+import { DocumentConventions } from "../../Conventions/DocumentConventions.js";
+import { stringify } from "node:querystring";
 
 export interface HiLoResult {
     prefix: string;
@@ -55,7 +55,7 @@ export class NextHiloCommand extends RavenCommand<HiLoResult> {
             ? DateUtil.default.stringify(this._lastRangeAt)
             : "";
 
-        const queryString = qs.stringify({
+        const queryString = stringify({
             tag: this._tag,
             lastBatchSize: this._lastBatchSize,
             lastRangeAt,
@@ -67,7 +67,7 @@ export class NextHiloCommand extends RavenCommand<HiLoResult> {
         return { uri };
     }
 
-    public async setResponseAsync(bodyStream: stream.Stream, fromCache: boolean): Promise<string> {
+    public async setResponseAsync(bodyStream: Stream, fromCache: boolean): Promise<string> {
         let body: string = null;
         const results = await this._defaultPipeline(_ => body = _).process(bodyStream);
         this.result = this._reviveResultTypes(

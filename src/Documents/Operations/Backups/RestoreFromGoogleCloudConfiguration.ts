@@ -1,5 +1,5 @@
-import { RestoreBackupConfigurationBase } from "./RestoreBackupConfigurationBase";
-import { GoogleCloudSettings } from "./GoogleCloudSettings";
+import { RestoreBackupConfigurationBase } from "./RestoreBackupConfigurationBase.js";
+import { GoogleCloudSettings } from "./GoogleCloudSettings.js";
 
 export interface RestoreFromGoogleCloudConfiguration extends RestoreBackupConfigurationBase {
     settings: GoogleCloudSettings;

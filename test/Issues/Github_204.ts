@@ -1,9 +1,9 @@
-import { testContext, disposeTestDocumentStore } from "../Utils/TestUtil";
+import { testContext, disposeTestDocumentStore } from "../Utils/TestUtil.js";
 
 import {
     IDocumentStore,
-} from "../../src";
-import * as assert from "assert";
+} from "../../src/index.js";
+import assert from "node:assert"
 
 describe("GitHub-204", function () {
 

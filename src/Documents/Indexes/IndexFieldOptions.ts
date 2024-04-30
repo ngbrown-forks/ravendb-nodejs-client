@@ -1,5 +1,5 @@
-import { SpatialOptions } from "./Spatial";
-import { FieldStorage, FieldIndexing, FieldTermVector } from "./Enums";
+import { SpatialOptions } from "./Spatial.js";
+import { FieldStorage, FieldIndexing, FieldTermVector } from "./Enums.js";
 
 export class IndexFieldOptions {
     public storage: FieldStorage;

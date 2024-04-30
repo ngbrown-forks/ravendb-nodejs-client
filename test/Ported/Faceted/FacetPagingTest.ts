@@ -1,10 +1,10 @@
-import * as assert from "assert";
-import { disposeTestDocumentStore, testContext } from "../../Utils/TestUtil";
+import assert from "node:assert"
+import { disposeTestDocumentStore, testContext } from "../../Utils/TestUtil.js";
 
-import { Camera, FacetTestContext } from "../../Utils/FacetTestContext";
-import { FacetOptions } from "../../../src/Documents/Queries/Facets";
-import { Facet, FacetSetup, IDocumentStore, PutIndexesOperation, IndexDefinition } from "../../../src";
-import * as orderBy from "lodash.orderby";
+import { Camera, FacetTestContext } from "../../Utils/FacetTestContext.js";
+import { FacetOptions } from "../../../src/Documents/Queries/Facets/index.js";
+import { Facet, FacetSetup, IDocumentStore, PutIndexesOperation, IndexDefinition } from "../../../src/index.js";
+import orderBy from "lodash.orderby";
 
 describe("FacetPagingTest", function () {
 
@@ -146,7 +146,7 @@ describe("FacetPagingTest", function () {
                         ["desc", "asc"])
                         .map(x => x.count);
 
-                assert.strictEqual(counts[counts.length - 1], facetResults["manufacturer"].remainingHits);
+                assert.strictEqual(counts.at(-1), facetResults["manufacturer"].remainingHits);
             }
         }
     });

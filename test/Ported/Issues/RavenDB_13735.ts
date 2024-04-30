@@ -1,15 +1,15 @@
-import { IDocumentStore } from "../../../src/Documents/IDocumentStore";
-import { disposeTestDocumentStore, RavenTestContext, testContext } from "../../Utils/TestUtil";
-import { RefreshConfiguration } from "../../../src/Documents/Operations/Refresh/RefreshConfiguration";
-import { ConfigureRefreshOperation } from "../../../src/Documents/Operations/Refresh/ConfigureRefreshOperation";
-import { User } from "../../Assets/Entities";
-import moment = require("moment");
-import { Stopwatch } from "../../../src/Utility/Stopwatch";
-import { throwError } from "../../../src/Exceptions/index";
-import { assertThat } from "../../Utils/AssertExtensions";
-import { delay } from "../../../src/Utility/PromiseUtil";
-import { DateUtil } from "../../../src/Utility/DateUtil";
-import { CONSTANTS } from "../../../src/Constants";
+import { IDocumentStore } from "../../../src/Documents/IDocumentStore.js";
+import { disposeTestDocumentStore, RavenTestContext, testContext } from "../../Utils/TestUtil.js";
+import { RefreshConfiguration } from "../../../src/Documents/Operations/Refresh/RefreshConfiguration.js";
+import { ConfigureRefreshOperation } from "../../../src/Documents/Operations/Refresh/ConfigureRefreshOperation.js";
+import { User } from "../../Assets/Entities.js";
+import moment from "moment";
+import { Stopwatch } from "../../../src/Utility/Stopwatch.js";
+import { throwError } from "../../../src/Exceptions/index.js";
+import { assertThat } from "../../Utils/AssertExtensions.js";
+import { delay } from "../../../src/Utility/PromiseUtil.js";
+import { DateUtil } from "../../../src/Utility/DateUtil.js";
+import { CONSTANTS } from "../../../src/Constants.js";
 
 (RavenTestContext.is60Server || RavenTestContext.isPullRequest ? describe.skip : describe)("RavenDB_13735", function () {
 

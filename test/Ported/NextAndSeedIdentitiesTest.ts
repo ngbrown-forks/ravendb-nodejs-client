@@ -1,14 +1,14 @@
-import * as assert from "assert";
-import { testContext, disposeTestDocumentStore } from "../Utils/TestUtil";
+import assert from "node:assert"
+import { testContext, disposeTestDocumentStore } from "../Utils/TestUtil.js";
 
 import {
     IDocumentStore,
     GetIdentitiesOperation,
-} from "../../src";
-import { User } from "../Assets/Entities";
-import { NextIdentityForOperation } from "../../src/Documents/Operations/Identities/NextIdentityForOperation";
-import { SeedIdentityForOperation } from "../../src/Documents/Operations/Identities/SeedIdentityForOperation";
-import { assertThat } from "../Utils/AssertExtensions";
+} from "../../src/index.js";
+import { User } from "../Assets/Entities.js";
+import { NextIdentityForOperation } from "../../src/Documents/Operations/Identities/NextIdentityForOperation.js";
+import { SeedIdentityForOperation } from "../../src/Documents/Operations/Identities/SeedIdentityForOperation.js";
+import { assertThat } from "../Utils/AssertExtensions.js";
 
 describe("NextAndSeedIdentitiesTest", function () {
 

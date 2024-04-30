@@ -1,13 +1,13 @@
-import { IDocumentStore } from "../../../src/Documents/IDocumentStore";
-import { disposeTestDocumentStore, testContext } from "../../Utils/TestUtil";
-import { StopIndexingOperation } from "../../../src/Documents/Operations/Indexes/StopIndexingOperation";
-import { Person } from "../../Assets/Entities";
-import { IDisposable } from "../../../src/Types/Contracts";
-import { DatabaseCommands } from "../../Documents/Commands/DatabaseCommands";
-import { assertThat, assertThrows } from "../../Utils/AssertExtensions";
-import { RavenCommand } from "../../../src/Http/RavenCommand";
-import { ServerNode } from "../../../src/Http/ServerNode";
-import { HttpRequestParameters } from "../../../src/Primitives/Http";
+import { IDocumentStore } from "../../../src/Documents/IDocumentStore.js";
+import { disposeTestDocumentStore, testContext } from "../../Utils/TestUtil.js";
+import { StopIndexingOperation } from "../../../src/Documents/Operations/Indexes/StopIndexingOperation.js";
+import { Person } from "../../Assets/Entities.js";
+import { IDisposable } from "../../../src/Types/Contracts.js";
+import { DatabaseCommands } from "../../Documents/Commands/DatabaseCommands.js";
+import { assertThat, assertThrows } from "../../Utils/AssertExtensions.js";
+import { RavenCommand } from "../../../src/Http/RavenCommand.js";
+import { ServerNode } from "../../../src/Http/ServerNode.js";
+import { HttpRequestParameters } from "../../../src/Primitives/Http.js";
 
 describe("RavenDB_7162", function () {
 

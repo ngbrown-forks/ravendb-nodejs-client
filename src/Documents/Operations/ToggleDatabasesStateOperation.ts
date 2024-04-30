@@ -1,14 +1,14 @@
-import { IServerOperation, OperationResultType } from "./OperationAbstractions";
-import { DisableDatabaseToggleResult } from "./DisableDatabaseToggleResult";
-import { TypeUtil } from "../../Utility/TypeUtil";
-import { throwError } from "../../Exceptions";
-import { HttpRequestParameters } from "../../Primitives/Http";
-import * as stream from "readable-stream";
-import { DocumentConventions } from "../Conventions/DocumentConventions";
-import { RavenCommand } from "../../Http/RavenCommand";
-import { ServerNode } from "../../Http/ServerNode";
-import { IRaftCommand } from "../../Http/IRaftCommand";
-import { RaftIdGenerator } from "../../Utility/RaftIdGenerator";
+import { IServerOperation, OperationResultType } from "./OperationAbstractions.js";
+import { DisableDatabaseToggleResult } from "./DisableDatabaseToggleResult.js";
+import { TypeUtil } from "../../Utility/TypeUtil.js";
+import { throwError } from "../../Exceptions/index.js";
+import { HttpRequestParameters } from "../../Primitives/Http.js";
+import { Stream } from "node:stream";
+import { DocumentConventions } from "../Conventions/DocumentConventions.js";
+import { RavenCommand } from "../../Http/RavenCommand.js";
+import { ServerNode } from "../../Http/ServerNode.js";
+import { IRaftCommand } from "../../Http/IRaftCommand.js";
+import { RaftIdGenerator } from "../../Utility/RaftIdGenerator.js";
 
 export class ToggleDatabasesStateOperation implements IServerOperation<DisableDatabaseToggleResult> {
     private readonly _disable: boolean;
@@ -86,7 +86,7 @@ class ToggleDatabaseStateCommand extends RavenCommand<DisableDatabaseToggleResul
         return false;
     }
 
-    async setResponseAsync(bodyStream: stream.Stream, fromCache: boolean): Promise<string> {
+    async setResponseAsync(bodyStream: Stream, fromCache: boolean): Promise<string> {
         if (!bodyStream) {
             this._throwInvalidResponse();
         }

@@ -1,6 +1,6 @@
-import { Lazy } from "../Lazy";
-import { CompareExchangeValue } from "../Operations/CompareExchange/CompareExchangeValue";
-import { CompareExchangeResultClass } from "../../Types";
+import { Lazy } from "../Lazy.js";
+import { CompareExchangeValue } from "../Operations/CompareExchange/CompareExchangeValue.js";
+import { CompareExchangeResultClass } from "../../Types/index.js";
 
 export interface ILazyClusterTransactionOperations {
     getCompareExchangeValue<T>(key: string): Lazy<CompareExchangeValue<T> | null>;

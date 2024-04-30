@@ -1,6 +1,6 @@
-import * as assert from "assert";
-import { User } from "../../Assets/Entities";
-import { testContext, disposeTestDocumentStore } from "../../Utils/TestUtil";
+import assert from "node:assert"
+import { User } from "../../Assets/Entities.js";
+import { testContext, disposeTestDocumentStore } from "../../Utils/TestUtil.js";
 
 import {
     IDocumentStore,
@@ -9,9 +9,9 @@ import {
     CounterBatch,
     CounterBatchOperation,
     GetCountersOperation,
-} from "../../../src";
-import { CONSTANTS } from "../../../src/Constants";
-import { assertThat } from "../../Utils/AssertExtensions";
+} from "../../../src/index.js";
+import { CONSTANTS } from "../../../src/Constants.js";
+import { assertThat } from "../../Utils/AssertExtensions.js";
 
 describe("CountersSingleNodeTest", function () {
 
@@ -197,8 +197,8 @@ describe("CountersSingleNodeTest", function () {
         const { counters } = await store.operations.send(new GetCountersOperation("users/1-A", ["likes", "dislikes"]));
         assert.strictEqual(counters.length, 2);
         assert.strictEqual(
-            counters.filter(x => x.counterName === "likes")[0].totalValue, 5);
-        assert.strictEqual(counters.filter(x => x.counterName === "dislikes")[0].totalValue, 10);
+            counters.find(x => x.counterName === "likes").totalValue, 5);
+        assert.strictEqual(counters.find(x => x.counterName === "dislikes").totalValue, 10);
     });
 
     it("multiSetAndGetViaBatch", async function() {

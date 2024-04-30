@@ -1,4 +1,4 @@
-import { BackupSettings } from "./BackupSettings";
+import { BackupSettings } from "./BackupSettings.js";
 
 export interface FtpSettings extends BackupSettings {
     url: string;

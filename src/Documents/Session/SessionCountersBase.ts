@@ -1,11 +1,11 @@
-import { InMemoryDocumentSessionOperations } from "./InMemoryDocumentSessionOperations";
-import { StringUtil } from "../../Utility/StringUtil";
-import { throwError } from "../../Exceptions";
-import { TypeUtil } from "../../Utility/TypeUtil";
-import { IdTypeAndName } from "../IdTypeAndName";
-import { CounterOperationType } from "../Operations/Counters/CounterOperationType";
-import { CountersBatchCommandData } from "../Commands/Batches/CountersBatchCommandData";
-import { CounterOperation } from "../Operations/Counters/CounterOperation";
+import { InMemoryDocumentSessionOperations } from "./InMemoryDocumentSessionOperations.js";
+import { StringUtil } from "../../Utility/StringUtil.js";
+import { throwError } from "../../Exceptions/index.js";
+import { TypeUtil } from "../../Utility/TypeUtil.js";
+import { IdTypeAndName } from "../IdTypeAndName.js";
+import { CounterOperationType } from "../Operations/Counters/CounterOperationType.js";
+import { CountersBatchCommandData } from "../Commands/Batches/CountersBatchCommandData.js";
+import { CounterOperation } from "../Operations/Counters/CounterOperation.js";
 
 /**
  * Abstract implementation for in memory session operations

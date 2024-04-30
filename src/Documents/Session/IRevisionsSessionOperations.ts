@@ -1,8 +1,8 @@
-import { RevisionsCollectionObject } from "../../Types";
-import { DocumentType } from "../DocumentAbstractions";
-import { MetadataAsDictionary } from "../../Mapping/MetadataAsDictionary";
-import { ForceRevisionStrategy } from "./ForceRevisionStrategy";
-import { ILazyRevisionsOperations } from "./ILazyRevisionsOperations";
+import { RevisionsCollectionObject } from "../../Types/index.js";
+import { DocumentType } from "../DocumentAbstractions.js";
+import { MetadataAsDictionary } from "../../Mapping/MetadataAsDictionary.js";
+import { ForceRevisionStrategy } from "./ForceRevisionStrategy.js";
+import { ILazyRevisionsOperations } from "./ILazyRevisionsOperations.js";
 
 /**
  * Revisions advanced session operations

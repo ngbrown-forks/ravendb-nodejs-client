@@ -3,10 +3,9 @@ import {
     IDocumentStore,
     TimeSeriesAggregationResult,
     TimeSeriesRawResult
-} from "../../../src";
-import { disposeTestDocumentStore, testContext } from "../../Utils/TestUtil";
-import moment = require("moment");
-import { assertThat } from "../../Utils/AssertExtensions";
+} from "../../../src/index.js";
+import { disposeTestDocumentStore, testContext } from "../../Utils/TestUtil.js";
+import { assertThat } from "../../Utils/AssertExtensions.js";
 
 describe("TimeSeriesRawQuery", function () {
 

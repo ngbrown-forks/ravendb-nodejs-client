@@ -1,12 +1,12 @@
-import { User } from "../../Assets/Entities";
-import { assertThat } from "../../Utils/AssertExtensions";
-import { testContext, disposeTestDocumentStore } from "../../Utils/TestUtil";
+import { User } from "../../Assets/Entities.js";
+import { assertThat } from "../../Utils/AssertExtensions.js";
+import { testContext, disposeTestDocumentStore } from "../../Utils/TestUtil.js";
 
 import {
     IDocumentStore,
     PutCompareExchangeValueOperation,
     SessionOptions,
-} from "../../../src";
+} from "../../../src/index.js";
 
 describe("RavenDB-12132", function () {
 

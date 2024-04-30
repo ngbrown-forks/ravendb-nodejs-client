@@ -1,41 +1,41 @@
-import { IDisposable } from "../../Types/Contracts";
-import { DocumentType } from "../DocumentAbstractions";
-import { getLogger } from "../../Utility/LogUtil";
-import { DocumentStore } from "../DocumentStore";
-import { SubscriptionWorkerOptions } from "./SubscriptionWorkerOptions";
-import { SubscriptionBatch } from "./SubscriptionBatch";
-import { Socket } from "net";
-import { StringUtil } from "../../Utility/StringUtil";
-import { getError, throwError, RavenErrorType } from "../../Exceptions";
-import { TcpUtils } from "../../Utility/TcpUtils";
-import * as stream from "readable-stream";
-import { TcpNegotiateParameters } from "../../ServerWide/Tcp/TcpNegotiateParameters";
+import { IDisposable } from "../../Types/Contracts.js";
+import { DocumentType } from "../DocumentAbstractions.js";
+import { getLogger } from "../../Utility/LogUtil.js";
+import { DocumentStore } from "../DocumentStore.js";
+import { SubscriptionWorkerOptions } from "./SubscriptionWorkerOptions.js";
+import { SubscriptionBatch } from "./SubscriptionBatch.js";
+import { Socket } from "node:net";
+import { StringUtil } from "../../Utility/StringUtil.js";
+import { getError, throwError, RavenErrorType } from "../../Exceptions/index.js";
+import { TcpUtils } from "../../Utility/TcpUtils.js";
+import { Transform, pipeline, Readable } from "node:stream";
+import { TcpNegotiateParameters } from "../../ServerWide/Tcp/TcpNegotiateParameters.js";
 import {
     SUBSCRIPTION_TCP_VERSION,
     SupportedFeatures,
     TcpConnectionHeaderMessage
-} from "../../ServerWide/Tcp/TcpConnectionHeaderMessage";
-import { OUT_OF_RANGE_STATUS, TcpNegotiation } from "../../ServerWide/Tcp/TcpNegotiation";
-import { TcpConnectionHeaderResponse } from "../../ServerWide/Tcp/TcpConnectionHeaderResponse";
-import { EventEmitter } from "events";
-import { TimeUtil } from "../../Utility/TimeUtil";
-import { ObjectUtil } from "../../Utility/ObjectUtil";
-import { SubscriptionConnectionServerMessage } from "./SubscriptionConnectionServerMessage";
-import { EmptyCallback } from "../../Types/Callbacks";
-import { delay, wrapWithTimeout } from "../../Utility/PromiseUtil";
-import * as Parser from "stream-json/Parser";
-import * as StreamValues from "stream-json/streamers/StreamValues";
-import { BatchFromServer, CounterIncludeItem } from "./BatchFromServer";
-import { ServerNode } from "../../Http/ServerNode";
-import { RequestExecutor } from "../../Http/RequestExecutor";
-import { GetTcpInfoCommand, TcpConnectionInfo } from "../../ServerWide/Commands/GetTcpInfoCommand";
-import { GetTcpInfoForRemoteTaskCommand } from "../Commands/GetTcpInfoForRemoteTaskCommand";
-import * as os from "os";
-import { DocumentConventions } from "../Conventions/DocumentConventions";
-import { ServerCasing, ServerResponse } from "../../Types";
-import { CONSTANTS } from "../../Constants";
-import { TcpNegotiationResponse } from "../../ServerWide/Tcp/TcpNegotiationResponse";
-import { v4 as uuidv4 } from "uuid";
+} from "../../ServerWide/Tcp/TcpConnectionHeaderMessage.js";
+import { OUT_OF_RANGE_STATUS, TcpNegotiation } from "../../ServerWide/Tcp/TcpNegotiation.js";
+import { TcpConnectionHeaderResponse } from "../../ServerWide/Tcp/TcpConnectionHeaderResponse.js";
+import { EventEmitter } from "node:events";
+import { TimeUtil } from "../../Utility/TimeUtil.js";
+import { ObjectUtil } from "../../Utility/ObjectUtil.js";
+import { SubscriptionConnectionServerMessage } from "./SubscriptionConnectionServerMessage.js";
+import { EmptyCallback } from "../../Types/Callbacks.js";
+import { delay, wrapWithTimeout } from "../../Utility/PromiseUtil.js";
+import Parser from "stream-json/Parser.js";
+import StreamValues from "stream-json/streamers/StreamValues.js";
+import { BatchFromServer, CounterIncludeItem } from "./BatchFromServer.js";
+import { ServerNode } from "../../Http/ServerNode.js";
+import { RequestExecutor } from "../../Http/RequestExecutor.js";
+import { GetTcpInfoCommand, TcpConnectionInfo } from "../../ServerWide/Commands/GetTcpInfoCommand.js";
+import { GetTcpInfoForRemoteTaskCommand } from "../Commands/GetTcpInfoForRemoteTaskCommand.js";
+import { EOL } from "node:os";
+import { DocumentConventions } from "../Conventions/DocumentConventions.js";
+import { ServerCasing, ServerResponse } from "../../Types/index.js";
+import { CONSTANTS } from "../../Constants.js";
+import { TcpNegotiationResponse } from "../../ServerWide/Tcp/TcpNegotiationResponse.js";
+import { randomUUID } from "node:crypto";
 
 type EventTypes = "afterAcknowledgment" | "onEstablishedSubscriptionConnection" | "connectionRetry" | "batch" | "error" | "end" | "unexpectedSubscriptionError";
 
@@ -49,7 +49,7 @@ export class SubscriptionWorker<T extends object> implements IDisposable {
     private _processingCanceled = false;
     private readonly _options: SubscriptionWorkerOptions<T>;
     private _tcpClient: Socket;
-    private _parser: stream.Transform;
+    private _parser: Transform;
     private _disposed: boolean = false;
     private _subscriptionTask: Promise<void>;
     private _forcedTopologyUpdateAttempts = 0;
@@ -63,7 +63,7 @@ export class SubscriptionWorker<T extends object> implements IDisposable {
             maxDocsPerBatch: 4096,
             timeToWaitBeforeConnectionRetry: 5 * 1000,
             maxErroneousPeriod: 5 * 60 * 1000,
-            workerId: uuidv4()
+            workerId: randomUUID()
         }, options);
         this._revisions = withRevisions;
 
@@ -263,7 +263,7 @@ export class SubscriptionWorker<T extends object> implements IDisposable {
         const conventions = this._store.conventions;
         const revisions = this._revisions;
 
-        const keysTransform = new stream.Transform({
+        const keysTransform = new Transform({
             objectMode: true,
             transform(chunk, encoding, callback) {
                 let value = chunk["value"];
@@ -278,7 +278,7 @@ export class SubscriptionWorker<T extends object> implements IDisposable {
         });
 
 
-        this._parser = stream.pipeline([
+        this._parser = pipeline([
             socket,
             new Parser({ jsonStreaming: true, streamValues: false }),
             new StreamValues(),
@@ -287,7 +287,7 @@ export class SubscriptionWorker<T extends object> implements IDisposable {
             if (err && !socket.destroyed) {
                 this._emitter.emit("error", err);
             }
-        }) as stream.Transform;
+        }) as Transform;
 
         this._parser.pause();
     }
@@ -297,16 +297,18 @@ export class SubscriptionWorker<T extends object> implements IDisposable {
         this._ensureParser(socket);
         const x: any = await this._readNextObject();
         switch (x.status) {
-            case "Ok":
+            case "Ok": {
                 return {
                     version: x.version,
                     licensedFeatures: x.licensedFeatures
                 }
-            case "AuthorizationFailed":
+            }
+            case "AuthorizationFailed": {
                 throwError("AuthorizationException",
                         "Cannot access database " + this._dbName + " because " + x.message);
                 return;
-            case "TcpVersionMismatch":
+            }
+            case "TcpVersionMismatch": {
                 if (x.version !== OUT_OF_RANGE_STATUS) {
                     return {
                         version: x.version,
@@ -319,8 +321,10 @@ export class SubscriptionWorker<T extends object> implements IDisposable {
                 throwError("InvalidOperationException",
                     "Can't connect to database " + this._dbName + " because: " + x.message);
                 break;
-            case "InvalidNetworkTopology":
+            }
+            case "InvalidNetworkTopology": {
                 throwError("InvalidNetworkTopologyException", "Failed to connect to url " + url + " because " + x.message);
+            }
         }
 
         return {
@@ -339,7 +343,7 @@ export class SubscriptionWorker<T extends object> implements IDisposable {
         } as TcpConnectionHeaderMessage;
 
         const payload = ObjectUtil.transformObjectKeys(dropMsg, {
-            defaultTransform: "pascal"
+            defaultTransform: ObjectUtil.pascal
         });
 
         return new Promise<void>(resolve => {
@@ -366,14 +370,16 @@ export class SubscriptionWorker<T extends object> implements IDisposable {
 
         // noinspection FallThroughInSwitchStatementJS
         switch (connectionStatus.status) {
-            case "Accepted":
+            case "Accepted": {
                 break;
-            case "InUse":
+            }
+            case "InUse": {
                 throwError("SubscriptionInUseException",
                     "Subscription with id '" + this._options.subscriptionName
                     + "' cannot be opened, because it's in use and the connection strategy is "
                     + this._options.strategy);
                 break;
+            }
             case "Closed": {
                 const canReconnect = connectionStatus.data.CanReconnect || false;
                 const subscriptionClosedError = getError("SubscriptionClosedException",
@@ -382,16 +388,18 @@ export class SubscriptionWorker<T extends object> implements IDisposable {
                 (subscriptionClosedError as any).canReconnect = canReconnect;
                 throw subscriptionClosedError;
             }
-            case "Invalid":
+            case "Invalid": {
                 throwError("SubscriptionInvalidStateException",
                     "Subscription with id '" + this._options.subscriptionName
                     + "' cannot be opened, because it is in invalid state. " + connectionStatus.exception);
                 break;
-            case "NotFound":
+            }
+            case "NotFound": {
                 throwError("SubscriptionDoesNotExistException",
                     "Subscription with id '" + this._options.subscriptionName
                     + "' cannot be opened, because it does not exist. " + connectionStatus.exception);
                 break;
+            }
             case "Redirect": {
                 if (this._options.strategy === "WaitForFree") {
                     if (connectionStatus.data) {
@@ -410,17 +418,19 @@ export class SubscriptionWorker<T extends object> implements IDisposable {
 
                 const error = getError("SubscriptionDoesNotBelongToNodeException",
                     "Subscription with id '" + this._options.subscriptionName
-                    + "' cannot be processed by current node '" + currentNode + "', it will be redirected to " + appropriateNode + os.EOL + reasons);
+                    + "' cannot be processed by current node '" + currentNode + "', it will be redirected to " + appropriateNode + EOL + reasons);
                 (error as any).appropriateNode = appropriateNode;
                 throw error;
             }
-            case "ConcurrencyReconnect":
+            case "ConcurrencyReconnect": {
                 throwError("SubscriptionChangeVectorUpdateConcurrencyException", connectionStatus.message);
                 break;
-            default:
+            }
+            default: {
                 throwError("InvalidOperationException",
                     "Subscription '" + this._options.subscriptionName
                     + "' could not be opened, reason: " + connectionStatus.status);
+            }
         }
     }
 
@@ -528,7 +538,7 @@ export class SubscriptionWorker<T extends object> implements IDisposable {
         } finally {
             try {
                 await wrapWithTimeout(notifiedSubscriber, 15_000);
-            } catch (e) {
+            } catch {
                 // ignore
             }
         }
@@ -566,36 +576,45 @@ export class SubscriptionWorker<T extends object> implements IDisposable {
             }
 
             switch (receivedMessage.type) {
-                case "Data":
+                case "Data": {
                     incomingBatch.push(receivedMessage);
                     break;
-                case "Includes":
+                }
+                case "Includes": {
                     includes.push(receivedMessage.includes);
                     break;
-                case "CounterIncludes":
+                }
+                case "CounterIncludes": {
                     counterIncludes.push({ counterIncludes: receivedMessage.includedCounterNames, includes: receivedMessage.counterIncludes });
                     break;
-                case "TimeSeriesIncludes":
+                }
+                case "TimeSeriesIncludes": {
                     timeSeriesIncludes.push(receivedMessage.timeSeriesIncludes);
                     break;
-                case "EndOfBatch":
+                }
+                case "EndOfBatch": {
                     endOfBatch = true;
                     break;
-                case "Confirm":
+                }
+                case "Confirm": {
                     this._emitter.emit("afterAcknowledgment", batch);
 
                     incomingBatch.length = 0;
                     batch.items.length = 0;
                     break;
-                case "ConnectionStatus":
+                }
+                case "ConnectionStatus": {
                     this._assertConnectionState(receivedMessage);
                     break;
-                case "Error":
+                }
+                case "Error": {
                     this._throwSubscriptionError(receivedMessage);
                     break;
-                default:
+                }
+                default: {
                     this._throwInvalidServerResponse(receivedMessage);
                     break;
+                }
 
             }
         }
@@ -618,7 +637,7 @@ export class SubscriptionWorker<T extends object> implements IDisposable {
     }
 
     private async _readNextObject(): Promise<SubscriptionConnectionServerMessage> {
-        const stream: NodeJS.ReadableStream = this._parser;
+        const stream: Readable = this._parser;
         if (this._processingCanceled) {
             return null;
         }
@@ -703,7 +722,7 @@ export class SubscriptionWorker<T extends object> implements IDisposable {
                             this._redirectNode = indexAndNode.currentNode;
 
                             this._logger.info("Subscription " + this._options.subscriptionName + ". Will modify redirect node from null to " + this._redirectNode.clusterTag);
-                        } catch (e) {
+                        } catch {
                             // will let topology to decide
                             this._logger.info("Subscription '" + this._options.subscriptionName + "'. Could not select the redirect node will keep it null.");
                         }
@@ -730,7 +749,7 @@ export class SubscriptionWorker<T extends object> implements IDisposable {
         }
 
         const maxErroneousPeriod =  this._options.maxErroneousPeriod;
-        const erroneousPeriodDuration = new Date().getTime() - this._lastConnectionFailure.getTime();
+        const erroneousPeriodDuration = Date.now() - this._lastConnectionFailure.getTime();
         if (erroneousPeriodDuration > maxErroneousPeriod) {
             throwError("SubscriptionInvalidStateException",
                 "Subscription connection was in invalid state for more than "
@@ -883,7 +902,7 @@ export class SubscriptionWorker<T extends object> implements IDisposable {
 
         return {
             ...ObjectUtil.transformObjectKeys(rest, {
-                defaultTransform: "camel"
+                defaultTransform: ObjectUtil.camel
             }),
             data,
             includes: ObjectUtil.mapIncludesToLocalObject(Includes, conventions),

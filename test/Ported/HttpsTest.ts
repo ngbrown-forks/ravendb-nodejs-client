@@ -1,22 +1,22 @@
-import * as assert from "assert";
-import { testContext, disposeTestDocumentStore } from "../Utils/TestUtil";
+import assert from "node:assert"
+import { testContext, disposeTestDocumentStore } from "../Utils/TestUtil.js";
 
 import {
     CertificateRawData,
     CreateClientCertificateOperation, DatabaseAccess, DeleteCertificateOperation,
     DocumentStore, GetCertificateOperation, GetCertificatesOperation,
     IDocumentStore, PutClientCertificateOperation,
-} from "../../src";
-import { assertThat, assertThrows } from "../Utils/AssertExtensions";
-import * as unzipper from "unzipper";
-import { bufferToReadable, readToBuffer, readToEnd, } from "../../src/Utility/StreamUtil";
-import { ReplaceClusterCertificateOperation } from "../../src/ServerWide/Operations/Certificates/ReplaceClusterCertificateOperation";
+} from "../../src/index.js";
+import { assertThat, assertThrows } from "../Utils/AssertExtensions.js";
+import { Parse } from "unzipper";
+import { bufferToReadable, readToBuffer, readToEnd, } from "../../src/Utility/StreamUtil.js";
+import { ReplaceClusterCertificateOperation } from "../../src/ServerWide/Operations/Certificates/ReplaceClusterCertificateOperation.js";
 import {
     EditClientCertificateOperation,
     EditClientCertificateParameters
-} from "../../src/ServerWide/Operations/Certificates/EditClientCertificateOperation";
-import { GetCertificateMetadataOperation } from "../../src/ServerWide/Operations/Certificates/GetCertificateMetadataOperation";
-import { GetCertificatesMetadataOperation } from "../../src/ServerWide/Operations/Certificates/GetCertificatesMetadataOperation";
+} from "../../src/ServerWide/Operations/Certificates/EditClientCertificateOperation.js";
+import { GetCertificateMetadataOperation } from "../../src/ServerWide/Operations/Certificates/GetCertificateMetadataOperation.js";
+import { GetCertificatesMetadataOperation } from "../../src/ServerWide/Operations/Certificates/GetCertificatesMetadataOperation.js";
 
 describe("HttpsTest", function () {
 
@@ -159,7 +159,7 @@ describe("HttpsTest", function () {
             const names = certificateDefinitions.map(x => x.name);
             assertThat(names)
                 .contains("cert3-newName");
-            assertThat(!!names.find(x => x === "cert3"))
+            assertThat(names.includes("cert3"))
                 .isFalse();
 
             const certificateMetadata = await store.maintenance.server.send(new GetCertificateMetadataOperation(cert1Thumbprint));
@@ -224,7 +224,7 @@ describe("HttpsTest", function () {
 
     it("canUseServerGeneratedCertificate", async () => {
         const certificateRawData = await store.maintenance.server.send(
-            new CreateClientCertificateOperation("users-auth-test", { }, "Operator"));
+            new CreateClientCertificateOperation("users-auth-test", { /* empty */ }, "Operator"));
 
         const pfx = await extractPfx(certificateRawData);
 
@@ -269,7 +269,7 @@ describe("HttpsTest", function () {
 
 async function extractCertificate(certificateRawData: CertificateRawData) {
     const stream = bufferToReadable(certificateRawData.rawData)
-        .pipe(unzipper.Parse( { forceStream: true }));
+        .pipe(Parse( { forceStream: true }));
 
     let cert = "";
 
@@ -277,7 +277,7 @@ async function extractCertificate(certificateRawData: CertificateRawData) {
         if (entry.path.endsWith(".crt")) {
             const entryText = await readToEnd(entry);
             const lines = entryText.split(/\r?\n/);
-            cert = lines.slice(1, lines.length - 2).join("\r\n");
+            cert = lines.slice(1, - 2).join("\r\n");
             break;
         } else {
             entry.autodrain();
@@ -291,7 +291,7 @@ async function extractCertificate(certificateRawData: CertificateRawData) {
 
 async function extractPfx(certificateRawData: CertificateRawData) {
     const stream = bufferToReadable(certificateRawData.rawData)
-        .pipe(unzipper.Parse( { forceStream: true }));
+        .pipe(Parse( { forceStream: true }));
 
     for await (const entry of stream) {
         if (entry.path.endsWith(".pfx")) {

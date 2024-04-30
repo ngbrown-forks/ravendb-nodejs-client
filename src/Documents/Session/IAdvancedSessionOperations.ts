@@ -1,30 +1,30 @@
-import { StreamQueryStatistics } from "./StreamQueryStatistics";
-import { RequestExecutor } from "../../Http/RequestExecutor";
-import { ServerNode } from "../../Http/ServerNode";
-import { ICommandData } from "../Commands/CommandData";
-import { IDocumentStore } from "../IDocumentStore";
-import { DocumentsChanges } from "./DocumentsChanges";
-import { EntityToJson } from "./EntityToJson";
-import { IMetadataDictionary } from "./IMetadataDictionary";
-import { SessionEventsEmitter } from "./SessionEvents";
-import { TransactionMode } from "./TransactionMode";
-import { IEagerSessionOperations } from "./Operations/Lazy/IEagerSessionOperations";
-import { ILazySessionOperations } from "./Operations/Lazy/ILazySessionOperations";
-import { IAttachmentsSessionOperations } from "./IAttachmentsSessionOperations";
-import { IRevisionsSessionOperations } from "./IRevisionsSessionOperations";
-import { IClusterTransactionOperations } from "./IClusterTransactionOperations";
-import { DocumentType } from "../DocumentAbstractions";
-import { IRawDocumentQuery } from "./IRawDocumentQuery";
-import { SessionInfo, SessionLoadStartingWithOptions } from "./IDocumentSession";
-import { IDocumentQuery } from "./IDocumentQuery";
-import { JavaScriptArray } from "./JavaScriptArray";
-import { DocumentResultStream } from "./DocumentResultStream";
-import * as stream from "readable-stream";
-import { IDocumentQueryBuilder } from "./IDocumentQueryBuilder";
-import { IGraphDocumentQuery } from "./IGraphDocumentQuery";
-import { JavaScriptMap } from "./JavaScriptMap";
-import { ConditionalLoadResult } from "./ConditionalLoadResult";
-import { EntityInfo } from "./DocumentsById";
+import { StreamQueryStatistics } from "./StreamQueryStatistics.js";
+import { RequestExecutor } from "../../Http/RequestExecutor.js";
+import { ServerNode } from "../../Http/ServerNode.js";
+import { ICommandData } from "../Commands/CommandData.js";
+import { IDocumentStore } from "../IDocumentStore.js";
+import { DocumentsChanges } from "./DocumentsChanges.js";
+import { EntityToJson } from "./EntityToJson.js";
+import { IMetadataDictionary } from "./IMetadataDictionary.js";
+import { SessionEventsEmitter } from "./SessionEvents.js";
+import { TransactionMode } from "./TransactionMode.js";
+import { IEagerSessionOperations } from "./Operations/Lazy/IEagerSessionOperations.js";
+import { ILazySessionOperations } from "./Operations/Lazy/ILazySessionOperations.js";
+import { IAttachmentsSessionOperations } from "./IAttachmentsSessionOperations.js";
+import { IRevisionsSessionOperations } from "./IRevisionsSessionOperations.js";
+import { IClusterTransactionOperations } from "./IClusterTransactionOperations.js";
+import { DocumentType } from "../DocumentAbstractions.js";
+import { IRawDocumentQuery } from "./IRawDocumentQuery.js";
+import { SessionInfo, SessionLoadStartingWithOptions } from "./IDocumentSession.js";
+import { IDocumentQuery } from "./IDocumentQuery.js";
+import { JavaScriptArray } from "./JavaScriptArray.js";
+import { DocumentResultStream } from "./DocumentResultStream.js";
+import { Writable } from "node:stream";
+import { IDocumentQueryBuilder } from "./IDocumentQueryBuilder.js";
+import { IGraphDocumentQuery } from "./IGraphDocumentQuery.js";
+import { JavaScriptMap } from "./JavaScriptMap.js";
+import { ConditionalLoadResult } from "./ConditionalLoadResult.js";
+import { EntityInfo } from "./DocumentsById.js";
 
 export type StreamQueryStatisticsCallback = (stats: StreamQueryStatistics) => void;
 
@@ -114,23 +114,23 @@ export interface IAdvancedSessionOperations extends IAdvancedDocumentSessionOper
     /**
      *  Returns the results of a query directly into stream
      */
-    streamInto<T extends object>(query: IDocumentQuery<T>, writable: stream.Writable): Promise<void>;
+    streamInto<T extends object>(query: IDocumentQuery<T>, writable: Writable): Promise<void>;
 
     /**
      * Returns the results of a query directly into stream
      */
-    streamInto<T extends object>(query: IRawDocumentQuery<T>, writable: stream.Writable): Promise<void>;
+    streamInto<T extends object>(query: IRawDocumentQuery<T>, writable: Writable): Promise<void>;
 
     loadIntoStream(
-        ids: string[], writable: stream.Writable): Promise<void>;
+        ids: string[], writable: Writable): Promise<void>;
 
     loadStartingWithIntoStream<TEntity extends object>(
         idPrefix: string,
-        writable: stream.Writable): Promise<void>;
+        writable: Writable): Promise<void>;
 
     loadStartingWithIntoStream<TEntity extends object>(
         idPrefix: string,
-        writable: stream.Writable,
+        writable: Writable,
         opts: SessionLoadStartingWithOptions<TEntity>): Promise<void>;
 
     /**

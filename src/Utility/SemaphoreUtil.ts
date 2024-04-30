@@ -1,7 +1,7 @@
-import * as semaphore from "semaphore";
-import { IDisposable } from "../Types/Contracts";
-import { AsyncTimeout } from "./PromiseUtil";
-import { getError } from "../Exceptions";
+import { IDisposable } from "../Types/Contracts.js";
+import { AsyncTimeout } from "./PromiseUtil.js";
+import { getError } from "../Exceptions/index.js";
+import { Semaphore } from "./Semaphore.js";
 
 export interface AcquireSemaphoreOptions {
     timeout?: number;
@@ -18,7 +18,7 @@ class SemaphoreAcquisition implements SemaphoreAcquisitionContext {
     private _disposed: boolean = false;
     private _timeout?: AsyncTimeout;
 
-    private _sem: semaphore.Semaphore;
+    private _sem: Semaphore;
     private _promise: Promise<void>;
 
     public get promise() {
@@ -29,7 +29,7 @@ class SemaphoreAcquisition implements SemaphoreAcquisitionContext {
         return this._timeout && this._timeout.timedOut;
     }
 
-    public constructor(sem: semaphore.Semaphore, semOpts?: AcquireSemaphoreOptions) {
+    public constructor(sem: Semaphore, semOpts?: AcquireSemaphoreOptions) {
         const contextName = semOpts ? semOpts.contextName : "";
 
         if (semOpts && semOpts.timeout != null) {
@@ -100,7 +100,7 @@ class SemaphoreAcquisition implements SemaphoreAcquisitionContext {
 }
 
 export function acquireSemaphore(
-    sem: semaphore.Semaphore, semOpts?: AcquireSemaphoreOptions)
+    sem: Semaphore, semOpts?: AcquireSemaphoreOptions)
     : SemaphoreAcquisitionContext {
     return new SemaphoreAcquisition(sem, semOpts);
 }

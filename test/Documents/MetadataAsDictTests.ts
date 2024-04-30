@@ -1,5 +1,5 @@
-import * as assert from "assert";
-import { createMetadataDictionary } from "../../src/Mapping/MetadataAsDictionary";
+import assert from "node:assert"
+import { createMetadataDictionary } from "../../src/Mapping/MetadataAsDictionary.js";
 
 describe("MetadataAsDictionary", function () {
 

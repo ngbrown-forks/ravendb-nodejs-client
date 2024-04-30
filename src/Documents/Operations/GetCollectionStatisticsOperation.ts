@@ -1,11 +1,12 @@
-import { HttpRequestParameters } from "../../Primitives/Http";
-import { IMaintenanceOperation, OperationResultType } from "./OperationAbstractions";
-import { CollectionStatistics } from "./CollectionStatistics";
-import { RavenCommand } from "../../Http/RavenCommand";
-import { DocumentConventions } from "../Conventions/DocumentConventions";
-import { ServerNode } from "../../Http/ServerNode";
-import { JsonSerializer } from "../../Mapping/Json/Serializer";
-import * as stream from "readable-stream";
+import { HttpRequestParameters } from "../../Primitives/Http.js";
+import { IMaintenanceOperation, OperationResultType } from "./OperationAbstractions.js";
+import { CollectionStatistics } from "./CollectionStatistics.js";
+import { RavenCommand } from "../../Http/RavenCommand.js";
+import { DocumentConventions } from "../Conventions/DocumentConventions.js";
+import { ServerNode } from "../../Http/ServerNode.js";
+import { JsonSerializer } from "../../Mapping/Json/Serializer.js";
+import { Stream } from "node:stream";
+import { ObjectUtil } from "../../Utility/ObjectUtil.js";
 
 export class GetCollectionStatisticsOperation implements IMaintenanceOperation<CollectionStatistics> {
 
@@ -34,11 +35,7 @@ export class GetCollectionStatisticsCommand extends RavenCommand<CollectionStati
         return { uri };
     }
 
-    protected get _serializer(): JsonSerializer {
-        return JsonSerializer.getDefault();
-    }
-
-    public async setResponseAsync(bodyStream: stream.Stream, fromCache: boolean): Promise<string> {
+    public async setResponseAsync(bodyStream: Stream, fromCache: boolean): Promise<string> {
         if (!bodyStream) {
             this._throwInvalidResponse();
         }
@@ -47,7 +44,7 @@ export class GetCollectionStatisticsCommand extends RavenCommand<CollectionStati
         this.result = await this._defaultPipeline(_ => body = _)
             .collectBody()
             .objectKeysTransform({
-                defaultTransform: "camel",
+                defaultTransform: ObjectUtil.camel,
                 ignorePaths: [/^collections\./i]
             })
             .process(bodyStream);

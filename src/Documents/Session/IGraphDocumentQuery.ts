@@ -1,9 +1,9 @@
-import { IQueryBase } from "./IQueryBase";
-import { IDocumentQueryBaseSingle } from "./IDocumentQueryBaseSingle";
-import { IEnumerableQuery } from "./IEnumerableQuery";
-import { IDocumentQuery } from "./IDocumentQuery";
-import { DocumentType } from "../DocumentAbstractions";
-import { GraphDocumentQueryBuilder } from "./GraphDocumentQuery";
+import { IQueryBase } from "./IQueryBase.js";
+import { IDocumentQueryBaseSingle } from "./IDocumentQueryBaseSingle.js";
+import { IEnumerableQuery } from "./IEnumerableQuery.js";
+import { IDocumentQuery } from "./IDocumentQuery.js";
+import { DocumentType } from "../DocumentAbstractions.js";
+import { GraphDocumentQueryBuilder } from "./GraphDocumentQuery.js";
 
 /**
  * @deprecated Graph API will be removed in next major version of the product.

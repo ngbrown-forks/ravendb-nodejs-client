@@ -1,11 +1,11 @@
-import { Company } from "../../Assets/Entities";
-import { assertThat } from "../../Utils/AssertExtensions";
-import { testContext, disposeTestDocumentStore } from "../../Utils/TestUtil";
+import { Company } from "../../Assets/Entities.js";
+import { assertThat } from "../../Utils/AssertExtensions.js";
+import { testContext, disposeTestDocumentStore } from "../../Utils/TestUtil.js";
 
 import {
     IDocumentStore,
     QueryTimings,
-} from "../../../src";
+} from "../../../src/index.js";
 
 describe("RavenDB-9587", function () {
 
@@ -40,10 +40,10 @@ describe("RavenDB-9587", function () {
                 .isNotNull();
             assertThat(timings instanceof QueryTimings)
                 .isTrue();
-            Object.keys(timings.timings).forEach(key => {
+            for (const key of Object.keys(timings.timings)) {
                 assertThat(timings.timings[key] instanceof QueryTimings)
                     .isTrue();
-            });
+            }
         }
 
     });

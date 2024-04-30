@@ -1,12 +1,12 @@
-import { IOperation, OperationResultType } from "../OperationAbstractions";
-import { HttpCache } from "../../../Http/HttpCache";
-import { StringUtil } from "../../../Utility/StringUtil";
-import { throwError } from "../../../Exceptions";
-import { HttpRequestParameters } from "../../../Primitives/Http";
-import { IDocumentStore } from "../../IDocumentStore";
-import { DocumentConventions } from "../../Conventions/DocumentConventions";
-import { RavenCommand } from "../../../Http/RavenCommand";
-import { ServerNode } from "../../../Http/ServerNode";
+import { IOperation, OperationResultType } from "../OperationAbstractions.js";
+import { HttpCache } from "../../../Http/HttpCache.js";
+import { StringUtil } from "../../../Utility/StringUtil.js";
+import { throwError } from "../../../Exceptions/index.js";
+import { HttpRequestParameters } from "../../../Primitives/Http.js";
+import { IDocumentStore } from "../../IDocumentStore.js";
+import { DocumentConventions } from "../../Conventions/DocumentConventions.js";
+import { RavenCommand } from "../../../Http/RavenCommand.js";
+import { ServerNode } from "../../../Http/ServerNode.js";
 
 export class DeleteAttachmentOperation implements IOperation<void> {
     private readonly _documentId: string;

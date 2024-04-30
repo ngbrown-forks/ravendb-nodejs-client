@@ -1,4 +1,4 @@
-import { throwError } from "../../../Exceptions";
+import { throwError } from "../../../Exceptions/index.js";
 
 export class PutAttachmentCommandHelper {
     public static throwStreamWasAlreadyUsed(): void {

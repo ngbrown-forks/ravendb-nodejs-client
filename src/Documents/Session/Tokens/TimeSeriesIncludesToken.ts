@@ -1,12 +1,12 @@
-import { QueryToken } from "./QueryToken";
-import { TimeSeriesRange } from "../../Operations/TimeSeries/TimeSeriesRange";
-import { StringUtil } from "../../../Utility/StringUtil";
-import { DateUtil } from "../../../Utility/DateUtil";
-import { StringBuilder } from "../../../Utility/StringBuilder";
-import { AbstractTimeSeriesRange } from "../../Operations/TimeSeries/AbstractTimeSeriesRange";
-import { TimeSeriesTimeRange } from "../../Operations/TimeSeries/TimeSeriesTimeRange";
-import { throwError } from "../../../Exceptions";
-import { TimeSeriesCountRange } from "../../Operations/TimeSeries/TimeSeriesCountRange";
+import { QueryToken } from "./QueryToken.js";
+import { TimeSeriesRange } from "../../Operations/TimeSeries/TimeSeriesRange.js";
+import { StringUtil } from "../../../Utility/StringUtil.js";
+import { DateUtil } from "../../../Utility/DateUtil.js";
+import { StringBuilder } from "../../../Utility/StringBuilder.js";
+import { AbstractTimeSeriesRange } from "../../Operations/TimeSeries/AbstractTimeSeriesRange.js";
+import { TimeSeriesTimeRange } from "../../Operations/TimeSeries/TimeSeriesTimeRange.js";
+import { throwError } from "../../../Exceptions/index.js";
+import { TimeSeriesCountRange } from "../../Operations/TimeSeries/TimeSeriesCountRange.js";
 
 export class TimeSeriesIncludesToken extends QueryToken {
     private _sourcePath: string;
@@ -63,12 +63,14 @@ export class TimeSeriesIncludesToken extends QueryToken {
 
     private static _writeTimeRangeTo(writer: StringBuilder, range: TimeSeriesTimeRange) {
         switch (range.type) {
-            case "Last":
+            case "Last": {
                 writer
                     .append("last(");
                 break;
-            default:
+            }
+            default: {
                 throwError("InvalidArgumentException", "Not supported time range type: " + range.type);
+            }
         }
 
         writer
@@ -80,12 +82,14 @@ export class TimeSeriesIncludesToken extends QueryToken {
 
     private static _writeCountRangeTo(writer: StringBuilder, range: TimeSeriesCountRange) {
         switch (range.type) {
-            case "Last":
+            case "Last": {
                 writer
                     .append("last(");
                 break;
-            default:
+            }
+            default: {
                 throwError("InvalidArgumentException", "Not supported time range type: " + range.type);
+            }
         }
 
         writer

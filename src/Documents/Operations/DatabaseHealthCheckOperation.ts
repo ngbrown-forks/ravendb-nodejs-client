@@ -1,8 +1,8 @@
-import { IMaintenanceOperation, OperationResultType } from "./OperationAbstractions";
-import { HttpRequestParameters } from "../../Primitives/Http";
-import { DocumentConventions } from "../Conventions/DocumentConventions";
-import { RavenCommand } from "../../Http/RavenCommand";
-import { ServerNode } from "../../Http/ServerNode";
+import { IMaintenanceOperation, OperationResultType } from "./OperationAbstractions.js";
+import { HttpRequestParameters } from "../../Primitives/Http.js";
+import { DocumentConventions } from "../Conventions/DocumentConventions.js";
+import { RavenCommand } from "../../Http/RavenCommand.js";
+import { ServerNode } from "../../Http/ServerNode.js";
 
 export class DatabaseHealthCheckOperation implements IMaintenanceOperation<void> {
     getCommand(conventions: DocumentConventions): RavenCommand<void> {

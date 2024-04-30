@@ -1,6 +1,6 @@
-import { AbstractCsharpIndexCreationTask, IDocumentStore } from "../../../src";
-import { disposeTestDocumentStore, testContext } from "../../Utils/TestUtil";
-import { assertThat } from "../../Utils/AssertExtensions";
+import { AbstractCsharpIndexCreationTask, IDocumentStore } from "../../../src/index.js";
+import { disposeTestDocumentStore, testContext } from "../../Utils/TestUtil.js";
+import { assertThat } from "../../Utils/AssertExtensions.js";
 
 describe("RavenDB_16334", function () {
 

@@ -1,5 +1,5 @@
-import { HiloIdGenerator } from "./HiloIdGenerator";
-import { NextId } from "./NextId";
+import { HiloIdGenerator } from "./HiloIdGenerator.js";
+import { NextId } from "./NextId.js";
 
 
 export class DefaultHiLoIdGenerator extends HiloIdGenerator {

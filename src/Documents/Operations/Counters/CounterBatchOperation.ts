@@ -1,14 +1,14 @@
-import { IOperation, OperationResultType } from "../OperationAbstractions";
-import { CountersDetail } from "./CountersDetail";
-import { CounterBatch } from "./CounterBatch";
-import { DocumentConventions } from "../../Conventions/DocumentConventions";
-import { IDocumentStore } from "../../IDocumentStore";
-import { HttpCache } from "../../../Http/HttpCache";
-import { RavenCommand } from "../../../Http/RavenCommand";
-import { throwError } from "../../../Exceptions";
-import { ServerNode } from "../../../Http/ServerNode";
-import { HttpRequestParameters } from "../../../Primitives/Http";
-import * as stream from "readable-stream";
+import { IOperation, OperationResultType } from "../OperationAbstractions.js";
+import { CountersDetail } from "./CountersDetail.js";
+import { CounterBatch } from "./CounterBatch.js";
+import { DocumentConventions } from "../../Conventions/DocumentConventions.js";
+import { IDocumentStore } from "../../IDocumentStore.js";
+import { HttpCache } from "../../../Http/HttpCache.js";
+import { RavenCommand } from "../../../Http/RavenCommand.js";
+import { throwError } from "../../../Exceptions/index.js";
+import { ServerNode } from "../../../Http/ServerNode.js";
+import { HttpRequestParameters } from "../../../Primitives/Http.js";
+import { Stream } from "node:stream";
 
 export class CounterBatchOperation implements IOperation<CountersDetail> {
 
@@ -50,7 +50,7 @@ export class CounterBatchCommand extends RavenCommand<CountersDetail> {
         headers: this._headers().typeAppJson().build()
     };
 }
-    public async setResponseAsync(bodyStream: stream.Stream, fromCache: boolean): Promise<string> {
+    public async setResponseAsync(bodyStream: Stream, fromCache: boolean): Promise<string> {
         if (!bodyStream) {
             return;
         }

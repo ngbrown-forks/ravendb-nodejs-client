@@ -1,17 +1,17 @@
-import { JsonSerializer } from "../../../Mapping/Json/Serializer";
-import { IMaintenanceOperation, OperationResultType } from "../OperationAbstractions";
-import { IndexDefinition } from "../../Indexes/IndexDefinition";
-import { throwError } from "../../../Exceptions";
-import { DocumentConventions } from "../../Conventions/DocumentConventions";
-import { RavenCommand } from "../../../Http/RavenCommand";
-import { HttpRequestParameters } from "../../../Primitives/Http";
-import { HeadersBuilder } from "../../../Utility/HttpUtil";
-import { ReplacerContext } from "../../../Mapping/Json/ReplacerFactory";
-import { IndexTypeExtensions } from "../../Indexes/IndexTypeExtensions";
-import * as stream from "readable-stream";
-import { ServerNode } from "../../../Http/ServerNode";
-import { IRaftCommand } from "../../../Http/IRaftCommand";
-import { RaftIdGenerator } from "../../../Utility/RaftIdGenerator";
+import { JsonSerializer } from "../../../Mapping/Json/Serializer.js";
+import { IMaintenanceOperation, OperationResultType } from "../OperationAbstractions.js";
+import { IndexDefinition } from "../../Indexes/IndexDefinition.js";
+import { throwError } from "../../../Exceptions/index.js";
+import { DocumentConventions } from "../../Conventions/DocumentConventions.js";
+import { RavenCommand } from "../../../Http/RavenCommand.js";
+import { HttpRequestParameters } from "../../../Primitives/Http.js";
+import { HeadersBuilder } from "../../../Utility/HttpUtil.js";
+import { IndexTypeExtensions } from "../../Indexes/IndexTypeExtensions.js";
+import { Stream } from "node:stream";
+import { ServerNode } from "../../../Http/ServerNode.js";
+import { IRaftCommand } from "../../../Http/IRaftCommand.js";
+import { RaftIdGenerator } from "../../../Utility/RaftIdGenerator.js";
+import { ObjectUtil } from "../../../Utility/ObjectUtil.js";
 
 export interface PutIndexResult {
     index: string;
@@ -73,24 +73,27 @@ export class PutIndexesCommand extends RavenCommand<PutIndexResult[]> implements
         }, []);
     }
 
-    protected get _serializer(): JsonSerializer {
-        const INDEX_DEF_FIELDS_REGEX = /^Indexes\.(\d+)\.Fields$/;
-        const serializer = super._serializer;
-        serializer.replacerRules[0].contextMatcher = (context: ReplacerContext) => {
-            // fields are case-sensitive, so we need to skip PascalCasing their names
-            const m = context.currentPath.match(INDEX_DEF_FIELDS_REGEX);
-            return !m;
-        };
-
-        return serializer;
-    }
-
     public createRequest(node: ServerNode): HttpRequestParameters {
         const uri = node.url + "/databases/" + node.database 
             + (this._allJavaScriptIndexes ? "/indexes" : "/admin/indexes");
 
-        const body = this._serializer
-            .serialize({ Indexes: this._indexToAdd });
+        const INDEX_DEF_FIELDS_REGEX = /^Indexes\.\[]\.Fields$/;
+
+        const bodyJson = ObjectUtil.transformObjectKeys({
+            Indexes: this._indexToAdd
+        }, {
+            recursive: true,
+            defaultTransform: ObjectUtil.pascal,
+            paths: [
+                {
+                    path: INDEX_DEF_FIELDS_REGEX,
+                    transform: x => x
+                }
+            ]
+        });
+
+        const body = JsonSerializer.getDefault()
+            .serialize(bodyJson);
 
         const headers = HeadersBuilder
             .create()
@@ -104,7 +107,7 @@ export class PutIndexesCommand extends RavenCommand<PutIndexResult[]> implements
         };
     }
 
-    public async setResponseAsync(bodyStream: stream.Stream, fromCache: boolean): Promise<string> {
+    public async setResponseAsync(bodyStream: Stream, fromCache: boolean): Promise<string> {
         let body: string = null;
         const results = await this._defaultPipeline(x => body = x)
             .process(bodyStream);

@@ -1,13 +1,8 @@
-import { VError } from "verror";
-import { closeHttpResponse } from "../Utility/HttpUtil";
-import { StatusCodes } from "../Http/StatusCode";
-import { HttpResponse } from "../Primitives/Http";
-import { JsonSerializer } from "../Mapping/Json/Serializer";
-import * as os from "os";
-
-export function printError(err: Error): string {
-    return VError.fullStack(err);
-}
+import { closeHttpResponse } from "../Utility/HttpUtil.js";
+import { StatusCodes } from "../Http/StatusCode.js";
+import { HttpResponse } from "../Primitives/Http.js";
+import { JsonSerializer } from "../Mapping/Json/Serializer.js";
+import { EOL } from "node:os";
 
 export function throwError(errName: RavenErrorType): never;
 export function throwError(errName: RavenErrorType, message: string): never;
@@ -37,11 +32,15 @@ export function getError(
     message: string = "",
     errCause?: Error,
     info?: { [key: string]: any }): Error {
-    const error = new VError({
-        name: errName,
-        cause: errCause,
-        info
-    }, message.replace(/%/g, "%%"));
+    const error = new Error(message + (errCause ? ": " + errCause.message : ""), { cause: errCause });
+    error.name = errName;
+
+    if (info) {
+        for (const value of Object.entries(info)) {
+            error[value[0]] = value[1];
+        }
+    }
+
     return error;
 }
 
@@ -177,7 +176,7 @@ export class ExceptionDispatcher {
         const message = schema.message;
         const typeAsString = schema.type;
         if (code === StatusCodes.Conflict) {
-            if (typeAsString.indexOf("DocumentConflictException") !== -1) {
+            if (typeAsString.includes("DocumentConflictException")) {
                 return getError("DocumentConflictException", message, inner);
             }
 
@@ -185,7 +184,7 @@ export class ExceptionDispatcher {
         }
 
         const error =
-            schema.error + os.EOL
+            schema.error + EOL
             + "The server at " + schema.url + " responded with status code: " + code;
 
         const determinedType = this._getType(typeAsString) as RavenErrorType;
@@ -244,9 +243,9 @@ export class ExceptionDispatcher {
         const prefix = "Raven.Client.Exceptions.";
         if (typeAsString && typeAsString.startsWith(prefix)) {
             const exceptionName = typeAsString.substring(prefix.length);
-            if (exceptionName.indexOf(".") !== -1) {
+            if (exceptionName.includes(".")) {
                 const tokens = exceptionName.split(".");
-                return tokens[tokens.length - 1] as RavenErrorType;
+                return tokens.at(-1) as RavenErrorType;
             }
 
             return exceptionName;

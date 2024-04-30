@@ -1,13 +1,13 @@
-import { disposeTestDocumentStore, RavenTestContext, testContext } from "../../../../Utils/TestUtil";
+import { disposeTestDocumentStore, RavenTestContext, testContext } from "../../../../Utils/TestUtil.js";
 import {
     AddEtlOperation, GetOngoingTaskInfoOperation,
     IDocumentStore,
     PutConnectionStringOperation,
     QueueConnectionString, Transformation
-} from "../../../../../src";
-import { QueueEtlConfiguration } from "../../../../../src/Documents/Operations/Etl/Queue/QueueEtlConfiguration";
-import { OngoingTaskQueueEtlDetails } from "../../../../../src/Documents/Operations/OngoingTasks/OngoingTask";
-import { assertThat } from "../../../../Utils/AssertExtensions";
+} from "../../../../../src/index.js";
+import { QueueEtlConfiguration } from "../../../../../src/Documents/Operations/Etl/Queue/QueueEtlConfiguration.js";
+import { OngoingTaskQueueEtlDetails } from "../../../../../src/Documents/Operations/OngoingTasks/OngoingTask.js";
+import { assertThat } from "../../../../Utils/AssertExtensions.js";
 
 (RavenTestContext.isPullRequest ? describe.skip : describe)("RabbitMqTest", function () {
 

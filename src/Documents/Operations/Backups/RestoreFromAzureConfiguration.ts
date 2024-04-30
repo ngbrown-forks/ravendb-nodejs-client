@@ -1,5 +1,5 @@
-import { RestoreBackupConfigurationBase } from "./RestoreBackupConfigurationBase";
-import { AzureSettings } from "./AzureSettings";
+import { RestoreBackupConfigurationBase } from "./RestoreBackupConfigurationBase.js";
+import { AzureSettings } from "./AzureSettings.js";
 
 export interface RestoreFromAzureConfiguration extends RestoreBackupConfigurationBase {
     settings: AzureSettings;

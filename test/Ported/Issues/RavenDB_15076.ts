@@ -3,13 +3,12 @@ import {
     PutConnectionStringOperation,
     RavenConnectionString,
     UpdateExternalReplicationOperation
-} from "../../../src";
-import { RavenTestContext, testContext } from "../../Utils/TestUtil";
-import moment = require("moment");
-import { User } from "../../Assets/Entities";
-import { HeartRateMeasure } from "../TimeSeries/TimeSeriesTypedSession";
-import { assertThat } from "../../Utils/AssertExtensions";
-import { ReplicationTestContext } from "../../Utils/ReplicationTestContext";
+} from "../../../src/index.js";
+import { RavenTestContext, testContext } from "../../Utils/TestUtil.js";
+import { User } from "../../Assets/Entities.js";
+import { HeartRateMeasure } from "../TimeSeries/TimeSeriesTypedSession.js";
+import { assertThat } from "../../Utils/AssertExtensions.js";
+import { ReplicationTestContext } from "../../Utils/ReplicationTestContext.js";
 
 (RavenTestContext.isPullRequest ? describe.skip : describe)("RavenDB_15076", function () {
 
@@ -60,8 +59,8 @@ import { ReplicationTestContext } from "../../Utils/ReplicationTestContext";
                         s.timeSeriesFor("users/ayende", HeartRateMeasure)
                             .append(today.toDate(), heartRateMeasure2, "test/things/out");
 
-                        s.advanced.attachments.store("users/ayende", "test.bin", Buffer.from("hello", "utf-8"));
-                        s.advanced.attachments.store("users/pheobe", "test.bin", Buffer.from("hello", "utf-8"));
+                        s.advanced.attachments.store("users/ayende", "test.bin", Buffer.from("hello", "utf8"));
+                        s.advanced.attachments.store("users/pheobe", "test.bin", Buffer.from("hello", "utf8"));
 
                         s.advanced.revisions.forceRevisionCreationFor("users/ayende", "None");
                         s.advanced.revisions.forceRevisionCreationFor("users/pheobe", "None");

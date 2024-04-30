@@ -1,11 +1,11 @@
-import { ILazyOperation } from "./ILazyOperation";
-import { IRavenArrayResult } from "../../../../Types";
-import { GetRevisionOperation } from "../GetRevisionOperation";
-import { QueryResult } from "../../../Queries/QueryResult";
-import { GetRequest } from "../../../Commands/MultiGet/GetRequest";
-import { GetResponse } from "../../../Commands/MultiGet/GetResponse";
-import { DocumentType } from "../../../DocumentAbstractions";
-import { throwError } from "../../../../Exceptions";
+import { ILazyOperation } from "./ILazyOperation.js";
+import { IRavenArrayResult } from "../../../../Types/index.js";
+import { GetRevisionOperation } from "../GetRevisionOperation.js";
+import { QueryResult } from "../../../Queries/QueryResult.js";
+import { GetRequest } from "../../../Commands/MultiGet/GetRequest.js";
+import { GetResponse } from "../../../Commands/MultiGet/GetResponse.js";
+import { DocumentType } from "../../../DocumentAbstractions.js";
+import { throwError } from "../../../../Exceptions/index.js";
 
 export type Mode = "Single" | "Multi" | "Map" | "ListOfMetadata";
 
@@ -74,20 +74,25 @@ export class LazyRevisionOperation<T extends object> implements ILazyOperation {
         this._getRevisionOperation.result = jsonArrayResult;
 
         switch (this._mode) {
-            case "Single":
+            case "Single": {
                 this._result = this._getRevisionOperation.getRevision(this._clazz);
                 break;
-            case "Multi":
+            }
+            case "Multi": {
                 this._result = this._getRevisionOperation.getRevisionsFor(this._clazz);
                 break;
-            case "Map":
+            }
+            case "Map": {
                 this._result = this._getRevisionOperation.getRevisions(this._clazz);
                 break;
-            case "ListOfMetadata":
+            }
+            case "ListOfMetadata": {
                 this._result = this._getRevisionOperation.getRevisionsMetadataFor();
                 break;
-            default:
+            }
+            default: {
                 throwError("InvalidArgumentException", "Invalid mode: " + this._mode);
+            }
         }
     }
 }

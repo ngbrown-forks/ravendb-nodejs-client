@@ -1,7 +1,7 @@
-import { AbstractGenericIndexCreationTask } from "./AbstractGenericIndexCreationTask";
-import { EnumMapping } from "./Enums";
-import { IndexDefinitionHelper } from "./IndexDefinitionHelper";
-import { TypeUtil } from "../../Utility/TypeUtil";
+import { AbstractGenericIndexCreationTask } from "./AbstractGenericIndexCreationTask.js";
+import { EnumMapping } from "./Enums.js";
+import { IndexDefinitionHelper } from "./IndexDefinitionHelper.js";
+import { TypeUtil } from "../../Utility/TypeUtil.js";
 
 
 export abstract class BaseJavaScriptIndexCreationTask<TField extends string = string> extends AbstractGenericIndexCreationTask<TField> {

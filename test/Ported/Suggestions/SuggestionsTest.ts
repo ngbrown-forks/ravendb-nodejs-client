@@ -1,9 +1,9 @@
-import * as assert from "assert";
+import assert from "node:assert"
 
-import { IDocumentStore, IndexDefinition, IndexFieldOptions, PutIndexesOperation, SuggestionOptions } from "../../../src";
-import { disposeTestDocumentStore, RavenTestContext, testContext } from "../../Utils/TestUtil";
-import { Users_ByName } from "../Indexing/IndexesFromClientTest";
-import { assertThat } from "../../Utils/AssertExtensions";
+import { IDocumentStore, IndexDefinition, IndexFieldOptions, PutIndexesOperation, SuggestionOptions } from "../../../src/index.js";
+import { disposeTestDocumentStore, RavenTestContext, testContext } from "../../Utils/TestUtil.js";
+import { Users_ByName } from "../Indexing/IndexesFromClientTest.js";
+import { assertThat } from "../../Utils/AssertExtensions.js";
 
 describe("SuggestionsTest", function () {
 

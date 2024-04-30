@@ -1,6 +1,6 @@
-import { FacetOptions, FacetAggregation } from ".";
-import { FacetToken } from "../../Session/Tokens/FacetToken";
-import { FacetAggregationField } from "./FacetAggregationField";
+import { FacetOptions, FacetAggregation } from "./index.js";
+import { FacetToken } from "../../Session/Tokens/FacetToken.js";
+import { FacetAggregationField } from "./FacetAggregationField.js";
 
 export abstract class FacetBase {
 

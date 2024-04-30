@@ -1,23 +1,25 @@
-import { TypesAwareObjectMapper } from "../../Mapping/ObjectMapper";
+import { ITypesAwareObjectMapper, TypesAwareObjectMapper } from "../../Mapping/ObjectMapper.js";
 import {
     DocumentType,
-} from "../DocumentAbstractions";
+} from "../DocumentAbstractions.js";
 import {
     ObjectTypeDescriptor,
     ObjectLiteralDescriptor,
     ClassConstructor, EntityConstructor, Field
-} from "../../Types";
-import * as pluralize from "pluralize";
-import { ClientConfiguration } from "../Operations/Configuration/ClientConfiguration";
-import { ReadBalanceBehavior } from "../../Http/ReadBalanceBehavior";
-import { throwError } from "../../Exceptions";
-import { CONSTANTS } from "../../Constants";
-import { TypeUtil } from "../../Utility/TypeUtil";
-import { DateUtil, DateUtilOpts } from "../../Utility/DateUtil";
-import { CasingConvention, ObjectUtil, ObjectChangeCaseOptions } from "../../Utility/ObjectUtil";
-import { LoadBalanceBehavior } from "../../Http/LoadBalanceBehavior";
-import { BulkInsertConventions } from "./BulkInsertConventions";
-import { InMemoryDocumentSessionOperations } from "../Session/InMemoryDocumentSessionOperations";
+} from "../../Types/index.js";
+import Pluralize from "pluralize";
+import { ClientConfiguration } from "../Operations/Configuration/ClientConfiguration.js";
+import { ReadBalanceBehavior } from "../../Http/ReadBalanceBehavior.js";
+import { throwError } from "../../Exceptions/index.js";
+import { CONSTANTS } from "../../Constants.js";
+import { TypeUtil } from "../../Utility/TypeUtil.js";
+import { DateUtil, DateUtilOpts } from "../../Utility/DateUtil.js";
+import { ObjectUtil, ObjectChangeCaseOptions, FieldNameConversion } from "../../Utility/ObjectUtil.js";
+import { LoadBalanceBehavior } from "../../Http/LoadBalanceBehavior.js";
+import { BulkInsertConventions } from "./BulkInsertConventions.js";
+import { InMemoryDocumentSessionOperations } from "../Session/InMemoryDocumentSessionOperations.js";
+
+const { plural } = Pluralize;
 
 export type IdConvention = (databaseName: string, entity: object) => Promise<string>;
 export type IValueForQueryConverter<T> =
@@ -30,11 +32,10 @@ function createServerDefaults() {
     return conventions;
 }
 
-
 export class DocumentConventions {
 
     private static _defaults: DocumentConventions = new DocumentConventions();
-    public static defaultForServerConventions = createServerDefaults();
+    public static defaultForServerConventions: DocumentConventions;
 
     public static get defaultConventions() {
         return this._defaults;
@@ -92,32 +93,20 @@ export class DocumentConventions {
 
     private readonly _knownEntityTypes: Map<string, ObjectTypeDescriptor>;
 
-    private _localEntityFieldNameConvention: CasingConvention;
-    private _remoteEntityFieldNameConvention: CasingConvention;
+    private _localToServerFieldNameConverter?: FieldNameConversion;
+    private _serverToLocalFieldNameConverter?: FieldNameConversion;
 
-    private _objectMapper: TypesAwareObjectMapper;
+    private _objectMapper: ITypesAwareObjectMapper;
     private _customFetch: any;
     private _dateUtil: DateUtil;
-    private _syncJsonParseLimit: number;
 
     private _useCompression: boolean;
     private _sendApplicationIdentifier: boolean;
 
     private readonly _bulkInsert: BulkInsertConventions;
 
-    private _useJsonlStreaming = true;
-
     public get bulkInsert() {
         return this._bulkInsert;
-    }
-
-    public get useJsonlStreaming() {
-        return this._useJsonlStreaming;
-    }
-
-    public set useJsonlStreaming(value) {
-        this._assertNotFrozen();
-        this._useJsonlStreaming = value;
     }
 
     public constructor() {
@@ -167,7 +156,6 @@ export class DocumentConventions {
 
         this._dateUtilOpts = {};
         this._dateUtil = new DateUtil(this._dateUtilOpts);
-        this._syncJsonParseLimit = 2 * 1_024 * 1_024;
 
         this._firstBroadcastAttemptTimeout = 5_000;
         this._secondBroadcastAttemptTimeout = 30_000;
@@ -255,11 +243,11 @@ export class DocumentConventions {
         this._firstBroadcastAttemptTimeout = firstBroadcastAttemptTimeout;
     }
 
-    public get objectMapper(): TypesAwareObjectMapper {
+    public get objectMapper(): ITypesAwareObjectMapper {
         return this._objectMapper;
     }
 
-    public set objectMapper(value: TypesAwareObjectMapper) {
+    public set objectMapper(value: ITypesAwareObjectMapper) {
         this._assertNotFrozen();
         this._objectMapper = value;
     }
@@ -281,23 +269,6 @@ export class DocumentConventions {
     public set customFetch(customFetch: any) {
         this._assertNotFrozen();
         this._customFetch = customFetch;
-    }
-
-    /**
-     * Sets json length limit for sync parsing. Beyond that size
-     * we fall back to async parsing
-     */
-    public get syncJsonParseLimit(): number {
-        return this._syncJsonParseLimit;
-    }
-
-    /**
-     * Gets json length limit for sync parsing. Beyond that size
-     * we fallback to async parsing
-     */
-    public set syncJsonParseLimit(value: number) {
-        this._assertNotFrozen();
-        this._syncJsonParseLimit = value;
     }
 
     public get dateUtil(): DateUtil {
@@ -363,25 +334,41 @@ export class DocumentConventions {
         this._loadBalancerPerSessionContextSelector = selector;
     }
 
-    public get entityFieldNameConvention(): CasingConvention {
-        return this._localEntityFieldNameConvention;
+    /**
+     * Optional field name casing converter
+     * This one is applied on local object before sending request to server
+     */
+    public get localToServerFieldNameConverter() {
+        return this._localToServerFieldNameConverter;
     }
 
-    public set entityFieldNameConvention(val) {
+    /**
+     * Optional field name casing converter
+     * This one is applied on local object before sending request to server
+     */
+    public set localToServerFieldNameConverter(converter: FieldNameConversion) {
         this._assertNotFrozen();
-        this._localEntityFieldNameConvention = val;
+        this._localToServerFieldNameConverter = converter;
     }
 
-    public get remoteEntityFieldNameConvention() {
-        return this._remoteEntityFieldNameConvention;
+    /**
+     * Optional field name casing converter
+     * This one is applied on server object before returning result to the user
+     */
+    public get serverToLocalFieldNameConverter() {
+        return this._serverToLocalFieldNameConverter;
     }
 
-    public set remoteEntityFieldNameConvention(val) {
+    /**
+     * Optional field name casing converter
+     * This one is applied on server object before returning result to the user
+     */
+    public set serverToLocalFieldNameConverter(converter: FieldNameConversion) {
         this._assertNotFrozen();
-        this._remoteEntityFieldNameConvention = val;
+        this._serverToLocalFieldNameConverter = converter;
     }
 
-    public set useOptimisticConcurrency(val) {
+    public set useOptimisticConcurrency(val: boolean) {
         this._assertNotFrozen();
         this._useOptimisticConcurrency = val;
     }
@@ -439,7 +426,7 @@ export class DocumentConventions {
     }
 
     public get waitForReplicationAfterSaveChangesTimeout() {
-        return this._waitForNonStaleResultsTimeout;
+        return this._waitForReplicationAfterSaveChangesTimeout;
     }
 
     public set waitForReplicationAfterSaveChangesTimeout(value: number) {
@@ -634,9 +621,9 @@ export class DocumentConventions {
         }
 
         if (typeof (ctorOrTypeChecker) === "string") {
-            result = pluralize.plural(ctorOrTypeChecker);
+            result = plural(ctorOrTypeChecker);
         } else {
-            result = pluralize.plural(ctorOrTypeChecker.name);
+            result = plural(ctorOrTypeChecker.name);
         }
 
         this._cachedDefaultTypeCollectionNames.set(ctorOrTypeChecker, result);
@@ -688,7 +675,7 @@ export class DocumentConventions {
 
     public getEntityTypeDescriptor<T extends object>(entity: T): ObjectTypeDescriptor<T> {
         if (TypeUtil.isClass(entity.constructor)) {
-            return entity.constructor as ClassConstructor;
+            return entity.constructor as ClassConstructor<T>;
         }
 
         for (const entityType of this._knownEntityTypes.values()) {
@@ -852,13 +839,12 @@ export class DocumentConventions {
         return collectionName;
     }
 
-    /* TBD 4.1 custom serializers
     public registerQueryValueConverter<T extends object>(type: EntityConstructor<T>,
                                                          converter: IValueForQueryConverter<T>) {
         this._assertNotFrozen();
 
-        let index;
-        for (index = 0; index < this._listOfQueryValueToObjectConverters.length; index++) {
+        let index: number;
+        for (let index = 0; index < this._listOfQueryValueToObjectConverters.length; index++) {
             const entry = this._listOfQueryValueToObjectConverters[index];
             if (type instanceof entry.Type) {
                 break;
@@ -876,7 +862,7 @@ export class DocumentConventions {
             }
         });
     }
-    */
+
 
     public tryConvertValueToObjectForQuery(fieldName: string, value: any, forRange: boolean, strValue: (value: any) => void) {
         for (const queryValueConverter of this._listOfQueryValueToObjectConverters) {
@@ -964,53 +950,32 @@ export class DocumentConventions {
         return docTypeOrTypeName as ObjectTypeDescriptor<T>;
     }
 
-    public transformObjectKeysToRemoteFieldNameConvention(obj: object, opts?: ObjectChangeCaseOptions) {
-        if (!this._remoteEntityFieldNameConvention) {
+    public transformObjectKeysToRemoteFieldNameConvention(obj: object) {
+        if (!this._localToServerFieldNameConverter) {
             return obj;
         }
 
-        const options: any = opts || {
+        const options = {
             recursive: true,
             arrayRecursive: true,
-
+            defaultTransform: this._localToServerFieldNameConverter,
             ignorePaths: [
                 CONSTANTS.Documents.Metadata.IGNORE_CASE_TRANSFORM_REGEX,
             ]
         };
-        options.defaultTransform = this._remoteEntityFieldNameConvention;
 
         return ObjectUtil.transformObjectKeys(obj, options);
     }
 
-    public transformObjectKeysToLocalFieldNameConvention(
-        obj: object, opts?: ObjectChangeCaseOptions) {
-        if (!this._localEntityFieldNameConvention) {
-            return obj as object;
-        }
-
-        const options = opts || {
-            recursive: true,
-            arrayRecursive: true,
-            ignorePaths: [
-                CONSTANTS.Documents.Metadata.IGNORE_CASE_TRANSFORM_REGEX,
-                /@projection/
-            ]
-        } as any;
-
-        options.defaultTransform = this._localEntityFieldNameConvention;
-
-        return ObjectUtil.transformObjectKeys(obj, options as ObjectChangeCaseOptions);
-    }
-
     public validate() {
-        if ((this._remoteEntityFieldNameConvention && !this._localEntityFieldNameConvention)
-            || (!this._remoteEntityFieldNameConvention && this._localEntityFieldNameConvention)) {
+        if ((this._localToServerFieldNameConverter && !this._serverToLocalFieldNameConverter)
+            || (!this._localToServerFieldNameConverter && this._serverToLocalFieldNameConverter)) {
             throwError("ConfigurationException",
                 "When configuring field name conventions, "
-                + "one has to configure both local and remote field name convention.");
+                + "one has to configure both localToServer and serverToLocal field name converters.");
         }
     }
 }
 
-
+DocumentConventions.defaultForServerConventions = createServerDefaults();
 DocumentConventions.defaultConventions.freeze();

@@ -1,15 +1,16 @@
-import { IAuthOptions } from "./AuthOptions";
-import { StringUtil } from "../Utility/StringUtil";
-import { throwError } from "../Exceptions";
-import { AgentOptions } from "https";
-import WebSocket = require("ws");
+import { IAuthOptions } from "./AuthOptions.js";
+import { StringUtil } from "../Utility/StringUtil.js";
+import { throwError } from "../Exceptions/index.js";
+import { ClientOptions } from "ws";
+import { Agent } from "undici";
+import { ConnectionOptions } from "node:tls";
 
 export type CertificateType = "pem" | "pfx";
 
 export interface ICertificate {
-    toAgentOptions(): AgentOptions;
-
-    toWebSocketOptions(): WebSocket.ClientOptions;
+    toAgentOptions(): Agent.Options;
+    toSocketOptions(): ConnectionOptions;
+    toWebSocketOptions(): ClientOptions;
 }
 
 export abstract class Certificate implements ICertificate {
@@ -32,15 +33,17 @@ export abstract class Certificate implements ICertificate {
         }
 
         switch (options.type) {
-            case Certificate.PEM:
+            case Certificate.PEM: {
                 certificate = this.createPem(options.certificate, options.password, options.ca);
                 break;
-            case Certificate.PFX:
-
+            }
+            case Certificate.PFX: {
                 certificate = this.createPfx(options.certificate, options.password, options.ca);
                 break;
-            default:
+            }
+            default: {
                 throwError("InvalidArgumentException", "Unsupported authOptions type: " + options.type);
+            }
         }
 
         return certificate;
@@ -60,15 +63,28 @@ export abstract class Certificate implements ICertificate {
         this._ca = ca;
     }
 
-    public toAgentOptions(): AgentOptions {
+    public toAgentOptions(): Agent.Options {
         if (this._passphrase) {
-            return { passphrase: this._passphrase };
+            return {
+                connect: {
+                    passphrase: this._passphrase
+                }
+            }
         }
 
         return {};
     }
 
-    public toWebSocketOptions(): WebSocket.ClientOptions {
+    toSocketOptions(): ConnectionOptions {
+        if (this._passphrase) {
+            return {
+                passphrase: this._passphrase
+            }
+        }
+        return {};
+    }
+
+    public toWebSocketOptions(): ClientOptions {
         if (this._passphrase) {
             return { passphrase: this._passphrase };
         }
@@ -97,16 +113,30 @@ export class PemCertificate extends Certificate {
         }
     }
 
-    public toAgentOptions(): AgentOptions {
-        const result = super.toAgentOptions();
-        return Object.assign(result, {
+    public toAgentOptions(): Agent.Options {
+        const { connect, ...rest } = super.toAgentOptions();
+        return {
+            ...rest,
+            connect: {
+                ...connect,
+                cert: this._certificate,
+                key: this._key,
+                ca: this._ca
+            }
+        }
+    }
+
+    public toSocketOptions(): ConnectionOptions {
+        const options = super.toSocketOptions();
+        return {
+            ...options,
             cert: this._certificate,
             key: this._key,
             ca: this._ca
-        });
+        }
     }
 
-    public toWebSocketOptions(): WebSocket.ClientOptions {
+    public toWebSocketOptions(): ClientOptions {
         const result = super.toWebSocketOptions();
         return Object.assign(result, {
             cert: this._certificate,
@@ -145,14 +175,28 @@ export class PfxCertificate extends Certificate {
         super(certificate, passphrase, ca);
     }
 
-    public toAgentOptions(): AgentOptions {
-        return Object.assign(super.toAgentOptions(), {
-            pfx: this._certificate as Buffer,
-            ca: this._ca
-        });
+    public toAgentOptions(): Agent.Options {
+        const { connect, ...rest } = super.toAgentOptions();
+        return {
+            ...rest,
+            connect: {
+                ...connect,
+                pfx: this._certificate,
+                ca: this._ca ?? undefined
+            }
+        }
     }
 
-    public toWebSocketOptions(): WebSocket.ClientOptions {
+    toSocketOptions(): ConnectionOptions {
+        const options = super.toSocketOptions();
+        return {
+            ...options,
+            pfx: this._certificate,
+            ca: this._ca
+        }
+    }
+
+    public toWebSocketOptions(): ClientOptions {
         const result = super.toWebSocketOptions();
         return Object.assign(result, {
             pfx: this._certificate as Buffer,

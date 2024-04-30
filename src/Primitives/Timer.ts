@@ -1,5 +1,5 @@
-import { IDisposable } from "../Types/Contracts";
-import { getLogger } from "../Utility/LogUtil";
+import { IDisposable } from "../Types/Contracts.js";
+import { getLogger } from "../Utility/LogUtil.js";
 
 const log = getLogger({ module: "Timer" });
 

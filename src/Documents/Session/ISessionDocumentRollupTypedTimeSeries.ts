@@ -1,6 +1,6 @@
-import { ISessionDocumentRollupTypedAppendTimeSeriesBase } from "./ISessionDocumentRollupTypedAppendTimeSeriesBase";
-import { ISessionDocumentDeleteTimeSeriesBase } from "./ISessionDocumentDeleteTimeSeriesBase";
-import { TypedTimeSeriesRollupEntry } from "./TimeSeries/TypedTimeSeriesRollupEntry";
+import { ISessionDocumentRollupTypedAppendTimeSeriesBase } from "./ISessionDocumentRollupTypedAppendTimeSeriesBase.js";
+import { ISessionDocumentDeleteTimeSeriesBase } from "./ISessionDocumentDeleteTimeSeriesBase.js";
+import { TypedTimeSeriesRollupEntry } from "./TimeSeries/TypedTimeSeriesRollupEntry.js";
 
 export interface ISessionDocumentRollupTypedTimeSeries<TValues extends object>
     extends ISessionDocumentRollupTypedAppendTimeSeriesBase<TValues>, ISessionDocumentDeleteTimeSeriesBase {

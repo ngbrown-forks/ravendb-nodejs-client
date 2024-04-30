@@ -1,8 +1,8 @@
-import { CommandType, ICommandData } from "../CommandData";
-import { TimeSeriesOperation } from "../../Operations/TimeSeries/TimeSeriesOperation";
-import { throwError } from "../../../Exceptions";
-import { DocumentConventions } from "../../Conventions/DocumentConventions";
-import { InMemoryDocumentSessionOperations } from "../../Session/InMemoryDocumentSessionOperations";
+import { CommandType, ICommandData } from "../CommandData.js";
+import { TimeSeriesOperation } from "../../Operations/TimeSeries/TimeSeriesOperation.js";
+import { throwError } from "../../../Exceptions/index.js";
+import { DocumentConventions } from "../../Conventions/DocumentConventions.js";
+import { InMemoryDocumentSessionOperations } from "../../Session/InMemoryDocumentSessionOperations.js";
 
 
 export abstract class TimeSeriesCommandData implements ICommandData {

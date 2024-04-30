@@ -1,9 +1,9 @@
-import { IDocumentStore } from "../../src/Documents/IDocumentStore";
-import { IndexDefinition } from "../../src/Documents/Indexes/IndexDefinition";
-import { IndexFieldOptions } from "../../src/Documents/Indexes/IndexFieldOptions";
-import { PutIndexesOperation } from "../../src/Documents/Operations/Indexes/PutIndexesOperation";
-import { disposeTestDocumentStore, testContext } from "../Utils/TestUtil";
-import { assertThat } from "../Utils/AssertExtensions";
+import { IDocumentStore } from "../../src/Documents/IDocumentStore.js";
+import { IndexDefinition } from "../../src/Documents/Indexes/IndexDefinition.js";
+import { IndexFieldOptions } from "../../src/Documents/Indexes/IndexFieldOptions.js";
+import { PutIndexesOperation } from "../../src/Documents/Operations/Indexes/PutIndexesOperation.js";
+import { disposeTestDocumentStore, testContext } from "../Utils/TestUtil.js";
+import { assertThat } from "../Utils/AssertExtensions.js";
 
 describe("RavenDB_9584", function () {
 

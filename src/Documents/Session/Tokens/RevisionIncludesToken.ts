@@ -1,7 +1,7 @@
-import { QueryToken } from "./QueryToken";
-import { DateUtil } from "../../../Utility/DateUtil";
-import { StringBuilder } from "../../../Utility/StringBuilder";
-import { StringUtil } from "../../../Utility/StringUtil";
+import { QueryToken } from "./QueryToken.js";
+import { DateUtil } from "../../../Utility/DateUtil.js";
+import { StringBuilder } from "../../../Utility/StringBuilder.js";
+import { StringUtil } from "../../../Utility/StringUtil.js";
 
 
 export class RevisionIncludesToken extends QueryToken {

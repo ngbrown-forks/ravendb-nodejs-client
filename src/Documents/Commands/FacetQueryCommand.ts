@@ -1,14 +1,14 @@
-import { QueryResult } from "../Queries/QueryResult";
-import { DocumentConventions } from "../Conventions/DocumentConventions";
-import * as stream from "readable-stream";
-import { QueryCommand } from "./QueryCommand";
-import { RavenCommandResponsePipeline } from "../../Http/RavenCommandResponsePipeline";
-import { ServerCasing, ServerResponse } from "../../Types";
-import { ObjectUtil } from "../../Utility/ObjectUtil";
+import { QueryResult } from "../Queries/QueryResult.js";
+import { DocumentConventions } from "../Conventions/DocumentConventions.js";
+import { Stream } from "node:stream";
+import { QueryCommand } from "./QueryCommand.js";
+import { RavenCommandResponsePipeline } from "../../Http/RavenCommandResponsePipeline.js";
+import { ServerCasing, ServerResponse } from "../../Types/index.js";
+import { ObjectUtil } from "../../Utility/ObjectUtil.js";
 
 export class FacetQueryCommand extends QueryCommand {
 
-    public async setResponseAsync(bodyStream: stream.Stream, fromCache: boolean): Promise<string> {
+    public async setResponseAsync(bodyStream: Stream, fromCache: boolean): Promise<string> {
         if (!bodyStream) {
             this.result = null;
             return;
@@ -22,7 +22,7 @@ export class FacetQueryCommand extends QueryCommand {
     }
 
     public static async parseQueryResultResponseAsync(
-        bodyStream: stream.Stream,
+        bodyStream: Stream,
         conventions: DocumentConventions,
         fromCache: boolean,
         bodyCallback?: (body: string) => void): Promise<QueryResult> {
@@ -45,14 +45,14 @@ export class FacetQueryCommand extends QueryCommand {
         const { Results, Includes, IndexTimestamp, LastQueryTime, ...rest } = json;
 
         const restMapped = ObjectUtil.transformObjectKeys(rest, {
-            defaultTransform: "camel"
+            defaultTransform: ObjectUtil.camel
         }) as any;
 
         return {
             ...restMapped,
             indexTimestamp: conventions.dateUtil.parse(IndexTimestamp),
             lastQueryTime: conventions.dateUtil.parse(LastQueryTime),
-            results: Results.map(x => ObjectUtil.transformObjectKeys(x, { defaultTransform: "camel" })),
+            results: Results.map(x => ObjectUtil.transformObjectKeys(x, { defaultTransform: ObjectUtil.camel })),
             includes: ObjectUtil.mapIncludesToLocalObject(json.Includes, conventions)
         };
     }

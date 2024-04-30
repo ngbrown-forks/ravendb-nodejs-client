@@ -1,4 +1,4 @@
-import { DocumentConventions } from "../Documents/Conventions/DocumentConventions";
+import { DocumentConventions } from "../Documents/Conventions/DocumentConventions.js";
 
 export interface IBroadcast {
     prepareToBroadcast(conventions: DocumentConventions): IBroadcast;

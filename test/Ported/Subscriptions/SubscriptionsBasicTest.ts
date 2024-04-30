@@ -1,6 +1,6 @@
-import { Company, Order, User } from "../../Assets/Entities";
-import * as assert from "assert";
-import { testContext, disposeTestDocumentStore } from "../../Utils/TestUtil";
+import { Company, Order, User } from "../../Assets/Entities.js";
+import assert from "node:assert"
+import { testContext, disposeTestDocumentStore } from "../../Utils/TestUtil.js";
 
 import DocumentStore, {
     IDocumentStore,
@@ -8,16 +8,17 @@ import DocumentStore, {
     SubscriptionBatch,
     SubscriptionCreationOptions,
     SubscriptionWorker, ToggleOngoingTaskStateOperation, SubscriptionUpdateOptions, Lazy
-} from "../../../src";
-import { AsyncQueue } from "../../Utils/AsyncQueue";
-import * as semaphore from "semaphore";
-import { acquireSemaphore } from "../../../src/Utility/SemaphoreUtil";
-import { getError, throwError } from "../../../src/Exceptions";
-import { TypeUtil } from "../../../src/Utility/TypeUtil";
-import { GetOngoingTaskInfoOperation } from "../../../src/Documents/Operations/GetOngoingTaskInfoOperation";
-import { OngoingTaskSubscription } from "../../../src/Documents/Operations/OngoingTasks/OngoingTask";
-import { assertThat, assertThrows } from "../../Utils/AssertExtensions";
-import { TimeValue } from "../../../src/Primitives/TimeValue";
+} from "../../../src/index.js";
+import { AsyncQueue } from "../../Utils/AsyncQueue.js";
+import { acquireSemaphore } from "../../../src/Utility/SemaphoreUtil.js";
+import { getError, throwError } from "../../../src/Exceptions/index.js";
+import { TypeUtil } from "../../../src/Utility/TypeUtil.js";
+import { GetOngoingTaskInfoOperation } from "../../../src/Documents/Operations/GetOngoingTaskInfoOperation.js";
+import { OngoingTaskSubscription } from "../../../src/Documents/Operations/OngoingTasks/OngoingTask.js";
+import { assertThat, assertThrows } from "../../Utils/AssertExtensions.js";
+import { TimeValue } from "../../../src/Primitives/TimeValue.js";
+import { Semaphore } from "../../../src/Utility/Semaphore.js";
+import { ObjectUtil } from "../../../src/Utility/ObjectUtil.js";
 
 describe("SubscriptionsBasicTest", function () {
     const _reasonableWaitTime = 15 * 1000;
@@ -182,8 +183,8 @@ describe("SubscriptionsBasicTest", function () {
 
             subscription.on("batch", (batch, callback) => {
                 try {
-                    batch.items.forEach(x => keys.push(x.id));
-                    batch.items.forEach(x => ages.push(x.rawResult.age));
+                    for (const x of batch.items) keys.push(x.id);
+                    for (const x of batch.items) ages.push(x.rawResult.age);
                     callback();
                 } catch (err) {
                     callback(err);
@@ -229,9 +230,9 @@ describe("SubscriptionsBasicTest", function () {
         }
 
         subscription.on("batch", (batch, callback) => {
-            batch.items.forEach(x => {
+            for (const x of batch.items) {
                 orders.push(x.result);
-            });
+            }
             callback();
         });
 
@@ -271,9 +272,9 @@ describe("SubscriptionsBasicTest", function () {
         }
 
         subscription.on("batch", (batch, callback) => {
-            batch.items.forEach(x => {
+            for (const x of batch.items) {
                 names.push(x.result.name);
-            });
+            }
             callback();
         });
 
@@ -432,7 +433,7 @@ describe("SubscriptionsBasicTest", function () {
 
         const allSubscription = store.subscriptions.getSubscriptionWorker(allId);
         try {
-            const allSemaphore = semaphore();
+            const allSemaphore = new Semaphore();
             allSemaphore.take(TypeUtil.NOOP);
 
             let allCounter = 0;
@@ -504,7 +505,7 @@ describe("SubscriptionsBasicTest", function () {
 
             subscriptionWorker = store.subscriptions.getSubscriptionWorker(options1);
 
-            const mre = semaphore(1);
+            const mre = new Semaphore(1);
             mre.take(TypeUtil.NOOP); // block by default
 
             await putUserDoc(store);
@@ -593,7 +594,7 @@ describe("SubscriptionsBasicTest", function () {
             }
 
             subscription.on("batch", (batch, callback) => {
-                batch.items.forEach(i => docs.push(i.result));
+                for (const i of batch.items) docs.push(i.result);
                 callback();
             });
 
@@ -665,7 +666,7 @@ describe("SubscriptionsBasicTest", function () {
             });
 
             subscription.on("batch", (batch, callback) => {
-                batch.items.forEach(i => docs.push(i.result));
+                for (const i of batch.items) docs.push(i.result);
                 callback(getError("InvalidOperationException", "Fake exception"));
             });
 
@@ -700,7 +701,7 @@ describe("SubscriptionsBasicTest", function () {
             const docs = new AsyncQueue<User>();
 
             subscription.on("batch", (batch, callback) => {
-                batch.items.forEach(i => docs.push(i.result));
+                for (const i of batch.items) docs.push(i.result);
                 callback();
             });
 
@@ -765,7 +766,7 @@ describe("SubscriptionsBasicTest", function () {
             }
 
             subscription.on("batch", (batch, callback) => {
-                batch.items.forEach(i => users.push(i.result));
+                for (const i of batch.items) users.push(i.result);
                 callback();
             });
 
@@ -810,7 +811,7 @@ describe("SubscriptionsBasicTest", function () {
             });
             const items1 = new AsyncQueue<User>();
             subscription1.on("batch", (batch, callback) => {
-                batch.items.forEach(i => items1.push(i.result));
+                for (const i of batch.items) items1.push(i.result);
                 callback();
             });
 
@@ -820,7 +821,7 @@ describe("SubscriptionsBasicTest", function () {
             });
             const items2 = new AsyncQueue<User>();
             subscription2.on("batch", (batch, callback) => {
-                batch.items.forEach(i => items2.push(i.result));
+                for (const i of batch.items) items2.push(i.result);
                 callback();
             });
 
@@ -870,8 +871,8 @@ describe("SubscriptionsBasicTest", function () {
         const store2 = new DocumentStore(store.urls, store.database);
         try {
             store2.conventions.findCollectionNameForObjectLiteral = () => "test";
-            store2.conventions.entityFieldNameConvention = "camel";
-            store2.conventions.remoteEntityFieldNameConvention = "pascal";
+            store2.conventions.serverToLocalFieldNameConverter = ObjectUtil.camel;
+            store2.conventions.localToServerFieldNameConverter = ObjectUtil.pascal;
             store2.initialize();
 
             {
@@ -1416,7 +1417,7 @@ describe("SubscriptionsBasicTest", function () {
 
         try {
             subscription.on("batch", (batch, callback) => {
-                batch.items.forEach(x => keys.push(x.result.name));
+                for (const x of batch.items) keys.push(x.result.name);
                 callback();
             });
 

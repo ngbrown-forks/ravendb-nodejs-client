@@ -1,12 +1,11 @@
-import { CertificateMetadata } from "./CertificateMetadata";
-import { HttpRequestParameters } from "../../../Primitives/Http";
-import { StringUtil } from "../../../Utility/StringUtil";
-import stream from "readable-stream";
-import { IServerOperation, OperationResultType } from "../../../Documents/Operations/OperationAbstractions";
-import { DocumentConventions } from "../../../Documents/Conventions/DocumentConventions";
-import { RavenCommand } from "../../../Http/RavenCommand";
-import { ServerNode } from "../../../Http/ServerNode";
-
+import { CertificateMetadata } from "./CertificateMetadata.js";
+import { HttpRequestParameters } from "../../../Primitives/Http.js";
+import { StringUtil } from "../../../Utility/StringUtil.js";
+import { IServerOperation, OperationResultType } from "../../../Documents/Operations/OperationAbstractions.js";
+import { DocumentConventions } from "../../../Documents/Conventions/DocumentConventions.js";
+import { RavenCommand } from "../../../Http/RavenCommand.js";
+import { ServerNode } from "../../../Http/ServerNode.js";
+import { Stream } from "node:stream";
 
 export class GetCertificatesMetadataOperation implements IServerOperation<CertificateMetadata[]> {
     private readonly _name: string;
@@ -54,7 +53,7 @@ class GetCertificatesMetadataCommand extends RavenCommand<CertificateMetadata[]>
         }
     }
 
-    async setResponseAsync(bodyStream: stream.Stream, fromCache: boolean): Promise<string> {
+    async setResponseAsync(bodyStream: Stream, fromCache: boolean): Promise<string> {
         if (!bodyStream) {
             return;
         }

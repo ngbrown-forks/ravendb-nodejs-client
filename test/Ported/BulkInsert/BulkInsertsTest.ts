@@ -1,13 +1,14 @@
-import * as assert from "assert";
-import { testContext, disposeTestDocumentStore } from "../../Utils/TestUtil";
+import assert from "node:assert"
+import { testContext, disposeTestDocumentStore } from "../../Utils/TestUtil.js";
 
 import DocumentStore, {
     IDocumentStore, BulkInsertOperation, IMetadataDictionary,
-} from "../../../src";
-import { createMetadataDictionary } from "../../../src/Mapping/MetadataAsDictionary";
-import { CONSTANTS } from "../../../src/Constants";
-import { DateUtil } from "../../../src/Utility/DateUtil";
-import { delay } from "../../../src/Utility/PromiseUtil";
+} from "../../../src/index.js";
+import { createMetadataDictionary } from "../../../src/Mapping/MetadataAsDictionary.js";
+import { CONSTANTS } from "../../../src/Constants.js";
+import { DateUtil } from "../../../src/Utility/DateUtil.js";
+import { delay } from "../../../src/Utility/PromiseUtil.js";
+import { ObjectUtil } from "../../../src/Utility/ObjectUtil.js";
 
 describe("bulk insert", function () {
 
@@ -92,7 +93,7 @@ describe("bulk insert", function () {
         } finally {
             try {
                 await bulkInsert.finish();
-            } catch (e) {
+            } catch {
                 // ignore
             }
         }
@@ -128,7 +129,7 @@ describe("bulk insert", function () {
         } finally {
             try {
                 await bulkInsert.finish();
-            } catch (e) {
+            } catch {
                 //ignore
             }
         }
@@ -237,8 +238,8 @@ describe("bulk insert", function () {
 
     it("can handle custom entity naming conventions + object literals when findCollectionNameForObjectLiteral is specified", async () => {
         const store2 = new DocumentStore(store.urls, store.database);
-        store2.conventions.entityFieldNameConvention = "camel";
-        store2.conventions.remoteEntityFieldNameConvention = "pascal";
+        store2.conventions.serverToLocalFieldNameConverter = ObjectUtil.camel;
+        store2.conventions.localToServerFieldNameConverter = ObjectUtil.pascal;
         store2.conventions.findCollectionNameForObjectLiteral = () => "test";
 
         store2.initialize();
@@ -287,6 +288,7 @@ describe("BulkInsertOperation._typeCheckStoreArgs() properly parses arguments", 
     const typeCheckStoreArgs = BulkInsertOperation["_typeCheckStoreArgs"];
     // eslint-disable-next-line @typescript-eslint/no-empty-function
     const expectedCallback = () => {
+        // empty
     };
     const expectedId = "id";
     const expectedMetadata = {} as IMetadataDictionary;

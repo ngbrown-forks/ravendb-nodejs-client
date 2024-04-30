@@ -1,12 +1,12 @@
-import * as assert from "assert";
-import { testContext, disposeTestDocumentStore } from "../../Utils/TestUtil";
+import assert from "node:assert"
+import { testContext, disposeTestDocumentStore } from "../../Utils/TestUtil.js";
 
 import {
     IDocumentStore,
     IndexDefinition,
     IndexFieldOptions,
     PutIndexesOperation,
-} from "../../../src";
+} from "../../../src/index.js";
 
 describe("SpatialSortingTest", function () {
 

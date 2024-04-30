@@ -1,5 +1,5 @@
-import * as assert from "assert";
-import { testContext, disposeTestDocumentStore } from "../Utils/TestUtil";
+import assert from "node:assert"
+import { testContext, disposeTestDocumentStore } from "../Utils/TestUtil.js";
 
 import {
     RequestExecutor,
@@ -10,8 +10,8 @@ import {
     GetDatabaseNamesOperation,
     ServerNode,
     IDocumentStore
-} from "../../src";
-import { UpdateTopologyParameters } from "../../src/Http/UpdateTopologyParameters";
+} from "../../src/index.js";
+import { UpdateTopologyParameters } from "../../src/Http/UpdateTopologyParameters.js";
 
 describe("Request executor", function () {
 
@@ -41,7 +41,7 @@ describe("Request executor", function () {
                     try {
                         const cmd = new GetNextOperationIdCommand();
                         await executor.execute(cmd);
-                    } catch (err) {
+                    } catch {
                         errorsCount++;
                     }
                 }
@@ -85,7 +85,7 @@ describe("Request executor", function () {
                 const command = databaseNamesOperation.getCommand(documentConventions);
                 await executor.execute(command);
 
-                assert.ok(command.result.indexOf(store.database) !== -1);
+                assert.ok(command.result.includes(store.database));
             } finally {
                 executor.dispose();
             }

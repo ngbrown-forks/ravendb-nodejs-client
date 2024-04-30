@@ -1,5 +1,5 @@
-import * as assert from "assert";
-import { testContext, disposeTestDocumentStore } from "../../Utils/TestUtil";
+import assert from "node:assert"
+import { testContext, disposeTestDocumentStore } from "../../Utils/TestUtil.js";
 
 import {
     IDocumentStore,
@@ -27,12 +27,12 @@ import {
     AbstractCsharpIndexCreationTask,
     SetIndexesLockOperationParameters,
     SetIndexesPriorityOperationParameters,
-} from "../../../src";
-import { UsersIndex, UsersInvalidIndex, UsersIndexWithPascalCasedFields } from "../../Assets/Indexes";
-import { TypeUtil } from "../../../src/Utility/TypeUtil";
-import { assertThat } from "../../Utils/AssertExtensions";
-import { AbstractJavaScriptIndexCreationTask } from "../../../src/Documents/Indexes/AbstractJavaScriptIndexCreationTask";
-import { delay } from "../../../src/Utility/PromiseUtil";
+} from "../../../src/index.js";
+import { UsersIndex, UsersInvalidIndex, UsersIndexWithPascalCasedFields } from "../../Assets/Indexes.js";
+import { TypeUtil } from "../../../src/Utility/TypeUtil.js";
+import { assertThat } from "../../Utils/AssertExtensions.js";
+import { AbstractJavaScriptIndexCreationTask } from "../../../src/Documents/Indexes/AbstractJavaScriptIndexCreationTask.js";
+import { delay } from "../../../src/Utility/PromiseUtil.js";
 
 describe("Index operations", function () {
 
@@ -40,6 +40,7 @@ describe("Index operations", function () {
 
     class User {
         constructor(public name: string, public age?: number) {
+            // empty
         }
     }
 

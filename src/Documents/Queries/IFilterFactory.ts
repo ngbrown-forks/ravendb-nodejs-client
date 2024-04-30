@@ -1,5 +1,5 @@
-import { MethodCall } from "../Session/MethodCall";
-import { WhereParams } from "../Session/WhereParams";
+import { MethodCall } from "../Session/MethodCall.js";
+import { WhereParams } from "../Session/WhereParams.js";
 
 
 export interface IFilterFactory<T> {

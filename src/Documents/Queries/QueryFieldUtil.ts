@@ -1,5 +1,5 @@
-import { CONSTANTS } from "../../Constants";
-import { StringUtil } from "../../Utility/StringUtil";
+import { CONSTANTS } from "../../Constants.js";
+import { StringUtil } from "../../Utility/StringUtil.js";
 
 export class QueryFieldUtil {
 

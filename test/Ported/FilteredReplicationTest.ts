@@ -1,18 +1,18 @@
-import { disposeTestDocumentStore, RavenTestContext, testContext } from "../Utils/TestUtil";
+import { disposeTestDocumentStore, RavenTestContext, testContext } from "../Utils/TestUtil.js";
 import {
     IDocumentStore, PullReplicationAsSink,
     PullReplicationDefinition, PutConnectionStringOperation,
     PutPullReplicationAsHubOperation,
     RavenConnectionString, TimeSeriesValue, UpdatePullReplicationAsSinkOperation
-} from "../../src";
-import { ReplicationTestContext } from "../Utils/ReplicationTestContext";
-import { ReplicationHubAccess } from "../../src/Documents/Operations/Replication/ReplicationHubAccess";
-import { RegisterReplicationHubAccessOperation } from "../../src/Documents/Operations/Replication/RegisterReplicationHubAccessOperation";
-import { GenerateCertificateOperation } from "../Infrastructure/GenerateCertificateOperation";
-import { assertThat } from "../Utils/AssertExtensions";
-import { User } from "../Assets/Entities";
-import { UnregisterReplicationHubAccessOperation } from "../../src/Documents/Operations/Replication/UnregisterReplicationHubAccessOperation";
-import { GetReplicationHubAccessOperation } from "../../src/Documents/Operations/Replication/GetReplicationHubAccessOperation";
+} from "../../src/index.js";
+import { ReplicationTestContext } from "../Utils/ReplicationTestContext.js";
+import { ReplicationHubAccess } from "../../src/Documents/Operations/Replication/ReplicationHubAccess.js";
+import { RegisterReplicationHubAccessOperation } from "../../src/Documents/Operations/Replication/RegisterReplicationHubAccessOperation.js";
+import { GenerateCertificateOperation } from "../Infrastructure/GenerateCertificateOperation.js";
+import { assertThat } from "../Utils/AssertExtensions.js";
+import { User } from "../Assets/Entities.js";
+import { UnregisterReplicationHubAccessOperation } from "../../src/Documents/Operations/Replication/UnregisterReplicationHubAccessOperation.js";
+import { GetReplicationHubAccessOperation } from "../../src/Documents/Operations/Replication/GetReplicationHubAccessOperation.js";
 
 (RavenTestContext.is60Server || RavenTestContext.isPullRequest ? describe.skip : describe)("FilteredReplicationTest", function () {
 

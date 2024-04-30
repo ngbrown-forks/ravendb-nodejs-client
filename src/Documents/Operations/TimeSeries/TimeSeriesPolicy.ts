@@ -1,7 +1,7 @@
-import { TimeValue } from "../../../Primitives/TimeValue";
-import { StringUtil } from "../../../Utility/StringUtil";
-import { throwError } from "../../../Exceptions";
-import { TIME_SERIES_ROLLUP_SEPARATOR, TimeSeriesPolicyRaw } from "./RawTimeSeriesTypes";
+import { TimeValue } from "../../../Primitives/TimeValue.js";
+import { StringUtil } from "../../../Utility/StringUtil.js";
+import { throwError } from "../../../Exceptions/index.js";
+import { TIME_SERIES_ROLLUP_SEPARATOR, TimeSeriesPolicyRaw } from "./RawTimeSeriesTypes.js";
 
 export class TimeSeriesPolicy {
     /**

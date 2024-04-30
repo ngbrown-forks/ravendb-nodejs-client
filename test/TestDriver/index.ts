@@ -1,30 +1,29 @@
-import { ChildProcess } from "child_process";
-import * as os from "os";
+import { ChildProcess } from "node:child_process";
+import os from "node:os";
 
-import { CONSTANTS } from "../../src/Constants";
-import { DocumentStore } from "../../src/Documents/DocumentStore";
-import { IDocumentStore } from "../../src/Documents/IDocumentStore";
-import { GetStatisticsOperation } from "../../src/Documents/Operations/GetStatisticsOperation";
-import { throwError } from "../../src/Exceptions";
-import { IDisposable } from "../../src/Types/Contracts";
-import { getLogger } from "../../src/Utility/LogUtil";
-import { RavenServerLocator } from "./RavenServerLocator";
-import { RavenServerRunner } from "./RavenServerRunner";
-import { RevisionsConfiguration } from "../../src/Documents/Operations/RevisionsConfiguration";
-import { RevisionsCollectionConfiguration } from "../../src/Documents/Operations/RevisionsCollectionConfiguration";
+import { CONSTANTS } from "../../src/Constants.js";
+import { DocumentStore } from "../../src/Documents/DocumentStore.js";
+import { IDocumentStore } from "../../src/Documents/IDocumentStore.js";
+import { GetStatisticsOperation } from "../../src/Documents/Operations/GetStatisticsOperation.js";
+import { throwError } from "../../src/Exceptions/index.js";
+import { IDisposable } from "../../src/Types/Contracts.js";
+import { getLogger } from "../../src/Utility/LogUtil.js";
+import { RavenServerLocator } from "./RavenServerLocator.js";
+import { RavenServerRunner } from "./RavenServerRunner.js";
+import { RevisionsConfiguration } from "../../src/Documents/Operations/RevisionsConfiguration.js";
+import { RevisionsCollectionConfiguration } from "../../src/Documents/Operations/RevisionsCollectionConfiguration.js";
 import {
     ConfigureRevisionsOperation,
     ConfigureRevisionsOperationResult
-} from "../../src/Documents/Operations/Revisions/ConfigureRevisionsOperation";
-import { Dog, Entity, Genre, Movie, Rating, User } from "../Assets/Graph";
-import { RequestExecutor } from "../../src/Http/RequestExecutor";
-import * as proxyAgent from "http-proxy-agent";
-import * as http from "http";
-import { Stopwatch } from "../../src/Utility/Stopwatch";
-import { delay, wrapWithTimeout } from "../../src/Utility/PromiseUtil";
-import { ClusterTestContext } from "../Utils/TestUtil";
-import { GetIndexErrorsOperation } from "../../src";
-import { TimeUtil } from "../../src/Utility/TimeUtil";
+} from "../../src/Documents/Operations/Revisions/ConfigureRevisionsOperation.js";
+import { Dog, Entity, Genre, Movie, Rating, User } from "../Assets/Graph.js";
+import { RequestExecutor } from "../../src/Http/RequestExecutor.js";
+import { Stopwatch } from "../../src/Utility/Stopwatch.js";
+import { delay, wrapWithTimeout } from "../../src/Utility/PromiseUtil.js";
+import { ClusterTestContext } from "../Utils/TestUtil.js";
+import { GetIndexErrorsOperation } from "../../src/index.js";
+import { TimeUtil } from "../../src/Utility/TimeUtil.js";
+import { Agent, ProxyAgent } from "undici";
 
 const log = getLogger({ module: "TestDriver" });
 
@@ -57,7 +56,8 @@ export abstract class RavenTestDriver {
 
     public enableFiddler(): IDisposable {
         RequestExecutor.requestPostProcessor = (req) => {
-            req.agent = new proxyAgent.HttpProxyAgent("http://127.0.0.1:8888") as unknown as http.Agent;
+            const proxy = new ProxyAgent("http://127.0.0.1:8888");
+            (req as any).dispatcher = proxy;
         };
 
         return {
@@ -120,6 +120,7 @@ export abstract class RavenTestDriver {
 
             try {
                 const url = await wrapWithTimeout(result, 5_000);
+                // eslint-disable-next-line no-console
                 console.log("DEBUG: RavenDB server URL", url);
                 return url;
             } catch (err) {

@@ -1,14 +1,13 @@
-import * as changeCase from "change-case";
-import { TypeUtil } from "./TypeUtil";
-import { DocumentConventions } from "../Documents/Conventions/DocumentConventions";
-import { CONSTANTS } from "../Constants";
-import { MetadataObject } from "../Documents/Session/MetadataObject";
-import { CompareExchangeResultItem } from "../Documents/Operations/CompareExchange/CompareExchangeValueResultParser";
-import { ServerCasing, ServerResponse } from "../Types";
-import { TimeSeriesRangeResult } from "../Documents/Operations/TimeSeries/TimeSeriesRangeResult";
-import { TimeSeriesEntry } from "../Documents/Session/TimeSeries/TimeSeriesEntry";
-import { CounterDetail } from "../Documents/Operations/Counters/CounterDetail";
-import { AttachmentDetails } from "../Documents/Attachments";
+import { TypeUtil } from "./TypeUtil.js";
+import { DocumentConventions } from "../Documents/Conventions/DocumentConventions.js";
+import { CONSTANTS } from "../Constants.js";
+import { MetadataObject } from "../Documents/Session/MetadataObject.js";
+import { CompareExchangeResultItem } from "../Documents/Operations/CompareExchange/CompareExchangeValueResultParser.js";
+import { ServerCasing, ServerResponse } from "../Types/index.js";
+import { TimeSeriesRangeResult } from "../Documents/Operations/TimeSeries/TimeSeriesRangeResult.js";
+import { TimeSeriesEntry } from "../Documents/Session/TimeSeries/TimeSeriesEntry.js";
+import { CounterDetail } from "../Documents/Operations/Counters/CounterDetail.js";
+import { AttachmentDetails } from "../Documents/Attachments/index.js";
 
 function iden(x, locale) {
     return x;
@@ -25,6 +24,11 @@ export class ObjectUtil {
     public static clone(o) {
         return JSON.parse(JSON.stringify(o));
     }
+
+    static camelCase = (input: string, locale?: string) => locale ? input[0].toLocaleUpperCase(locale)  + input.slice(1) : input[0].toLowerCase() + input.slice(1);
+    static camel = ObjectUtil.camelCase;
+    static pascalCase = (input: string, locale?: string) => locale ? input[0].toLocaleLowerCase(locale) + input.slice(1) : input[0].toUpperCase() + input.slice(1);
+    static pascal = ObjectUtil.pascalCase;
 
     public static deepJsonClone(o) {
         return JSON.parse(JSON.stringify(o));
@@ -86,7 +90,7 @@ export class ObjectUtil {
         const hasMetadata = CONSTANTS.Documents.Metadata.KEY in obj;
         const transformedMetadata = hasMetadata ? ObjectUtil.transformMetadataKeys(metadata, conventions) : null;
 
-        if (!conventions.entityFieldNameConvention) {
+        if (!conventions.serverToLocalFieldNameConverter) {
             // fast path - no need to transform entity - transform metadata only
             if (hasMetadata) {
                 return {
@@ -99,7 +103,7 @@ export class ObjectUtil {
         }
 
         const transformed = ObjectUtil.transformObjectKeys(obj, {
-            defaultTransform: conventions.entityFieldNameConvention
+            defaultTransform: conventions.serverToLocalFieldNameConverter
         });
 
         if (hasMetadata) {
@@ -117,7 +121,7 @@ export class ObjectUtil {
         let result: MetadataObject = {};
 
         const userMetadataFieldsToTransform: any = {};
-        const needsCaseTransformation = !!conventions.entityFieldNameConvention;
+        const needsCaseTransformation = !!conventions.serverToLocalFieldNameConverter;
 
         for (const [key, value] of Object.entries(metadata)) {
             if (key === CONSTANTS.Documents.Metadata.ATTACHMENTS) {
@@ -135,7 +139,7 @@ export class ObjectUtil {
 
         if (Object.keys(userMetadataFieldsToTransform)) {
             const transformedUserFields = ObjectUtil.transformObjectKeys(userMetadataFieldsToTransform, {
-                defaultTransform: conventions.entityFieldNameConvention
+                defaultTransform: conventions.serverToLocalFieldNameConverter
             });
 
             result = Object.assign(result, transformedUserFields);
@@ -246,46 +250,20 @@ export class ObjectUtil {
     This code is a modified version of https://github.com/claudetech/js-change-object-case
 */
 
-export type CasingConvention =
-    "upper" |
-    "upperCase" |
-    "ucFirst" |
-    "upperCaseFirst" |
-    "lcFirst" |
-    "lowerCaseFirst" |
-    "lower" |
-    "lowerCase" |
-    "sentence" |
-    "sentenceCase" |
-    "title" |
-    "titleCase" |
-    "camel" |
-    "camelCase" |
-    "pascal" |
-    "pascalCase" |
-    "snake" |
-    "snakeCase" |
-    "param" |
-    "paramCase" |
-    "dot" |
-    "dotCase" |
-    "path" |
-    "pathCase" |
-    "constant" |
-    "constantCase" |
-    "swap" |
-    "swapCase";
+//TODO: review those methods
+
+export type FieldNameConversion = (fieldName: string) => string;
 
 export interface ObjectChangeCaseOptionsBase {
     recursive?: boolean;
     arrayRecursive?: boolean;
     ignoreKeys?: (string | RegExp)[];
     ignorePaths?: (string | RegExp)[];
-    paths?: { transform: CasingConvention, path?: RegExp }[];
+    paths?: { transform: FieldNameConversion, path?: RegExp }[];
 }
 
 export interface ObjectChangeCaseOptions extends ObjectChangeCaseOptionsBase {
-    defaultTransform: CasingConvention;
+    defaultTransform: FieldNameConversion;
 }
 
 interface InternalObjectChangeCaseOptions extends ObjectChangeCaseOptions {
@@ -313,19 +291,18 @@ function setDefaults(object, defaults) {
     return object;
 }
 
-function isObject(value) {
+function isObject(value: any) {
     if (!value) {
         return false;
     }
     return typeof value === "object" || typeof value === "function";
 }
 
-function isArray(value) {
-    return (Array.isArray && Array.isArray(value)) ||
-        Object.prototype.toString.call(value) === "[object Array]";
+function isArray(value: any): value is Array<any> {
+    return Array.isArray(value);
 }
 
-function computeNewValue(value, options, forceRecurse, stack) {
+function computeNewValue(value, options, forceRecurse: boolean, stack: string[]) {
     const valueIsArray = isArray(value);
     if (valueIsArray && options.arrayRecursive) {
         return transformArray(value, options, stack);
@@ -336,7 +313,7 @@ function computeNewValue(value, options, forceRecurse, stack) {
     }
 }
 
-function transformArray(array, options: ObjectChangeCaseOptions, stack) {
+function transformArray(array: any[], options: ObjectChangeCaseOptions, stack) {
     if (!isArray(array)) {
         throw new Error("transformArray expects an array");
     }
@@ -351,11 +328,11 @@ function transformArray(array, options: ObjectChangeCaseOptions, stack) {
     return result;
 }
 
-function makeKeyPath(keyStack) {
+function makeKeyPath(keyStack: string[]) {
     return keyStack.join(".");
 }
 
-function shouldTransformKey(currentKey, currentPath, opts) {
+function shouldTransformKey(currentKey: string, currentPath: string, opts) {
     for (const x of opts.ignoreKeys) {
         if ("test" in x ? x.test(currentKey) : x === currentKey) {
             return false;
@@ -379,21 +356,17 @@ function getTransformFunc(key, currentPath, opts: InternalObjectChangeCaseOption
     if (opts.paths) {
         for (const p of opts.paths) {
             if (!p.path) {
-                return changeCase[p.transform];
+                return p.transform;
             } else if (p.path.test(currentPath)) {
-                return p.transform ? changeCase[p.transform] : iden;
+                return p.transform ?? iden;
             }
         }
     }
 
-    if (!opts.defaultTransform) {
-        return iden;
-    }
-
-    return changeCase[opts.defaultTransform];
+    return opts.defaultTransform ?? iden;
 }
 
-function transformObjectKeys(object, options: InternalObjectChangeCaseOptions, stack) {
+function transformObjectKeys(object: any, options: InternalObjectChangeCaseOptions, stack: string[]) {
     if (!object) {
         return object;
     }
@@ -407,7 +380,7 @@ function transformObjectKeys(object, options: InternalObjectChangeCaseOptions, s
             const currentPath = makeKeyPath(stack);
             if (shouldTransformKey(key, currentPath, options)) {
                 const f = getTransformFunc(key, currentPath, options);
-                newKey = f(key, options.locale);
+                newKey = f(key, options.locale ?? undefined);
             }
 
             // eslint-disable-next-line no-prototype-builtins
@@ -423,10 +396,3 @@ function transformObjectKeys(object, options: InternalObjectChangeCaseOptions, s
     return result;
 }
 
-// reexport all functions exported by `changeCase`
-for (const i in changeCase) {
-    // eslint-disable-next-line no-prototype-builtins
-    if (changeCase.hasOwnProperty(i)) {
-        ObjectUtil[i] = changeCase[i];
-    }
-}

@@ -1,6 +1,6 @@
-import { IndexType } from "./Enums";
-import { AutoIndexFieldOptions } from "./AutoIndexFieldOptions";
-import { IndexDefinitionBase } from "./IndexDefinitionBase";
+import { IndexType } from "./Enums.js";
+import { AutoIndexFieldOptions } from "./AutoIndexFieldOptions.js";
+import { IndexDefinitionBase } from "./IndexDefinitionBase.js";
 
 
 export interface AutoIndexDefinition extends IndexDefinitionBase {

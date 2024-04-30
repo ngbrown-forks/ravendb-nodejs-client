@@ -1,5 +1,5 @@
-import { ITimeSeriesQueryBuilder } from "./ITimeSeriesQueryBuilder";
-import { TimeSeriesQueryResult } from "./TimeSeriesQueryResult";
+import { ITimeSeriesQueryBuilder } from "./ITimeSeriesQueryBuilder.js";
+import { TimeSeriesQueryResult } from "./TimeSeriesQueryResult.js";
 
 export class TimeSeriesQueryBuilder implements ITimeSeriesQueryBuilder {
     private _query: string;

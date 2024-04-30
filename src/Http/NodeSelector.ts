@@ -1,10 +1,9 @@
-import { ArrayUtil } from "../Utility/ArrayUtil";
-import * as moment from "moment";
-import { ServerNode } from "./ServerNode";
-import CurrentIndexAndNode from "../Http/CurrentIndexAndNode";
-import { Topology } from "./Topology";
-import { Timer } from "../Primitives/Timer";
-import { throwError } from "../Exceptions";
+import { ArrayUtil } from "../Utility/ArrayUtil.js";
+import { ServerNode } from "./ServerNode.js";
+import CurrentIndexAndNode from "../Http/CurrentIndexAndNode.js";
+import { Topology } from "./Topology.js";
+import { Timer } from "../Primitives/Timer.js";
+import { throwError } from "../Exceptions/index.js";
 
 class NodeSelectorState {
     public topology: Topology;
@@ -292,7 +291,7 @@ export class NodeSelector {
         }
         this._switchToSpeedTestPhase();
 
-        const minuteMs = moment.duration(1, "m").asMilliseconds();
+        const minuteMs = 60_000;
         this._updateFastestNodeTimer = new Timer(async () => this._switchToSpeedTestPhase(), minuteMs, minuteMs);
     }
 

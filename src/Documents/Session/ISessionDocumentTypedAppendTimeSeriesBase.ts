@@ -1,4 +1,4 @@
-import { TypedTimeSeriesEntry } from "./TimeSeries/TypedTimeSeriesEntry";
+import { TypedTimeSeriesEntry } from "./TimeSeries/TypedTimeSeriesEntry.js";
 
 export interface ISessionDocumentTypedAppendTimeSeriesBase<T extends object> {
     append(timestamp: Date, entry: T): void;

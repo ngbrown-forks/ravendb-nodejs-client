@@ -1,16 +1,16 @@
-import { IServerOperation, OperationResultType } from "../../../Documents/Operations/OperationAbstractions";
-import { ServerWideBackupConfiguration } from "./ServerWideBackupConfiguration";
-import { throwError } from "../../../Exceptions";
-import { RavenCommand } from "../../../Http/RavenCommand";
-import { DocumentConventions } from "../../../Documents/Conventions/DocumentConventions";
-import { IRaftCommand } from "../../../Http/IRaftCommand";
-import { RaftIdGenerator } from "../../../Utility/RaftIdGenerator";
-import { HttpRequestParameters } from "../../../Primitives/Http";
-import { ServerNode } from "../../../Http/ServerNode";
-import * as stream from "readable-stream";
+import { IServerOperation, OperationResultType } from "../../../Documents/Operations/OperationAbstractions.js";
+import { ServerWideBackupConfiguration } from "./ServerWideBackupConfiguration.js";
+import { throwError } from "../../../Exceptions/index.js";
+import { RavenCommand } from "../../../Http/RavenCommand.js";
+import { DocumentConventions } from "../../../Documents/Conventions/DocumentConventions.js";
+import { IRaftCommand } from "../../../Http/IRaftCommand.js";
+import { RaftIdGenerator } from "../../../Utility/RaftIdGenerator.js";
+import { HttpRequestParameters } from "../../../Primitives/Http.js";
+import { ServerNode } from "../../../Http/ServerNode.js";
+import { Stream } from "node:stream";
 import {
     PutServerWideBackupConfigurationResponse
-} from "../OngoingTasks/ServerWideTaskResponse";
+} from "../OngoingTasks/ServerWideTaskResponse.js";
 
 export class PutServerWideBackupConfigurationOperation implements IServerOperation<PutServerWideBackupConfigurationResponse> {
     private readonly _configuration: ServerWideBackupConfiguration;
@@ -66,7 +66,7 @@ class PutServerWideBackupConfigurationCommand extends RavenCommand<PutServerWide
         }
     }
 
-    async setResponseAsync(bodyStream: stream.Stream, fromCache: boolean): Promise<string> {
+    async setResponseAsync(bodyStream: Stream, fromCache: boolean): Promise<string> {
         return this._parseResponseDefaultAsync(bodyStream);
     }
 }

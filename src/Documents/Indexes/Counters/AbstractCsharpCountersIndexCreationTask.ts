@@ -1,7 +1,7 @@
-import { AbstractGenericCountersIndexCreationTask } from "./AbstractGenericCountersIndexCreationTask";
-import { CountersIndexDefinition } from "./CountersIndexDefinition";
-import { CountersIndexDefinitionBuilder } from "./CountersIndexDefinitionBuilder";
-import { DocumentConventions } from "../../Conventions/DocumentConventions";
+import { AbstractGenericCountersIndexCreationTask } from "./AbstractGenericCountersIndexCreationTask.js";
+import { CountersIndexDefinition } from "./CountersIndexDefinition.js";
+import { CountersIndexDefinitionBuilder } from "./CountersIndexDefinitionBuilder.js";
+import { DocumentConventions } from "../../Conventions/DocumentConventions.js";
 
 export abstract class AbstractCsharpCountersIndexCreationTask extends AbstractGenericCountersIndexCreationTask {
     public map: string;

@@ -1,14 +1,14 @@
-import * as assert from "assert";
-import { testContext, disposeTestDocumentStore } from "../../Utils/TestUtil";
+import assert from "node:assert"
+import { testContext, disposeTestDocumentStore } from "../../Utils/TestUtil.js";
 
 import {
     IDocumentStore,
     IndexQuery,
     DeleteByQueryOperation, OperationStatusChange,
-} from "../../../src";
-import { User } from "../../Assets/Entities";
-import { AsyncQueue } from "../../Utils/AsyncQueue";
-import { throwError } from "../../../src/Exceptions";
+} from "../../../src/index.js";
+import { User } from "../../Assets/Entities.js";
+import { AsyncQueue } from "../../Utils/AsyncQueue.js";
+import { throwError } from "../../../src/Exceptions/index.js";
 
 describe("DeleteByQueryTest", function () {
 

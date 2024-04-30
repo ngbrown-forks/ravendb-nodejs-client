@@ -1,8 +1,8 @@
-import { IDocumentStore } from "../../../src";
-import { disposeTestDocumentStore, testContext } from "../../Utils/TestUtil";
-import { Employee } from "../../Assets/Orders";
-import { assertThat, assertThrows } from "../../Utils/AssertExtensions";
-import * as StreamUtil from "../../../src/Utility/StreamUtil";
+import { IDocumentStore } from "../../../src/index.js";
+import { disposeTestDocumentStore, testContext } from "../../Utils/TestUtil.js";
+import { Employee } from "../../Assets/Orders.js";
+import { assertThat, assertThrows } from "../../Utils/AssertExtensions.js";
+import { finishedAsync } from "../../../src/Utility/StreamUtil.js";
 
 describe("RavenDB_16321Test", function () {
 
@@ -31,7 +31,7 @@ describe("RavenDB_16321Test", function () {
                 // empty
             });
 
-            await StreamUtil.finishedAsync(stream);
+            await finishedAsync(stream);
         }, err => {
             assertThat(err.name)
                 .isEqualTo("IndexDoesNotExistException");

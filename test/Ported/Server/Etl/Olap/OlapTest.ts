@@ -4,10 +4,10 @@ import {
     OlapConnectionString,
     OlapEtlConfiguration,
     PutConnectionStringOperation, Transformation
-} from "../../../../../src";
-import { disposeTestDocumentStore, RavenTestContext, testContext } from "../../../../Utils/TestUtil";
-import { OngoingTaskOlapEtlDetails } from "../../../../../src/Documents/Operations/OngoingTasks/OngoingTask";
-import { assertThat } from "../../../../Utils/AssertExtensions";
+} from "../../../../../src/index.js";
+import { disposeTestDocumentStore, RavenTestContext, testContext } from "../../../../Utils/TestUtil.js";
+import { OngoingTaskOlapEtlDetails } from "../../../../../src/Documents/Operations/OngoingTasks/OngoingTask.js";
+import { assertThat } from "../../../../Utils/AssertExtensions.js";
 
 (RavenTestContext.isPullRequest ? describe.skip : describe)("OlapTest", function () {
 

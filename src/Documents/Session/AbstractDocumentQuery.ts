@@ -1,94 +1,94 @@
-import { Lazy } from "../Lazy";
-import { QueryOperation } from "./Operations/QueryOperation";
-import { GroupByCountToken } from "./Tokens/GroupByCountToken";
-import { GroupByToken } from "./Tokens/GroupByToken";
-import { HighlightingToken } from "./Tokens/HighlightingToken";
-import { FieldsToFetchToken } from "./Tokens/FieldsToFetchToken";
-import { DeclareToken } from "./Tokens/DeclareToken";
-import { LoadToken } from "./Tokens/LoadToken";
-import { FromToken } from "./Tokens/FromToken";
-import { DistinctToken } from "./Tokens/DistinctToken";
-import { InMemoryDocumentSessionOperations } from "./InMemoryDocumentSessionOperations";
-import { QueryStatistics } from "./QueryStatistics";
-import { IDocumentSession } from "./IDocumentSession";
-import { throwError } from "../../Exceptions";
-import { QueryOperator } from "../Queries/QueryOperator";
-import { IndexQuery } from "../Queries/IndexQuery";
-import { IAbstractDocumentQuery } from "./IAbstractDocumentQuery";
-import { GroupBy } from "../Queries/GroupBy";
-import { GroupByKeyToken } from "../Session/Tokens/GroupByKeyToken";
-import { GroupBySumToken } from "../Session/Tokens/GroupBySumToken";
-import { ExplanationToken } from "../Session/Tokens/ExplanationToken";
-import { TimingsToken } from "../Session/Tokens/TimingsToken";
-import { TrueToken } from "../Session/Tokens/TrueToken";
-import { WhereToken, WhereOptions } from "../Session/Tokens/WhereToken";
-import { QueryFieldUtil } from "../Queries/QueryFieldUtil";
-import { QueryToken } from "./Tokens/QueryToken";
-import { CloseSubclauseToken } from "./Tokens/CloseSubclauseToken";
-import { OpenSubclauseToken } from "./Tokens/OpenSubclauseToken";
-import { NegateToken } from "./Tokens/NegateToken";
-import { WhereParams } from "./WhereParams";
-import { TypeUtil } from "../../Utility/TypeUtil";
-import { DateUtil } from "../../Utility/DateUtil";
-import { MethodCall } from "./MethodCall";
-import { QueryOperatorToken } from "./Tokens/QueryOperatorToken";
-import { OrderByToken } from "./Tokens/OrderByToken";
-import { FacetToken } from "./Tokens/FacetToken";
-import { CounterIncludesToken } from "./Tokens/CounterIncludesToken";
-import { QueryResult } from "../Queries/QueryResult";
-import { DocumentType } from "../DocumentAbstractions";
-import { QueryEventsEmitter } from "./QueryEvents";
-import { EventEmitter } from "events";
-import { StringUtil } from "../../Utility/StringUtil";
-import { IntersectMarkerToken } from "./Tokens/IntersectMarkerToken";
-import { DocumentConventions } from "../Conventions/DocumentConventions";
-import { CONSTANTS, TIME_SERIES } from "../../Constants";
-import { WhereOperator } from "./Tokens/WhereOperator";
-import { OrderingType } from "./OrderingType";
-import { SearchOperator } from "../Queries/SearchOperator";
-import { DocumentQueryHelper } from "./DocumentQueryHelper";
-import { SpatialUnits, SpatialRelation } from "../Indexes/Spatial";
-import { ShapeToken } from "./Tokens/ShapeToken";
-import { DynamicSpatialField } from "../Queries/Spatial/DynamicSpatialField";
-import { SpatialCriteria } from "../Queries/Spatial/SpatialCriteria";
-import { SessionBeforeQueryEventArgs } from "./SessionEvents";
-import { CmpXchg } from "./CmpXchg";
-import { ValueCallback } from "../../Types/Callbacks";
-import { DocumentQueryCustomization } from "./DocumentQueryCustomization";
-import { FacetBase } from "../Queries/Facets/FacetBase";
-import { MoreLikeThisScope } from "../Queries/MoreLikeThis/MoreLikeThisScope";
-import { MoreLikeThisToken } from "./Tokens/MoreLikeThisToken";
-import { LazyQueryOperation } from "../Session/Operations/Lazy/LazyQueryOperation";
-import { DocumentSession } from "./DocumentSession";
-import { SuggestionBase } from "../Queries/Suggestions/SuggestionBase";
-import { SuggestionOptions } from "../Queries/Suggestions/SuggestionOptions";
-import { SuggestToken } from "./Tokens/SuggestToken";
-import { SuggestionWithTerm } from "../Queries/Suggestions/SuggestionWithTerm";
-import { SuggestionWithTerms } from "../Queries/Suggestions/SuggestionWithTerms";
-import { QueryData } from "../Queries/QueryData";
-import { QueryTimings } from "../Queries/Timings/QueryTimings";
-import { Explanations } from "../Queries/Explanation/Explanations";
-import { Highlightings } from "../Queries/Highlighting/Hightlightings";
+import { Lazy } from "../Lazy.js";
+import { QueryOperation } from "./Operations/QueryOperation.js";
+import { GroupByCountToken } from "./Tokens/GroupByCountToken.js";
+import { GroupByToken } from "./Tokens/GroupByToken.js";
+import { HighlightingToken } from "./Tokens/HighlightingToken.js";
+import { FieldsToFetchToken } from "./Tokens/FieldsToFetchToken.js";
+import { DeclareToken } from "./Tokens/DeclareToken.js";
+import { LoadToken } from "./Tokens/LoadToken.js";
+import { FromToken } from "./Tokens/FromToken.js";
+import { DistinctToken } from "./Tokens/DistinctToken.js";
+import { InMemoryDocumentSessionOperations } from "./InMemoryDocumentSessionOperations.js";
+import { QueryStatistics } from "./QueryStatistics.js";
+import { IDocumentSession } from "./IDocumentSession.js";
+import { throwError } from "../../Exceptions/index.js";
+import { QueryOperator } from "../Queries/QueryOperator.js";
+import { IndexQuery } from "../Queries/IndexQuery.js";
+import { IAbstractDocumentQuery } from "./IAbstractDocumentQuery.js";
+import { GroupBy } from "../Queries/GroupBy.js";
+import { GroupByKeyToken } from "../Session/Tokens/GroupByKeyToken.js";
+import { GroupBySumToken } from "../Session/Tokens/GroupBySumToken.js";
+import { ExplanationToken } from "../Session/Tokens/ExplanationToken.js";
+import { TimingsToken } from "../Session/Tokens/TimingsToken.js";
+import { TrueToken } from "../Session/Tokens/TrueToken.js";
+import { WhereToken, WhereOptions } from "../Session/Tokens/WhereToken.js";
+import { QueryFieldUtil } from "../Queries/QueryFieldUtil.js";
+import { QueryToken } from "./Tokens/QueryToken.js";
+import { CloseSubclauseToken } from "./Tokens/CloseSubclauseToken.js";
+import { OpenSubclauseToken } from "./Tokens/OpenSubclauseToken.js";
+import { NegateToken } from "./Tokens/NegateToken.js";
+import { WhereParams } from "./WhereParams.js";
+import { TypeUtil } from "../../Utility/TypeUtil.js";
+import { DateUtil } from "../../Utility/DateUtil.js";
+import { MethodCall } from "./MethodCall.js";
+import { QueryOperatorToken } from "./Tokens/QueryOperatorToken.js";
+import { OrderByToken } from "./Tokens/OrderByToken.js";
+import { FacetToken } from "./Tokens/FacetToken.js";
+import { CounterIncludesToken } from "./Tokens/CounterIncludesToken.js";
+import { QueryResult } from "../Queries/QueryResult.js";
+import { DocumentType } from "../DocumentAbstractions.js";
+import { QueryEventsEmitter } from "./QueryEvents.js";
+import { EventEmitter } from "node:events";
+import { StringUtil } from "../../Utility/StringUtil.js";
+import { IntersectMarkerToken } from "./Tokens/IntersectMarkerToken.js";
+import { DocumentConventions } from "../Conventions/DocumentConventions.js";
+import { CONSTANTS, TIME_SERIES } from "../../Constants.js";
+import { WhereOperator } from "./Tokens/WhereOperator.js";
+import { OrderingType } from "./OrderingType.js";
+import { SearchOperator } from "../Queries/SearchOperator.js";
+import { DocumentQueryHelper } from "./DocumentQueryHelper.js";
+import { SpatialUnits, SpatialRelation } from "../Indexes/Spatial.js";
+import { ShapeToken } from "./Tokens/ShapeToken.js";
+import { DynamicSpatialField } from "../Queries/Spatial/DynamicSpatialField.js";
+import { SpatialCriteria } from "../Queries/Spatial/SpatialCriteria.js";
+import { SessionBeforeQueryEventArgs } from "./SessionEvents.js";
+import { CmpXchg } from "./CmpXchg.js";
+import { ValueCallback } from "../../Types/Callbacks.js";
+import { DocumentQueryCustomization } from "./DocumentQueryCustomization.js";
+import { FacetBase } from "../Queries/Facets/FacetBase.js";
+import { MoreLikeThisScope } from "../Queries/MoreLikeThis/MoreLikeThisScope.js";
+import { MoreLikeThisToken } from "./Tokens/MoreLikeThisToken.js";
+import { LazyQueryOperation } from "../Session/Operations/Lazy/LazyQueryOperation.js";
+import { DocumentSession } from "./DocumentSession.js";
+import { SuggestionBase } from "../Queries/Suggestions/SuggestionBase.js";
+import { SuggestionOptions } from "../Queries/Suggestions/SuggestionOptions.js";
+import { SuggestToken } from "./Tokens/SuggestToken.js";
+import { SuggestionWithTerm } from "../Queries/Suggestions/SuggestionWithTerm.js";
+import { SuggestionWithTerms } from "../Queries/Suggestions/SuggestionWithTerms.js";
+import { QueryData } from "../Queries/QueryData.js";
+import { QueryTimings } from "../Queries/Timings/QueryTimings.js";
+import { Explanations } from "../Queries/Explanation/Explanations.js";
+import { Highlightings } from "../Queries/Highlighting/Hightlightings.js";
 import {
-    extractHighlightingOptionsFromParameters } from "../Queries/Highlighting/HighlightingOptions";
-import { HighlightingParameters } from "../Queries/Highlighting/HighlightingParameters";
-import { QueryHighlightings } from "../Queries/Highlighting/QueryHighlightings";
-import { ExplanationOptions } from "../Queries/Explanation/ExplanationOptions";
-import { CountersByDocId } from "./CounterInternalTypes";
-import { IncludeBuilderBase } from "./Loaders/IncludeBuilderBase";
-import * as os from "os";
-import { GraphQueryToken } from "./Tokens/GraphQueryToken";
-import { IncludesUtil } from "./IncludesUtil";
-import { TimeSeriesIncludesToken } from "./Tokens/TimeSeriesIncludesToken";
-import { CompareExchangeValueIncludesToken } from "./Tokens/CompareExchangeValueIncludesToken";
-import { ITimeSeriesQueryBuilder } from "../Queries/TimeSeries/ITimeSeriesQueryBuilder";
-import { TimeSeriesQueryBuilder } from "../Queries/TimeSeries/TimeSeriesQueryBuilder";
-import { StringBuilder } from "../../Utility/StringBuilder";
-import { ProjectionBehavior } from "../Queries/ProjectionBehavior";
-import { AbstractTimeSeriesRange } from "../Operations/TimeSeries/AbstractTimeSeriesRange";
-import { IAbstractDocumentQueryImpl } from "./IAbstractDocumentQueryImpl";
-import { RevisionIncludesToken } from "./Tokens/RevisionIncludesToken";
-import { IDisposable } from "../../Types/Contracts";
+    extractHighlightingOptionsFromParameters } from "../Queries/Highlighting/HighlightingOptions.js";
+import { HighlightingParameters } from "../Queries/Highlighting/HighlightingParameters.js";
+import { QueryHighlightings } from "../Queries/Highlighting/QueryHighlightings.js";
+import { ExplanationOptions } from "../Queries/Explanation/ExplanationOptions.js";
+import { CountersByDocId } from "./CounterInternalTypes.js";
+import { IncludeBuilderBase } from "./Loaders/IncludeBuilderBase.js";
+import { EOL } from "node:os";
+import { GraphQueryToken } from "./Tokens/GraphQueryToken.js";
+import { IncludesUtil } from "./IncludesUtil.js";
+import { TimeSeriesIncludesToken } from "./Tokens/TimeSeriesIncludesToken.js";
+import { CompareExchangeValueIncludesToken } from "./Tokens/CompareExchangeValueIncludesToken.js";
+import { ITimeSeriesQueryBuilder } from "../Queries/TimeSeries/ITimeSeriesQueryBuilder.js";
+import { TimeSeriesQueryBuilder } from "../Queries/TimeSeries/TimeSeriesQueryBuilder.js";
+import { StringBuilder } from "../../Utility/StringBuilder.js";
+import { ProjectionBehavior } from "../Queries/ProjectionBehavior.js";
+import { AbstractTimeSeriesRange } from "../Operations/TimeSeries/AbstractTimeSeriesRange.js";
+import { IAbstractDocumentQueryImpl } from "./IAbstractDocumentQueryImpl.js";
+import { RevisionIncludesToken } from "./Tokens/RevisionIncludesToken.js";
+import { IDisposable } from "../../Types/Contracts.js";
 
 /**
  * A query against a Raven index
@@ -340,7 +340,7 @@ export abstract class AbstractDocumentQuery<T extends object, TSelf extends Abst
             throwError("InvalidOperationException",
                 "Cannot get MoreLikeThisToken because there are no where token specified.");
         }
-        const lastToken = this._whereTokens[this._whereTokens.length - 1];
+        const lastToken = this._whereTokens.at(-1);
 
         if (lastToken instanceof MoreLikeThisToken) {
             return lastToken.whereTokens;
@@ -374,7 +374,7 @@ export abstract class AbstractDocumentQuery<T extends object, TSelf extends Abst
             return;
         }
 
-        const lastToken = tokens[tokens.length - 1];
+        const lastToken = tokens.at(-1);
         if (!(lastToken instanceof WhereToken) && !(lastToken instanceof CloseSubclauseToken)) {
             return;
         }
@@ -425,7 +425,7 @@ export abstract class AbstractDocumentQuery<T extends object, TSelf extends Abst
 
         this._negate = false;
 
-        if (!tokens || !tokens.length || tokens[tokens.length - 1] instanceof OpenSubclauseToken) {
+        if (!tokens || !tokens.length || tokens.at(-1) instanceof OpenSubclauseToken) {
             if (fieldName) {
                 this._whereExists(fieldName);
             } else {
@@ -567,7 +567,7 @@ export abstract class AbstractDocumentQuery<T extends object, TSelf extends Abst
             return;
         }
 
-        if (!queryData.loadTokens.find(x => x.alias === possibleAlias)) {
+        if (!queryData.loadTokens.some(x => x.alias === possibleAlias)) {
             return;
         }
 
@@ -608,7 +608,7 @@ export abstract class AbstractDocumentQuery<T extends object, TSelf extends Abst
             this._selectTokens.push(fieldsToFetch);
         } else {
             const fetchToken = [...this._selectTokens]
-                .filter(x => x instanceof FieldsToFetchToken)[0];
+                .find(x => x instanceof FieldsToFetchToken);
 
             if (fetchToken) {
                 const idx = this._selectTokens.indexOf(fetchToken);
@@ -694,7 +694,7 @@ export abstract class AbstractDocumentQuery<T extends object, TSelf extends Abst
 
     public addParameter(name: string, value: any): void {
         name = name.replace(/^\$/, "");
-        if (Object.keys(this._queryParameters).indexOf(name) !== -1) {
+        if (Object.keys(this._queryParameters).includes(name)) {
             throwError("InvalidOperationException",
                 "The parameter " + name + " was already added");
         }
@@ -1250,7 +1250,7 @@ export abstract class AbstractDocumentQuery<T extends object, TSelf extends Abst
             return;
         }
 
-        if (tokens[tokens.length - 1] instanceof QueryOperatorToken) {
+        if (tokens.at(-1) instanceof QueryOperatorToken) {
             throwError("InvalidOperationException",
                 "Cannot add AND, previous token was already an operator token.");
         }
@@ -1273,7 +1273,7 @@ export abstract class AbstractDocumentQuery<T extends object, TSelf extends Abst
             return;
         }
 
-        if (tokens[tokens.length - 1] instanceof QueryOperatorToken) {
+        if (tokens.at(-1) instanceof QueryOperatorToken) {
             throwError("InvalidOperationException",
                 "Cannot add OR, previous token was already an operator token.");
         }
@@ -1307,7 +1307,7 @@ export abstract class AbstractDocumentQuery<T extends object, TSelf extends Abst
 
         const tokens = this._getCurrentWhereTokens();
 
-        let last = tokens.length ? tokens[tokens.length - 1] : null;
+        let last = tokens.length ? tokens.at(-1) : null;
 
         if (last instanceof WhereToken) {
             last.options.boost = boost;
@@ -1354,7 +1354,7 @@ export abstract class AbstractDocumentQuery<T extends object, TSelf extends Abst
             throwError("InvalidOperationException", "Fuzzy can only be used right after where clause.");
         }
 
-        const whereToken = tokens[tokens.length - 1];
+        const whereToken = tokens.at(-1);
         if (!(whereToken instanceof WhereToken)) {
             throwError("InvalidOperationException", "Fuzzy can only be used right after where clause.");
         }
@@ -1383,7 +1383,7 @@ export abstract class AbstractDocumentQuery<T extends object, TSelf extends Abst
             throwError("InvalidOperationException", "Proximity can only be used right after search clause.");
         }
 
-        const whereToken = tokens[tokens.length - 1];
+        const whereToken = tokens.at(-1);
         if (!(whereToken instanceof WhereToken)) {
             throwError("InvalidOperationException", "Proximity can only be used right after search clause.");
         }
@@ -1570,7 +1570,7 @@ export abstract class AbstractDocumentQuery<T extends object, TSelf extends Abst
     private _buildWith(queryText: StringBuilder) {
         for (const withToken of this._withTokens) {
             withToken.writeTo(queryText);
-            queryText.append(os.EOL);
+            queryText.append(EOL);
         }
     }
 
@@ -1668,7 +1668,7 @@ export abstract class AbstractDocumentQuery<T extends object, TSelf extends Abst
     public _intersect(): void {
         const tokens = this._getCurrentWhereTokens();
         if (tokens.length > 0) {
-            const last = tokens[tokens.length - 1];
+            const last = tokens.at(-1);
             if (last instanceof WhereToken || last instanceof CloseSubclauseToken) {
                 this._isIntersect = true;
 
@@ -1993,20 +1993,25 @@ export abstract class AbstractDocumentQuery<T extends object, TSelf extends Abst
 
         let whereOperator: WhereOperator;
         switch (relation) {
-            case "Within":
+            case "Within": {
                 whereOperator = "SpatialWithin";
                 break;
-            case "Contains":
+            }
+            case "Contains": {
                 whereOperator = "SpatialContains";
                 break;
-            case "Disjoint":
+            }
+            case "Disjoint": {
                 whereOperator = "SpatialDisjoint";
                 break;
-            case "Intersects":
+            }
+            case "Intersects": {
                 whereOperator = "SpatialIntersects";
                 break;
-            default:
+            }
+            default: {
                 throwError("InvalidArgumentException", `relation: ${relation}.`);
+            }
         }
 
         tokens.push(WhereToken.create(
@@ -2340,7 +2345,7 @@ export abstract class AbstractDocumentQuery<T extends object, TSelf extends Abst
         }
 
         if (this._selectTokens.length) {
-            const lastToken = this._selectTokens[this._selectTokens.length - 1];
+            const lastToken = this._selectTokens.at(-1);
             if (lastToken instanceof SuggestToken) {
                 if (lastToken.fieldName === suggestion.field) {
                     throwError("InvalidOperationException", "Cannot add suggest for the same field again.");

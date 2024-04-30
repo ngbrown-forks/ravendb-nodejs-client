@@ -4,10 +4,10 @@ import {
     IDocumentStore,
     PutClientConfigurationOperation,
     SessionOptions
-} from "../../../src";
-import { disposeTestDocumentStore, RavenTestContext, testContext } from "../../Utils/TestUtil";
-import { Company } from "../../Assets/Entities";
-import { assertThat, assertThrows } from "../../Utils/AssertExtensions";
+} from "../../../src/index.js";
+import { disposeTestDocumentStore, RavenTestContext, testContext } from "../../Utils/TestUtil.js";
+import { Company } from "../../Assets/Entities.js";
+import { assertThat, assertThrows } from "../../Utils/AssertExtensions.js";
 
 (RavenTestContext.is60Server ? describe.skip : describe)("RavenDB_13456", function () {
 

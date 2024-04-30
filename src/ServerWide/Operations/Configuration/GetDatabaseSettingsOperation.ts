@@ -1,11 +1,11 @@
-import { IMaintenanceOperation, OperationResultType } from "../../../Documents/Operations/OperationAbstractions";
-import { DatabaseSettings } from "./DatabaseSettings";
-import { throwError } from "../../../Exceptions";
-import { RavenCommand } from "../../../Http/RavenCommand";
-import { ServerNode } from "../../../Http/ServerNode";
-import { HttpRequestParameters } from "../../../Primitives/Http";
-import stream from "readable-stream";
-import { DocumentConventions } from "../../../Documents/Conventions/DocumentConventions";
+import { IMaintenanceOperation, OperationResultType } from "../../../Documents/Operations/OperationAbstractions.js";
+import { DatabaseSettings } from "./DatabaseSettings.js";
+import { throwError } from "../../../Exceptions/index.js";
+import { RavenCommand } from "../../../Http/RavenCommand.js";
+import { ServerNode } from "../../../Http/ServerNode.js";
+import { HttpRequestParameters } from "../../../Primitives/Http.js";
+import { DocumentConventions } from "../../../Documents/Conventions/DocumentConventions.js";
+import { Stream } from "node:stream";
 
 export class GetDatabaseSettingsOperation implements IMaintenanceOperation<DatabaseSettings> {
 
@@ -53,7 +53,7 @@ class GetDatabaseSettingsCommand extends RavenCommand<DatabaseSettings> {
         }
     }
 
-    async setResponseAsync(bodyStream: stream.Stream, fromCache: boolean): Promise<string> {
+    async setResponseAsync(bodyStream: Stream, fromCache: boolean): Promise<string> {
         if (!bodyStream) {
             this._throwInvalidResponse();
         }

@@ -1,10 +1,10 @@
-import { IMaintenanceOperation, OperationResultType } from "../OperationAbstractions";
-import { IndexErrors } from "../../Indexes/Errors";
-import { RavenCommand } from "../../../Http/RavenCommand";
-import { DocumentConventions } from "../../Conventions/DocumentConventions";
-import { ServerNode } from "../../../Http/ServerNode";
-import { HttpRequestParameters } from "../../../Primitives/Http";
-import * as stream from "readable-stream";
+import { IMaintenanceOperation, OperationResultType } from "../OperationAbstractions.js";
+import { IndexErrors } from "../../Indexes/Errors.js";
+import { RavenCommand } from "../../../Http/RavenCommand.js";
+import { DocumentConventions } from "../../Conventions/DocumentConventions.js";
+import { ServerNode } from "../../../Http/ServerNode.js";
+import { HttpRequestParameters } from "../../../Primitives/Http.js";
+import { Stream } from "node:stream";
 
 export class GetIndexErrorsOperation implements IMaintenanceOperation<IndexErrors[]> {
 
@@ -50,7 +50,7 @@ export class GetIndexErrorsCommand extends RavenCommand<IndexErrors[]> {
         return { uri };
     }
 
-    public async setResponseAsync(bodyStream: stream.Stream, fromCache: boolean): Promise<string> {
+    public async setResponseAsync(bodyStream: Stream, fromCache: boolean): Promise<string> {
         if (!bodyStream) {
             this._throwInvalidResponse();
         }

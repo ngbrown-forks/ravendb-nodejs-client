@@ -1,14 +1,14 @@
-import { IMaintenanceOperation, OperationResultType } from "../OperationAbstractions";
-import { ModifyOngoingTaskResult } from "../../../ServerWide/ModifyOnGoingTaskResult";
-import { PullReplicationAsSink } from "./PullReplicationAsSink";
-import { DocumentConventions } from "../../Conventions/DocumentConventions";
-import { RavenCommand } from "../../../Http/RavenCommand";
-import { IRaftCommand } from "../../../Http/IRaftCommand";
-import { ServerNode } from "../../../Http/ServerNode";
-import { HttpRequestParameters } from "../../../Primitives/Http";
-import * as stream from "readable-stream";
-import { RaftIdGenerator } from "../../../Utility/RaftIdGenerator";
-import { throwError } from "../../../Exceptions";
+import { IMaintenanceOperation, OperationResultType } from "../OperationAbstractions.js";
+import { ModifyOngoingTaskResult } from "../../../ServerWide/ModifyOnGoingTaskResult.js";
+import { PullReplicationAsSink } from "./PullReplicationAsSink.js";
+import { DocumentConventions } from "../../Conventions/DocumentConventions.js";
+import { RavenCommand } from "../../../Http/RavenCommand.js";
+import { IRaftCommand } from "../../../Http/IRaftCommand.js";
+import { ServerNode } from "../../../Http/ServerNode.js";
+import { HttpRequestParameters } from "../../../Primitives/Http.js";
+import { Stream } from "node:stream";
+import { RaftIdGenerator } from "../../../Utility/RaftIdGenerator.js";
+import { throwError } from "../../../Exceptions/index.js";
 
 export class UpdatePullReplicationAsSinkOperation implements IMaintenanceOperation<ModifyOngoingTaskResult> {
     private readonly _pullReplication: PullReplicationAsSink;
@@ -57,7 +57,7 @@ class UpdatePullEdgeReplication extends RavenCommand<ModifyOngoingTaskResult> im
         }
     }
 
-    async setResponseAsync(bodyStream: stream.Stream, fromCache: boolean): Promise<string> {
+    async setResponseAsync(bodyStream: Stream, fromCache: boolean): Promise<string> {
         if (!bodyStream) {
             this._throwInvalidResponse();
         }

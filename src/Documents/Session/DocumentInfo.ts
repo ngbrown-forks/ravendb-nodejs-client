@@ -1,10 +1,10 @@
-import { ConcurrencyCheckMode, } from "./IDocumentSession";
-import { IMetadataDictionary } from "./IMetadataDictionary";
-import { IRavenObject } from "../../Types/IRavenObject";
-import { CONSTANTS } from "../../Constants";
-import { throwError } from "../../Exceptions";
-import { TypeUtil } from "../../Utility/TypeUtil";
-import { MetadataObject } from "./MetadataObject";
+import { ConcurrencyCheckMode, } from "./IDocumentSession.js";
+import { IMetadataDictionary } from "./IMetadataDictionary.js";
+import { IRavenObject } from "../../Types/IRavenObject.js";
+import { CONSTANTS } from "../../Constants.js";
+import { throwError } from "../../Exceptions/index.js";
+import { TypeUtil } from "../../Utility/TypeUtil.js";
+import { MetadataObject } from "./MetadataObject.js";
 
 export class DocumentInfo {
 

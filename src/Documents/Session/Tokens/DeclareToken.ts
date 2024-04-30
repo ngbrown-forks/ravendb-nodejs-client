@@ -1,5 +1,5 @@
-import { QueryToken } from "./QueryToken";
-import * as os from "os";
+import { QueryToken } from "./QueryToken.js";
+import { EOL } from "node:os";
 
 export class DeclareToken extends QueryToken {
 
@@ -38,10 +38,10 @@ export class DeclareToken extends QueryToken {
             .append(this._parameters)
             .append(") ")
             .append("{")
-            .append(os.EOL)
+            .append(EOL)
             .append(this._body)
-            .append(os.EOL)
+            .append(EOL)
             .append("}")
-            .append(os.EOL);
+            .append(EOL);
     }
 }

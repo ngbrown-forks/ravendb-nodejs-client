@@ -1,6 +1,6 @@
-import { SpatialCriteria } from "./SpatialCriteria";
-import { SpatialRelation, SpatialUnits } from "../../Indexes/Spatial";
-import { ShapeToken } from "../../Session/Tokens/ShapeToken";
+import { SpatialCriteria } from "./SpatialCriteria.js";
+import { SpatialRelation, SpatialUnits } from "../../Indexes/Spatial.js";
+import { ShapeToken } from "../../Session/Tokens/ShapeToken.js";
 
 export class WktCriteria extends SpatialCriteria {
     private readonly _shapeWkt: string;

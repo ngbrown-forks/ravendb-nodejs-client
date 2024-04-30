@@ -1,10 +1,9 @@
-import { IndexType } from "./Enums";
-import { throwError } from "../../Exceptions";
-import { StringUtil } from "../../Utility/StringUtil";
-import * as XRegExp from "xregexp";
-import { IndexSourceType } from "./IndexSourceType";
+import { IndexType } from "./Enums.js";
+import { throwError } from "../../Exceptions/index.js";
+import { StringUtil } from "../../Utility/StringUtil.js";
+import { IndexSourceType } from "./IndexSourceType.js";
 
-const COMMENT_REGEX = XRegExp("(?:/\\*(?:[^*]|(?:\\*+[^*/]))*\\*+/)|(?://.*)", "gm");
+const COMMENT_REGEX = new RegExp("(?:/\\*(?:[^*]|(?:\\*+[^*/]))*\\*+/)|(?://.*)", "gm");
 
 export class IndexDefinitionHelper {
     public static detectStaticIndexType(map: string, reduce: string): IndexType {

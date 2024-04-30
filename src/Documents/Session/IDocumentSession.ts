@@ -1,29 +1,30 @@
-import { Lazy } from "../Lazy";
-import { DocumentConventions } from "../Conventions/DocumentConventions";
-import { IDisposable } from "../../Types/Contracts";
-import { DocumentType } from "../DocumentAbstractions";
-import { ClassConstructor, EntitiesCollectionObject, ObjectTypeDescriptor } from "../../Types";
-import { IAdvancedSessionOperations } from "./IAdvancedSessionOperations";
-import { ILoaderWithInclude } from "./Loaders/ILoaderWithInclude";
-import { DocumentQueryOptions } from "./QueryOptions";
-import { IDocumentQuery } from "./IDocumentQuery";
-import { IIncludeBuilder } from "./Loaders/IIncludeBuilder";
-import { ISessionDocumentCounters } from "./ISessionDocumentCounters";
-import { ISessionDocumentTimeSeries } from "./ISessionDocumentTimeSeries";
-import { ISessionDocumentTypedTimeSeries } from "./ISessionDocumentTypedTimeSeries";
-import { ISessionDocumentRollupTypedTimeSeries } from "./ISessionDocumentRollupTypedTimeSeries";
-import { InMemoryDocumentSessionOperations } from "./InMemoryDocumentSessionOperations";
-import { SessionOptions } from "./SessionOptions";
-import { throwError } from "../../Exceptions";
-import { StringUtil } from "../../Utility/StringUtil";
-import CurrentIndexAndNode from "../../Http/CurrentIndexAndNode";
-import { HashCalculator } from "../Queries/HashCalculator";
-import { DocumentStoreBase } from "../DocumentStoreBase";
-import { RequestExecutor } from "../../Http/RequestExecutor";
-import { AbstractCommonApiForIndexes } from "../Indexes/AbstractCommonApiForIndexes";
-import { AbstractTimeSeriesRange } from "../Operations/TimeSeries/AbstractTimeSeriesRange";
-import { ISessionDocumentTypedIncrementalTimeSeries } from "./ISessionDocumentTypedIncrementalTimeSeries";
-import { ISessionDocumentIncrementalTimeSeries } from "./ISessionDocumentIncrementalTimeSeries";
+import { Lazy } from "../Lazy.js";
+import { DocumentConventions } from "../Conventions/DocumentConventions.js";
+import { IDisposable } from "../../Types/Contracts.js";
+import { DocumentType } from "../DocumentAbstractions.js";
+import { ClassConstructor, EntitiesCollectionObject, ObjectTypeDescriptor } from "../../Types/index.js";
+import { IAdvancedSessionOperations } from "./IAdvancedSessionOperations.js";
+import { ILoaderWithInclude } from "./Loaders/ILoaderWithInclude.js";
+import { DocumentQueryOptions } from "./QueryOptions.js";
+import { IDocumentQuery } from "./IDocumentQuery.js";
+import { IIncludeBuilder } from "./Loaders/IIncludeBuilder.js";
+import { ISessionDocumentCounters } from "./ISessionDocumentCounters.js";
+import { ISessionDocumentTimeSeries } from "./ISessionDocumentTimeSeries.js";
+import { ISessionDocumentTypedTimeSeries } from "./ISessionDocumentTypedTimeSeries.js";
+import { ISessionDocumentRollupTypedTimeSeries } from "./ISessionDocumentRollupTypedTimeSeries.js";
+import { InMemoryDocumentSessionOperations } from "./InMemoryDocumentSessionOperations.js";
+import { SessionOptions } from "./SessionOptions.js";
+import { throwError } from "../../Exceptions/index.js";
+import { StringUtil } from "../../Utility/StringUtil.js";
+import CurrentIndexAndNode from "../../Http/CurrentIndexAndNode.js";
+import { HashCalculator } from "../Queries/HashCalculator.js";
+import { DocumentStoreBase } from "../DocumentStoreBase.js";
+import { RequestExecutor } from "../../Http/RequestExecutor.js";
+import { AbstractCommonApiForIndexes } from "../Indexes/AbstractCommonApiForIndexes.js";
+import { AbstractTimeSeriesRange } from "../Operations/TimeSeries/AbstractTimeSeriesRange.js";
+import { ISessionDocumentTypedIncrementalTimeSeries } from "./ISessionDocumentTypedIncrementalTimeSeries.js";
+import { ISessionDocumentIncrementalTimeSeries } from "./ISessionDocumentIncrementalTimeSeries.js";
+import { Buffer} from "node:buffer";
 
 export class SessionInfo {
     private static _clientSessionIdCounter: number = 0;
@@ -100,17 +101,21 @@ export class SessionInfo {
         }
 
         switch (requestExecutor.conventions.readBalanceBehavior) {
-            case "None":
+            case "None": {
                 result = await requestExecutor.getPreferredNode();
                 break;
-            case "RoundRobin":
+            }
+            case "RoundRobin": {
                 result = await requestExecutor.getNodeBySessionId(this.getSessionId());
                 break;
-            case "FastestNode":
+            }
+            case "FastestNode": {
                 result = await requestExecutor.getFastestNode();
                 break;
-            default:
+            }
+            default: {
                 throwError("InvalidArgumentException", requestExecutor.conventions.readBalanceBehavior);
+            }
         }
 
         return result.currentNode;

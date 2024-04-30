@@ -1,25 +1,25 @@
-import { v4 as uuidv4 } from "uuid";
 
-import { throwError } from "../Exceptions";
-import { RequestExecutor } from "../Http/RequestExecutor";
-import { getLogger } from "../Utility/LogUtil";
-import { DocumentStoreBase } from "./DocumentStoreBase";
-import { IDocumentStore } from "./IDocumentStore";
-import { MaintenanceOperationExecutor } from "./Operations/MaintenanceOperationExecutor";
-import { OperationExecutor } from "./Operations/OperationExecutor";
-import { IDocumentSession } from "./Session/IDocumentSession";
-import { SessionOptions } from "./Session/SessionOptions";
-import { DocumentSession } from "./Session/DocumentSession";
-import { IAuthOptions } from "../Auth/AuthOptions";
-import { BulkInsertOperation, BulkInsertOptions } from "./BulkInsertOperation";
-import { IDatabaseChanges } from "./Changes/IDatabaseChanges";
-import { DatabaseChanges } from "./Changes/DatabaseChanges";
-import { DatabaseSmuggler } from "./Smuggler/DatabaseSmuggler";
-import { DatabaseChangesOptions } from "./Changes/DatabaseChangesOptions";
-import { IDisposable } from "../Types/Contracts";
-import { MultiDatabaseHiLoIdGenerator } from "./Identity/MultiDatabaseHiLoIdGenerator";
-import { TypeUtil } from "../Utility/TypeUtil";
-import { wrapWithTimeout } from "../Utility/PromiseUtil";
+import { randomUUID } from "node:crypto";
+import { throwError } from "../Exceptions/index.js";
+import { RequestExecutor } from "../Http/RequestExecutor.js";
+import { getLogger } from "../Utility/LogUtil.js";
+import { DocumentStoreBase } from "./DocumentStoreBase.js";
+import { IDocumentStore } from "./IDocumentStore.js";
+import { MaintenanceOperationExecutor } from "./Operations/MaintenanceOperationExecutor.js";
+import { OperationExecutor } from "./Operations/OperationExecutor.js";
+import { IDocumentSession } from "./Session/IDocumentSession.js";
+import { SessionOptions } from "./Session/SessionOptions.js";
+import { DocumentSession } from "./Session/DocumentSession.js";
+import { IAuthOptions } from "../Auth/AuthOptions.js";
+import { BulkInsertOperation, BulkInsertOptions } from "./BulkInsertOperation.js";
+import { IDatabaseChanges } from "./Changes/IDatabaseChanges.js";
+import { DatabaseChanges } from "./Changes/DatabaseChanges.js";
+import { DatabaseSmuggler } from "./Smuggler/DatabaseSmuggler.js";
+import { DatabaseChangesOptions } from "./Changes/DatabaseChangesOptions.js";
+import { IDisposable } from "../Types/Contracts.js";
+import { MultiDatabaseHiLoIdGenerator } from "./Identity/MultiDatabaseHiLoIdGenerator.js";
+import { TypeUtil } from "../Utility/TypeUtil.js";
+import { wrapWithTimeout } from "../Utility/PromiseUtil.js";
 
 const log = getLogger({ module: "DocumentStore" });
 
@@ -104,7 +104,9 @@ export class DocumentStore extends DocumentStoreBase {
 
                 value.Value.Dispose();
             }*/
-        this._databaseChanges.forEach(change => change.dispose());
+        for (const change of this._databaseChanges.values()) {
+            change.dispose();
+        }
 
         /* TODO
             // try to wait until all the async disposables are completed
@@ -151,13 +153,13 @@ export class DocumentStore extends DocumentStoreBase {
             })
             .then(() => {
                 this._log.info(`Disposing request executors ${this._requestExecutors.size}`);
-                this._requestExecutors.forEach((executor, db) => {
+                for (const [db, executor] of this._requestExecutors.entries()) {
                     try {
                         executor.dispose();
                     } catch (err) {
                         this._log.warn(err, `Error disposing request executor.`);
                     }
-                });
+                }
             })
             .finally(() => this.emit("executorsDisposed"));
     }
@@ -198,7 +200,7 @@ export class DocumentStore extends DocumentStoreBase {
         databaseOrSessionOptions = databaseOrSessionOptions || {} as any;
         const sessionOpts = databaseOrSessionOptions as SessionOptions;
 
-        const sessionId = uuidv4();
+        const sessionId = randomUUID();
         const session = new DocumentSession(this, sessionId, sessionOpts);
         this.registerEvents(session);
         this.emit("sessionCreated", { session });

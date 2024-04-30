@@ -1,17 +1,17 @@
-import * as moment from "moment";
-import { User, Event } from "../Assets/Entities";
-import * as assert from "assert";
-import { testContext, disposeTestDocumentStore } from "../Utils/TestUtil";
+import moment from "moment";
+import { User, Event } from "../Assets/Entities.js";
+import assert from "node:assert"
+import { testContext, disposeTestDocumentStore } from "../Utils/TestUtil.js";
 
 import {
     IDocumentStore,
     GetCollectionStatisticsOperation,
     GroupByField,
     IDocumentSession, AbstractJavaScriptIndexCreationTask, DocumentQuery
-} from "../../src";
-import { DateUtil } from "../../src/Utility/DateUtil";
-import { TypeUtil } from "../../src/Utility/TypeUtil";
-import { assertThat } from "../Utils/AssertExtensions";
+} from "../../src/index.js";
+import { DateUtil } from "../../src/Utility/DateUtil.js";
+import { TypeUtil } from "../../src/Utility/TypeUtil.js";
+import { assertThat } from "../Utils/AssertExtensions.js";
 
 describe("QueryTest", function () {
 
@@ -355,8 +355,8 @@ describe("QueryTest", function () {
                 .all();
 
             assert.strictEqual(uniqueNames.length, 2);
-            assert.ok(uniqueNames.indexOf("Tarzan") !== -1);
-            assert.ok(uniqueNames.indexOf("John") !== -1);
+            assert.ok(uniqueNames.includes("Tarzan"));
+            assert.ok(uniqueNames.includes("John"));
         });
 
         it("query search with or", async () => {

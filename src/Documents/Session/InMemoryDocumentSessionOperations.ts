@@ -1,8 +1,8 @@
-import { EntityToJson } from "./EntityToJson";
-import { IDisposable } from "../../Types/Contracts";
-import { SessionInfo, ConcurrencyCheckMode, StoreOptions } from "./IDocumentSession";
-import { IMetadataDictionary } from "./IMetadataDictionary";
-import { ObjectTypeDescriptor, ClassConstructor, ServerResponse } from "../../Types";
+import { EntityToJson } from "./EntityToJson.js";
+import { IDisposable } from "../../Types/Contracts.js";
+import { SessionInfo, ConcurrencyCheckMode, StoreOptions } from "./IDocumentSession.js";
+import { IMetadataDictionary } from "./IMetadataDictionary.js";
+import { ObjectTypeDescriptor, ClassConstructor, ServerResponse } from "../../Types/index.js";
 import {
     SessionEventsEmitter,
     SessionBeforeStoreEventArgs,
@@ -11,60 +11,60 @@ import {
     AfterConversionToDocumentEventArgs,
     BeforeConversionToEntityEventArgs,
     AfterConversionToEntityEventArgs
-} from "./SessionEvents";
-import { RequestExecutor } from "../../Http/RequestExecutor";
-import { IDocumentStore } from "../IDocumentStore";
-import { throwError } from "../../Exceptions";
-import { ServerNode } from "../../Http/ServerNode";
-import { DocumentsById, EntityInfo } from "./DocumentsById";
-import { DocumentInfo } from "./DocumentInfo";
-import { DocumentStoreBase } from "../DocumentStoreBase";
+} from "./SessionEvents.js";
+import { RequestExecutor } from "../../Http/RequestExecutor.js";
+import { IDocumentStore } from "../IDocumentStore.js";
+import { throwError } from "../../Exceptions/index.js";
+import { ServerNode } from "../../Http/ServerNode.js";
+import { DocumentsById, EntityInfo } from "./DocumentsById.js";
+import { DocumentInfo } from "./DocumentInfo.js";
+import { DocumentStoreBase } from "../DocumentStoreBase.js";
 import {
     ICommandData,
     DeleteCommandData,
     SaveChangesData,
     PutCommandDataWithJson,
     CommandType
-} from "../Commands/CommandData";
-import { BatchPatchCommandData } from "../Commands/Batches/BatchPatchCommandData";
-import { GenerateEntityIdOnTheClient } from "../Identity/GenerateEntityIdOnTheClient";
-import { tryGetConflict } from "../../Mapping/Json";
-import { CONSTANTS, HEADERS } from "../../Constants";
-import { DateUtil } from "../../Utility/DateUtil";
-import { ObjectUtil } from "../../Utility/ObjectUtil";
-import { IncludesUtil } from "./IncludesUtil";
-import { TypeUtil } from "../../Utility/TypeUtil";
-import { DocumentType } from "../DocumentAbstractions";
-import { IdTypeAndName } from "../IdTypeAndName";
-import { BatchOptions } from "../Commands/Batches/BatchOptions";
-import { DocumentsChanges } from "./DocumentsChanges";
-import { EventEmitter } from "events";
-import { JsonOperation } from "../../Mapping/JsonOperation";
-import { IRavenObject } from "../../Types/IRavenObject";
-import { GetDocumentsCommand } from "../Commands/GetDocumentsCommand";
-import { DocumentConventions } from "../Conventions/DocumentConventions";
-import { JsonSerializer } from "../../Mapping/Json/Serializer";
-import { OperationExecutor } from "../Operations/OperationExecutor";
-import { createMetadataDictionary } from "../../Mapping/MetadataAsDictionary";
-import { IndexBatchOptions, ReplicationBatchOptions } from "./IAdvancedSessionOperations";
-import { ILazyOperation } from "./Operations/Lazy/ILazyOperation";
-import { TransactionMode } from "./TransactionMode";
-import { CounterTracking } from "./CounterInternalTypes";
-import { CaseInsensitiveKeysMap } from "../../Primitives/CaseInsensitiveKeysMap";
-import { CaseInsensitiveStringSet } from "../../Primitives/CaseInsensitiveStringSet";
-import { DocumentStore } from "../DocumentStore";
-import { SessionOptions } from "./SessionOptions";
-import { ClusterTransactionOperationsBase } from "./ClusterTransactionOperationsBase";
-import { BatchCommandResult } from "./Operations/BatchCommandResult";
-import { SessionOperationExecutor } from "../Operations/SessionOperationExecutor";
-import { StringUtil } from "../../Utility/StringUtil";
-import { Reference } from "../../Utility/Reference";
-import { ForceRevisionStrategy } from "./ForceRevisionStrategy";
-import { ForceRevisionCommandData } from "../Commands/Batches/ForceRevisionCommandData";
-import { TimeSeriesRangeResult } from "../Operations/TimeSeries/TimeSeriesRangeResult";
-import { DatesComparator, leftDate, rightDate } from "../../Primitives/DatesComparator";
-import { TimeSeriesEntry } from "./TimeSeries/TimeSeriesEntry";
-import { reviveTimeSeriesRangeResult } from "../Operations/TimeSeries/GetTimeSeriesOperation";
+} from "../Commands/CommandData.js";
+import { BatchPatchCommandData } from "../Commands/Batches/BatchPatchCommandData.js";
+import { GenerateEntityIdOnTheClient } from "../Identity/GenerateEntityIdOnTheClient.js";
+import { tryGetConflict } from "../../Mapping/Json/index.js";
+import { CONSTANTS, HEADERS } from "../../Constants.js";
+import { DateUtil } from "../../Utility/DateUtil.js";
+import { ObjectUtil } from "../../Utility/ObjectUtil.js";
+import { IncludesUtil } from "./IncludesUtil.js";
+import { TypeUtil } from "../../Utility/TypeUtil.js";
+import { DocumentType } from "../DocumentAbstractions.js";
+import { IdTypeAndName } from "../IdTypeAndName.js";
+import { BatchOptions } from "../Commands/Batches/BatchOptions.js";
+import { DocumentsChanges } from "./DocumentsChanges.js";
+import { EventEmitter } from "node:events";
+import { JsonOperation } from "../../Mapping/JsonOperation.js";
+import { IRavenObject } from "../../Types/IRavenObject.js";
+import { GetDocumentsCommand } from "../Commands/GetDocumentsCommand.js";
+import { DocumentConventions } from "../Conventions/DocumentConventions.js";
+import { JsonSerializer } from "../../Mapping/Json/Serializer.js";
+import { OperationExecutor } from "../Operations/OperationExecutor.js";
+import { createMetadataDictionary } from "../../Mapping/MetadataAsDictionary.js";
+import { IndexBatchOptions, ReplicationBatchOptions } from "./IAdvancedSessionOperations.js";
+import { ILazyOperation } from "./Operations/Lazy/ILazyOperation.js";
+import { TransactionMode } from "./TransactionMode.js";
+import { CounterTracking } from "./CounterInternalTypes.js";
+import { CaseInsensitiveKeysMap } from "../../Primitives/CaseInsensitiveKeysMap.js";
+import { CaseInsensitiveStringSet } from "../../Primitives/CaseInsensitiveStringSet.js";
+import { DocumentStore } from "../DocumentStore.js";
+import { SessionOptions } from "./SessionOptions.js";
+import { ClusterTransactionOperationsBase } from "./ClusterTransactionOperationsBase.js";
+import { BatchCommandResult } from "./Operations/BatchCommandResult.js";
+import { SessionOperationExecutor } from "../Operations/SessionOperationExecutor.js";
+import { StringUtil } from "../../Utility/StringUtil.js";
+import { Reference } from "../../Utility/Reference.js";
+import { ForceRevisionStrategy } from "./ForceRevisionStrategy.js";
+import { ForceRevisionCommandData } from "../Commands/Batches/ForceRevisionCommandData.js";
+import { TimeSeriesRangeResult } from "../Operations/TimeSeries/TimeSeriesRangeResult.js";
+import { DatesComparator, leftDate, rightDate } from "../../Primitives/DatesComparator.js";
+import { TimeSeriesEntry } from "./TimeSeries/TimeSeriesEntry.js";
+import { reviveTimeSeriesRangeResult } from "../Operations/TimeSeries/GetTimeSeriesOperation.js";
 
 export abstract class InMemoryDocumentSessionOperations
     extends EventEmitter
@@ -81,8 +81,6 @@ export abstract class InMemoryDocumentSessionOperations
     private _hash = ++InMemoryDocumentSessionOperations._instancesCounter;
 
     private _disposed: boolean;
-
-    protected _jsonSerializer: JsonSerializer = JsonSerializer.getDefaultForCommandPayload();
 
     private readonly _id: string;
 
@@ -343,8 +341,8 @@ export abstract class InMemoryDocumentSessionOperations
 
     protected _assertNoNonUniqueInstance(entity: object, id: string): void {
         if (!id
-            || id[id.length - 1] === "|"
-            || id[id.length - 1] === this.conventions.identityPartsSeparator) {
+            || id.at(-1) === "|"
+            || id.at(-1) === this.conventions.identityPartsSeparator) {
             return;
         }
 
@@ -957,7 +955,7 @@ export abstract class InMemoryDocumentSessionOperations
         }
 
         if (DatesComparator.compare(leftDate(localRanges[0].from), rightDate(newRange.to)) > 0
-            || DatesComparator.compare(rightDate(localRanges[localRanges.length - 1].to), leftDate(newRange.from)) < 0) {
+            || DatesComparator.compare(rightDate(localRanges.at(-1).to), leftDate(newRange.from)) < 0) {
             // the entire range [from, to] is out of cache bounds
 
             const index = DatesComparator.compare(leftDate(localRanges[0].from), rightDate(newRange.to)) > 0 ? 0 : localRanges.length;
@@ -1240,13 +1238,13 @@ export abstract class InMemoryDocumentSessionOperations
 
         newValues.push(...newRange.entries);
 
-        localRange.entries.forEach(item => {
+        for (const item of localRange.entries) {
             if (item.timestamp.getTime() <= newRange.to.getTime()) {
-                return;
+                continue;
             }
 
             newValues.push(item);
-        });
+        }
 
         localRange.entries = newValues;
     }
@@ -1516,7 +1514,7 @@ export abstract class InMemoryDocumentSessionOperations
         for (const commandData of result.sessionCommands) {
             switch (commandData.type) {
                 case "PUT":
-                case "DELETE":
+                case "DELETE": {
                     if (commandData.changeVector) {
                         throwError(
                             "InvalidOperationException",
@@ -1524,13 +1522,16 @@ export abstract class InMemoryDocumentSessionOperations
                             + commandData.id + " is not supported when using a cluster transaction.");
                     }
                     break;
+                }
                 case "CompareExchangeDELETE":
-                case "CompareExchangePUT":
+                case "CompareExchangePUT": {
                     break;
-                default:
+                }
+                default: {
                     throwError(
                         "InvalidOperationException",
                         "The command '" + commandData.type + "' is not supported in a cluster session.");
+                }
             }
         }
     }

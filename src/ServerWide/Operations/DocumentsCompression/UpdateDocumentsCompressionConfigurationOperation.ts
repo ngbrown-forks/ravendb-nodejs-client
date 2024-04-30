@@ -1,14 +1,14 @@
-import { IMaintenanceOperation, OperationResultType } from "../../../Documents/Operations/OperationAbstractions";
-import { DocumentCompressionConfigurationResult } from "./DocumentCompressionConfigurationResult";
-import { DocumentsCompressionConfiguration } from "../../DocumentsCompressionConfiguration";
-import { throwError } from "../../../Exceptions";
-import { RavenCommand } from "../../../Http/RavenCommand";
-import { DocumentConventions } from "../../../Documents/Conventions/DocumentConventions";
-import { IRaftCommand } from "../../../Http/IRaftCommand";
-import { HttpRequestParameters } from "../../../Primitives/Http";
-import { ServerNode } from "../../../Http/ServerNode";
-import { RaftIdGenerator } from "../../../Utility/RaftIdGenerator";
-import * as stream from "readable-stream";
+import { IMaintenanceOperation, OperationResultType } from "../../../Documents/Operations/OperationAbstractions.js";
+import { DocumentCompressionConfigurationResult } from "./DocumentCompressionConfigurationResult.js";
+import { DocumentsCompressionConfiguration } from "../../DocumentsCompressionConfiguration.js";
+import { throwError } from "../../../Exceptions/index.js";
+import { RavenCommand } from "../../../Http/RavenCommand.js";
+import { DocumentConventions } from "../../../Documents/Conventions/DocumentConventions.js";
+import { IRaftCommand } from "../../../Http/IRaftCommand.js";
+import { HttpRequestParameters } from "../../../Primitives/Http.js";
+import { ServerNode } from "../../../Http/ServerNode.js";
+import { RaftIdGenerator } from "../../../Utility/RaftIdGenerator.js";
+import { Stream } from "node:stream";
 
 export class UpdateDocumentsCompressionConfigurationOperation implements IMaintenanceOperation<DocumentCompressionConfigurationResult> {
     private readonly _documentsCompressionConfiguration: DocumentsCompressionConfiguration;
@@ -61,7 +61,7 @@ class UpdateDocumentCompressionConfigurationCommand extends RavenCommand<Documen
         }
     }
 
-    async setResponseAsync(bodyStream: stream.Stream, fromCache: boolean): Promise<string> {
+    async setResponseAsync(bodyStream: Stream, fromCache: boolean): Promise<string> {
         if (!bodyStream) {
             return;
         }

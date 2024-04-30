@@ -1,5 +1,5 @@
-import * as assert from "assert";
-import { testContext, disposeTestDocumentStore, RavenTestContext } from "../Utils/TestUtil";
+import assert from "node:assert"
+import { testContext, disposeTestDocumentStore, RavenTestContext } from "../Utils/TestUtil.js";
 
 import {
     ConfigureRevisionsOperation,
@@ -7,18 +7,19 @@ import {
     IDocumentStore,
     RevisionsCollectionConfiguration,
     RevisionsConfiguration
-} from "../../src";
-import { User } from "../Assets/Entities";
-import { ConfigureRevisionsOperationResult } from "../../src/Documents/Operations/Revisions/ConfigureRevisionsOperation";
-import { GetRevisionsBinEntryCommand } from "../../src/Documents/Commands/GetRevisionsBinEntryCommand";
-import { Company } from "../Assets/Orders";
-import { assertThat, assertThrows } from "../Utils/AssertExtensions";
+} from "../../src/index.js";
+import { User } from "../Assets/Entities.js";
+import { ConfigureRevisionsOperationResult } from "../../src/Documents/Operations/Revisions/ConfigureRevisionsOperation.js";
+import { GetRevisionsBinEntryCommand } from "../../src/Documents/Commands/GetRevisionsBinEntryCommand.js";
+import { Company } from "../Assets/Orders.js";
+import { assertThat, assertThrows } from "../Utils/AssertExtensions.js";
 import {
     GetRevisionsOperation,
     GetRevisionsParameters
-} from "../../src/Documents/Operations/Revisions/GetRevisionsOperation";
-import { RevisionsResult } from "../../src/Documents/Operations/Revisions/RevisionsResult";
-import { delay } from "../../src/Utility/PromiseUtil";
+} from "../../src/Documents/Operations/Revisions/GetRevisionsOperation.js";
+import { RevisionsResult } from "../../src/Documents/Operations/Revisions/RevisionsResult.js";
+import { delay } from "../../src/Utility/PromiseUtil.js";
+import { ObjectUtil } from "../../src/Utility/ObjectUtil.js";
 
 
 (RavenTestContext.is60Server ? describe.skip : describe)("RevisionsTest", function () {
@@ -90,8 +91,8 @@ import { delay } from "../../src/Utility/PromiseUtil";
         let customStore: DocumentStore;
         try {
             customStore = new DocumentStore(store.urls, store.database);
-            customStore.conventions.entityFieldNameConvention = "pascal";
-            customStore.conventions.remoteEntityFieldNameConvention = "camel";
+            customStore.conventions.serverToLocalFieldNameConverter = ObjectUtil.pascal;
+            customStore.conventions.localToServerFieldNameConverter = ObjectUtil.camel;
             customStore.initialize();
 
             const session = store.openSession();

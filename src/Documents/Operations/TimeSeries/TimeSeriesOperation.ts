@@ -1,5 +1,5 @@
-import { DateUtil } from "../../../Utility/DateUtil";
-import { DocumentConventions } from "../../Conventions/DocumentConventions";
+import { DateUtil } from "../../../Utility/DateUtil.js";
+import { DocumentConventions } from "../../Conventions/DocumentConventions.js";
 
 export class TimeSeriesOperation {
     private _appends: Map<number, AppendOperation>; // using map in node - for performance

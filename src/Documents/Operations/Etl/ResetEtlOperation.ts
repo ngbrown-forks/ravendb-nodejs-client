@@ -1,11 +1,11 @@
-import { IMaintenanceOperation, OperationResultType } from "../OperationAbstractions";
-import { HttpRequestParameters } from "../../../Primitives/Http";
-import { DocumentConventions } from "../../Conventions/DocumentConventions";
-import { RavenCommand } from "../../../Http/RavenCommand";
-import { ServerNode } from "../../../Http/ServerNode";
-import { IRaftCommand } from "../../../Http/IRaftCommand";
-import { RaftIdGenerator } from "../../../Utility/RaftIdGenerator";
-import { throwError } from "../../../Exceptions";
+import { IMaintenanceOperation, OperationResultType } from "../OperationAbstractions.js";
+import { HttpRequestParameters } from "../../../Primitives/Http.js";
+import { DocumentConventions } from "../../Conventions/DocumentConventions.js";
+import { RavenCommand } from "../../../Http/RavenCommand.js";
+import { ServerNode } from "../../../Http/ServerNode.js";
+import { IRaftCommand } from "../../../Http/IRaftCommand.js";
+import { RaftIdGenerator } from "../../../Utility/RaftIdGenerator.js";
+import { throwError } from "../../../Exceptions/index.js";
 
 export class ResetEtlOperation implements IMaintenanceOperation<void> {
     private readonly _configurationName: string;

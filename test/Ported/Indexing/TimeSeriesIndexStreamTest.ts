@@ -1,9 +1,9 @@
-import { AbstractTimeSeriesIndexCreationTask, IDocumentStore, StreamResult } from "../../../src";
-import { disposeTestDocumentStore, testContext } from "../../Utils/TestUtil";
-import moment = require("moment");
-import { Company } from "../../Assets/Orders";
-import * as StreamUtil from "../../../src/Utility/StreamUtil";
-import { assertThat } from "../../Utils/AssertExtensions";
+import { AbstractTimeSeriesIndexCreationTask, IDocumentStore, StreamResult } from "../../../src/index.js";
+import { disposeTestDocumentStore, testContext } from "../../Utils/TestUtil.js";
+import moment from "moment";
+import { Company } from "../../Assets/Orders.js";
+import { finishedAsync } from "../../../src/Utility/StreamUtil.js";
+import { assertThat } from "../../Utils/AssertExtensions.js";
 
 describe("TimeSeriesIndexStreamTest", function () {
 
@@ -58,7 +58,7 @@ describe("TimeSeriesIndexStreamTest", function () {
                 i++;
             });
 
-            await StreamUtil.finishedAsync(queryStream);
+            await finishedAsync(queryStream);
 
             assertThat(i)
                 .isEqualTo(10);

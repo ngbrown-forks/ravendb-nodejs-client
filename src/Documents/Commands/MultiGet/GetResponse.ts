@@ -1,4 +1,4 @@
-import { StatusCodes } from "../../../Http/StatusCode";
+import { StatusCodes } from "../../../Http/StatusCode.js";
 
 export class GetResponse {
     public constructor() {
@@ -90,10 +90,12 @@ export class GetResponse {
             case StatusCodes.NonAuthoritativeInformation:
             case StatusCodes.NoContent:
             case StatusCodes.NotModified:
-            case StatusCodes.NotFound:
+            case StatusCodes.NotFound: {
                 return false;
-            default:
+            }
+            default: {
                 return true;
+            }
         }
     }
 }

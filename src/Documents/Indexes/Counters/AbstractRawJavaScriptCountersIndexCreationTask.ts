@@ -1,6 +1,6 @@
-import { CountersIndexDefinition } from "./CountersIndexDefinition";
-import { AbstractIndexCreationTaskBase } from "../AbstractIndexCreationTaskBase";
-import { IndexDefinition } from "../IndexDefinition";
+import { CountersIndexDefinition } from "./CountersIndexDefinition.js";
+import { AbstractIndexCreationTaskBase } from "../AbstractIndexCreationTaskBase.js";
+import { IndexDefinition } from "../IndexDefinition.js";
 
 export abstract class AbstractRawJavaScriptCountersIndexCreationTask extends AbstractIndexCreationTaskBase<CountersIndexDefinition> {
 

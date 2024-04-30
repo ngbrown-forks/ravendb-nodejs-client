@@ -1,22 +1,19 @@
-import { ServerNode } from "./ServerNode";
-import { HttpCache } from "./HttpCache";
-import { StatusCodes } from "./StatusCode";
-import * as stream from "readable-stream";
-import { Response, default as fetch, RequestInit } from "node-fetch";
-import { HttpRequestParameters, HttpResponse } from "../Primitives/Http";
-import { getLogger } from "../Utility/LogUtil";
-import { throwError } from "../Exceptions";
-import { IRavenObject } from "../Types/IRavenObject";
-import { getEtagHeader, HeadersBuilder, closeHttpResponse } from "../Utility/HttpUtil";
-import { TypeInfo } from "../Mapping/ObjectMapper";
-import { JsonSerializer } from "../Mapping/Json/Serializer";
-import { RavenCommandResponsePipeline } from "./RavenCommandResponsePipeline";
-import { DocumentConventions } from "../Documents/Conventions/DocumentConventions";
-import * as http from "http";
-import { ObjectTypeDescriptor } from "../Types";
-import { ReadableWebToNodeStream } from "../Utility/ReadableWebToNodeStream";
-import { LengthUnawareFormData } from "../Utility/LengthUnawareFormData";
-import { Stream } from "readable-stream";
+import { ServerNode } from "./ServerNode.js";
+import { HttpCache } from "./HttpCache.js";
+import { StatusCodes } from "./StatusCode.js";
+import { Stream, Readable, PassThrough } from "node:stream";
+import { HttpRequestParameters, HttpResponse } from "../Primitives/Http.js";
+import { getLogger } from "../Utility/LogUtil.js";
+import { throwError } from "../Exceptions/index.js";
+import { IRavenObject } from "../Types/IRavenObject.js";
+import { getEtagHeader, HeadersBuilder, closeHttpResponse } from "../Utility/HttpUtil.js";
+import { TypeInfo } from "../Mapping/ObjectMapper.js";
+import { JsonSerializer } from "../Mapping/Json/Serializer.js";
+import { RavenCommandResponsePipeline } from "./RavenCommandResponsePipeline.js";
+import { DocumentConventions } from "../Documents/Conventions/DocumentConventions.js";
+import { ObjectTypeDescriptor } from "../Types/index.js";
+import { ObjectUtil } from "../Utility/ObjectUtil.js";
+import { Agent } from "undici-types";
 
 const log = getLogger({ module: "RavenCommand" });
 
@@ -95,7 +92,7 @@ export abstract class RavenCommand<TResult> {
             this.result = null;
             return;
         }
-        const readable = new stream.Readable();
+        const readable = new Readable();
         readable.push(cachedValue);
         readable.push(null);
         await this.setResponseAsync(readable, true);
@@ -106,10 +103,10 @@ export abstract class RavenCommand<TResult> {
         return this._pipeline<T>()
             .parseJsonSync()
             .collectBody(bodyCallback)
-            .objectKeysTransform("camel");
+            .objectKeysTransform(ObjectUtil.camel);
     }
 
-    public async setResponseAsync(bodyStream: stream.Stream, fromCache: boolean): Promise<string> {
+    public async setResponseAsync(bodyStream: Stream, fromCache: boolean): Promise<string> {
         if (this._responseType === "Empty" || this._responseType === "Raw") {
             this._throwInvalidResponse();
         }
@@ -121,30 +118,30 @@ export abstract class RavenCommand<TResult> {
             this._responseType);
     }
 
-    public async send(agent: http.Agent,
-        requestOptions: HttpRequestParameters): Promise<{ response: HttpResponse, bodyStream: stream.Readable }> {
+    public async send(agent: Agent,
+        requestOptions: HttpRequestParameters): Promise<{ response: HttpResponse, bodyStream: Readable }> {
 
         const { body, uri, fetcher, ...restOptions } = requestOptions;
 
         log.info(`Send command ${this.constructor.name} to ${uri}${body ? " with body " + body : ""}.`);
 
-        if (requestOptions.agent) { // support for fiddler
-            agent = requestOptions.agent as http.Agent;
+        if (requestOptions.dispatcher) { // support for fiddler
+            agent = requestOptions.dispatcher as Agent;
         }
 
         const bodyToUse = fetcher ? RavenCommand.maybeWrapBody(body) : body;
 
-        const optionsToUse = { body: bodyToUse, ...restOptions, agent } as RequestInit;
+        const optionsToUse = { body: bodyToUse, ...restOptions, dispatcher: agent } as RequestInit;
 
-        const passthrough = new stream.PassThrough();
+        const passthrough = new PassThrough();
         passthrough.pause();
 
         const fetchFn = fetcher ?? fetch; // support for custom fetcher
         const response = await fetchFn(uri, optionsToUse);
 
-        const effectiveStream: stream.Readable =
-            fetcher && response.body
-                ? new ReadableWebToNodeStream(response.body)
+        const effectiveStream: Readable =
+            response.body
+                ? Readable.fromWeb(response.body)
                 : (response.body ?? new Stream());
 
         effectiveStream
@@ -157,10 +154,7 @@ export abstract class RavenCommand<TResult> {
     }
 
     private static maybeWrapBody(body: any) {
-        if (body instanceof LengthUnawareFormData) {
-            throw new Error("Requests using FormData as payload are not yet supported!");
-        }
-        if (body instanceof stream.Readable) {
+        if (body instanceof Readable) {
             throw new Error("Requests using stream.Readable as payload are not yet supported!");
         }
 
@@ -190,7 +184,7 @@ export abstract class RavenCommand<TResult> {
     public async processResponse(
         cache: HttpCache,
         response: HttpResponse,
-        bodyStream: stream.Readable,
+        bodyStream: Readable,
         url: string): Promise<ResponseDisposeHandling> {
         if (!response) {
             return "Automatic";
@@ -203,7 +197,7 @@ export abstract class RavenCommand<TResult> {
 
         try {
             if (this._responseType === "Object") {
-                const contentLength: number = parseInt(response.headers.get("content-length"), 10);
+                const contentLength: number = Number.parseInt(response.headers.get("content-length"), 10);
                 if (contentLength === 0) {
                     closeHttpResponse(response);
                     return "Automatic";
@@ -266,7 +260,7 @@ export abstract class RavenCommand<TResult> {
         return conventions.objectMapper.fromObjectLiteral<TResponse>(raw, typeInfo, knownTypes);
     }
 
-    protected async _parseResponseDefaultAsync(bodyStream: stream.Stream): Promise<string> {
+    protected async _parseResponseDefaultAsync(bodyStream: Stream): Promise<string> {
         let body: string = null;
         this.result = await this._defaultPipeline(_ => body = _).process(bodyStream);
         return body;
@@ -284,8 +278,8 @@ export abstract class RavenCommand<TResult> {
         throwError("InvalidOperationException", "Response is invalid: " + cause.message, cause);
     }
 
-    // eslint-disable-next-line @typescript-eslint/no-empty-function
     public onResponseFailure(response: HttpResponse): void {
+        // empty
     }
 
     protected _pipeline<TPipelineResult>() {

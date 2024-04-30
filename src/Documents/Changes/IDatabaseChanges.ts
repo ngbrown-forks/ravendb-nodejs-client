@@ -1,11 +1,11 @@
-import { ObjectTypeDescriptor } from "../../Types";
-import { DocumentChange } from "./DocumentChange";
-import { OperationStatusChange } from "./OperationStatusChange";
-import { IndexChange } from "./IndexChange";
-import { IChangesObservable } from "./IChangesObservable";
-import { IConnectableChanges } from "./IConnectableChanges";
-import { CounterChange } from "./CounterChange";
-import { TimeSeriesChange } from "./TimeSeriesChange";
+import { ObjectTypeDescriptor } from "../../Types/index.js";
+import { DocumentChange } from "./DocumentChange.js";
+import { OperationStatusChange } from "./OperationStatusChange.js";
+import { IndexChange } from "./IndexChange.js";
+import { IChangesObservable } from "./IChangesObservable.js";
+import { IConnectableChanges } from "./IConnectableChanges.js";
+import { CounterChange } from "./CounterChange.js";
+import { TimeSeriesChange } from "./TimeSeriesChange.js";
 
 export interface IDatabaseChanges extends IConnectableChanges<IDatabaseChanges> {
 

@@ -1,18 +1,19 @@
-import { testContext, disposeTestDocumentStore } from "../../../Utils/TestUtil";
+import { testContext, disposeTestDocumentStore } from "../../../Utils/TestUtil.js";
 
 import {
     AbstractCsharpIndexCreationTask, DocumentStore,
     IDocumentStore,
     StreamQueryStatistics,
     StreamResult, TimeSeriesRawResult,
-} from "../../../../src";
-import * as assert from "assert";
-import { User } from "../../../Assets/Entities";
-import * as StreamUtil from "../../../../src/Utility/StreamUtil";
-import { CONSTANTS } from "../../../../src/Constants";
-import { parseJsonStreamVerbose, parseJsonVerbose } from "../../../Utils/Json";
-import { getStringWritable } from "../../../Utils/Streams";
-import { assertThat } from "../../../Utils/AssertExtensions";
+} from "../../../../src/index.js";
+import assert from "node:assert"
+import { User } from "../../../Assets/Entities.js";
+import { finishedAsync } from "../../../../src/Utility/StreamUtil.js";
+import { CONSTANTS } from "../../../../src/Constants.js";
+import { parseJsonStreamVerbose } from "../../../Utils/Json.js";
+import { getStringWritable } from "../../../Utils/Streams.js";
+import { assertThat } from "../../../Utils/AssertExtensions.js";
+import { ObjectUtil } from "../../../../src/Utility/ObjectUtil.js";
 
 describe("query streaming", function () {
 
@@ -100,7 +101,7 @@ describe("query streaming", function () {
                 });
             });
 
-            await StreamUtil.finishedAsync(queryStream);
+            await finishedAsync(queryStream);
 
             assert.strictEqual(items.length, 200);
         }
@@ -133,7 +134,7 @@ describe("query streaming", function () {
                 items.push(item);
             });
 
-            await StreamUtil.finishedAsync(queryStream);
+            await finishedAsync(queryStream);
 
             assert.strictEqual(items.length, 200);
         }
@@ -142,7 +143,7 @@ describe("query streaming", function () {
     it("can stream query results with query statistics", async () => {
         await Promise.all([
             prepareData(store, 100),
-            await usersByNameIndex.execute(store)
+            usersByNameIndex.execute(store)
         ]);
 
         await testContext.waitForIndexing(store);
@@ -166,7 +167,7 @@ describe("query streaming", function () {
             let statsFromEvent: StreamQueryStatistics;
             reader.on("stats", s => statsFromEvent = s);
 
-            await StreamUtil.finishedAsync(reader);
+            await finishedAsync(reader);
 
             assert.strictEqual(items.length, 100);
 
@@ -183,18 +184,18 @@ describe("query streaming", function () {
             assertStats(statsFromCallback);
             assert.equal(statsFromCallback, statsFromEvent);
 
-            items.forEach(x => assertStreamResultEntry<User>(x, doc => {
+            for (const x of items) assertStreamResultEntry<User>(x, doc => {
                 assert.ok(doc instanceof User);
                 assert.ok(doc.name);
                 assert.ok(doc.lastName);
-            }));
+            });
         }
     });
 
     it("can stream raw query results", async () => {
         await Promise.all([
             prepareData(store, 200),
-            await usersByNameIndex.execute(store)
+            usersByNameIndex.execute(store)
         ]);
 
         await testContext.waitForIndexing(store);
@@ -214,20 +215,19 @@ describe("query streaming", function () {
                 });
             });
 
-            await StreamUtil.finishedAsync(queryStream);
+            await finishedAsync(queryStream);
             assert.strictEqual(items.length, 200);
         }
 
     });
 
-    async function streamRawQueryResults(format: "json" | "jsonl", remoteCasing : "camel" | "pascal" = "camel") {
+    async function streamRawQueryResults(remoteCasing : "camel" | "pascal" = "camel") {
         const newStore = new DocumentStore(store.urls, store.database);
-        newStore.conventions.useJsonlStreaming = format === "jsonl";
 
         if (remoteCasing === "pascal") {
             newStore.conventions.findCollectionNameForObjectLiteral = (o) => o["collection"];
-            newStore.conventions.entityFieldNameConvention = "camel";
-            newStore.conventions.remoteEntityFieldNameConvention = "pascal";
+            newStore.conventions.serverToLocalFieldNameConverter = ObjectUtil.camel;
+            newStore.conventions.localToServerFieldNameConverter = ObjectUtil.pascal;
             newStore.conventions.identityProperty = "Id";
             newStore.conventions.registerEntityIdPropertyName(Object, "Id");
         }
@@ -240,7 +240,7 @@ describe("query streaming", function () {
         try {
             await Promise.all([
                 prepareData(newStore, 100),
-                await indexToUse.execute(store)
+                indexToUse.execute(store)
             ]);
 
             await testContext.waitForIndexing(store);
@@ -262,7 +262,7 @@ describe("query streaming", function () {
                     });
                 });
 
-                await StreamUtil.finishedAsync(queryStream);
+                await finishedAsync(queryStream);
                 assert.strictEqual(items.length, 100);
 
                 assert.ok(stats);
@@ -276,26 +276,20 @@ describe("query streaming", function () {
         }
     }
 
-    it("can stream raw query results with query statistics - json - camel", async () => {
-        await streamRawQueryResults("json");
-    });
 
     it("can stream raw query results with query statistics - jsonl - camel", async () => {
-        await streamRawQueryResults("jsonl");
+        await streamRawQueryResults();
     });
 
-    it("can stream raw query results with query statistics - json - pascal", async () => {
-        await streamRawQueryResults("json", "pascal");
-    });
 
     it("can stream raw query results with query statistics - jsonl - pascal", async () => {
-        await streamRawQueryResults("jsonl", "pascal");
+        await streamRawQueryResults("pascal");
     });
 
     it("can stream raw query into stream", async () => {
         await Promise.all([
             prepareData(store, 10),
-            await usersByNameIndex.execute(store)
+            usersByNameIndex.execute(store)
         ]);
 
         await testContext.waitForIndexing(store);
@@ -306,7 +300,7 @@ describe("query streaming", function () {
 
             const targetStream = getStringWritable();
             session.advanced.streamInto(query, targetStream);
-            await StreamUtil.finishedAsync(targetStream);
+            await finishedAsync(targetStream);
 
             const result: string = targetStream["string"];
             assert.ok(result);

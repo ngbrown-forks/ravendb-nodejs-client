@@ -1,4 +1,4 @@
-import { TypeUtil } from "../Utility/TypeUtil";
+import { TypeUtil } from "../Utility/TypeUtil.js";
 
 export class UriUtility {
     public static parseUrls(urls: string | string[]): string[] {

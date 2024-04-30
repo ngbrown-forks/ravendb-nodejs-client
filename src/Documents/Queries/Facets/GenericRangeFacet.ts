@@ -1,6 +1,6 @@
-import { FacetBase } from "./FacetBase";
-import { RangeBuilder } from "./RangeBuilder";
-import { FacetToken } from "../../Session/Tokens/FacetToken";
+import { FacetBase } from "./FacetBase.js";
+import { RangeBuilder } from "./RangeBuilder.js";
+import { FacetToken } from "../../Session/Tokens/FacetToken.js";
 
 export class GenericRangeFacet extends FacetBase {
 

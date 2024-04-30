@@ -1,4 +1,4 @@
-import * as assert from "assert";
+import assert from "node:assert"
 
 // eslint-disable-next-line @typescript-eslint/ban-types
 export async function assertThrows(func: Function, errAssert?: (err: Error) => void) {
@@ -48,7 +48,7 @@ export class JavaAssertionBuilder {
     }
 
     public contains(val) {
-        assert.ok(this._value.indexOf(val) !== -1, `'${this._value}' does not contain '${val}.'`);
+        assert.ok(this._value.includes(val), `'${this._value}' does not contain '${val}.'`);
         return this;
     }
 
@@ -133,32 +133,32 @@ export class JavaAssertionBuilder {
     }
 
     public allMatch(matcher: (v: any) => boolean) {
-        this._value.forEach(v => {
+        for (const v of this._value) {
             assert.ok(matcher(v));
-        });
+        }
     }
 
     public anyMatch(matcher: (v: any) => boolean) {
         let hasMatch = false;
-        this._value.forEach(v => {
+        for (const v of this._value) {
             if (matcher(v)) {
                 hasMatch = true;
             }
-        });
+        }
 
         assert.ok(hasMatch);
     }
 
     public anySatisfy(matcher: (v: any) => void) {
         let satisfy = false;
-        this._value.forEach(v => {
+        for (const v of this._value) {
             try {
                 matcher(v);
                 satisfy = true;
-            } catch (e) {
+            } catch {
                 // ignore
             }
-        });
+        }
 
         assert.ok(satisfy, "None of items satisfy condition");
         return this;

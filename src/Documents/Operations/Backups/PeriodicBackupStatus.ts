@@ -1,5 +1,5 @@
-import { IDatabaseTaskStatus } from "../../../ServerWide/IDatabaseTaskStatus";
-import { BackupType } from "./Enums";
+import { IDatabaseTaskStatus } from "../../../ServerWide/IDatabaseTaskStatus.js";
+import { BackupType } from "./Enums.js";
 import {
     LocalBackup,
     UpdateToGoogleCloud,
@@ -7,8 +7,8 @@ import {
     UploadToFtp,
     UploadToGlacier,
     UploadToS3
-} from "./BackupStatus";
-import { LastRaftIndex } from "./LastRaftIndex";
+} from "./BackupStatus.js";
+import { LastRaftIndex } from "./LastRaftIndex.js";
 
 export interface PeriodicBackupStatus extends IDatabaseTaskStatus {
     taskId: number;

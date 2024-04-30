@@ -1,9 +1,9 @@
-import { RavenCommand } from "../../Http/RavenCommand";
-import { TcpConnectionInfo } from "../../ServerWide/Commands/GetTcpInfoCommand";
-import { throwError } from "../../Exceptions";
-import { ServerNode } from "../../Http/ServerNode";
-import { HttpRequestParameters } from "../../Primitives/Http";
-import * as stream from "readable-stream";
+import { RavenCommand } from "../../Http/RavenCommand.js";
+import { TcpConnectionInfo } from "../../ServerWide/Commands/GetTcpInfoCommand.js";
+import { throwError } from "../../Exceptions/index.js";
+import { ServerNode } from "../../Http/ServerNode.js";
+import { HttpRequestParameters } from "../../Primitives/Http.js";
+import { Stream } from "node:stream";
 
 export class GetTcpInfoForRemoteTaskCommand extends RavenCommand<TcpConnectionInfo> {
     private readonly _remoteDatabase: string;
@@ -49,7 +49,7 @@ export class GetTcpInfoForRemoteTaskCommand extends RavenCommand<TcpConnectionIn
         }
     }
 
-    async setResponseAsync(bodyStream: stream.Stream, fromCache: boolean): Promise<string> {
+    async setResponseAsync(bodyStream: Stream, fromCache: boolean): Promise<string> {
         if (!bodyStream) {
             this._throwInvalidResponse();
         }

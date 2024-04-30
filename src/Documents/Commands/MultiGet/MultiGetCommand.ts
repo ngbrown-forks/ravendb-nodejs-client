@@ -1,21 +1,21 @@
-import * as stream from "readable-stream";
-import { RavenCommand } from "../../../Http/RavenCommand";
-import { GetResponse } from "./GetResponse";
-import { HttpCache, ReleaseCacheItem } from "../../../Http/HttpCache";
-import { HttpRequestParameters } from "../../../Primitives/Http";
-import { GetRequest } from "./GetRequest";
-import { ServerNode } from "../../../Http/ServerNode";
-import { StatusCodes } from "../../../Http/StatusCode";
-import { getEtagHeader } from "../../../Utility/HttpUtil";
-import { DocumentConventions } from "../../Conventions/DocumentConventions";
-import { throwError } from "../../../Exceptions";
-import { IDisposable } from "../../../Types/Contracts";
-import { RequestExecutor } from "../../../Http/RequestExecutor";
-import { AggressiveCacheOptions } from "../../../Http/AggressiveCacheOptions";
-import { HEADERS } from "../../../Constants";
-import { ServerCasing, ServerResponse } from "../../../Types";
-import { camelCase } from "change-case";
-import { SessionInfo } from "../../Session/IDocumentSession";
+import { Stream } from "node:stream";
+import { RavenCommand } from "../../../Http/RavenCommand.js";
+import { GetResponse } from "./GetResponse.js";
+import { HttpCache, ReleaseCacheItem } from "../../../Http/HttpCache.js";
+import { HttpRequestParameters } from "../../../Primitives/Http.js";
+import { GetRequest } from "./GetRequest.js";
+import { ServerNode } from "../../../Http/ServerNode.js";
+import { StatusCodes } from "../../../Http/StatusCode.js";
+import { getEtagHeader } from "../../../Utility/HttpUtil.js";
+import { DocumentConventions } from "../../Conventions/DocumentConventions.js";
+import { throwError } from "../../../Exceptions/index.js";
+import { IDisposable } from "../../../Types/Contracts.js";
+import { RequestExecutor } from "../../../Http/RequestExecutor.js";
+import { AggressiveCacheOptions } from "../../../Http/AggressiveCacheOptions.js";
+import { HEADERS } from "../../../Constants.js";
+import { ServerCasing, ServerResponse } from "../../../Types/index.js";
+import { SessionInfo } from "../../Session/IDocumentSession.js";
+import { ObjectUtil } from "../../../Utility/ObjectUtil.js";
 
 export class MultiGetCommand extends RavenCommand<GetResponse[]> implements IDisposable {
     private readonly _requestExecutor: RequestExecutor;
@@ -148,7 +148,7 @@ export class MultiGetCommand extends RavenCommand<GetResponse[]> implements IDis
         return readAllFromCache;
     }
 
-    public async setResponseAsync(bodyStream: stream.Stream, fromCache: boolean): Promise<string> {
+    public async setResponseAsync(bodyStream: Stream, fromCache: boolean): Promise<string> {
         if (!bodyStream) {
             this._throwInvalidResponse();
         }
@@ -241,7 +241,7 @@ export class MultiGetCommand extends RavenCommand<GetResponse[]> implements IDis
         // convert from Pascal to camel on top level only
         const item: any = {};
         for (const [key, value] of Object.entries(json)) {
-            item[camelCase(key)] = value;
+            item[ObjectUtil.camelCase(key)] = value;
         }
 
         item.result = item.result ? JSON.stringify(item.result) : null;

@@ -2,9 +2,9 @@ name: tests/node
 
 on:
   push:
-    branches: [ v5.4 ]
+    branches: [ v6.0 ]
   pull_request:
-    branches: [ v5.4 ]
+    branches: [ v6.0 ]
   schedule:
     - cron: '0 10 * * *'
   workflow_dispatch:
@@ -31,8 +31,8 @@ jobs:
 
     strategy:
       matrix:
-        node-version: [16.x, 18.x, 20.x]
-        serverVersion: ["5.4", "6.0"]
+        node-version: [18.x, 20.x, 22.x]
+        serverVersion: ["6.0"]
       fail-fast: false
 
     steps:
@@ -79,8 +79,11 @@ jobs:
     - name: Build
       run: npm run build
 
-    - name: Check imports
-      run: node -e "require('./dist').DocumentStore"
+    - name: Check imports CommonJS
+      run: node scripts/checkImports.cjs
+
+    - name: Check imports ESM
+      run: node scripts/checkImports.mjs
 
     - name: Check imports
       run: npm run check-imports

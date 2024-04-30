@@ -1,20 +1,20 @@
-import { ILazyOperation } from "./ILazyOperation";
-import { ClusterTransactionOperationsBase } from "../../ClusterTransactionOperationsBase";
-import { CompareExchangeResultClass, ServerCasing, ServerResponse } from "../../../../Types";
-import { throwError } from "../../../../Exceptions";
-import { TypeUtil } from "../../../../Utility/TypeUtil";
-import { GetRequest } from "../../../Commands/MultiGet/GetRequest";
-import { GetResponse } from "../../../Commands/MultiGet/GetResponse";
-import { StringUtil } from "../../../../Utility/StringUtil";
+import { ILazyOperation } from "./ILazyOperation.js";
+import { ClusterTransactionOperationsBase } from "../../ClusterTransactionOperationsBase.js";
+import { CompareExchangeResultClass, ServerCasing, ServerResponse } from "../../../../Types/index.js";
+import { throwError } from "../../../../Exceptions/index.js";
+import { TypeUtil } from "../../../../Utility/TypeUtil.js";
+import { GetRequest } from "../../../Commands/MultiGet/GetRequest.js";
+import { GetResponse } from "../../../Commands/MultiGet/GetResponse.js";
+import { StringUtil } from "../../../../Utility/StringUtil.js";
 import {
     CompareExchangeValueResultParser,
     GetCompareExchangeValuesResponse
-} from "../../../Operations/CompareExchange/CompareExchangeValueResultParser";
-import { DocumentConventions } from "../../../Conventions/DocumentConventions";
-import { QueryResult } from "../../../Queries/QueryResult";
-import { CompareExchangeValue } from "../../../Operations/CompareExchange/CompareExchangeValue";
-import { StringBuilder } from "../../../../Utility/StringBuilder";
-import { GetCompareExchangeValuesCommand } from "../../../Operations/CompareExchange/GetCompareExchangeValuesOperation";
+} from "../../../Operations/CompareExchange/CompareExchangeValueResultParser.js";
+import { DocumentConventions } from "../../../Conventions/DocumentConventions.js";
+import { QueryResult } from "../../../Queries/QueryResult.js";
+import { CompareExchangeValue } from "../../../Operations/CompareExchange/CompareExchangeValue.js";
+import { StringBuilder } from "../../../../Utility/StringBuilder.js";
+import { GetCompareExchangeValuesCommand } from "../../../Operations/CompareExchange/GetCompareExchangeValuesOperation.js";
 
 export class LazyGetCompareExchangeValuesOperation<T> implements ILazyOperation {
     private readonly _clusterSession: ClusterTransactionOperationsBase;

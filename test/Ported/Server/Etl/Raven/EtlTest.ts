@@ -7,13 +7,13 @@ import {
     UpdateEtlOperation,
     ResetEtlOperation,
     RavenEtlConfiguration, Transformation, GetOngoingTaskInfoOperation
-} from "../../../../../src";
-import { disposeTestDocumentStore, RavenTestContext, testContext } from "../../../../Utils/TestUtil";
-import { assertThat } from "../../../../Utils/AssertExtensions";
-import { User } from "../../../../Assets/Entities";
-import { ReplicationTestContext } from "../../../../Utils/ReplicationTestContext";
-import { DeleteOngoingTaskOperation } from "../../../../../src/Documents/Operations/OngoingTasks/DeleteOngoingTaskOperation";
-import { OngoingTaskRavenEtlDetails } from "../../../../../src/Documents/Operations/OngoingTasks/OngoingTask";
+} from "../../../../../src/index.js";
+import { disposeTestDocumentStore, RavenTestContext, testContext } from "../../../../Utils/TestUtil.js";
+import { assertThat } from "../../../../Utils/AssertExtensions.js";
+import { User } from "../../../../Assets/Entities.js";
+import { ReplicationTestContext } from "../../../../Utils/ReplicationTestContext.js";
+import { DeleteOngoingTaskOperation } from "../../../../../src/Documents/Operations/OngoingTasks/DeleteOngoingTaskOperation.js";
+import { OngoingTaskRavenEtlDetails } from "../../../../../src/Documents/Operations/OngoingTasks/OngoingTask.js";
 
 (RavenTestContext.isPullRequest ? describe.skip : describe)(
     `${RavenTestContext.isPullRequest ? "[Skipped on PR] " : ""}` +

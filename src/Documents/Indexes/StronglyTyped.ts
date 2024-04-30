@@ -1,7 +1,7 @@
-import { FieldIndexing, FieldStorage, FieldTermVector } from "./Enums";
-import { MetadataObject } from "../Session/MetadataObject";
-import { AttachmentName, IAttachmentObject } from "../Attachments";
-import { CapitalizeType } from "../../Types";
+import { FieldIndexing, FieldStorage, FieldTermVector } from "./Enums.js";
+import { MetadataObject } from "../Session/MetadataObject.js";
+import { AttachmentName, IAttachmentObject } from "../Attachments/index.js";
+import { CapitalizeType } from "../../Types/index.js";
 
 export type IndexingMapDefinition<TInput, TOutput> = (document: TInput) => TOutput | TOutput[];
 

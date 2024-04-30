@@ -1,7 +1,7 @@
-import { ICommandData, CommandType } from "../CommandData";
-import { StringUtil } from "../../../Utility/StringUtil";
-import { throwError } from "../../../Exceptions";
-import { DocumentConventions } from "../../Conventions/DocumentConventions";
+import { ICommandData, CommandType } from "../CommandData.js";
+import { StringUtil } from "../../../Utility/StringUtil.js";
+import { throwError } from "../../../Exceptions/index.js";
+import { DocumentConventions } from "../../Conventions/DocumentConventions.js";
 
 export class DeleteAttachmentCommandData implements ICommandData {
     public id: string;

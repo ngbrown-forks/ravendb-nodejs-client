@@ -1,20 +1,20 @@
-import { DocumentType } from "../DocumentAbstractions";
-import { getLogger } from "../../Utility/LogUtil";
-import { GenerateEntityIdOnTheClient } from "../Identity/GenerateEntityIdOnTheClient";
-import { throwError } from "../../Exceptions";
-import * as os from "os";
-import { CONSTANTS } from "../../Constants";
-import { StringUtil } from "../../Utility/StringUtil";
-import { createMetadataDictionary } from "../../Mapping/MetadataAsDictionary";
-import { RequestExecutor } from "../../Http/RequestExecutor";
-import { IDocumentStore } from "../IDocumentStore";
-import { IDocumentSession } from "../Session/IDocumentSession";
-import { SessionOptions } from "../Session/SessionOptions";
-import { InMemoryDocumentSessionOperations } from "../Session/InMemoryDocumentSessionOperations";
-import { DocumentInfo } from "../Session/DocumentInfo";
-import { BatchFromServer, CounterIncludeItem } from "./BatchFromServer";
-import { IMetadataDictionary } from "../Session/IMetadataDictionary";
-import { EntityToJson } from "../Session/EntityToJson";
+import { DocumentType } from "../DocumentAbstractions.js";
+import { getLogger } from "../../Utility/LogUtil.js";
+import { GenerateEntityIdOnTheClient } from "../Identity/GenerateEntityIdOnTheClient.js";
+import { throwError } from "../../Exceptions/index.js";
+import { EOL } from "node:os";
+import { CONSTANTS } from "../../Constants.js";
+import { StringUtil } from "../../Utility/StringUtil.js";
+import { createMetadataDictionary } from "../../Mapping/MetadataAsDictionary.js";
+import { RequestExecutor } from "../../Http/RequestExecutor.js";
+import { IDocumentStore } from "../IDocumentStore.js";
+import { IDocumentSession } from "../Session/IDocumentSession.js";
+import { SessionOptions } from "../Session/SessionOptions.js";
+import { InMemoryDocumentSessionOperations } from "../Session/InMemoryDocumentSessionOperations.js";
+import { DocumentInfo } from "../Session/DocumentInfo.js";
+import { BatchFromServer, CounterIncludeItem } from "./BatchFromServer.js";
+import { IMetadataDictionary } from "../Session/IMetadataDictionary.js";
+import { EntityToJson } from "../Session/EntityToJson.js";
 
 export class SubscriptionBatch<T extends object> {
 
@@ -225,7 +225,7 @@ export class Item<T> {
     private _throwItemProcessError() {
         throwError("InvalidOperationException",
             "Failed to process document " + this.id + " with Change Vector "
-            + this.changeVector + " because: " + os.EOL + this.exceptionMessage);
+            + this.changeVector + " because: " + EOL + this.exceptionMessage);
     }
 
     public get result() {

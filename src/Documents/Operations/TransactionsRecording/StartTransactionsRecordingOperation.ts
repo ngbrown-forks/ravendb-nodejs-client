@@ -1,10 +1,10 @@
-import { IMaintenanceOperation, OperationResultType } from "../OperationAbstractions";
-import { HttpRequestParameters } from "../../../Primitives/Http";
-import * as stream from "readable-stream";
-import { DocumentConventions } from "../../Conventions/DocumentConventions";
-import { RavenCommand } from "../../../Http/RavenCommand";
-import { ServerNode } from "../../../Http/ServerNode";
-import { throwError } from "../../../Exceptions";
+import { IMaintenanceOperation, OperationResultType } from "../OperationAbstractions.js";
+import { HttpRequestParameters } from "../../../Primitives/Http.js";
+import { Stream } from "node:stream";
+import { DocumentConventions } from "../../Conventions/DocumentConventions.js";
+import { RavenCommand } from "../../../Http/RavenCommand.js";
+import { ServerNode } from "../../../Http/ServerNode.js";
+import { throwError } from "../../../Exceptions/index.js";
 
 export class StartTransactionsRecordingOperation implements IMaintenanceOperation<void> {
     private readonly _filePath: string;
@@ -53,7 +53,7 @@ class StartTransactionsRecordingCommand extends RavenCommand<void> {
         return false;
     }
 
-    async setResponseAsync(bodyStream: stream.Stream, fromCache: boolean): Promise<string> {
+    async setResponseAsync(bodyStream: Stream, fromCache: boolean): Promise<string> {
         return this._parseResponseDefaultAsync(bodyStream);
     }
 }

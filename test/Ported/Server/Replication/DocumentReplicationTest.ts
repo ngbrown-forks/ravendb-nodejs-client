@@ -1,7 +1,7 @@
-import { User } from "../../../Assets/Entities";
+import { User } from "../../../Assets/Entities.js";
 
-import * as assert from "assert";
-import { RavenTestContext, testContext, disposeTestDocumentStore } from "../../../Utils/TestUtil";
+import assert from "node:assert"
+import { RavenTestContext, testContext, disposeTestDocumentStore } from "../../../Utils/TestUtil.js";
 
 import {
     IDocumentStore,
@@ -9,10 +9,10 @@ import {
     ConflictSolver,
     GetConflictsCommand,
     PutDocumentCommand, GetOngoingTaskInfoOperation,
-} from "../../../../src";
-import { ReplicationTestContext } from "../../../Utils/ReplicationTestContext";
-import { assertThat } from "../../../Utils/AssertExtensions";
-import { OngoingTaskReplication } from "../../../../src/Documents/Operations/OngoingTasks/OngoingTask";
+} from "../../../../src/index.js";
+import { ReplicationTestContext } from "../../../Utils/ReplicationTestContext.js";
+import { assertThat } from "../../../Utils/AssertExtensions.js";
+import { OngoingTaskReplication } from "../../../../src/Documents/Operations/OngoingTasks/OngoingTask.js";
 
 const _describe = RavenTestContext.isPullRequest ? describe.skip : describe;
 _describe(

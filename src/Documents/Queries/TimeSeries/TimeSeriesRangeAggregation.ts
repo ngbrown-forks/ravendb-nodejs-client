@@ -1,6 +1,6 @@
-import { ClassConstructor } from "../../../Types";
-import { TypedTimeSeriesRangeAggregation } from "./TypedTimeSeriesRangeAggregation";
-import { TimeSeriesValuesHelper } from "../../Session/TimeSeries/TimeSeriesValuesHelper";
+import { ClassConstructor } from "../../../Types/index.js";
+import { TypedTimeSeriesRangeAggregation } from "./TypedTimeSeriesRangeAggregation.js";
+import { TimeSeriesValuesHelper } from "../../Session/TimeSeries/TimeSeriesValuesHelper.js";
 
 export class TimeSeriesRangeAggregation {
     public count: number[];

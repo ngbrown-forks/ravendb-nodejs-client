@@ -1,14 +1,14 @@
-import { RavenCommand, ResponseDisposeHandling } from "../../Http/RavenCommand";
-import { ServerNode } from "../../Http/ServerNode";
-import { HttpRequestParameters, HttpResponse } from "../../Primitives/Http";
-import * as stream from "readable-stream";
-import { HttpCache } from "../../Http/HttpCache";
-import { StatusCodes } from "../../Http/StatusCode";
-import { DocumentConventions } from "../Conventions/DocumentConventions";
-import { readToEnd, stringToReadable } from "../../Utility/StreamUtil";
-import { RavenCommandResponsePipeline } from "../../Http/RavenCommandResponsePipeline";
-import { ObjectUtil } from "../../Utility/ObjectUtil";
-import { HEADERS } from "../../Constants";
+import { RavenCommand, ResponseDisposeHandling } from "../../Http/RavenCommand.js";
+import { ServerNode } from "../../Http/ServerNode.js";
+import { HttpRequestParameters, HttpResponse } from "../../Primitives/Http.js";
+import { Stream, Readable } from "node:stream";
+import { HttpCache } from "../../Http/HttpCache.js";
+import { StatusCodes } from "../../Http/StatusCode.js";
+import { DocumentConventions } from "../Conventions/DocumentConventions.js";
+import { readToEnd, stringToReadable } from "../../Utility/StreamUtil.js";
+import { RavenCommandResponsePipeline } from "../../Http/RavenCommandResponsePipeline.js";
+import { ObjectUtil } from "../../Utility/ObjectUtil.js";
+import { HEADERS } from "../../Constants.js";
 
 export class ConditionalGetDocumentsCommand extends RavenCommand<ConditionalGetResult> {
 
@@ -37,7 +37,7 @@ export class ConditionalGetDocumentsCommand extends RavenCommand<ConditionalGetR
         }
     }
 
-    public async setResponseAsync(bodyStream: stream.Stream, fromCache: boolean): Promise<string> {
+    public async setResponseAsync(bodyStream: Stream, fromCache: boolean): Promise<string> {
         if (!bodyStream) {
             this.result = null;
             return;
@@ -52,23 +52,14 @@ export class ConditionalGetDocumentsCommand extends RavenCommand<ConditionalGetR
     }
 
     public static async parseDocumentsResultResponseAsync(
-        bodyStream: stream.Stream,
+        bodyStream: Stream,
         conventions: DocumentConventions,
         bodyCallback?: (body: string) => void): Promise<ConditionalGetResult> {
 
         const body = await readToEnd(bodyStream);
         bodyCallback?.(body);
 
-        let parsedJson: any;
-        if (body.length > conventions.syncJsonParseLimit) {
-            const bodyStreamCopy = stringToReadable(body);
-            // response is quite big - fallback to async (slower) parsing to avoid blocking event loop
-            parsedJson = await RavenCommandResponsePipeline.create<any>()
-                .parseJsonAsync()
-                .process(bodyStreamCopy);
-        } else {
-            parsedJson = JSON.parse(body);
-        }
+        const parsedJson = JSON.parse(body);
 
         return ConditionalGetDocumentsCommand._mapToLocalObject(parsedJson, conventions);
     }
@@ -80,7 +71,7 @@ export class ConditionalGetDocumentsCommand extends RavenCommand<ConditionalGetR
         };
     }
 
-    public async processResponse(cache: HttpCache, response: HttpResponse, bodyStream: stream.Readable, url: string): Promise<ResponseDisposeHandling> {
+    public async processResponse(cache: HttpCache, response: HttpResponse, bodyStream: Readable, url: string): Promise<ResponseDisposeHandling> {
         if (response.status === StatusCodes.NotModified) {
             return "Automatic";
         }

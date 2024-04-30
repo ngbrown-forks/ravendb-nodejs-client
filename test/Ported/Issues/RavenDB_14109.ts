@@ -1,9 +1,9 @@
-import { IDocumentStore } from "../../../src/Documents/IDocumentStore";
-import { disposeTestDocumentStore, testContext } from "../../Utils/TestUtil";
-import { Company } from "../../Assets/Orders";
-import * as StreamUtil from "../../../src/Utility/StreamUtil";
-import { StreamQueryStatistics } from "../../../src/Documents/Session/StreamQueryStatistics";
-import { assertThat } from "../../Utils/AssertExtensions";
+import { IDocumentStore } from "../../../src/Documents/IDocumentStore.js";
+import { disposeTestDocumentStore, testContext } from "../../Utils/TestUtil.js";
+import { Company } from "../../Assets/Orders.js";
+import { finishedAsync } from "../../../src/Utility/StreamUtil.js";
+import { StreamQueryStatistics } from "../../../src/Documents/Session/StreamQueryStatistics.js";
+import { assertThat } from "../../Utils/AssertExtensions.js";
 
 describe("RavenDB_14109Test", function () {
 
@@ -40,7 +40,7 @@ describe("RavenDB_14109Test", function () {
                 items.push(item);
             });
 
-            await StreamUtil.finishedAsync(queryStream);
+            await finishedAsync(queryStream);
 
             assertThat(items)
                 .hasSize(stats.totalResults);

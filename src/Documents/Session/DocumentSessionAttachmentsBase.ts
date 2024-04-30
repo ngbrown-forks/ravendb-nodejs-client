@@ -1,17 +1,16 @@
-import { AdvancedSessionExtensionBase } from "./AdvancedSessionExtensionBase";
-import { AttachmentName } from "./../Attachments";
-import { AttachmentData } from "./../Attachments";
-import { CONSTANTS } from "./../../Constants";
-import { InMemoryDocumentSessionOperations } from "./InMemoryDocumentSessionOperations";
-import { StringUtil } from "../../Utility/StringUtil";
-import { throwError } from "../../Exceptions";
-import { IdTypeAndName } from "../IdTypeAndName";
-import { DocumentInfo } from "./DocumentInfo";
-import { PutAttachmentCommandData } from "../Commands/Batches/PutAttachmentCommandData";
-import { DeleteAttachmentCommandData } from "../Commands/Batches/DeleteAttachmentCommandData";
-import { MoveAttachmentCommandData } from "../Commands/Batches/MoveAttachmentCommandData";
-import { CopyAttachmentCommandData } from "../Commands/Batches/CopyAttachmentCommandData";
-import { TypeUtil } from "../../Utility/TypeUtil";
+import { AdvancedSessionExtensionBase } from "./AdvancedSessionExtensionBase.js";
+import { AttachmentName, AttachmentData } from "./../Attachments/index.js";
+import { CONSTANTS } from "./../../Constants.js";
+import { InMemoryDocumentSessionOperations } from "./InMemoryDocumentSessionOperations.js";
+import { StringUtil } from "../../Utility/StringUtil.js";
+import { throwError } from "../../Exceptions/index.js";
+import { IdTypeAndName } from "../IdTypeAndName.js";
+import { DocumentInfo } from "./DocumentInfo.js";
+import { PutAttachmentCommandData } from "../Commands/Batches/PutAttachmentCommandData.js";
+import { DeleteAttachmentCommandData } from "../Commands/Batches/DeleteAttachmentCommandData.js";
+import { MoveAttachmentCommandData } from "../Commands/Batches/MoveAttachmentCommandData.js";
+import { CopyAttachmentCommandData } from "../Commands/Batches/CopyAttachmentCommandData.js";
+import { TypeUtil } from "../../Utility/TypeUtil.js";
 
 export abstract class DocumentSessionAttachmentsBase extends AdvancedSessionExtensionBase {
     protected constructor(session: InMemoryDocumentSessionOperations) {

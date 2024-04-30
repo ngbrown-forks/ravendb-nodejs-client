@@ -1,11 +1,11 @@
-import { IndexConfiguration, IndexDefinition } from "./IndexDefinition";
-import { FieldIndexing, FieldStorage, FieldTermVector, IndexLockMode, IndexPriority, IndexState } from "./Enums";
-import { SpatialOptions } from "./Spatial";
-import { throwError } from "../../Exceptions";
-import { DocumentConventions } from "../Conventions/DocumentConventions";
-import { IndexFieldOptions } from "./IndexFieldOptions";
-import { IndexDeploymentMode } from "./IndexDeploymentMode";
-import { AdditionalAssembly } from "./AdditionalAssembly";
+import { IndexConfiguration, IndexDefinition } from "./IndexDefinition.js";
+import { FieldIndexing, FieldStorage, FieldTermVector, IndexLockMode, IndexPriority, IndexState } from "./Enums.js";
+import { SpatialOptions } from "./Spatial.js";
+import { throwError } from "../../Exceptions/index.js";
+import { DocumentConventions } from "../Conventions/DocumentConventions.js";
+import { IndexFieldOptions } from "./IndexFieldOptions.js";
+import { IndexDeploymentMode } from "./IndexDeploymentMode.js";
+import { AdditionalAssembly } from "./AdditionalAssembly.js";
 
 export abstract class AbstractIndexDefinitionBuilder<TIndexDefinition extends IndexDefinition> {
     protected readonly _indexName: string;
@@ -60,9 +60,9 @@ export abstract class AbstractIndexDefinitionBuilder<TIndexDefinition extends In
             indexDefinition.patternForOutputReduceToCollectionReferences = this.patternForOutputReduceToCollectionReferences;
             indexDefinition.patternReferencesCollectionName = this.patternReferencesCollectionName;
 
-            const suggestions: { [suggestionOption: string]: boolean } = Array.from(this.suggestionsOptions)
-                .reduce((result, item) =>
-                    Object.assign(result, { [item]: true }), {});
+            const suggestions: { [suggestionOption: string]: boolean } = Object.fromEntries(Array.from(this.suggestionsOptions)
+                .map(( item) =>
+                    [item, true]));
 
             this._applyValues(indexDefinition, this.indexesStrings,
                 (options, value) => options.indexing = value);

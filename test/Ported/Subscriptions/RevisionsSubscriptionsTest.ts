@@ -1,13 +1,14 @@
-import { Company, User } from "../../Assets/Entities";
-import { testContext, disposeTestDocumentStore, RavenTestContext } from "../../Utils/TestUtil";
+import { Company, User } from "../../Assets/Entities.js";
+import { testContext, disposeTestDocumentStore, RavenTestContext } from "../../Utils/TestUtil.js";
 
 import DocumentStore, {
     IDocumentStore,
     RevisionsCollectionConfiguration,
     RevisionsConfiguration,
     ConfigureRevisionsOperation
-} from "../../../src";
-import * as assert from "assert";
+} from "../../../src/index.js";
+import assert from "node:assert"
+import { ObjectUtil } from "../../../src/Utility/ObjectUtil.js";
 
 // skipped for the time being
 // subscriptions are not working with server version 4.1
@@ -78,7 +79,7 @@ import * as assert from "assert";
 
                 sub.on("batch", (batch, callback) => {
                     try {
-                        batch.items.forEach(item => {
+                        for (const item of batch.items) {
                             const result = item.result;
                             names.add(
                                 (result.current ? result.current.name : null)
@@ -87,7 +88,7 @@ import * as assert from "assert";
                             if (names.size === 100) {
                                 resolve();
                             }
-                        });
+                        }
                     } catch (err) {
                         callback(err);
                         return;
@@ -153,7 +154,7 @@ import * as assert from "assert";
                 let maxAge = -1;
 
                 sub.on("batch", (batch, callback) => {
-                    batch.items.forEach(item => {
+                    for (const item of batch.items) {
                         const x = item.result;
 
                         if (x.current.age > maxAge && x.current.age  > (x.previous ? x.previous.age : -1)) {
@@ -166,7 +167,7 @@ import * as assert from "assert";
                         if (names.size === 10) {
                             resolve();
                         }
-                    });
+                    }
 
                     callback();
                 });
@@ -180,8 +181,8 @@ import * as assert from "assert";
         const store2 = new DocumentStore(store.urls, store.database);
         try {
             store2.conventions.findCollectionNameForObjectLiteral = () => "test";
-            store2.conventions.entityFieldNameConvention = "camel";
-            store2.conventions.remoteEntityFieldNameConvention = "pascal";
+            store2.conventions.serverToLocalFieldNameConverter = ObjectUtil.camel;
+            store2.conventions.localToServerFieldNameConverter = ObjectUtil.pascal;
             store2.initialize();
             const subscriptionId = await store2.subscriptions.createForRevisions({
                 documentType: User

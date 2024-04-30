@@ -1,34 +1,35 @@
-import * as fs from "fs";
-import * as path from "path";
-import * as url from "url";
-import { MultiError, VError } from "verror";
-import * as http from "http";
-import * as https from "https";
-import "source-map-support/register";
-import { IDisposable } from "../../src/Types/Contracts";
-import { RavenTestDriver } from "../TestDriver";
-import { RavenServerLocator } from "../TestDriver/RavenServerLocator";
-import { IDocumentStore } from "../../src/Documents/IDocumentStore";
-import { getError, throwError } from "../../src/Exceptions";
-import { IAuthOptions } from "../../src/Auth/AuthOptions";
-import * as os from "os";
-import "../../src/Utility/Polyfills";
+import fs from "node:fs";
+import path from "node:path";
+import url from "node:url";
+import { IDisposable, IDocumentStore, IAuthOptions } from "../../src/index.js";
+import { RavenTestDriver } from "../TestDriver/index.js";
+import { RavenServerLocator } from "../TestDriver/RavenServerLocator.js";
+import { getError, throwError } from "../../src/Exceptions/index.js";
+import os from "node:os";
 import {
     CreateDatabaseOperation,
     DatabaseRecord,
-    DeleteDatabasesOperation, DocumentConventions, DocumentSession,
-    DocumentStore, DocumentType, getAllNodesFromTopology, GetClusterTopologyCommand, GetDatabaseRecordOperation,
-    IDocumentSession, ServerNode
-} from "../../src";
-import * as rimraf from "rimraf";
-import { ChildProcess } from "child_process";
-import { TypeUtil } from "../../src/Utility/TypeUtil";
-import { getLogger } from "../../src/Utility/LogUtil";
-import { AdminJsConsoleOperation } from "./AdminJsConsoleOperation";
-import { Stopwatch } from "../../src/Utility/Stopwatch";
-import { delay, wrapWithTimeout } from "../../src/Utility/PromiseUtil";
-import moment = require("moment");
-import { INDEXES } from "../../src/Constants";
+    DeleteDatabasesOperation,
+    DocumentConventions,
+    DocumentSession,
+    DocumentStore,
+    DocumentType,
+    getAllNodesFromTopology,
+    GetClusterTopologyCommand,
+    GetDatabaseRecordOperation,
+    IDocumentSession,
+    ServerNode
+} from "../../src/index.js";
+import { sync } from "rimraf";
+import { ChildProcess } from "node:child_process";
+import { TypeUtil } from "../../src/Utility/TypeUtil.js";
+import { getLogger } from "../../src/Utility/LogUtil.js";
+import { AdminJsConsoleOperation } from "./AdminJsConsoleOperation.js";
+import { Stopwatch } from "../../src/Utility/Stopwatch.js";
+import { delay, wrapWithTimeout } from "../../src/Utility/PromiseUtil.js";
+import moment from "moment";
+import { INDEXES } from "../../src/Constants.js";
+import { Agent } from "undici";
 
 const log = getLogger({ module: "TestDriver" });
 
@@ -118,15 +119,16 @@ class TestSecuredServiceLocator extends RavenServerLocator {
         if (!clientCertPath) {
             return {
                 certificate: fs.readFileSync(this.getServerCertificatePath()),
-                type: "pfx"
+                type: "pfx",
+                ca: serverCaCertPath ? fs.readFileSync(serverCaCertPath, "utf8") : undefined
             };
         }
 
         return {
             type: "pem",
-            certificate: fs.readFileSync(clientCertPath, "utf-8"),
+            certificate: fs.readFileSync(clientCertPath, "utf8"),
             password: clientCertPass,
-            ca: fs.readFileSync(serverCaCertPath, "utf-8"),
+            ca: fs.readFileSync(serverCaCertPath, "utf8"),
         };
     }
 }
@@ -405,7 +407,7 @@ export class RavenTestContext extends RavenTestDriver implements IDisposable {
             .then((errors) => {
                 const anyErrors = errors.filter(x => x) as Error[];
                 if (anyErrors.length) {
-                    throw new MultiError(anyErrors);
+                    throw getError("AggregateException", "Error", null, { errors: anyErrors });
                 }
             })
             .then(() => {
@@ -748,20 +750,6 @@ setupRavenDbTestContext();
 
 export let clusterTestContext: ClusterTestContext;
 
-function checkAgent(agentName: string, agent: http.Agent) {
-    const reqKeys = Object.keys(agent.requests);
-    if (reqKeys.length) {
-        // eslint-disable-next-line no-console
-        console.log(`${agentName} dangling requests: ${reqKeys}`);
-    }
-
-    const sockKeys = Object.keys(agent.sockets);
-    if (sockKeys.length) {
-        // eslint-disable-next-line no-console
-        console.log(`${agentName} dangling sockets: ${sockKeys}`);
-    }
-}
-
 function setupRavenDbTestContext() {
 
     before(() => {
@@ -771,17 +759,12 @@ function setupRavenDbTestContext() {
     afterEach(function () {
         if (this.currentTest && this.currentTest.state === "failed") {
             // eslint-disable-next-line no-console
-            console.error(VError.fullStack(this.currentTest.err));
+            console.error(this.currentTest.err);
         }
     });
 
     after(() => {
         testContext.dispose();
-
-        process.on("beforeExit", () => {
-            checkAgent("http", http.globalAgent);
-            checkAgent("https", https.globalAgent);
-        });
     });
 
     return testContext;
@@ -804,6 +787,6 @@ export class TemporaryDirContext implements IDisposable {
     }
 
     dispose(): void {
-        rimraf.sync(this.tempDir);
+        sync(this.tempDir);
     }
 }

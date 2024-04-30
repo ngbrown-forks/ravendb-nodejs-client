@@ -1,14 +1,14 @@
-import * as assert from "assert";
-import { testContext, disposeTestDocumentStore } from "../Utils/TestUtil";
+import assert from "node:assert"
+import { testContext, disposeTestDocumentStore } from "../Utils/TestUtil.js";
 
 import {
     IDocumentStore,
     PatchOperation,
     PatchByQueryOperation,
-} from "../../src";
-import { User } from "../Assets/Entities";
-import { PatchRequest } from "../../src/Documents/Operations/PatchRequest";
-import { Users_ByName } from "./Indexing/IndexesFromClientTest";
+} from "../../src/index.js";
+import { User } from "../Assets/Entities.js";
+import { PatchRequest } from "../../src/Documents/Operations/PatchRequest.js";
+import { Users_ByName } from "./Indexing/IndexesFromClientTest.js";
 
 describe("PatchTest", function () {
 

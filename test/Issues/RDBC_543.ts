@@ -1,5 +1,5 @@
-import { IDocumentStore } from "../../src";
-import { disposeTestDocumentStore, testContext } from "../Utils/TestUtil";
+import { IDocumentStore } from "../../src/index.js";
+import { disposeTestDocumentStore, testContext } from "../Utils/TestUtil.js";
 
 describe("RDBC-543", function () {
 

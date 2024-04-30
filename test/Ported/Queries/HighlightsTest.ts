@@ -1,12 +1,12 @@
-import * as assert from "assert";
-import { testContext, disposeTestDocumentStore } from "../../Utils/TestUtil";
+import assert from "node:assert"
+import { testContext, disposeTestDocumentStore } from "../../Utils/TestUtil.js";
 
 import {
     IDocumentStore,
     AbstractCsharpMultiMapIndexCreationTask,
     Highlightings,
-} from "../../../src";
-import { assertThat } from "../../Utils/AssertExtensions";
+} from "../../../src/index.js";
+import { assertThat } from "../../Utils/AssertExtensions.js";
 
 interface ISearchable {
     slug: string;
@@ -121,7 +121,7 @@ describe("HighlightsTest", function () {
             assert.strictEqual(contentHighlighting.fieldName, "content");
             const fragments = contentHighlighting.getFragments(eventItem.id);
             assert.strictEqual(fragments.length, 1);
-            assert.ok(fragments[0].indexOf(`<span style='background: yellow'>session</span>`) !== -1);
+            assert.ok(fragments[0].includes(`<span style='background: yellow'>session</span>`));
 
             const orderedResults = [];
             for (const searchable of results) {

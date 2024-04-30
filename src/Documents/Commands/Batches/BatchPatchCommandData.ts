@@ -1,10 +1,10 @@
-import { CommandType, ICommandData } from "../CommandData";
-import { CaseInsensitiveStringSet } from "../../../Primitives/CaseInsensitiveStringSet";
-import { PatchRequest } from "../../Operations/PatchRequest";
-import { throwError } from "../../../Exceptions";
-import { TypeUtil } from "../../../Utility/TypeUtil";
-import { StringUtil } from "../../../Utility/StringUtil";
-import { DocumentConventions } from "../../Conventions/DocumentConventions";
+import { CommandType, ICommandData } from "../CommandData.js";
+import { CaseInsensitiveStringSet } from "../../../Primitives/CaseInsensitiveStringSet.js";
+import { PatchRequest } from "../../Operations/PatchRequest.js";
+import { throwError } from "../../../Exceptions/index.js";
+import { TypeUtil } from "../../../Utility/TypeUtil.js";
+import { StringUtil } from "../../../Utility/StringUtil.js";
+import { DocumentConventions } from "../../Conventions/DocumentConventions.js";
 
 export interface IdAndChangeVector {
     id: string;

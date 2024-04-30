@@ -1,13 +1,13 @@
-import { DocumentConventions } from "../Conventions/DocumentConventions";
-import { IndexDefinition } from "./IndexDefinition";
-import { IndexPriority, IndexLockMode, IndexState, SearchEngineType } from "./Enums";
-import { IDocumentStore } from "../IDocumentStore";
-import { PutIndexesOperation } from "../Operations/Indexes/PutIndexesOperation";
-import { AbstractCommonApiForIndexes } from "./AbstractCommonApiForIndexes";
-import { IAbstractIndexCreationTask } from "./IAbstractIndexCreationTask";
-import { DocumentStoreBase } from "../DocumentStoreBase";
-import { IndexDeploymentMode } from "./IndexDeploymentMode";
-import { INDEXES } from "../../Constants";
+import { DocumentConventions } from "../Conventions/DocumentConventions.js";
+import { IndexDefinition } from "./IndexDefinition.js";
+import { IndexPriority, IndexLockMode, IndexState, SearchEngineType } from "./Enums.js";
+import { IDocumentStore } from "../IDocumentStore.js";
+import { PutIndexesOperation } from "../Operations/Indexes/PutIndexesOperation.js";
+import { AbstractCommonApiForIndexes } from "./AbstractCommonApiForIndexes.js";
+import { IAbstractIndexCreationTask } from "./IAbstractIndexCreationTask.js";
+import { DocumentStoreBase } from "../DocumentStoreBase.js";
+import { IndexDeploymentMode } from "./IndexDeploymentMode.js";
+import { INDEXES } from "../../Constants.js";
 
 export abstract class AbstractIndexCreationTaskBase<TIndexDefinition extends IndexDefinition>
     extends AbstractCommonApiForIndexes implements IAbstractIndexCreationTask {

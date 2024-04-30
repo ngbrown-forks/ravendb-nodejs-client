@@ -1,9 +1,9 @@
-import { CommandType, ICommandData } from "../CommandData";
-import { PatchRequest } from "../../Operations/PatchRequest";
-import { throwError } from "../../../Exceptions";
-import { TypeUtil } from "../../../Utility/TypeUtil";
-import { InMemoryDocumentSessionOperations } from "../../Session/InMemoryDocumentSessionOperations";
-import { DocumentConventions } from "../../Conventions/DocumentConventions";
+import { CommandType, ICommandData } from "../CommandData.js";
+import { PatchRequest } from "../../Operations/PatchRequest.js";
+import { throwError } from "../../../Exceptions/index.js";
+import { TypeUtil } from "../../../Utility/TypeUtil.js";
+import { InMemoryDocumentSessionOperations } from "../../Session/InMemoryDocumentSessionOperations.js";
+import { DocumentConventions } from "../../Conventions/DocumentConventions.js";
 
 export class PatchCommandData implements ICommandData {
     public id: string;

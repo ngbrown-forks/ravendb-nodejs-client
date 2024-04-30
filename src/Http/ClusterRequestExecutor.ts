@@ -1,24 +1,24 @@
-import { GetClusterTopologyCommand } from "../ServerWide/Commands/GetClusterTopologyCommand";
-import { NodeSelector } from "./NodeSelector";
-import * as os from "os";
-import * as semaphore from "semaphore";
-import { getLogger } from "../Utility/LogUtil";
-import { RequestExecutor, IRequestExecutorOptions } from "./RequestExecutor";
-import { throwError } from "../Exceptions";
-import { ServerNode } from "./ServerNode";
-import { Topology } from "./Topology";
-import { GetTcpInfoCommand } from "../ServerWide/Commands/GetTcpInfoCommand";
-import { IAuthOptions } from "../Auth/AuthOptions";
-import { acquireSemaphore } from "../Utility/SemaphoreUtil";
-import { DocumentConventions } from "../Documents/Conventions/DocumentConventions";
-import { UpdateTopologyParameters } from "./UpdateTopologyParameters";
-import { HEADERS } from "../Constants";
+import { GetClusterTopologyCommand } from "../ServerWide/Commands/GetClusterTopologyCommand.js";
+import { NodeSelector } from "./NodeSelector.js";
+import { EOL } from "node:os";
+import { getLogger } from "../Utility/LogUtil.js";
+import { RequestExecutor, IRequestExecutorOptions } from "./RequestExecutor.js";
+import { throwError } from "../Exceptions/index.js";
+import { ServerNode } from "./ServerNode.js";
+import { Topology } from "./Topology.js";
+import { GetTcpInfoCommand } from "../ServerWide/Commands/GetTcpInfoCommand.js";
+import { IAuthOptions } from "../Auth/AuthOptions.js";
+import { acquireSemaphore } from "../Utility/SemaphoreUtil.js";
+import { DocumentConventions } from "../Documents/Conventions/DocumentConventions.js";
+import { UpdateTopologyParameters } from "./UpdateTopologyParameters.js";
+import { HEADERS } from "../Constants.js";
+import { Semaphore } from "../Utility/Semaphore.js";
 
 const log = getLogger({ module: "ClusterRequestExecutor" });
 
 export class ClusterRequestExecutor extends RequestExecutor {
 
-    private _clusterTopologySemaphore = semaphore();
+    private _clusterTopologySemaphore = new Semaphore();
 
     protected constructor(authOptions: IAuthOptions, conventions: DocumentConventions) {
         super(null, authOptions, conventions);
@@ -86,7 +86,7 @@ export class ClusterRequestExecutor extends RequestExecutor {
 
         const executor = new ClusterRequestExecutor(
             authOptions,
-            documentConventions ? documentConventions : DocumentConventions.defaultConventions);
+            documentConventions ?? DocumentConventions.defaultConventions);
 
         executor._disableClientConfigurationUpdates = true;
         executor.firstTopologyUpdatePromise = executor._firstTopologyUpdate(initialUrls, null);
@@ -104,11 +104,11 @@ export class ClusterRequestExecutor extends RequestExecutor {
 
     public async updateTopology(parameters: UpdateTopologyParameters): Promise<boolean> {
         if (this._disposed) {
-            return Promise.resolve(false);
+            return false;
         }
 
         if (this._disableTopologyUpdates) {
-            return Promise.resolve(false);
+            return false;
         }
 
         const acquiredSemContext = acquireSemaphore(this._clusterTopologySemaphore, { timeout: parameters.timeoutInMs });
@@ -153,12 +153,13 @@ export class ClusterRequestExecutor extends RequestExecutor {
 
     protected _throwExceptions(details: string): void {
         throwError("InvalidOperationException",
-            "Failed to retrieve cluster topology from all known nodes" + os.EOL + details);
+            "Failed to retrieve cluster topology from all known nodes" + EOL + details);
     }
 
     public dispose(): void {
         // eslint-disable-next-line @typescript-eslint/no-empty-function
         this._clusterTopologySemaphore.take(() => {
+            // empty
         });
         super.dispose();
     }

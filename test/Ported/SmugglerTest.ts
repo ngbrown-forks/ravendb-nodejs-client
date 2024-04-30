@@ -3,15 +3,15 @@ import {
     IDocumentStore,
     DatabaseSmugglerExportOptions,
     DatabaseSmugglerImportOptions
-} from "../../src";
-import { disposeTestDocumentStore, TemporaryDirContext, testContext } from "../Utils/TestUtil";
-import { User } from "../Assets/Entities";
-import { UsersByName } from "./QueryTest";
-import { assertThat } from "../Utils/AssertExtensions";
-import * as fs from "fs";
-import { CONSTANTS } from "../../src/Constants";
-import * as path from "path";
-import { BackupUtils } from "../../src/Documents/Smuggler/BackupUtils";
+} from "../../src/index.js";
+import { disposeTestDocumentStore, TemporaryDirContext, testContext } from "../Utils/TestUtil.js";
+import { User } from "../Assets/Entities.js";
+import { UsersByName } from "./QueryTest.js";
+import { assertThat } from "../Utils/AssertExtensions.js";
+import fs from "node:fs";
+import { CONSTANTS } from "../../src/Constants.js";
+import path from "node:path";
+import { BackupUtils } from "../../src/Documents/Smuggler/BackupUtils.js";
 
 describe("SmugglerTest", function () {
 
@@ -76,34 +76,6 @@ describe("SmugglerTest", function () {
                 .isEqualTo(1);
         } finally {
             dstStore.dispose();
-        }
-    });
-
-    it("can use between option", async () => {
-        const sourceStore = await testContext.getDocumentStore();
-
-        try {
-            await addUsers(sourceStore);
-
-            const targetStore = await testContext.getDocumentStore();
-            try {
-                const options = new DatabaseSmugglerExportOptions();
-                options.operateOnTypes = ["Documents"];
-                const exportOperation = await sourceStore.smuggler.export(options, targetStore.smuggler);
-
-                await exportOperation.waitForCompletion();
-
-                const stats = await targetStore.maintenance.send(new GetStatisticsOperation());
-                assertThat(stats.countOfIndexes)
-                    .isEqualTo(0);  // we didn't request indexes to be copied
-                assertThat(stats.countOfDocuments)
-                    .isEqualTo(3);
-
-            } finally {
-                targetStore.dispose();
-            }
-        } finally {
-            sourceStore.dispose();
         }
     });
 

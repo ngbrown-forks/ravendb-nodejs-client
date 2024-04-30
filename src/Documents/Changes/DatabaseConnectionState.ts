@@ -1,10 +1,10 @@
-import { DatabaseChange } from "./DatabaseChange";
-import { ChangesType, IChangesConnectionState } from "./IChangesConnectionState";
-import { EventEmitter } from "events";
-import { getError } from "../../Exceptions";
-import { IDefer } from "../../Utility/PromiseUtil";
-import * as PromiseUtil from "../../Utility/PromiseUtil";
-import { TypeUtil } from "../../Utility/TypeUtil";
+import { DatabaseChange } from "./DatabaseChange.js";
+import { ChangesType, IChangesConnectionState } from "./IChangesConnectionState.js";
+import { EventEmitter } from "node:events";
+import { getError } from "../../Exceptions/index.js";
+import { IDefer } from "../../Utility/PromiseUtil.js";
+import { defer } from "../../Utility/PromiseUtil.js";
+import { TypeUtil } from "../../Utility/TypeUtil.js";
 
 export class DatabaseConnectionState implements IChangesConnectionState<DatabaseChange> {
 
@@ -84,7 +84,7 @@ export class DatabaseConnectionState implements IChangesConnectionState<Database
         this._value = 0;
         this._emitter.setMaxListeners(50);
 
-        this._firstSet = PromiseUtil.defer<void>();
+        this._firstSet = defer<void>();
     }
 
     public addOnChangeNotification(type: ChangesType, handler: (change: DatabaseChange) => void): void {

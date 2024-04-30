@@ -1,13 +1,13 @@
-import * as assert from "assert";
-import { testContext, disposeTestDocumentStore } from "../Utils/TestUtil";
+import assert from "node:assert"
+import { testContext, disposeTestDocumentStore } from "../Utils/TestUtil.js";
 
 import {
     IDocumentStore,
     CounterChange,
     IChangesObservable,
-} from "../../src";
-import { User } from "../Assets/Entities";
-import { delay, wrapWithTimeout } from "../../src/Utility/PromiseUtil";
+} from "../../src/index.js";
+import { User } from "../Assets/Entities.js";
+import { delay, wrapWithTimeout } from "../../src/Utility/PromiseUtil.js";
 
 describe("RavenDB-11703", function () {
 

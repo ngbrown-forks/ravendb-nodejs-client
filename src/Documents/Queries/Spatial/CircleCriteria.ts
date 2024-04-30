@@ -1,6 +1,6 @@
-import { SpatialCriteria } from "./SpatialCriteria";
-import { SpatialUnits, SpatialRelation } from "../../Indexes/Spatial";
-import { ShapeToken } from "../../Session/Tokens/ShapeToken";
+import { SpatialCriteria } from "./SpatialCriteria.js";
+import { SpatialUnits, SpatialRelation } from "../../Indexes/Spatial.js";
+import { ShapeToken } from "../../Session/Tokens/ShapeToken.js";
 
 export class CircleCriteria extends SpatialCriteria {
 

@@ -1,18 +1,16 @@
-import * as stream from "readable-stream";
-import { InMemoryDocumentSessionOperations } from "../InMemoryDocumentSessionOperations";
-import { QueryStreamCommand } from "../../Commands/QueryStreamCommand";
-import { IndexQuery } from "../../Queries/IndexQuery";
-import { throwError } from "../../../Exceptions";
-import { StartingWithOptions } from "../IDocumentSession";
-import { StreamCommand } from "../../Commands/StreamCommand";
-import { TypeUtil } from "../../../Utility/TypeUtil";
-import { StreamResultResponse } from "../../Commands/StreamResultResponse";
-import { getDocumentResultsAsObjects } from "../../../Mapping/Json/Streams/Pipelines";
-import { StringBuilder } from "../../../Utility/StringBuilder";
-import { ObjectUtil } from "../../../Utility/ObjectUtil";
-import { RavenCommandResponsePipeline } from "../../../Http/RavenCommandResponsePipeline";
-import { ignore } from "stream-json/filters/Ignore";
-import { streamValues } from "stream-json/streamers/StreamValues";
+import { Readable } from "node:stream";
+import { InMemoryDocumentSessionOperations } from "../InMemoryDocumentSessionOperations.js";
+import { QueryStreamCommand } from "../../Commands/QueryStreamCommand.js";
+import { IndexQuery } from "../../Queries/IndexQuery.js";
+import { throwError } from "../../../Exceptions/index.js";
+import { StartingWithOptions } from "../IDocumentSession.js";
+import { StreamCommand } from "../../Commands/StreamCommand.js";
+import { TypeUtil } from "../../../Utility/TypeUtil.js";
+import { StreamResultResponse } from "../../Commands/StreamResultResponse.js";
+import { getDocumentResultsAsObjects } from "../../../Mapping/Json/Streams/Pipelines.js";
+import { StringBuilder } from "../../../Utility/StringBuilder.js";
+import { ObjectUtil } from "../../../Utility/ObjectUtil.js";
+import { RavenCommandResponsePipeline } from "../../../Http/RavenCommandResponsePipeline.js";
 
 export class StreamOperation {
     private readonly _session: InMemoryDocumentSessionOperations;
@@ -49,9 +47,7 @@ export class StreamOperation {
     }
 
     private _createRequestForIdPrefix(idPrefix: string, opts: StartingWithOptions): StreamCommand {
-        const format = this._session.conventions.useJsonlStreaming ? 'jsonl' : 'json';
-
-        const sb = new StringBuilder(`streams/docs?format=${format}&`);
+        const sb = new StringBuilder(`streams/docs?format=jsonl&`);
         if (idPrefix) {
             sb.append("startsWith=")
                 .append(encodeURIComponent(idPrefix)).append("&");
@@ -85,7 +81,7 @@ export class StreamOperation {
         return new StreamCommand(sb.toString());
     }
 
-    public setResult(response: StreamResultResponse): stream.Readable {
+    public setResult(response: StreamResultResponse): Readable {
         if (!response) {
             throwError("IndexDoesNotExistException", "The index does not exists, failed to stream results.");
         }
@@ -96,18 +92,13 @@ export class StreamOperation {
         if (this._isQueryStream) {
             const pipeline = RavenCommandResponsePipeline.create<object[]>();
 
-            this._session.conventions.useJsonlStreaming
-                ? pipeline.parseJsonlAsync(x => x["Stats"])
-                : pipeline.parseJsonAsync([
-                    ignore({ filter: /^Results|Includes$/ }),
-                    streamValues()
-                ]);
+            pipeline.parseJsonlAsync(x => x["Stats"])
 
-                pipeline.stream(response.stream)
+            pipeline.stream(response.stream)
                 .on("error", err => result.emit("error", err))
                 .on("data", data => {
                     const rawWithCamel = ObjectUtil.transformObjectKeys(data["value"], {
-                        defaultTransform: "camel"
+                        defaultTransform: ObjectUtil.camel
                     });
 
                     const statsResult =

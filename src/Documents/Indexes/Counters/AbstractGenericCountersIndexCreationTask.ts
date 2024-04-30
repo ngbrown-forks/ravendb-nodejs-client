@@ -1,8 +1,8 @@
-import { AbstractIndexCreationTaskBase } from "../AbstractIndexCreationTaskBase";
-import { FieldIndexing, FieldStorage, FieldTermVector } from "../Enums";
-import { SpatialOptions, SpatialOptionsFactory } from "../Spatial";
-import { CONSTANTS } from "../../../Constants";
-import { CountersIndexDefinition } from "./CountersIndexDefinition";
+import { AbstractIndexCreationTaskBase } from "../AbstractIndexCreationTaskBase.js";
+import { FieldIndexing, FieldStorage, FieldTermVector } from "../Enums.js";
+import { SpatialOptions, SpatialOptionsFactory } from "../Spatial.js";
+import { CONSTANTS } from "../../../Constants.js";
+import { CountersIndexDefinition } from "./CountersIndexDefinition.js";
 
 export abstract class AbstractGenericCountersIndexCreationTask extends AbstractIndexCreationTaskBase<CountersIndexDefinition> {
     protected _reduce: string;

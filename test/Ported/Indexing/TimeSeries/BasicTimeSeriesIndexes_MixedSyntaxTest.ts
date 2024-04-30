@@ -1,7 +1,7 @@
-import { GetTermsOperation, IDocumentStore, PutIndexesOperation, TimeSeriesIndexDefinition } from "../../../../src";
-import { disposeTestDocumentStore, testContext } from "../../../Utils/TestUtil";
-import { Company } from "../../../Assets/Orders";
-import { assertThat } from "../../../Utils/AssertExtensions";
+import { GetTermsOperation, IDocumentStore, PutIndexesOperation, TimeSeriesIndexDefinition } from "../../../../src/index.js";
+import { disposeTestDocumentStore, testContext } from "../../../Utils/TestUtil.js";
+import { Company } from "../../../Assets/Orders.js";
+import { assertThat } from "../../../Utils/AssertExtensions.js";
 
 describe("BasicTimeSeriesIndexes_MixedSyntaxTest", function () {
 

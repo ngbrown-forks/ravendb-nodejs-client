@@ -1,7 +1,7 @@
-import { IDocumentStore } from "../../../src";
-import { disposeTestDocumentStore, testContext } from "../../Utils/TestUtil";
-import { assertThrows } from "../../Utils/AssertExtensions";
-import * as assert from "assert";
+import { IDocumentStore } from "../../../src/index.js";
+import { disposeTestDocumentStore, testContext } from "../../Utils/TestUtil.js";
+import { assertThrows } from "../../Utils/AssertExtensions.js";
+import assert from "node:assert"
 
 
 describe("RavenDB-12790", function () {

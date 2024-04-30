@@ -1,5 +1,5 @@
-import { ChangesType, IChangesConnectionState } from "./IChangesConnectionState";
-import { IChangesObservable } from "./IChangesObservable";
+import { ChangesType, IChangesConnectionState } from "./IChangesConnectionState.js";
+import { IChangesObservable } from "./IChangesObservable.js";
 
 export class ChangesObservable<T, TConnectionState extends IChangesConnectionState<any>>
     implements IChangesObservable<T> {
@@ -23,7 +23,7 @@ export class ChangesObservable<T, TConnectionState extends IChangesConnectionSta
     public on(event: "error", handler: (error: Error) => void): this;
     public on(event: "data" | "error", handler: ((value: T) => void) | ((error: Error) => void)): this {
         switch (event) {
-            case "data":
+            case "data": {
                 // since allow multiple subscriptions on single object we cant register it multiple times
                 // to avoid duplicates in notification
                 if (!this._sendHandler) {
@@ -35,7 +35,8 @@ export class ChangesObservable<T, TConnectionState extends IChangesConnectionSta
                 this._subscribers.add(handler as (value: T) => void);
                 this._connectionState.inc();
                 break;
-            case "error":
+            }
+            case "error": {
                 if (!this._errorHandler) {
                     // register shared error handler
                     this._errorHandler = (ex: Error) => this.error(ex);
@@ -44,6 +45,7 @@ export class ChangesObservable<T, TConnectionState extends IChangesConnectionSta
 
                 this._errorSubscribers.add(handler as (error: Error) => void);
                 break;
+            }
         }
 
         return this;
@@ -60,7 +62,7 @@ export class ChangesObservable<T, TConnectionState extends IChangesConnectionSta
     public off(event: "data" | "error", handler: ((value: T) => void) | ((error: Error) => void)): this {
 
         switch (event) {
-            case "data":
+            case "data": {
                 if (this._subscribers.delete(handler as (value: T) => void)) {
                     this._connectionState.dec();
                 }
@@ -72,13 +74,15 @@ export class ChangesObservable<T, TConnectionState extends IChangesConnectionSta
                 }
 
                 break;
-            case "error":
+            }
+            case "error": {
                 this._errorSubscribers.delete(handler as (error: Error) => void);
                 if (!this._errorSubscribers.size) {
                     this._connectionState.removeOnError(this._errorHandler);
                     this._errorHandler = undefined;
                 }
                 break;
+            }
         }
 
         return this;
@@ -94,11 +98,13 @@ export class ChangesObservable<T, TConnectionState extends IChangesConnectionSta
             return;
         }
 
-        this._subscribers.forEach(x => x(msg));
+        for (const x of this._subscribers) x(msg);
     }
 
     public error(e: Error): void {
-        this._errorSubscribers.forEach(x => x(e));
+        for (const x of this._errorSubscribers) {
+            x(e);
+        }
     }
 
     public ensureSubscribedNow(): Promise<void> {

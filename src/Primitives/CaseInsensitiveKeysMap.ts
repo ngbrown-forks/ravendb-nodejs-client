@@ -1,5 +1,5 @@
-import { TypeUtil } from "../Utility/TypeUtil";
-import { CaseInsensitiveKeysStore } from "./CaseInsensitiveKeysStore";
+import { TypeUtil } from "../Utility/TypeUtil.js";
+import { CaseInsensitiveKeysStore } from "./CaseInsensitiveKeysStore.js";
 
 function validateKey(key) {
     if (TypeUtil.isNullOrUndefined(key)
@@ -7,7 +7,7 @@ function validateKey(key) {
         return;
     }
 
-    throw Error("Key must be a string.");
+    throw new Error("Key must be a string.");
 }
 
 export class CaseInsensitiveKeysMap {

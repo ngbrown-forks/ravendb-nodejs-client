@@ -1,8 +1,8 @@
-import { IDocumentStore } from "../../../src/Documents/IDocumentStore";
-import { disposeTestDocumentStore, testContext } from "../../Utils/TestUtil";
-import { User } from "../../Assets/Entities";
-import { GetCountersOperation } from "../../../src/Documents/Operations/Counters/GetCountersOperation";
-import { assertThat } from "../../Utils/AssertExtensions";
+import { IDocumentStore } from "../../../src/Documents/IDocumentStore.js";
+import { disposeTestDocumentStore, testContext } from "../../Utils/TestUtil.js";
+import { User } from "../../Assets/Entities.js";
+import { GetCountersOperation } from "../../../src/Documents/Operations/Counters/GetCountersOperation.js";
+import { assertThat } from "../../Utils/AssertExtensions.js";
 
 describe("RavenDB_15134", function () {
 
@@ -37,9 +37,9 @@ describe("RavenDB_15134", function () {
 
         assertThat(vals.counters.filter(x => !x).length)
             .isGreaterThan(0);
-        assertThat(!!vals.counters.find(x => x && x.totalValue === 1))
+        assertThat(vals.counters.some(x => x && x.totalValue === 1))
             .isTrue();
-        assertThat(!!vals.counters.find(x => x && x.totalValue === 2))
+        assertThat(vals.counters.some(x => x && x.totalValue === 2))
             .isTrue();
 
         assertThat(vals.counters[0].totalValue)
@@ -55,7 +55,7 @@ describe("RavenDB_15134", function () {
 
         assertThat(vals.counters.filter(x => !x).length)
             .isGreaterThan(0);
-        assertThat(!!vals.counters.find(x => x && Object.keys(x.counterValues).length === 1))
+        assertThat(vals.counters.some(x => x && Object.keys(x.counterValues).length === 1))
             .isTrue();
     });
 

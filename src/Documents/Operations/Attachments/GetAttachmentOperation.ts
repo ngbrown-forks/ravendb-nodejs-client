@@ -1,16 +1,16 @@
-import { IOperation, OperationResultType } from "../OperationAbstractions";
-import { AttachmentDetails } from "../../Attachments";
-import { getEtagHeader } from "../../../Utility/HttpUtil";
-import { HttpRequestParameters, HttpResponse } from "../../../Primitives/Http";
-import { AttachmentResult, AttachmentType } from "../../Attachments";
-import { RavenCommand, ResponseDisposeHandling } from "../../../Http/RavenCommand";
-import { HttpCache } from "../../../Http/HttpCache";
-import { IDocumentStore } from "../../IDocumentStore";
-import { DocumentConventions } from "../../Conventions/DocumentConventions";
-import { throwError } from "../../../Exceptions";
-import { StringUtil } from "../../../Utility/StringUtil";
-import { ServerNode } from "../../../Http/ServerNode";
-import * as stream from "readable-stream";
+import { IOperation, OperationResultType } from "../OperationAbstractions.js";
+import { AttachmentDetails } from "../../Attachments/index.js";
+import { getEtagHeader } from "../../../Utility/HttpUtil.js";
+import { HttpRequestParameters, HttpResponse } from "../../../Primitives/Http.js";
+import { AttachmentResult, AttachmentType } from "../../Attachments/index.js";
+import { RavenCommand, ResponseDisposeHandling } from "../../../Http/RavenCommand.js";
+import { HttpCache } from "../../../Http/HttpCache.js";
+import { IDocumentStore } from "../../IDocumentStore.js";
+import { DocumentConventions } from "../../Conventions/DocumentConventions.js";
+import { throwError } from "../../../Exceptions/index.js";
+import { StringUtil } from "../../../Utility/StringUtil.js";
+import { ServerNode } from "../../../Http/ServerNode.js";
+import { Readable } from "node:stream";
 
 export class GetAttachmentOperation implements IOperation<AttachmentResult> {
     private readonly _documentId: string;
@@ -84,7 +84,7 @@ export class GetAttachmentCommand extends RavenCommand<AttachmentResult> {
     public async processResponse(
         cache: HttpCache,
         response: HttpResponse,
-        bodyStream: stream.Readable,
+        bodyStream: Readable,
         url: string): Promise<ResponseDisposeHandling> {
         const contentType = response.headers.get("content-type");
         const changeVector = getEtagHeader(response);
@@ -92,7 +92,7 @@ export class GetAttachmentCommand extends RavenCommand<AttachmentResult> {
         let size = 0;
         const sizeHeader = response.headers.get("attachment-size") as string;
         if (sizeHeader) {
-            size = parseInt(sizeHeader, 10);
+            size = Number.parseInt(sizeHeader, 10);
         }
 
         const details: AttachmentDetails = {

@@ -1,7 +1,7 @@
-import * as stream from "readable-stream";
-import { HttpResponse } from "../../Primitives/Http";
+import { Readable } from "node:stream";
+import { HttpResponse } from "../../Primitives/Http.js";
 
 export interface StreamResultResponse {
     response: HttpResponse;
-    stream: stream.Readable;
+    stream: Readable;
 }

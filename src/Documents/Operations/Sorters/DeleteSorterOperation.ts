@@ -1,11 +1,11 @@
-import { IMaintenanceOperation, OperationResultType } from "../OperationAbstractions";
-import { throwError } from "../../../Exceptions/index";
-import { RavenCommand } from "../../../Http/RavenCommand";
-import { DocumentConventions } from "../../Conventions/DocumentConventions";
-import { IRaftCommand } from "../../../Http/IRaftCommand";
-import { HttpRequestParameters } from "../../../Primitives/Http";
-import { ServerNode } from "../../../Http/ServerNode";
-import { RaftIdGenerator } from "../../../Utility/RaftIdGenerator";
+import { IMaintenanceOperation, OperationResultType } from "../OperationAbstractions.js";
+import { throwError } from "../../../Exceptions/index.js";
+import { RavenCommand } from "../../../Http/RavenCommand.js";
+import { DocumentConventions } from "../../Conventions/DocumentConventions.js";
+import { IRaftCommand } from "../../../Http/IRaftCommand.js";
+import { HttpRequestParameters } from "../../../Primitives/Http.js";
+import { ServerNode } from "../../../Http/ServerNode.js";
+import { RaftIdGenerator } from "../../../Utility/RaftIdGenerator.js";
 
 export class DeleteSorterOperation implements IMaintenanceOperation<void> {
     private readonly _sorterName: string;

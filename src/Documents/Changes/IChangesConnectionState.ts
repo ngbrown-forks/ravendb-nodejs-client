@@ -1,4 +1,4 @@
-import { IDisposable } from "../../Types/Contracts";
+import { IDisposable } from "../../Types/Contracts.js";
 
 export interface IChangesConnectionState<T> extends IDisposable {
     inc(): void;

@@ -1,23 +1,25 @@
-import { RavenCommand } from "../../../Http/RavenCommand";
-import { BatchCommandResult } from "../../Session/Operations/BatchCommandResult";
-import { IDisposable } from "../../../Types/Contracts";
-import { DocumentConventions } from "../../Conventions/DocumentConventions";
-import { ICommandData } from "../CommandData";
-import { AttachmentData } from "../../Attachments";
-import { BatchOptions } from "./BatchOptions";
-import { TransactionMode } from "../../Session/TransactionMode";
-import { throwError } from "../../../Exceptions";
-import { PutAttachmentCommandData } from "./PutAttachmentCommandData";
-import { HttpRequestParameters } from "../../../Primitives/Http";
-import { HeadersBuilder } from "../../../Utility/HttpUtil";
-import { JsonSerializer } from "../../../Mapping/Json/Serializer";
-import { ServerNode } from "../../../Http/ServerNode";
-import { LengthUnawareFormData } from "../../../Utility/LengthUnawareFormData";
-import { RavenCommandResponsePipeline } from "../../../Http/RavenCommandResponsePipeline";
-import * as stream from "readable-stream";
-import { TimeUtil } from "../../../Utility/TimeUtil";
-import { PutAttachmentCommandHelper } from "./PutAttachmentCommandHelper";
-import { TypeUtil } from "../../../Utility/TypeUtil";
+import { RavenCommand } from "../../../Http/RavenCommand.js";
+import { BatchCommandResult } from "../../Session/Operations/BatchCommandResult.js";
+import { IDisposable } from "../../../Types/Contracts.js";
+import { DocumentConventions } from "../../Conventions/DocumentConventions.js";
+import { ICommandData } from "../CommandData.js";
+import { AttachmentData } from "../../Attachments/index.js";
+import { BatchOptions } from "./BatchOptions.js";
+import { TransactionMode } from "../../Session/TransactionMode.js";
+import { throwError } from "../../../Exceptions/index.js";
+import { PutAttachmentCommandData } from "./PutAttachmentCommandData.js";
+import { HttpRequestParameters, HttpResponse } from "../../../Primitives/Http.js";
+import { HeadersBuilder } from "../../../Utility/HttpUtil.js";
+import { JsonSerializer } from "../../../Mapping/Json/Serializer.js";
+import { ServerNode } from "../../../Http/ServerNode.js";
+import { RavenCommandResponsePipeline } from "../../../Http/RavenCommandResponsePipeline.js";
+import { Readable, Stream } from "node:stream";
+import { TimeUtil } from "../../../Utility/TimeUtil.js";
+import { PutAttachmentCommandHelper } from "./PutAttachmentCommandHelper.js";
+import { TypeUtil } from "../../../Utility/TypeUtil.js";
+import { ObjectUtil } from "../../../Utility/ObjectUtil.js";
+import { readToBuffer } from "../../../Utility/StreamUtil.js";
+import { Agent } from "undici";
 
 export class SingleNodeBatchCommand extends RavenCommand<BatchCommandResult> implements IDisposable {
     private _supportsAtomicWrites: boolean | null;
@@ -70,6 +72,32 @@ export class SingleNodeBatchCommand extends RavenCommand<BatchCommandResult> imp
         }
     }
 
+    async send(agent: Agent, requestOptions: HttpRequestParameters): Promise<{
+        response: HttpResponse;
+        bodyStream: Readable
+    }> {
+        const { body } = requestOptions;
+        if (body instanceof FormData) {
+            const attachments = [...this._attachmentStreams]
+                .map(attStream => {
+                    return {
+                        body: attStream,
+                        headers: {
+                            "Command-Type": "AttachmentStream"
+                        }
+                    };
+                });
+
+            for (let i = 0; i < attachments.length; i++) {
+                const part = attachments[i].body;
+                const payload = part instanceof Readable ?  await readToBuffer(part) : part;
+                body.append("attachment_" + i, payload);
+            }
+        }
+
+        return super.send(agent, requestOptions);
+    }
+
     public createRequest(node: ServerNode): HttpRequestParameters {
         const uri = node.url + "/databases/" + node.database + "/bulk_docs?";
         const headers = HeadersBuilder.create().typeAppJson().build();
@@ -99,15 +127,7 @@ export class SingleNodeBatchCommand extends RavenCommand<BatchCommandResult> imp
         };
 
         if (this._attachmentStreams && this._attachmentStreams.size > 0) {
-            const attachments = [...this._attachmentStreams]
-                .map(attStream => {
-                    return {
-                        body: attStream,
-                        headers: {
-                            "Command-Type": "AttachmentStream"
-                        }
-                    };
-                });
+            // NOTE: payload is created in send method in async fashion - to support conversion from readable to buffers
 
             // strip out content type, see: https://stackoverflow.com/questions/39280438/fetch-missing-boundary-in-multipart-form-data-post
             if (request.headers && "Content-Type" in request.headers) {
@@ -115,11 +135,9 @@ export class SingleNodeBatchCommand extends RavenCommand<BatchCommandResult> imp
                 request.headers = restHeaders;
             }
 
-            const multipart = new LengthUnawareFormData();
-            multipart.append("main", body, { header: { ...headers, "Content-Type": "multipart/form-data" } });
-            for (let i = 0; i < attachments.length; i++) {
-                multipart.append("attachment_" + i, attachments[i].body, { header: attachments[i].headers });
-            }
+            const multipart = new FormData();
+            multipart.append("main", new Blob([body], { type: "application/json" }));
+
             request.body = multipart;
 
         } else {
@@ -130,7 +148,7 @@ export class SingleNodeBatchCommand extends RavenCommand<BatchCommandResult> imp
         return request;
     }
 
-    public async setResponseAsync(bodyStream: stream.Stream, fromCache: boolean): Promise<string> {
+    public async setResponseAsync(bodyStream: Stream, fromCache: boolean): Promise<string> {
         if (!bodyStream) {
             throwError("InvalidOperationException",
                 "Got null response from the server after doing a batch,"
@@ -140,9 +158,9 @@ export class SingleNodeBatchCommand extends RavenCommand<BatchCommandResult> imp
         let body: string = null;
         this.result = await RavenCommandResponsePipeline.create<BatchCommandResult>()
             .collectBody(_ => body = _)
-            .parseJsonSync() // TODO: consider parseJsonAsync()
+            .parseJsonSync()
             .objectKeysTransform({
-                defaultTransform: "camel",
+                defaultTransform: ObjectUtil.camel,
                 ignoreKeys: [/^@/],
                 ignorePaths: [/results\.\[\]\.modifiedDocument\./i],
             })
@@ -194,5 +212,6 @@ export class SingleNodeBatchCommand extends RavenCommand<BatchCommandResult> imp
 
     // eslint-disable-next-line @typescript-eslint/no-empty-function
     public dispose(): void {
+        // empty
     }
 }

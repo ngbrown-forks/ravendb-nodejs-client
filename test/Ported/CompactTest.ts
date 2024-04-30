@@ -1,11 +1,11 @@
-import { User } from "../Assets/Entities";
-import * as assert from "assert";
-import { testContext, disposeTestDocumentStore } from "../Utils/TestUtil";
+import { User } from "../Assets/Entities.js";
+import assert from "node:assert"
+import { testContext, disposeTestDocumentStore } from "../Utils/TestUtil.js";
 
 import {
     IDocumentStore,
     CompactDatabaseOperation, CompactSettings,
-} from "../../src";
+} from "../../src/index.js";
 
 describe("CompactTest", function () {
 
@@ -38,9 +38,8 @@ describe("CompactTest", function () {
             assert.fail("It should have thrown.");
         } catch (err) {
             assert.ok(
-                err.message.indexOf(
-                    "Unable to cast object of type 'PureMemoryStorageEnvironmentOptions' "
-                    + "to type 'DirectoryStorageEnvironmentOptions'") !== -1, "Actual error: " + err.stack);
+                err.message.includes("Unable to cast object of type 'PureMemoryStorageEnvironmentOptions' "
+                    + "to type 'DirectoryStorageEnvironmentOptions'"), "Actual error: " + err.stack);
         }
     });
 });

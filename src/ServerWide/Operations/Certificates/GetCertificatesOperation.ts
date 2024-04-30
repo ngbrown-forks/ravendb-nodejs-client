@@ -1,10 +1,10 @@
-import { CertificateDefinition } from "./CertificateDefinition";
-import { HttpRequestParameters } from "../../../Primitives/Http";
-import * as stream from "readable-stream";
-import { IServerOperation, OperationResultType } from "../../../Documents/Operations/OperationAbstractions";
-import { RavenCommand } from "../../../Http/RavenCommand";
-import { DocumentConventions } from "../../../Documents/Conventions/DocumentConventions";
-import { ServerNode } from "../../../Http/ServerNode";
+import { CertificateDefinition } from "./CertificateDefinition.js";
+import { HttpRequestParameters } from "../../../Primitives/Http.js";
+import { Stream } from "node:stream";
+import { IServerOperation, OperationResultType } from "../../../Documents/Operations/OperationAbstractions.js";
+import { RavenCommand } from "../../../Http/RavenCommand.js";
+import { DocumentConventions } from "../../../Documents/Conventions/DocumentConventions.js";
+import { ServerNode } from "../../../Http/ServerNode.js";
 
 export class GetCertificatesOperation implements IServerOperation<CertificateDefinition[]> {
 
@@ -51,7 +51,7 @@ class GetCertificatesCommand extends RavenCommand<CertificateDefinition[]> {
         }
     }
 
-    async setResponseAsync(bodyStream: stream.Stream, fromCache: boolean): Promise<string> {
+    async setResponseAsync(bodyStream: Stream, fromCache: boolean): Promise<string> {
         if (!bodyStream) {
             return null;
         }

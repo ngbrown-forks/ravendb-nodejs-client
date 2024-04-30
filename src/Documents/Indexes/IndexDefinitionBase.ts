@@ -1,4 +1,4 @@
-import { IndexPriority, IndexState } from "./Enums";
+import { IndexPriority, IndexState } from "./Enums.js";
 
 
 export abstract class IndexDefinitionBase {

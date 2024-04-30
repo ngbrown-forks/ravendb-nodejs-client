@@ -1,30 +1,30 @@
-import { IDatabaseChanges } from "./IDatabaseChanges";
-import { IChangesObservable } from "./IChangesObservable";
-import { IndexChange, TopologyChange } from "./IndexChange";
-import { CounterChange } from "./CounterChange";
-import { DocumentChange } from "./DocumentChange";
-import { OperationStatusChange } from "./OperationStatusChange";
-import { DatabaseConnectionState } from "./DatabaseConnectionState";
-import { ChangesObservable } from "./ChangesObservable";
-import { throwError } from "../../Exceptions";
-import * as semaphore from "semaphore";
-import * as WebSocket from "ws";
-import { StringUtil } from "../../Utility/StringUtil";
-import { EventEmitter } from "events";
-import * as PromiseUtil from "../../Utility/PromiseUtil";
-import { IDefer } from "../../Utility/PromiseUtil";
-import { acquireSemaphore } from "../../Utility/SemaphoreUtil";
-import { Certificate } from "../../Auth/Certificate";
-import { ObjectUtil } from "../../Utility/ObjectUtil";
-import CurrentIndexAndNode from "../../Http/CurrentIndexAndNode";
-import { RequestExecutor } from "../../Http/RequestExecutor";
-import { DocumentConventions } from "../Conventions/DocumentConventions";
-import { ServerNode } from "../../Http/ServerNode";
-import { ObjectTypeDescriptor, ServerResponse } from "../../Types";
-import { UpdateTopologyParameters } from "../../Http/UpdateTopologyParameters";
-import { TypeUtil } from "../../Utility/TypeUtil";
-import { TimeSeriesChange } from "./TimeSeriesChange";
-import { AggressiveCacheChange } from "./AggressiveCacheChange";
+import { IDatabaseChanges } from "./IDatabaseChanges.js";
+import { IChangesObservable } from "./IChangesObservable.js";
+import { IndexChange, TopologyChange } from "./IndexChange.js";
+import { CounterChange } from "./CounterChange.js";
+import { DocumentChange } from "./DocumentChange.js";
+import { OperationStatusChange } from "./OperationStatusChange.js";
+import { DatabaseConnectionState } from "./DatabaseConnectionState.js";
+import { ChangesObservable } from "./ChangesObservable.js";
+import { throwError } from "../../Exceptions/index.js";
+import { WebSocket, ClientOptions, Data } from "ws";
+import { StringUtil } from "../../Utility/StringUtil.js";
+import { EventEmitter } from "node:events";
+import { defer } from "../../Utility/PromiseUtil.js";
+import { IDefer } from "../../Utility/PromiseUtil.js";
+import { acquireSemaphore } from "../../Utility/SemaphoreUtil.js";
+import { Certificate } from "../../Auth/Certificate.js";
+import { ObjectUtil } from "../../Utility/ObjectUtil.js";
+import CurrentIndexAndNode from "../../Http/CurrentIndexAndNode.js";
+import { RequestExecutor } from "../../Http/RequestExecutor.js";
+import { DocumentConventions } from "../Conventions/DocumentConventions.js";
+import { ServerNode } from "../../Http/ServerNode.js";
+import { ObjectTypeDescriptor, ServerResponse } from "../../Types/index.js";
+import { UpdateTopologyParameters } from "../../Http/UpdateTopologyParameters.js";
+import { TypeUtil } from "../../Utility/TypeUtil.js";
+import { TimeSeriesChange } from "./TimeSeriesChange.js";
+import { AggressiveCacheChange } from "./AggressiveCacheChange.js";
+import { Semaphore } from "../../Utility/Semaphore.js";
 
 export class DatabaseChanges implements IDatabaseChanges {
 
@@ -32,7 +32,7 @@ export class DatabaseChanges implements IDatabaseChanges {
     private _commandId: number = 0;
     private readonly _onConnectionStatusChangedWrapped: () => void;
 
-    private _semaphore = semaphore();
+    private _semaphore = new Semaphore();
 
     private readonly _requestExecutor: RequestExecutor;
     private readonly _conventions: DocumentConventions;
@@ -58,7 +58,7 @@ export class DatabaseChanges implements IDatabaseChanges {
         this._conventions = requestExecutor.conventions;
         this._database = databaseName;
 
-        this._tcs = PromiseUtil.defer<IDatabaseChanges>();
+        this._tcs = defer<IDatabaseChanges>();
         this._onDispose = onDispose;
         this._onConnectionStatusChangedWrapped = () => this._onConnectionStatusChanged();
         this._emitter.on("connectionStatus", this._onConnectionStatusChangedWrapped);
@@ -67,7 +67,7 @@ export class DatabaseChanges implements IDatabaseChanges {
 
     public static createClientWebSocket(requestExecutor: RequestExecutor, url: string): WebSocket {
         const authOptions = requestExecutor.getAuthOptions();
-        let options = undefined as WebSocket.ClientOptions;
+        let options = undefined as ClientOptions;
 
         if (authOptions) {
             const certificate = Certificate.createFromOptions(authOptions);
@@ -89,7 +89,7 @@ export class DatabaseChanges implements IDatabaseChanges {
             }
 
             if (this._tcs.isFulfilled) {
-                this._tcs = PromiseUtil.defer<IDatabaseChanges>();
+                this._tcs = defer<IDatabaseChanges>();
             }
         } finally {
             acquiredSemContext.dispose();
@@ -252,7 +252,7 @@ export class DatabaseChanges implements IDatabaseChanges {
                         if (this.connected) {
                             await this._send(unwatchCommand, value, values);
                         }
-                    } catch (e) {
+                    } catch {
                         // if we are not connected then we unsubscribed already
                         // because connections drops with all subscriptions
                     }
@@ -390,7 +390,7 @@ export class DatabaseChanges implements IDatabaseChanges {
                 this._confirmations.clear();
             });
 
-            this._client.on("message", async (data: WebSocket.Data) => {
+            this._client.on("message", async (data: Data) => {
                 await this._processChanges(data as string);
             });
         }
@@ -450,7 +450,7 @@ export class DatabaseChanges implements IDatabaseChanges {
                     }
                     default: {
                         const value = message.Value;
-                        let transformedValue = ObjectUtil.transformObjectKeys(value, {defaultTransform: "camel"});
+                        let transformedValue = ObjectUtil.transformObjectKeys(value, { defaultTransform: ObjectUtil.camel });
                         if (type === "TimeSeriesChange") {
                             const dateUtil = this._conventions.dateUtil;
 
@@ -476,24 +476,42 @@ export class DatabaseChanges implements IDatabaseChanges {
 
     private _notifySubscribers(type: string, value: any): void {
         switch (type) {
-            case "AggressiveCacheChange":
-                this._counters.forEach(state => state.send("AggressiveCache", AggressiveCacheChange.INSTANCE));
+            case "AggressiveCacheChange": {
+                for (const state of this._counters.values()) {
+                    state.send("AggressiveCache", AggressiveCacheChange.INSTANCE);
+                }
                 break;
-            case "DocumentChange":
-                this._counters.forEach(state => state.send("Document", value));
+            }
+            case "DocumentChange": {
+                for (const state of this._counters.values()) {
+                    state.send("Document", value);
+                }
                 break;
-            case "CounterChange":
-                this._counters.forEach(state => state.send("Counter", value));
+            }
+            case "CounterChange": {
+                for (const state of this._counters.values()) {
+                    state.send("Counter", value);
+                }
                 break;
-            case "TimeSeriesChange":
-                this._counters.forEach(state => state.send("TimeSeries", value));
+            }
+            case "TimeSeriesChange": {
+                for (const state of this._counters.values()) {
+                    state.send("TimeSeries", value);
+                }
                 break;
-            case "IndexChange":
-                this._counters.forEach(state => state.send("Index", value));
+            }
+            case "IndexChange": {
+                for (const state of this._counters.values()) {
+                    state.send("Index", value);
+                }
                 break;
-            case "OperationStatusChange":
-                this._counters.forEach(state => state.send("Operation", value));
+            }
+            case "OperationStatusChange": {
+                for (const state of this._counters.values()) {
+                    state.send("Operation", value);
+                }
                 break;
+            }
             case "TopologyChange": {
                 const topologyChange = value as TopologyChange;
                 const requestExecutor = this._requestExecutor;
@@ -513,8 +531,9 @@ export class DatabaseChanges implements IDatabaseChanges {
                 }
                 break;
             }
-            default:
+            default: {
                 throwError("NotSupportedException");
+            }
         }
     }
 

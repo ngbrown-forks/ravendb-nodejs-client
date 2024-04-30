@@ -1,8 +1,8 @@
-import { IFilterFactory } from "./IFilterFactory";
-import { IAbstractDocumentQuery } from "../Session/IAbstractDocumentQuery";
-import { MethodCall } from "../Session/MethodCall";
-import { WhereParams } from "../Session/WhereParams";
-import { DocumentQuery } from "../Session/DocumentQuery";
+import { IFilterFactory } from "./IFilterFactory.js";
+import { IAbstractDocumentQuery } from "../Session/IAbstractDocumentQuery.js";
+import { MethodCall } from "../Session/MethodCall.js";
+import { WhereParams } from "../Session/WhereParams.js";
+import { DocumentQuery } from "../Session/DocumentQuery.js";
 
 export class FilterFactory<T extends object> implements IFilterFactory<T> {
     private _documentQuery: IAbstractDocumentQuery<T>;

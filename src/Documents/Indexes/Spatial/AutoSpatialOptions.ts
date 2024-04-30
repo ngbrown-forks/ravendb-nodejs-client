@@ -1,5 +1,5 @@
-import { AutoSpatialMethodType } from "../Enums";
-import { SpatialOptions } from "../Spatial";
+import { AutoSpatialMethodType } from "../Enums.js";
+import { SpatialOptions } from "../Spatial.js";
 
 export interface AutoSpatialOptions extends SpatialOptions {
     methodType: AutoSpatialMethodType;

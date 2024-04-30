@@ -1,12 +1,12 @@
-import * as assert from "assert";
-import { testContext, disposeTestDocumentStore } from "../../Utils/TestUtil";
+import assert from "node:assert"
+import { testContext, disposeTestDocumentStore } from "../../Utils/TestUtil.js";
 
 import {
     IDocumentStore,
     IDocumentSession,
-} from "../../../src";
-import { Order, Company, Employee } from "../../Assets/Entities";
-import { assertThat } from "../../Utils/AssertExtensions";
+} from "../../../src/index.js";
+import { Order, Company, Employee } from "../../Assets/Entities.js";
+import { assertThat } from "../../Utils/AssertExtensions.js";
 
 class User {
     public name: string;

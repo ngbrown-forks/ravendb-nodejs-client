@@ -1,6 +1,6 @@
-import { DeclareToken } from "../Session/Tokens/DeclareToken";
-import { LoadToken } from "../Session/Tokens/LoadToken";
-import { ProjectionBehavior } from "./ProjectionBehavior";
+import { DeclareToken } from "../Session/Tokens/DeclareToken.js";
+import { LoadToken } from "../Session/Tokens/LoadToken.js";
+import { ProjectionBehavior } from "./ProjectionBehavior.js";
 
 export class QueryData {
 

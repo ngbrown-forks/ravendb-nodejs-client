@@ -1,12 +1,12 @@
-import * as stream from "readable-stream";
-import { RavenCommand, ResponseDisposeHandling } from "../../Http/RavenCommand";
-import { DocumentConventions } from "../Conventions/DocumentConventions";
-import { IndexQuery, writeIndexQuery } from "../Queries/IndexQuery";
-import { StreamResultResponse } from "./StreamResultResponse";
-import { throwError } from "../../Exceptions";
-import { ServerNode } from "../../Http/ServerNode";
-import { HttpRequestParameters, HttpResponse } from "../../Primitives/Http";
-import { HttpCache } from "../../Http/HttpCache";
+import { Readable } from "node:stream";
+import { RavenCommand, ResponseDisposeHandling } from "../../Http/RavenCommand.js";
+import { DocumentConventions } from "../Conventions/DocumentConventions.js";
+import { IndexQuery, writeIndexQuery } from "../Queries/IndexQuery.js";
+import { StreamResultResponse } from "./StreamResultResponse.js";
+import { throwError } from "../../Exceptions/index.js";
+import { ServerNode } from "../../Http/ServerNode.js";
+import { HttpRequestParameters, HttpResponse } from "../../Primitives/Http.js";
+import { HttpCache } from "../../Http/HttpCache.js";
 
 export class QueryStreamCommand extends RavenCommand<StreamResultResponse> {
 
@@ -30,11 +30,9 @@ export class QueryStreamCommand extends RavenCommand<StreamResultResponse> {
     }
 
     public createRequest(node: ServerNode): HttpRequestParameters {
-        const format = this._conventions.useJsonlStreaming ? 'jsonl' : 'json';
-
         return {
             method: "POST",
-            uri: `${node.url}/databases/${node.database}/streams/queries?format=${format}`,
+            uri: `${node.url}/databases/${node.database}/streams/queries?format=jsonl`,
             body: writeIndexQuery(this._conventions, this._indexQuery),
             headers: this._headers().typeAppJson().build()
         };
@@ -43,7 +41,7 @@ export class QueryStreamCommand extends RavenCommand<StreamResultResponse> {
     public async processResponse(
         cache: HttpCache,
         response: HttpResponse,
-        bodyStream: stream.Readable,
+        bodyStream: Readable,
         url: string): Promise<ResponseDisposeHandling> {
         this.result = {
             response,

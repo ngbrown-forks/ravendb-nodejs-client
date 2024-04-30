@@ -1,14 +1,15 @@
-import { HttpRequestParameters } from "../../Primitives/Http";
-import * as stream from "readable-stream";
-import { IServerOperation, OperationResultType } from "../../Documents/Operations/OperationAbstractions";
-import { DatabaseRecordWithEtag, IndexHistoryEntry } from "..";
-import { DocumentConventions } from "../../Documents/Conventions/DocumentConventions";
-import { RavenCommand } from "../../Http/RavenCommand";
-import { ServerNode } from "../../Http/ServerNode";
-import { TimeSeriesConfiguration } from "../../Documents/Operations/TimeSeries/TimeSeriesConfiguration";
-import { ServerResponse } from "../../Types";
-import { RollingIndexDeployment } from "../../Documents/Indexes/RollingIndexDeployment";
-import { DateUtil } from "../../Utility/DateUtil";
+import { HttpRequestParameters } from "../../Primitives/Http.js";
+import { Stream } from "node:stream";
+import { IServerOperation, OperationResultType } from "../../Documents/Operations/OperationAbstractions.js";
+import { DatabaseRecordWithEtag, IndexHistoryEntry } from "../index.js";
+import { DocumentConventions } from "../../Documents/Conventions/DocumentConventions.js";
+import { RavenCommand } from "../../Http/RavenCommand.js";
+import { ServerNode } from "../../Http/ServerNode.js";
+import { TimeSeriesConfiguration } from "../../Documents/Operations/TimeSeries/TimeSeriesConfiguration.js";
+import { ServerResponse } from "../../Types/index.js";
+import { RollingIndexDeployment } from "../../Documents/Indexes/RollingIndexDeployment.js";
+import { DateUtil } from "../../Utility/DateUtil.js";
+import { ObjectUtil } from "../../Utility/ObjectUtil.js";
 
 export class GetDatabaseRecordOperation implements IServerOperation<DatabaseRecordWithEtag> {
     private readonly _database: string;
@@ -49,7 +50,7 @@ export class GetDatabaseRecordCommand extends RavenCommand<DatabaseRecordWithEta
         };
     }
 
-    public async setResponseAsync(bodyStream: stream.Stream, fromCache: boolean): Promise<string> {
+    public async setResponseAsync(bodyStream: Stream, fromCache: boolean): Promise<string> {
         if (!bodyStream) {
             return null;
         }
@@ -58,7 +59,7 @@ export class GetDatabaseRecordCommand extends RavenCommand<DatabaseRecordWithEta
         this.result = await this._defaultPipeline(_ => body = _)
             .collectBody()
             .objectKeysTransform({
-                defaultTransform: "camel",
+                defaultTransform: ObjectUtil.camel,
                 ignorePaths: [
                     /^(indexes|sorters|autoIndexes|settings|indexesHistory|ravenConnectionStrings|sqlConnectionStrings|rollingIndexes)\.[^.]+$/i,
                     /^rollingIndexes\.[^.]+\.activeDeployments\.[^.]+$/i,
@@ -71,11 +72,11 @@ export class GetDatabaseRecordCommand extends RavenCommand<DatabaseRecordWithEta
         const dateUtil = this._conventions.dateUtil;
 
         if (this.result.rollingIndexes) {
-            Object.values(this.result.rollingIndexes).forEach(index => {
+            for (const index of Object.values(this.result.rollingIndexes)) {
                 if (index.activeDeployments) {
                     index.activeDeployments = GetDatabaseRecordCommand.mapRollingDeployment(dateUtil, index.activeDeployments as any);
                 }
-            });
+            }
         }
 
         const history = this.result.indexesHistory;

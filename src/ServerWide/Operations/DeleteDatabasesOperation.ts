@@ -1,13 +1,13 @@
-import * as stream from "readable-stream";
-import { IServerOperation, OperationResultType } from "../../Documents/Operations/OperationAbstractions";
-import { throwError } from "../../Exceptions";
-import { RavenCommand } from "../../Http/RavenCommand";
-import { ServerNode } from "../../Http/ServerNode";
-import { HttpRequestParameters } from "../../Primitives/Http";
-import { HeadersBuilder } from "../../Utility/HttpUtil";
-import { DocumentConventions } from "../../Documents/Conventions/DocumentConventions";
-import { IRaftCommand } from "../../Http/IRaftCommand";
-import { RaftIdGenerator } from "../../Utility/RaftIdGenerator";
+import { Stream } from "node:stream";
+import { IServerOperation, OperationResultType } from "../../Documents/Operations/OperationAbstractions.js";
+import { throwError } from "../../Exceptions/index.js";
+import { RavenCommand } from "../../Http/RavenCommand.js";
+import { ServerNode } from "../../Http/ServerNode.js";
+import { HttpRequestParameters } from "../../Primitives/Http.js";
+import { HeadersBuilder } from "../../Utility/HttpUtil.js";
+import { DocumentConventions } from "../../Documents/Conventions/DocumentConventions.js";
+import { IRaftCommand } from "../../Http/IRaftCommand.js";
+import { RaftIdGenerator } from "../../Utility/RaftIdGenerator.js";
 
 export interface DeleteDatabaseResult {
     raftCommandIndex: number;
@@ -75,7 +75,7 @@ export class DeleteDatabaseCommand extends RavenCommand<DeleteDatabaseResult> im
         };
     }
 
-    public async setResponseAsync(bodyStream: stream.Stream, fromCache: boolean): Promise<string> {
+    public async setResponseAsync(bodyStream: Stream, fromCache: boolean): Promise<string> {
         if (!bodyStream) {
             this._throwInvalidResponse();
         }

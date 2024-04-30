@@ -1,12 +1,12 @@
-import * as assert from "assert";
-import { testContext, disposeTestDocumentStore } from "../Utils/TestUtil";
+import assert from "node:assert"
+import { testContext, disposeTestDocumentStore } from "../Utils/TestUtil.js";
 import {
     DatabaseRecordWithEtag,
     IDocumentStore,
     GetDatabaseRecordOperation
-} from "../../src";
-import { CreateSampleDataOperation } from "../Utils/CreateSampleDataOperation";
-import { assertThat } from "../Utils/AssertExtensions";
+} from "../../src/index.js";
+import { CreateSampleDataOperation } from "../Utils/CreateSampleDataOperation.js";
+import { assertThat } from "../Utils/AssertExtensions.js";
 
 describe("GetDatabaseRecordTest", function () {
 

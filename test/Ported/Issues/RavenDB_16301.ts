@@ -1,8 +1,8 @@
-import { IDocumentStore, Lazy, QueryData } from "../../../src";
-import { disposeTestDocumentStore, testContext } from "../../Utils/TestUtil";
-import { Company } from "../../Assets/Entities";
-import { ConditionalLoadResult } from "../../../src/Documents/Session/ConditionalLoadResult";
-import { assertThat } from "../../Utils/AssertExtensions";
+import { IDocumentStore, Lazy, QueryData } from "../../../src/index.js";
+import { disposeTestDocumentStore, testContext } from "../../Utils/TestUtil.js";
+import { Company } from "../../Assets/Entities.js";
+import { ConditionalLoadResult } from "../../../src/Documents/Session/ConditionalLoadResult.js";
+import { assertThat } from "../../Utils/AssertExtensions.js";
 
 describe("RavenDB_16301", function () {
 

@@ -1,16 +1,16 @@
-import { DocumentConventions } from "../../Conventions/DocumentConventions";
-import { CountersByDocId } from "../CounterInternalTypes";
-import { StringUtil } from "../../../Utility/StringUtil";
-import { throwError } from "../../../Exceptions";
-import { CaseInsensitiveKeysMap } from "../../../Primitives/CaseInsensitiveKeysMap";
-import { CaseInsensitiveStringSet } from "../../../Primitives/CaseInsensitiveStringSet";
-import { TimeSeriesRange } from "../../Operations/TimeSeries/TimeSeriesRange";
-import { AbstractTimeSeriesRange } from "../../Operations/TimeSeries/AbstractTimeSeriesRange";
-import { TIME_SERIES } from "../../../Constants";
-import { TimeSeriesRangeType } from "../../Operations/TimeSeries/TimeSeriesRangeType";
-import { TimeValue } from "../../../Primitives/TimeValue";
-import { TimeSeriesTimeRange } from "../../Operations/TimeSeries/TimeSeriesTimeRange";
-import { TimeSeriesCountRange } from "../../Operations/TimeSeries/TimeSeriesCountRange";
+import { DocumentConventions } from "../../Conventions/DocumentConventions.js";
+import { CountersByDocId } from "../CounterInternalTypes.js";
+import { StringUtil } from "../../../Utility/StringUtil.js";
+import { throwError } from "../../../Exceptions/index.js";
+import { CaseInsensitiveKeysMap } from "../../../Primitives/CaseInsensitiveKeysMap.js";
+import { CaseInsensitiveStringSet } from "../../../Primitives/CaseInsensitiveStringSet.js";
+import { TimeSeriesRange } from "../../Operations/TimeSeries/TimeSeriesRange.js";
+import { AbstractTimeSeriesRange } from "../../Operations/TimeSeries/AbstractTimeSeriesRange.js";
+import { TIME_SERIES } from "../../../Constants.js";
+import { TimeSeriesRangeType } from "../../Operations/TimeSeries/TimeSeriesRangeType.js";
+import { TimeValue } from "../../../Primitives/TimeValue.js";
+import { TimeSeriesTimeRange } from "../../Operations/TimeSeries/TimeSeriesTimeRange.js";
+import { TimeSeriesCountRange } from "../../Operations/TimeSeries/TimeSeriesCountRange.js";
 
 export class IncludeBuilderBase {
 
@@ -225,10 +225,11 @@ export class IncludeBuilderBase {
 
     private static _assertValidType(type: TimeSeriesRangeType, time: TimeValue): void {
         switch (type) {
-            case "None":
+            case "None": {
                 throwError("InvalidArgumentException", "Time range type cannot be set to 'None' when time is specified.");
                 break;
-            case "Last":
+            }
+            case "Last": {
                 if (time) {
                     if (time.value <= 0) {
                         throwError("InvalidArgumentException", "Time range type cannot be set to 'Last' when time is negative or zero.");
@@ -238,8 +239,10 @@ export class IncludeBuilderBase {
                 }
                 throwError("InvalidArgumentException", "Time range type cannot be set to 'Last' when time is not specified.");
                 break;
-            default:
+            }
+            default: {
                 throwError("NotSupportedException", "Not supported time range type: " + type);
+            }
         }
     }
 
@@ -268,16 +271,19 @@ export class IncludeBuilderBase {
 
     private static _assertValidTypeAndCount(type: TimeSeriesRangeType, count: number): void {
         switch (type) {
-            case "None":
+            case "None": {
                 throwError("InvalidArgumentException", "Time range type cannot be set to 'None' when count is specified.");
                 break;
-            case "Last":
+            }
+            case "Last": {
                 if (count <= 0) {
                     throwError("InvalidArgumentException", "Count have to be positive.");
                 }
                 break;
-            default:
+            }
+            default: {
                 throwError("NotSupportedException", "Not supported time range type: " + type);
+            }
         }
     }
 
@@ -313,7 +319,7 @@ export class IncludeBuilderBase {
                     throwError("InvalidArgumentException", "IIncludeBuilder: Cannot use 'includeAllTimeSeries' after using 'includeTimeSeries' or 'includeAllTimeSeries'.");
                 }
 
-                if (hashSet2.find(x => x.name === TIME_SERIES.ALL)) {
+                if (hashSet2.some(x => x.name === TIME_SERIES.ALL)) {
                     throwError("InvalidArgumentException", "IIncludeBuilder: Cannot use 'includeTimeSeries' or 'includeAllTimeSeries' after using 'includeAllTimeSeries'.");
                 }
             }

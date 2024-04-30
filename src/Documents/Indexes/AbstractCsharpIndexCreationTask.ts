@@ -1,6 +1,6 @@
-import { DocumentConventions } from "../Conventions/DocumentConventions";
-import { IndexDefinition, IndexDefinitionBuilder } from "./IndexDefinition";
-import { AbstractGenericIndexCreationTask } from "./AbstractGenericIndexCreationTask";
+import { DocumentConventions } from "../Conventions/DocumentConventions.js";
+import { IndexDefinition, IndexDefinitionBuilder } from "./IndexDefinition.js";
+import { AbstractGenericIndexCreationTask } from "./AbstractGenericIndexCreationTask.js";
 
 /**
  * Base class for creating indexes using C# code in string.

@@ -1,13 +1,13 @@
-import * as assert from "assert";
-import { testContext, disposeTestDocumentStore, RavenTestContext } from "../../Utils/TestUtil";
+import assert from "node:assert"
+import { testContext, disposeTestDocumentStore, RavenTestContext } from "../../Utils/TestUtil.js";
 
 import {
     DeleteDocumentCommand,
     GetStatisticsOperation, IDocumentSession,
     IDocumentStore, PutAttachmentOperation
-} from "../../../src";
-import { User } from "../../Assets/Entities";
-import { CONSTANTS } from "../../../src/Constants";
+} from "../../../src/index.js";
+import { User } from "../../Assets/Entities.js";
+import { CONSTANTS } from "../../../src/Constants.js";
 
 (RavenTestContext.isPullRequest ? describe.skip : describe)("AttachmentsRevisions", function () {
 

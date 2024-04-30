@@ -1,8 +1,9 @@
-import * as stream from "readable-stream";
-import { RavenCommand } from "../../Http/RavenCommand";
-import { ServerNode } from "../../Http/ServerNode";
-import { Topology } from "../../Http/Topology";
-import { HttpRequestParameters } from "../../Primitives/Http";
+import { Stream } from "node:stream";
+import { RavenCommand } from "../../Http/RavenCommand.js";
+import { ServerNode } from "../../Http/ServerNode.js";
+import { Topology } from "../../Http/Topology.js";
+import { HttpRequestParameters } from "../../Primitives/Http.js";
+import { ObjectUtil } from "../../Utility/ObjectUtil.js";
 
 interface ServerNodeDto {
     database: string;
@@ -32,7 +33,7 @@ export class GetDatabaseTopologyCommand extends RavenCommand<Topology> {
     public createRequest(node: ServerNode): HttpRequestParameters {
         let uri = `${node.url}/topology?name=${node.database}`;
 
-        if (node.url.toLowerCase().indexOf(".fiddler") !== -1) {
+        if (node.url.toLowerCase().includes(".fiddler")) {
             // we want to keep the '.fiddler' stuff there so we'll keep tracking request
             // so we are going to ask the server to respect it
             uri += "&localUrl=" + encodeURIComponent(node.url);
@@ -49,7 +50,7 @@ export class GetDatabaseTopologyCommand extends RavenCommand<Topology> {
         return { uri };
     }
 
-    public async setResponseAsync(bodyStream: stream.Stream, fromCache: boolean): Promise<string> {
+    public async setResponseAsync(bodyStream: Stream, fromCache: boolean): Promise<string> {
         if (!bodyStream) {
             return;
         }
@@ -58,7 +59,7 @@ export class GetDatabaseTopologyCommand extends RavenCommand<Topology> {
         const rawTpl = await this._pipeline<TopologyDto>()
             .collectBody(_ => body = _)
             .parseJsonSync()
-            .objectKeysTransform("camel")
+            .objectKeysTransform(ObjectUtil.camel)
             .process(bodyStream);
 
         const nodes = rawTpl.nodes

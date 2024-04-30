@@ -1,4 +1,4 @@
-import { EncryptionMode } from "./Enums";
+import { EncryptionMode } from "./Enums.js";
 
 export interface BackupEncryptionSettings {
     key: string;

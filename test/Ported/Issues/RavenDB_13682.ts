@@ -1,11 +1,11 @@
-import { IDocumentStore } from "../../../src/Documents/IDocumentStore";
-import { disposeTestDocumentStore, testContext } from "../../Utils/TestUtil";
-import { assertThat } from "../../Utils/AssertExtensions";
-import { PointField } from "../../../src/Documents/Queries/Spatial/PointField";
-import { CreateSampleDataOperation } from "../../Utils/CreateSampleDataOperation";
-import { Order } from "../../Assets/Orders";
-import { AbstractJavaScriptIndexCreationTask } from "../../../src/Documents/Indexes/AbstractJavaScriptIndexCreationTask";
-import { SpatialField } from "../../../src/Documents/Indexes/StronglyTyped";
+import { IDocumentStore } from "../../../src/Documents/IDocumentStore.js";
+import { disposeTestDocumentStore, testContext } from "../../Utils/TestUtil.js";
+import { assertThat } from "../../Utils/AssertExtensions.js";
+import { PointField } from "../../../src/Documents/Queries/Spatial/PointField.js";
+import { CreateSampleDataOperation } from "../../Utils/CreateSampleDataOperation.js";
+import { Order } from "../../Assets/Orders.js";
+import { AbstractJavaScriptIndexCreationTask } from "../../../src/Documents/Indexes/AbstractJavaScriptIndexCreationTask.js";
+import { SpatialField } from "../../../src/Documents/Indexes/StronglyTyped.js";
 
 describe("RavenDB_13682", function () {
 

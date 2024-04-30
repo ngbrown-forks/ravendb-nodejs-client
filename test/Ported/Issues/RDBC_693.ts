@@ -1,12 +1,12 @@
-import { testContext, disposeTestDocumentStore } from "../../Utils/TestUtil";
+import { testContext, disposeTestDocumentStore } from "../../Utils/TestUtil.js";
 
 import {
     IDocumentStore, DocumentChange, GetDatabaseRecordOperation,
-} from "../../../src";
-import { User } from "../../Assets/Entities";
-import { AsyncQueue } from "../../Utils/AsyncQueue";
-import { throwError } from "../../../src/Exceptions";
-import { assertThat, assertThrows } from "../../Utils/AssertExtensions";
+} from "../../../src/index.js";
+import { User } from "../../Assets/Entities.js";
+import { AsyncQueue } from "../../Utils/AsyncQueue.js";
+import { throwError } from "../../../src/Exceptions/index.js";
+import { assertThat, assertThrows } from "../../Utils/AssertExtensions.js";
 
 describe("RDBC_693", function () {
 

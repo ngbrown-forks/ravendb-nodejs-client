@@ -1,6 +1,6 @@
-import { IDocumentStore } from "../../src/Documents/IDocumentStore";
-import { disposeTestDocumentStore, testContext } from "../Utils/TestUtil";
-import { assertThat } from "../Utils/AssertExtensions";
+import { IDocumentStore } from "../../src/Documents/IDocumentStore.js";
+import { disposeTestDocumentStore, testContext } from "../Utils/TestUtil.js";
+import { assertThat } from "../Utils/AssertExtensions.js";
 
 describe("RDBC_728", function () {
 

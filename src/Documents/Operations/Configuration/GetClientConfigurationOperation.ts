@@ -1,10 +1,10 @@
-import * as stream from "readable-stream";
-import { ServerNode } from "../../../Http/ServerNode";
-import { RavenCommand } from "../../../Http/RavenCommand";
-import { HttpRequestParameters } from "../../../Primitives/Http";
-import { ClientConfiguration } from "./ClientConfiguration";
-import { DocumentConventions } from "../../Conventions/DocumentConventions";
-import { IMaintenanceOperation, OperationResultType } from "../OperationAbstractions";
+import { Stream } from "node:stream";
+import { ServerNode } from "../../../Http/ServerNode.js";
+import { RavenCommand } from "../../../Http/RavenCommand.js";
+import { HttpRequestParameters } from "../../../Primitives/Http.js";
+import { ClientConfiguration } from "./ClientConfiguration.js";
+import { DocumentConventions } from "../../Conventions/DocumentConventions.js";
+import { IMaintenanceOperation, OperationResultType } from "../OperationAbstractions.js";
 
 export class GetClientConfigurationOperation implements IMaintenanceOperation<GetClientConfigurationOperationResult> {
 
@@ -32,7 +32,7 @@ export class GetClientConfigurationCommand extends RavenCommand<GetClientConfigu
         return { uri };
     }
 
-    public async setResponseAsync(bodyStream: stream.Stream, fromCache: boolean): Promise<string> {
+    public async setResponseAsync(bodyStream: Stream, fromCache: boolean): Promise<string> {
         if (!bodyStream) {
             this._throwInvalidResponse();
         }

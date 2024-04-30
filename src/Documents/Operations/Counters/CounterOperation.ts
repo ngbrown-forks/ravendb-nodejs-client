@@ -1,4 +1,4 @@
-import { CounterOperationType } from "./CounterOperationType";
+import { CounterOperationType } from "./CounterOperationType.js";
 
 export class CounterOperation {
     

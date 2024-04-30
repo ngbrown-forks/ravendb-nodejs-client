@@ -1,7 +1,7 @@
-import { AdvancedDocumentQueryOptions } from "./QueryOptions";
-import { IDocumentQuery } from "./IDocumentQuery";
-import { DocumentType } from "../DocumentAbstractions";
-import { AbstractCommonApiForIndexes } from "../Indexes/AbstractCommonApiForIndexes";
+import { AdvancedDocumentQueryOptions } from "./QueryOptions.js";
+import { IDocumentQuery } from "./IDocumentQuery.js";
+import { DocumentType } from "../DocumentAbstractions.js";
+import { AbstractCommonApiForIndexes } from "../Indexes/AbstractCommonApiForIndexes.js";
 
 export interface IDocumentQueryBuilder {
     documentQuery<TEntity extends object>(opts: AdvancedDocumentQueryOptions<TEntity>): IDocumentQuery<TEntity>;

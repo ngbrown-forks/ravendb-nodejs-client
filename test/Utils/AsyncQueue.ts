@@ -1,4 +1,4 @@
-import { getError } from "../../src/Exceptions";
+import { getError } from "../../src/Exceptions/index.js";
 
 type valueResolver<T> = (val: T) => void;
 
@@ -27,7 +27,7 @@ export class AsyncQueue<T> {
 
         // keep reference to resolve function - if timeout finishes first, we don't want to wait for value!
         // eslint-disable-next-line @typescript-eslint/ban-types
-        let resolveToDelete: Function;
+        let resolveToDelete: valueResolver<T>;
 
         let timeoutHandle: ReturnType<typeof setTimeout>;
         const timeoutErr = getError(
@@ -39,7 +39,7 @@ export class AsyncQueue<T> {
 
                     // we don't want to wait for value
                     if (resolveToDelete) {
-                        const index = this._promises.findIndex(x => x === resolveToDelete);
+                        const index = this._promises.indexOf(resolveToDelete);
                         if (index !== -1) {
                             this._promises.splice(index, 1);
                         }

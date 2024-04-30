@@ -1,10 +1,10 @@
-import { IDocumentStore } from "../../src/Documents/IDocumentStore";
-import { disposeTestDocumentStore, testContext } from "../Utils/TestUtil";
+import { IDocumentStore } from "../../src/Documents/IDocumentStore.js";
+import { disposeTestDocumentStore, testContext } from "../Utils/TestUtil.js";
 import {
     AbstractCsharpIndexCreationTask,
-} from "../../src/Documents/Indexes/AbstractCsharpIndexCreationTask";
-import { assertThat } from "../Utils/AssertExtensions";
-import { GetIndexOperation } from "../../src/Documents/Operations/Indexes/GetIndexOperation";
+} from "../../src/Documents/Indexes/AbstractCsharpIndexCreationTask.js";
+import { assertThat } from "../Utils/AssertExtensions.js";
+import { GetIndexOperation } from "../../src/Documents/Operations/Indexes/GetIndexOperation.js";
 
 describe("RavenDB_12932", function () {
 

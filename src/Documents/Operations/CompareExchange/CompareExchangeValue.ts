@@ -1,6 +1,6 @@
-import { ICompareExchangeValue } from "./ICompareExchangeValue";
-import { MetadataDictionary } from "../../../Mapping/MetadataAsDictionary";
-import { IMetadataDictionary } from "../../Session/IMetadataDictionary";
+import { ICompareExchangeValue } from "./ICompareExchangeValue.js";
+import { MetadataDictionary } from "../../../Mapping/MetadataAsDictionary.js";
+import { IMetadataDictionary } from "../../Session/IMetadataDictionary.js";
 
 export class CompareExchangeValue<T> implements ICompareExchangeValue {
     public key: string;
