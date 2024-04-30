@@ -75,12 +75,11 @@ export class RavenCommandResponsePipeline<TStreamResult> extends EventEmitter {
         return this;
     }
 
-    //TODO: remove this function
     public objectKeysTransform(defaultTransform: FieldNameConversion): this;
     public objectKeysTransform(opts: ObjectKeyCaseTransformStreamOptions): this;
     public objectKeysTransform(
         optsOrTransform: FieldNameConversion | ObjectKeyCaseTransformStreamOptions): this {
-        this._opts.streamKeyCaseTransform = !optsOrTransform || typeof optsOrTransform === "function" //TODO:
+        this._opts.streamKeyCaseTransform = !optsOrTransform || typeof optsOrTransform === "function"
             ? { defaultTransform: optsOrTransform as FieldNameConversion }
             : optsOrTransform;
 

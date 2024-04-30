@@ -76,7 +76,6 @@ export class ObjectUtil {
             ), {});
     }
 
-    //TODO: avoid using?
     public static transformObjectKeys(
         obj: object, opts?: ObjectChangeCaseOptions): object {
         const options: any = setDefaults(opts, DEFAULT_CHANGE_CASE_OPTIONS);

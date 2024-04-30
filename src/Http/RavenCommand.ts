@@ -13,7 +13,7 @@ import { RavenCommandResponsePipeline } from "./RavenCommandResponsePipeline.js"
 import { DocumentConventions } from "../Documents/Conventions/DocumentConventions.js";
 import { ObjectTypeDescriptor } from "../Types/index.js";
 import { ObjectUtil } from "../Utility/ObjectUtil.js";
-import { Agent } from "undici";
+import { Agent } from "undici-types";
 
 const log = getLogger({ module: "RavenCommand" });
 
@@ -125,14 +125,13 @@ export abstract class RavenCommand<TResult> {
 
         log.info(`Send command ${this.constructor.name} to ${uri}${body ? " with body " + body : ""}.`);
 
-        /*
-        if (requestOptions.agent) { // support for fiddler
-            agent = requestOptions.agent as Agent;
-        }*/
+        if (requestOptions.dispatcher) { // support for fiddler
+            agent = requestOptions.dispatcher as Agent;
+        }
 
         const bodyToUse = fetcher ? RavenCommand.maybeWrapBody(body) : body;
 
-        const optionsToUse = { body: bodyToUse, ...restOptions, agent } as RequestInit;
+        const optionsToUse = { body: bodyToUse, ...restOptions, dispatcher: agent } as RequestInit;
 
         const passthrough = new PassThrough();
         passthrough.pause();

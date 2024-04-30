@@ -83,7 +83,7 @@ export class DocumentConventions {
     private _firstBroadcastAttemptTimeout: number | undefined;
     private _secondBroadcastAttemptTimeout: number | undefined;
     private _waitForIndexesAfterSaveChangesTimeout: number | undefined;
-    private _waitForReplicationAfterSaveChangesTimeout: number | undefined; //tODO: not exposed?
+    private _waitForReplicationAfterSaveChangesTimeout: number | undefined;
     private _waitForNonStaleResultsTimeout: number | undefined;
 
     private _loadBalancerContextSeed: number;
@@ -426,7 +426,7 @@ export class DocumentConventions {
     }
 
     public get waitForReplicationAfterSaveChangesTimeout() {
-        return this._waitForNonStaleResultsTimeout;
+        return this._waitForReplicationAfterSaveChangesTimeout;
     }
 
     public set waitForReplicationAfterSaveChangesTimeout(value: number) {

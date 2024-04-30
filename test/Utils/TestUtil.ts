@@ -119,7 +119,8 @@ class TestSecuredServiceLocator extends RavenServerLocator {
         if (!clientCertPath) {
             return {
                 certificate: fs.readFileSync(this.getServerCertificatePath()),
-                type: "pfx"
+                type: "pfx",
+                ca: serverCaCertPath ? fs.readFileSync(serverCaCertPath, "utf8") : undefined
             };
         }
 

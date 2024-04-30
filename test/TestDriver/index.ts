@@ -23,6 +23,7 @@ import { delay, wrapWithTimeout } from "../../src/Utility/PromiseUtil.js";
 import { ClusterTestContext } from "../Utils/TestUtil.js";
 import { GetIndexErrorsOperation } from "../../src/index.js";
 import { TimeUtil } from "../../src/Utility/TimeUtil.js";
+import { Agent, ProxyAgent } from "undici";
 
 const log = getLogger({ module: "TestDriver" });
 
@@ -55,7 +56,8 @@ export abstract class RavenTestDriver {
 
     public enableFiddler(): IDisposable {
         RequestExecutor.requestPostProcessor = (req) => {
-            //TODO: req.agent = new proxyAgent.HttpProxyAgent("http://127.0.0.1:8888") as unknown as http.Agent;
+            const proxy = new ProxyAgent("http://127.0.0.1:8888");
+            (req as any).dispatcher = proxy;
         };
 
         return {
