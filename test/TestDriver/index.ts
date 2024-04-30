@@ -18,8 +18,6 @@ import {
 } from "../../src/Documents/Operations/Revisions/ConfigureRevisionsOperation.js";
 import { Dog, Entity, Genre, Movie, Rating, User } from "../Assets/Graph.js";
 import { RequestExecutor } from "../../src/Http/RequestExecutor.js";
-import proxyAgent from "http-proxy-agent";
-import http from "node:http";
 import { Stopwatch } from "../../src/Utility/Stopwatch.js";
 import { delay, wrapWithTimeout } from "../../src/Utility/PromiseUtil.js";
 import { ClusterTestContext } from "../Utils/TestUtil.js";
@@ -57,7 +55,7 @@ export abstract class RavenTestDriver {
 
     public enableFiddler(): IDisposable {
         RequestExecutor.requestPostProcessor = (req) => {
-            req.agent = new proxyAgent.HttpProxyAgent("http://127.0.0.1:8888") as unknown as http.Agent;
+            //TODO: req.agent = new proxyAgent.HttpProxyAgent("http://127.0.0.1:8888") as unknown as http.Agent;
         };
 
         return {

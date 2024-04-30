@@ -125,9 +125,10 @@ export abstract class RavenCommand<TResult> {
 
         log.info(`Send command ${this.constructor.name} to ${uri}${body ? " with body " + body : ""}.`);
 
+        /*
         if (requestOptions.agent) { // support for fiddler
             agent = requestOptions.agent as Agent;
-        }
+        }*/
 
         const bodyToUse = fetcher ? RavenCommand.maybeWrapBody(body) : body;
 
