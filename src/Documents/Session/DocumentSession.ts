@@ -1,5 +1,4 @@
 import { pipeline, Writable, Transform, TransformCallback, Readable } from "node:stream";
-import { EOL } from "node:os";
 import { DocumentQuery } from "./DocumentQuery.js";
 import { MultiLoaderWithInclude } from "./Loaders/MultiLoaderWithInclude.js";
 import { BatchOperation } from "./Operations/BatchOperation.js";
@@ -84,6 +83,7 @@ import { ConditionalGetDocumentsCommand } from "../Commands/ConditionalGetDocume
 import { StatusCodes } from "../../Http/StatusCode.js";
 import { ISessionDocumentIncrementalTimeSeries } from "./ISessionDocumentIncrementalTimeSeries.js";
 import { ISessionDocumentTypedIncrementalTimeSeries } from "./ISessionDocumentTypedIncrementalTimeSeries.js";
+import { EOL } from "../../Utility/OsUtil.js";
 
 export interface IStoredRawEntityInfo {
     originalValue: object;

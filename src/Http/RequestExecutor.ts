@@ -1,4 +1,3 @@
-import { EOL } from "node:os";
 import { Readable } from "node:stream";
 import { acquireSemaphore, SemaphoreAcquisitionContext } from "../Utility/SemaphoreUtil.js";
 import { getLogger, ILogger } from "../Utility/LogUtil.js";
@@ -48,6 +47,7 @@ import { DatabaseHealthCheckOperation } from "../Documents/Operations/DatabaseHe
 import { GetNodeInfoCommand } from "../ServerWide/Commands/GetNodeInfoCommand.js";
 import { Semaphore } from "../Utility/Semaphore.js";
 import { Dispatcher, Agent } from "undici-types";
+import { EOL } from "../Utility/OsUtil.js";
 
 const DEFAULT_REQUEST_OPTIONS = {};
 

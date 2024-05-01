@@ -28,12 +28,12 @@ import { ServerNode } from "../../Http/ServerNode.js";
 import { RequestExecutor } from "../../Http/RequestExecutor.js";
 import { GetTcpInfoCommand, TcpConnectionInfo } from "../../ServerWide/Commands/GetTcpInfoCommand.js";
 import { GetTcpInfoForRemoteTaskCommand } from "../Commands/GetTcpInfoForRemoteTaskCommand.js";
-import { EOL } from "node:os";
 import { DocumentConventions } from "../Conventions/DocumentConventions.js";
 import { ServerCasing, ServerResponse } from "../../Types/index.js";
 import { CONSTANTS } from "../../Constants.js";
 import { TcpNegotiationResponse } from "../../ServerWide/Tcp/TcpNegotiationResponse.js";
 import { randomUUID } from "node:crypto";
+import { EOL } from "../../Utility/OsUtil.js";
 
 type EventTypes = "afterAcknowledgment" | "onEstablishedSubscriptionConnection" | "connectionRetry" | "batch" | "error" | "end" | "unexpectedSubscriptionError";
 

@@ -1,5 +1,4 @@
 import { ChildProcess } from "node:child_process";
-import os from "node:os";
 
 import { CONSTANTS } from "../../src/Constants.js";
 import { DocumentStore } from "../../src/Documents/DocumentStore.js";
@@ -24,6 +23,7 @@ import { ClusterTestContext } from "../Utils/TestUtil.js";
 import { GetIndexErrorsOperation } from "../../src/index.js";
 import { TimeUtil } from "../../src/Utility/TimeUtil.js";
 import { ProxyAgent } from "undici";
+import { EOL } from "../../src/Utility/OsUtil.js";
 
 const log = getLogger({ module: "TestDriver" });
 
@@ -125,7 +125,7 @@ export abstract class RavenTestDriver {
                 return url;
             } catch (err) {
                 throwError("UrlScrappingError", "Error scrapping URL from server process output: "
-                    + os.EOL + serverOutput, err);
+                    + EOL + serverOutput, err);
             }
         };
 

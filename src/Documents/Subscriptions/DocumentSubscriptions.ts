@@ -16,7 +16,6 @@ import { DropSubscriptionConnectionCommand } from "../Commands/DropSubscriptionC
 import { GetSubscriptionsCommand } from "../Commands/GetSubscriptionsCommand.js";
 import { ToggleOngoingTaskStateOperation } from "../Operations/OngoingTasks/ToggleOngoingTaskStateOperation.js";
 import { SubscriptionIncludeBuilder } from "../Session/Loaders/SubscriptionIncludeBuilder.js";
-import { EOL } from "node:os";
 import { IncludesUtil } from "../Session/IncludesUtil.js";
 import { StringBuilder } from "../../Utility/StringBuilder.js";
 import { SubscriptionUpdateOptions } from "./SubscriptionUpdateOptions.js";
@@ -24,6 +23,7 @@ import { UpdateSubscriptionCommand } from "../Commands/UpdateSubscriptionCommand
 import { CounterIncludesToken } from "../Session/Tokens/CounterIncludesToken.js";
 import { TimeSeriesIncludesToken } from "../Session/Tokens/TimeSeriesIncludesToken.js";
 import { QueryToken } from "../Session/Tokens/QueryToken.js";
+import { EOL } from "../../Utility/OsUtil.js";
 
 export class DocumentSubscriptions implements IDisposable {
     private readonly _store: DocumentStore;

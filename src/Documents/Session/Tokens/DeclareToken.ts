@@ -1,5 +1,5 @@
 import { QueryToken } from "./QueryToken.js";
-import { EOL } from "node:os";
+import { EOL } from "../../../Utility/OsUtil.js";
 
 export class DeclareToken extends QueryToken {
 

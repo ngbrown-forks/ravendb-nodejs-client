@@ -1,6 +1,5 @@
 import { GetClusterTopologyCommand } from "../ServerWide/Commands/GetClusterTopologyCommand.js";
 import { NodeSelector } from "./NodeSelector.js";
-import { EOL } from "node:os";
 import { getLogger } from "../Utility/LogUtil.js";
 import { RequestExecutor, IRequestExecutorOptions } from "./RequestExecutor.js";
 import { throwError } from "../Exceptions/index.js";
@@ -13,6 +12,7 @@ import { DocumentConventions } from "../Documents/Conventions/DocumentConvention
 import { UpdateTopologyParameters } from "./UpdateTopologyParameters.js";
 import { HEADERS } from "../Constants.js";
 import { Semaphore } from "../Utility/Semaphore.js";
+import { EOL } from "../Utility/OsUtil.js";
 
 const log = getLogger({ module: "ClusterRequestExecutor" });
 
