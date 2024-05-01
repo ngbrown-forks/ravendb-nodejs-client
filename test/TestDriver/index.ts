@@ -23,7 +23,7 @@ import { delay, wrapWithTimeout } from "../../src/Utility/PromiseUtil.js";
 import { ClusterTestContext } from "../Utils/TestUtil.js";
 import { GetIndexErrorsOperation } from "../../src/index.js";
 import { TimeUtil } from "../../src/Utility/TimeUtil.js";
-import { Agent, ProxyAgent } from "undici";
+import { ProxyAgent } from "undici";
 
 const log = getLogger({ module: "TestDriver" });
 

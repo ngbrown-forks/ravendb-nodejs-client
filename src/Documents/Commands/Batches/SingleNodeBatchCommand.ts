@@ -19,7 +19,7 @@ import { PutAttachmentCommandHelper } from "./PutAttachmentCommandHelper.js";
 import { TypeUtil } from "../../../Utility/TypeUtil.js";
 import { ObjectUtil } from "../../../Utility/ObjectUtil.js";
 import { readToBuffer } from "../../../Utility/StreamUtil.js";
-import { Agent } from "undici";
+import { Dispatcher } from "undici-types";
 
 export class SingleNodeBatchCommand extends RavenCommand<BatchCommandResult> implements IDisposable {
     private _supportsAtomicWrites: boolean | null;
@@ -72,7 +72,7 @@ export class SingleNodeBatchCommand extends RavenCommand<BatchCommandResult> imp
         }
     }
 
-    async send(agent: Agent, requestOptions: HttpRequestParameters): Promise<{
+    async send(agent: Dispatcher, requestOptions: HttpRequestParameters): Promise<{
         response: HttpResponse;
         bodyStream: Readable
     }> {

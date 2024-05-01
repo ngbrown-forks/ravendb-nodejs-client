@@ -14,6 +14,7 @@ import { ErrorFirstCallback } from "../Types/Callbacks.js";
 import { StringBuilder } from "../Utility/StringBuilder.js";
 import JsonlParser from "stream-json/jsonl/Parser.js";
 import { FieldNameConversion } from "../Utility/ObjectUtil.js";
+import { Buffer } from "node:buffer";
 
 export interface RavenCommandResponsePipelineOptions {
     collectBody?: boolean | ((body: string) => void);

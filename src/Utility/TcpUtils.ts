@@ -1,4 +1,4 @@
-import net from "node:net";
+
 import { Socket } from "node:net";
 import { URL } from "node:url";
 import { IAuthOptions } from "../Auth/AuthOptions.js";
@@ -50,8 +50,10 @@ export class TcpUtils {
             });
 
         } else {
+            const { Socket } = await import("node:net");
+
             return new Promise<Socket>((resolve, reject) => {
-                const socket = new net.Socket();
+                const socket = new Socket();
                 socket.setNoDelay(true);
 
                 socket.connect(port, host, () => {

@@ -2,7 +2,7 @@ import { IAuthOptions } from "./AuthOptions.js";
 import { StringUtil } from "../Utility/StringUtil.js";
 import { throwError } from "../Exceptions/index.js";
 import { ClientOptions } from "ws";
-import { Agent } from "undici";
+import { Agent } from "undici-types";
 import { ConnectionOptions } from "node:tls";
 
 export type CertificateType = "pem" | "pfx";

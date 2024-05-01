@@ -637,7 +637,7 @@ class ClusterController implements IDisposable {
         try {
             store.initialize();
 
-            const httpAgent = store.getRequestExecutor().getHttpAgent();
+            const httpAgent = await store.getRequestExecutor().getHttpAgent();
             const responseAndStream = await command.send(httpAgent, request);
 
             await command.processResponse(null, responseAndStream.response, responseAndStream.bodyStream, request.uri);
