@@ -65,7 +65,7 @@ export class DatabaseChanges implements IDatabaseChanges {
         this._task = this._doWork(nodeTag);
     }
 
-    public static createClientWebSocket(requestExecutor: RequestExecutor, url: string): WebSocket {
+    public static async createClientWebSocket(requestExecutor: RequestExecutor, url: string): Promise<WebSocket> {
         const authOptions = requestExecutor.getAuthOptions();
         let options = undefined as ClientOptions;
 
@@ -73,6 +73,8 @@ export class DatabaseChanges implements IDatabaseChanges {
             const certificate = Certificate.createFromOptions(authOptions);
             options = certificate.toWebSocketOptions();
         }
+
+        const { WebSocket } = await import("ws");
 
         return new WebSocket(url, options);
     }
@@ -332,10 +334,10 @@ export class DatabaseChanges implements IDatabaseChanges {
             return;
         }
 
-        this._doWorkInternal();
+        await this._doWorkInternal();
     }
 
-    private _doWorkInternal(): void {
+    private async _doWorkInternal(): Promise<void> {
         if (this._isCanceled) {
             return;
         }
@@ -346,7 +348,7 @@ export class DatabaseChanges implements IDatabaseChanges {
             const urlString = this._serverNode.url + "/databases/" + this._database + "/changes";
             const url = StringUtil.toWebSocketPath(urlString);
 
-            this._client = DatabaseChanges.createClientWebSocket(this._requestExecutor, url);
+            this._client = await DatabaseChanges.createClientWebSocket(this._requestExecutor, url);
 
             this._client.on("open", async () => {
                 wasConnected = true;
