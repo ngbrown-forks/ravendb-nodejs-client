@@ -34,6 +34,7 @@ import { CONSTANTS } from "../../Constants.js";
 import { TcpNegotiationResponse } from "../../ServerWide/Tcp/TcpNegotiationResponse.js";
 import { randomUUID } from "node:crypto";
 import { EOL } from "../../Utility/OsUtil.js";
+import { importFix } from "../../Utility/ImportUtil.js";
 
 type EventTypes = "afterAcknowledgment" | "onEstablishedSubscriptionConnection" | "connectionRetry" | "batch" | "error" | "end" | "unexpectedSubscriptionError";
 
@@ -275,8 +276,8 @@ export class SubscriptionWorker<T extends object> implements IDisposable {
             }
         });
 
-        const Parser = (await import("stream-json/Parser.js".toLocaleLowerCase())).default;
-        const StreamValues = (await import("stream-json/streamers/StreamValues.js".toLocaleLowerCase())).default;
+        const Parser = (await import(importFix("stream-json/Parser.js"))).default;
+        const StreamValues = (await import(importFix("stream-json/streamers/StreamValues.js"))).default;
 
         this._parser = pipeline([
             socket,

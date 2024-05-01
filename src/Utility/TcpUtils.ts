@@ -1,8 +1,6 @@
 
 import { Socket } from "node:net";
-import { URL } from "node:url";
 import { IAuthOptions } from "../Auth/AuthOptions.js";
-import tls from "node:tls";
 import { Certificate } from "../Auth/Certificate.js";
 import { PeerCertificate } from "node:tls";
 import { getError, throwError } from "../Exceptions/index.js";
@@ -19,6 +17,8 @@ export class TcpUtils {
         const port = Number.parseInt(url.port, 10);
 
         if (serverCertificate && clientCertificate) {
+            const { connect } = await import("node:tls");
+
             return new Promise<Socket>((resolve, reject) => {
                 const agentOptions = Certificate.createFromOptions(clientCertificate).toSocketOptions();
                 agentOptions.checkServerIdentity = (host: string, peerCertificate: PeerCertificate) => {
@@ -40,7 +40,7 @@ export class TcpUtils {
                         return getError("AuthenticationException", "Invalid server certificate.");
                     }
                 };
-                const socket = tls.connect(port, host, agentOptions, () => {
+                const socket = connect(port, host, agentOptions, () => {
                     socket.removeListener("error", reject);
                     resolve(socket);
                 });

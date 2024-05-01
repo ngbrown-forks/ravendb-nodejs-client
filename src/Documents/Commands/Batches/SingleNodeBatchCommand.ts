@@ -90,7 +90,7 @@ export class SingleNodeBatchCommand extends RavenCommand<BatchCommandResult> imp
 
             for (let i = 0; i < attachments.length; i++) {
                 const part = attachments[i].body;
-                const payload = part instanceof Readable ?  await readToBuffer(part) : part;
+                const payload = part instanceof Readable ? await readToBuffer(part) : part;
                 body.append("attachment_" + i, payload);
             }
         }

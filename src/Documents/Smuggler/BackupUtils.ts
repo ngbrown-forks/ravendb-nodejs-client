@@ -1,7 +1,6 @@
 import { CONSTANTS } from "../../Constants.js";
 import { StringUtil } from "../../Utility/StringUtil.js";
 import { basename, extname, resolve } from "node:path";
-import { statSync } from "node:fs";
 
 export class BackupUtils {
     // eslint-disable-next-line @typescript-eslint/no-empty-function
@@ -41,7 +40,7 @@ export class BackupUtils {
             || StringUtil.equalsIgnoreCase(BackupUtils.LEGACY_INCREMENTAL_BACKUP_EXTENSION, extension);
     }
 
-    public static comparator(o1: string, o2: string) {
+    public static comparator(o1: string, o2: string, mtimeProvider: (file: string) => number) {
         const baseName1 = basename(o1, extname(o1));
         const baseName2 = basename(o2, extname(o2));
 
@@ -56,8 +55,8 @@ export class BackupUtils {
             return periodicBackupFileExtensionComparator(o1, o2);
         }
 
-        const lastModified1 = statSync(o1).mtimeMs;
-        const lastModified2 = statSync(o2).mtimeMs;
+        const lastModified1 = mtimeProvider(o1);
+        const lastModified2 = mtimeProvider(o2);
 
         return lastModified1 - lastModified2;
     }

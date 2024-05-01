@@ -29,7 +29,6 @@ import { Stopwatch } from "../../src/Utility/Stopwatch.js";
 import { delay, wrapWithTimeout } from "../../src/Utility/PromiseUtil.js";
 import moment from "moment";
 import { INDEXES } from "../../src/Constants.js";
-import { Agent } from "undici";
 
 const log = getLogger({ module: "TestDriver" });
 

@@ -86,7 +86,7 @@ describe("SmugglerTest", function () {
             "2018-11-08-10-46.ravendb-full-backup"
         ];
 
-        const sortedFiles = files.sort(BackupUtils.comparator);
+        const sortedFiles = files.sort((a, b) => BackupUtils.comparator(a, b, () => 0));
 
         assertThat(sortedFiles[0])
             .isEqualTo("2018-11-08-10-46.ravendb-full-backup");

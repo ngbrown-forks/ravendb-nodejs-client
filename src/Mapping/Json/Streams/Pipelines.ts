@@ -1,8 +1,8 @@
 import { Stream, Transform, Writable } from "node:stream";
 import { RavenCommandResponsePipeline } from "../../../Http/RavenCommandResponsePipeline.js";
 import { DocumentConventions } from "../../../Documents/Conventions/DocumentConventions.js";
-import JsonlStringer from "stream-json/jsonl/Stringer.js";
 import { ObjectUtil } from "../../../Utility/ObjectUtil.js";
+import { importFix } from "../../../Utility/ImportUtil.js";
 
 export function getDocumentResultsAsObjects(
     conventions: DocumentConventions,
@@ -31,10 +31,12 @@ export function getDocumentResultsAsObjects(
     });
 }
 
-export function getDocumentStreamResultsIntoStreamPipeline(
+export async function getDocumentStreamResultsIntoStreamPipeline(
     conventions: DocumentConventions
-): RavenCommandResponsePipeline<object[]> {
+): Promise<RavenCommandResponsePipeline<object[]>> {
     const pipeline = RavenCommandResponsePipeline.create<object[]>();
+
+    const JsonlStringer = (await import(importFix("stream-json/jsonl/Stringer.js"))).default;
 
     return pipeline.parseJsonlAsync(x => x["Item"], {
             transforms: [
@@ -48,8 +50,10 @@ export async function streamResultsIntoStream(
     conventions: DocumentConventions,
     writable: Writable): Promise<void> {
 
+    const pipeline = await getDocumentStreamResultsIntoStreamPipeline(conventions);
+
     return new Promise<void>((resolve, reject) => {
-        getDocumentStreamResultsIntoStreamPipeline(conventions)
+        pipeline
             .stream(bodyStream, writable, (err) => {
                 err ? reject(err) : resolve();
             });

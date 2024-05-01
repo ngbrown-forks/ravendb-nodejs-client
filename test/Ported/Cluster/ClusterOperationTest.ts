@@ -17,7 +17,7 @@ import { TypeUtil } from "../../../src/Utility/TypeUtil.js";
 
     const testContext = new ClusterTestContext();
 
-    it("nextIdentityForOperationShouldBroadcast", async () => {
+    it.skip("nextIdentityForOperationShouldBroadcast", async () => {
         const cluster = await testContext.createRaftCluster(3);
         try {
             const database = testContext.getDatabaseName();

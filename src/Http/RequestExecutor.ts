@@ -48,6 +48,7 @@ import { GetNodeInfoCommand } from "../ServerWide/Commands/GetNodeInfoCommand.js
 import { Semaphore } from "../Utility/Semaphore.js";
 import { Dispatcher, Agent } from "undici-types";
 import { EOL } from "../Utility/OsUtil.js";
+import { importFix } from "../Utility/ImportUtil.js";
 
 const DEFAULT_REQUEST_OPTIONS = {};
 
@@ -369,8 +370,7 @@ export class RequestExecutor implements IDisposable {
 
     private static async createAgent(options: Agent.Options) {
         try {
-            // force toLocaleLowerCase to allow support for cloudflare pages + skip static analysis
-            const {Agent: AgentInstance} = await import("undici".toLocaleLowerCase());
+            const { Agent: AgentInstance } = await import(importFix("undici"));
             return new AgentInstance(options);
         } catch (err) {
             // If we can't import undici - we might be in cloudflare env - simply return no-agent.
