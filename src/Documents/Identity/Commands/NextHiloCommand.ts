@@ -60,12 +60,12 @@ export class NextHiloCommand extends RavenCommand<HiLoResult> {
             uri += "&tag=" + this._urlEncode(this._tag);
         }
 
-        uri += "&lastRangeAt=" + this._urlEncode(this._lastRangeAt);
+        uri += "&lastRangeAt=" + this._urlEncode(lastRangeAt);
         if (this._identityPartsSeparator) {
             uri += "&identityPartsSeparator=" + this._identityPartsSeparator;
         }
         if (this._lastRangeMax) {
-            uri += "&lastMax=" + lastRangeAt;
+            uri += "&lastMax=" + this._lastRangeMax;
         }
         return { uri };
     }
