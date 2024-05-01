@@ -1,6 +1,7 @@
 import { TypeUtil } from "../../Utility/TypeUtil.js";
 import { ITypesAwareObjectMapper } from "../../Mapping/ObjectMapper.js";
 import { createHash } from "node:crypto";
+import { Buffer } from "node:buffer";
 
 const typeSignatures = {
     bigint: Buffer.from([1]),
