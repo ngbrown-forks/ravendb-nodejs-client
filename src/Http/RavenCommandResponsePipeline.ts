@@ -12,14 +12,15 @@ import { throwError, getError } from "../Exceptions/index.js";
 import { TypeUtil } from "../Utility/TypeUtil.js";
 import { ErrorFirstCallback } from "../Types/Callbacks.js";
 import { StringBuilder } from "../Utility/StringBuilder.js";
-import JsonlParser from "stream-json/jsonl/Parser.js";
 import { FieldNameConversion } from "../Utility/ObjectUtil.js";
 import { Buffer } from "node:buffer";
+import JsonlParser from "stream-json/jsonl/Parser.js";
 
 export interface RavenCommandResponsePipelineOptions {
     collectBody?: boolean | ((body: string) => void);
     jsonlAsync?: {
         transforms: Transform[];
+        parserProvider: new () => JsonlParser;
     };
     jsonSync?: boolean;
     streamKeyCaseTransform?: ObjectKeyCaseTransformStreamOptions;
@@ -48,7 +49,7 @@ export class RavenCommandResponsePipeline<TStreamResult> extends EventEmitter {
      * @param type Type of object to extract from objects stream - use Raw to skip extraction.
      * @param options
      */
-    public parseJsonlAsync(valueExtractor: (obj: any) => any, options: { transforms?: Transform[] } = {}) {
+    public parseJsonlAsync(parserProvider: new () => JsonlParser, valueExtractor: (obj: any) => any, options: { transforms?: Transform[] } = {}) {
         const transforms = options?.transforms ?? [];
         const extractItemTransform = new Transform({
             objectMode: true,
@@ -65,7 +66,8 @@ export class RavenCommandResponsePipeline<TStreamResult> extends EventEmitter {
         transforms.unshift(extractItemTransform);
 
         this._opts.jsonlAsync = {
-            transforms
+            transforms,
+            parserProvider
         };
 
         return this;
@@ -114,7 +116,7 @@ export class RavenCommandResponsePipeline<TStreamResult> extends EventEmitter {
         }
 
         if (opts.jsonlAsync) {
-            streams.push(new JsonlParser());
+            streams.push(new opts.jsonlAsync.parserProvider());
 
             if (opts.jsonlAsync.transforms) {
                 streams.push(...opts.jsonlAsync.transforms);

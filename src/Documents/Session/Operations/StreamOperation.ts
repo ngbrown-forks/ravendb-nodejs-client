@@ -11,6 +11,7 @@ import { getDocumentResultsAsObjects } from "../../../Mapping/Json/Streams/Pipel
 import { StringBuilder } from "../../../Utility/StringBuilder.js";
 import { ObjectUtil } from "../../../Utility/ObjectUtil.js";
 import { RavenCommandResponsePipeline } from "../../../Http/RavenCommandResponsePipeline.js";
+import JsonlParser from "stream-json/jsonl/Parser.js";
 
 export class StreamOperation {
     private readonly _session: InMemoryDocumentSessionOperations;
@@ -81,18 +82,18 @@ export class StreamOperation {
         return new StreamCommand(sb.toString());
     }
 
-    public setResult(response: StreamResultResponse): Readable {
+    public setResult(parserProvider: new () => JsonlParser, response: StreamResultResponse): Readable {
         if (!response) {
             throwError("IndexDoesNotExistException", "The index does not exists, failed to stream results.");
         }
 
-        const result = getDocumentResultsAsObjects(this._session.conventions, !!this._isQueryStream)
+        const result = getDocumentResultsAsObjects(parserProvider, this._session.conventions, !!this._isQueryStream)
             .stream(response.stream);
 
         if (this._isQueryStream) {
             const pipeline = RavenCommandResponsePipeline.create<object[]>();
 
-            pipeline.parseJsonlAsync(x => x["Stats"])
+            pipeline.parseJsonlAsync(parserProvider, x => x["Stats"])
 
             pipeline.stream(response.stream)
                 .on("error", err => result.emit("error", err))
