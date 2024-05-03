@@ -84,7 +84,6 @@ import { StatusCodes } from "../../Http/StatusCode.js";
 import { ISessionDocumentIncrementalTimeSeries } from "./ISessionDocumentIncrementalTimeSeries.js";
 import { ISessionDocumentTypedIncrementalTimeSeries } from "./ISessionDocumentTypedIncrementalTimeSeries.js";
 import { EOL } from "../../Utility/OsUtil.js";
-import { importFix } from "../../Utility/ImportUtil.js";
 
 export interface IStoredRawEntityInfo {
     originalValue: object;
@@ -956,13 +955,11 @@ export class DocumentSession extends InMemoryDocumentSessionOperations
         idPrefix: string,
         opts: SessionLoadStartingWithOptions<T>)
         : Promise<DocumentResultStream<T>> {
-        const JsonlParser = (await import(importFix("stream-json/jsonl/Parser.js"))).default;
-
         const streamOperation = new StreamOperation(this);
         const command = streamOperation.createRequest(idPrefix, opts);
 
         await this.requestExecutor.execute(command, this.sessionInfo);
-        const docsReadable = streamOperation.setResult(JsonlParser, command.result);
+        const docsReadable = streamOperation.setResult(command.result);
         let clazz = null;
         if (opts && "documentType" in opts) {
             clazz = this.conventions.getJsTypeByDocumentType(opts.documentType);
@@ -989,13 +986,11 @@ export class DocumentSession extends InMemoryDocumentSessionOperations
         query: AbstractDocumentQuery<T, any>,
         streamQueryStatsCallback?: StreamQueryStatisticsCallback)
         : Promise<DocumentResultStream<T>> {
-        const JsonlParser = (await import(importFix("stream-json/jsonl/Parser.js"))).default;
-
         const streamOperation = new StreamOperation(this);
         const command = streamOperation.createRequest(query.getIndexQuery());
 
         await this.requestExecutor.execute(command, this.sessionInfo);
-        const docsReadable = streamOperation.setResult(JsonlParser, command.result);
+        const docsReadable = streamOperation.setResult(command.result);
 
         const result = this._getStreamResultTransform(
             this, (query as any).getQueryType(), (query as any).fieldsToFetchToken, query.isProjectInto);
@@ -1063,12 +1058,10 @@ export class DocumentSession extends InMemoryDocumentSessionOperations
     public async streamInto<T extends object>(
         query: IRawDocumentQuery<T> | IDocumentQuery<T>,
         writable: Writable): Promise<void> {
-        const JsonlParser = (await import(importFix("stream-json/jsonl/Parser.js"))).default;
-
         const streamOperation = new StreamOperation(this);
         const command = streamOperation.createRequest(query.getIndexQuery());
         await this.requestExecutor.execute(command, this._sessionInfo);
-        return streamResultsIntoStream(JsonlParser, command.result.stream, this.conventions, writable);
+        return streamResultsIntoStream(command.result.stream, this.conventions, writable);
     }
 
     public countersFor(documentId: string): ISessionDocumentCounters;

@@ -14,13 +14,12 @@ import { ErrorFirstCallback } from "../Types/Callbacks.js";
 import { StringBuilder } from "../Utility/StringBuilder.js";
 import { FieldNameConversion } from "../Utility/ObjectUtil.js";
 import { Buffer } from "node:buffer";
-import JsonlParser from "stream-json/jsonl/Parser.js";
+import { JsonlParser } from "../ext/stream-json/jsonl/Parser.js";
 
 export interface RavenCommandResponsePipelineOptions {
     collectBody?: boolean | ((body: string) => void);
     jsonlAsync?: {
         transforms: Transform[];
-        parserProvider: new () => JsonlParser;
     };
     jsonSync?: boolean;
     streamKeyCaseTransform?: ObjectKeyCaseTransformStreamOptions;
@@ -49,7 +48,7 @@ export class RavenCommandResponsePipeline<TStreamResult> extends EventEmitter {
      * @param type Type of object to extract from objects stream - use Raw to skip extraction.
      * @param options
      */
-    public parseJsonlAsync(parserProvider: new () => JsonlParser, valueExtractor: (obj: any) => any, options: { transforms?: Transform[] } = {}) {
+    public parseJsonlAsync(valueExtractor: (obj: any) => any, options: { transforms?: Transform[] } = {}) {
         const transforms = options?.transforms ?? [];
         const extractItemTransform = new Transform({
             objectMode: true,
@@ -66,8 +65,7 @@ export class RavenCommandResponsePipeline<TStreamResult> extends EventEmitter {
         transforms.unshift(extractItemTransform);
 
         this._opts.jsonlAsync = {
-            transforms,
-            parserProvider
+            transforms
         };
 
         return this;
@@ -116,7 +114,7 @@ export class RavenCommandResponsePipeline<TStreamResult> extends EventEmitter {
         }
 
         if (opts.jsonlAsync) {
-            streams.push(new opts.jsonlAsync.parserProvider());
+            streams.push(new JsonlParser());
 
             if (opts.jsonlAsync.transforms) {
                 streams.push(...opts.jsonlAsync.transforms);

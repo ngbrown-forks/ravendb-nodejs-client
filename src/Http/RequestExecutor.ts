@@ -364,7 +364,7 @@ export class RequestExecutor implements IDisposable {
         } else {
             return RequestExecutor.KEEP_ALIVE_HTTP_AGENT ??= await RequestExecutor.createAgent({
                 pipelining: 0
-            })
+            });
         }
     }
 
