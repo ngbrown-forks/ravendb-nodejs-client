@@ -2,9 +2,9 @@ import fs from "node:fs";
 import url from 'node:url';
 import { Readable,pipeline } from "node:stream";
 import assert from "node:assert"
-import Parser from "stream-json/Parser.js";
-import StreamValues from "stream-json/streamers/StreamValues.js";
-import Stringer from "stream-json/Stringer.js";
+import { Parser } from "../../src/ext/stream-json/Parser.js"
+import { StreamValues } from "../../src/ext/stream-json/streamers/StreamValues.js";
+import { Stringer } from "../../src/ext/stream-json/Stringer.js";
 
 describe("stream-json parser and stringer", function () {
 

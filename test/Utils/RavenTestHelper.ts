@@ -1,7 +1,7 @@
 import { GetIndexErrorsOperation, IDocumentStore } from "../../src/index.js";
-import os from "node:os";
 import { throwError } from "../../src/Exceptions/index.js";
 import { StringBuilder } from "../../src/Utility/StringBuilder.js";
+import { EOL } from "../../src/Utility/OsUtil.js";
 
 export class RavenTestHelper {
     public static async assertNoIndexErrors(store: IDocumentStore, databaseName?: string) {
@@ -23,14 +23,14 @@ export class RavenTestHelper {
                 .append(" '(")
                 .append(indexErrors.errors.length.toString())
                 .append(")");
-            sb.append(os.EOL);
+            sb.append(EOL);
 
             for (const indexError of indexErrors.errors) {
                 sb.append("- " + indexError);
-                sb.append(os.EOL);
+                sb.append(EOL);
             }
 
-            sb.append(os.EOL);
+            sb.append(EOL);
         }
 
         if (!sb) {

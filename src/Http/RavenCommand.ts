@@ -13,7 +13,7 @@ import { RavenCommandResponsePipeline } from "./RavenCommandResponsePipeline.js"
 import { DocumentConventions } from "../Documents/Conventions/DocumentConventions.js";
 import { ObjectTypeDescriptor } from "../Types/index.js";
 import { ObjectUtil } from "../Utility/ObjectUtil.js";
-import { Agent } from "undici-types";
+import { Dispatcher } from "undici-types";
 
 const log = getLogger({ module: "RavenCommand" });
 
@@ -118,7 +118,7 @@ export abstract class RavenCommand<TResult> {
             this._responseType);
     }
 
-    public async send(agent: Agent,
+    public async send(agent: Dispatcher,
         requestOptions: HttpRequestParameters): Promise<{ response: HttpResponse, bodyStream: Readable }> {
 
         const { body, uri, fetcher, ...restOptions } = requestOptions;
@@ -126,7 +126,7 @@ export abstract class RavenCommand<TResult> {
         log.info(`Send command ${this.constructor.name} to ${uri}${body ? " with body " + body : ""}.`);
 
         if (requestOptions.dispatcher) { // support for fiddler
-            agent = requestOptions.dispatcher as Agent;
+            agent = requestOptions.dispatcher;
         }
 
         const bodyToUse = fetcher ? RavenCommand.maybeWrapBody(body) : body;

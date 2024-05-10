@@ -23,19 +23,19 @@ import { ObjectUtil } from "../../Utility/ObjectUtil.js";
 import { SubscriptionConnectionServerMessage } from "./SubscriptionConnectionServerMessage.js";
 import { EmptyCallback } from "../../Types/Callbacks.js";
 import { delay, wrapWithTimeout } from "../../Utility/PromiseUtil.js";
-import Parser from "stream-json/Parser.js";
-import StreamValues from "stream-json/streamers/StreamValues.js";
 import { BatchFromServer, CounterIncludeItem } from "./BatchFromServer.js";
 import { ServerNode } from "../../Http/ServerNode.js";
 import { RequestExecutor } from "../../Http/RequestExecutor.js";
 import { GetTcpInfoCommand, TcpConnectionInfo } from "../../ServerWide/Commands/GetTcpInfoCommand.js";
 import { GetTcpInfoForRemoteTaskCommand } from "../Commands/GetTcpInfoForRemoteTaskCommand.js";
-import { EOL } from "node:os";
 import { DocumentConventions } from "../Conventions/DocumentConventions.js";
 import { ServerCasing, ServerResponse } from "../../Types/index.js";
 import { CONSTANTS } from "../../Constants.js";
 import { TcpNegotiationResponse } from "../../ServerWide/Tcp/TcpNegotiationResponse.js";
 import { randomUUID } from "node:crypto";
+import { EOL } from "../../Utility/OsUtil.js";
+import { Parser } from "../../ext/stream-json/Parser.js";
+import { StreamValues } from "../../ext/stream-json/streamers/StreamValues.js";
 
 type EventTypes = "afterAcknowledgment" | "onEstablishedSubscriptionConnection" | "connectionRetry" | "batch" | "error" | "end" | "unexpectedSubscriptionError";
 
@@ -259,7 +259,7 @@ export class SubscriptionWorker<T extends object> implements IDisposable {
         });
     }
 
-    private _ensureParser(socket: Socket) {
+    private async _ensureParser(socket: Socket): Promise<void> {
         const conventions = this._store.conventions;
         const revisions = this._revisions;
 
@@ -277,7 +277,6 @@ export class SubscriptionWorker<T extends object> implements IDisposable {
             }
         });
 
-
         this._parser = pipeline([
             socket,
             new Parser({ jsonStreaming: true, streamValues: false }),
@@ -294,7 +293,7 @@ export class SubscriptionWorker<T extends object> implements IDisposable {
 
     // noinspection JSUnusedLocalSymbols
     private async _readServerResponseAndGetVersion(url: string, socket: Socket): Promise<TcpNegotiationResponse> {
-        this._ensureParser(socket);
+        await this._ensureParser(socket);
         const x: any = await this._readNextObject();
         switch (x.status) {
             case "Ok": {

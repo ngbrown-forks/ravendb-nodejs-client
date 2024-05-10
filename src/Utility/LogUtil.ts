@@ -1,6 +1,6 @@
 import { debuglog } from "node:util";
 
-const isDebug = !!process.env.NODE_DEBUG;
+const isDebug = process.env.NODE_ENV !== "production";
 
 export interface ILogger {
     info(msg: string);

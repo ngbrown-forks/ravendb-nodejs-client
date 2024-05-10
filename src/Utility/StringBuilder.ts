@@ -1,4 +1,5 @@
 import { Stream } from "node:stream";
+import { EOL } from "./OsUtil.js";
 
 export class StringBuilder {
     private s: any[] = [];
@@ -9,8 +10,7 @@ export class StringBuilder {
 
         Stream.call(this);
 
-        const isWindows = process.platform === "win32";
-        this.newline = isWindows ? "\r\n" : "\n";
+        this.newline = EOL;
     }
 
     public append(v: any) {

@@ -27,7 +27,8 @@ export default defineConfig(options => {
 			format: ["esm"],
 			dts: true,
 			clean: true,
-			sourcemap: true
+			sourcemap: true,
+			external: [/node:.*/]
 		},
 		// CJS
 		{

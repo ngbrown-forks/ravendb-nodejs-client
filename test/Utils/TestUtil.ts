@@ -29,7 +29,6 @@ import { Stopwatch } from "../../src/Utility/Stopwatch.js";
 import { delay, wrapWithTimeout } from "../../src/Utility/PromiseUtil.js";
 import moment from "moment";
 import { INDEXES } from "../../src/Constants.js";
-import { Agent } from "undici";
 
 const log = getLogger({ module: "TestDriver" });
 
@@ -134,8 +133,6 @@ class TestSecuredServiceLocator extends RavenServerLocator {
 }
 
 export class RavenTestContext extends RavenTestDriver implements IDisposable {
-
-    public static isRunningOnWindows = os.platform() === "win32";
 
     public static isPullRequest = !process.env["RAVEN_License"];
 
@@ -637,7 +634,7 @@ class ClusterController implements IDisposable {
         try {
             store.initialize();
 
-            const httpAgent = store.getRequestExecutor().getHttpAgent();
+            const httpAgent = await store.getRequestExecutor().getHttpAgent();
             const responseAndStream = await command.send(httpAgent, request);
 
             await command.processResponse(null, responseAndStream.response, responseAndStream.bodyStream, request.uri);

@@ -1,4 +1,4 @@
-import Parser from "stream-json/Parser.js";
+import { Parser } from "../../src/ext/stream-json/Parser.js";
 
 export function parseJsonVerbose(jsonString: string) {
     if (!jsonString) {

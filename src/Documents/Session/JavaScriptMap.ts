@@ -1,4 +1,4 @@
-import { EOL } from "node:os";
+import { EOL } from "../../Utility/OsUtil.js";
 
 export class JavaScriptMap<TKey, TValue> {
     private readonly _suffix: number;

@@ -7,7 +7,6 @@ import { DatabaseSmugglerExportOptions } from "./DatabaseSmugglerExportOptions.j
 import { HttpCache } from "../../Http/HttpCache.js";
 import { HeadersBuilder } from "../../Utility/HttpUtil.js";
 import { DatabaseSmugglerOptions } from "./DatabaseSmugglerOptions.js";
-import { existsSync, mkdirSync, createWriteStream, readdirSync, readFileSync } from "node:fs";
 import { pipelineAsync } from "../../Utility/StreamUtil.js";
 import { dirname, resolve, extname } from "node:path";
 import { BackupUtils } from "./BackupUtils.js";
@@ -18,6 +17,7 @@ import { RavenCommand, ResponseDisposeHandling } from "../../Http/RavenCommand.j
 import { DocumentConventions } from "../Conventions/DocumentConventions.js";
 import { ServerNode } from "../../Http/ServerNode.js";
 import { Readable } from "node:stream";
+import { Dispatcher } from "undici-types";
 
 export class DatabaseSmuggler {
     private readonly _store: IDocumentStore;
@@ -46,6 +46,7 @@ export class DatabaseSmuggler {
 
     public async export(options: DatabaseSmugglerExportOptions, toFile: string): Promise<OperationCompletionAwaiter> {
         const directory = dirname(resolve(toFile));
+        const { existsSync, mkdirSync , createWriteStream} = await import("node:fs");
         if (!existsSync(directory)) {
             mkdirSync(directory, { recursive: true });
         }
@@ -79,9 +80,11 @@ export class DatabaseSmuggler {
     }
 
     public async importIncremental(options: DatabaseSmugglerImportOptions, fromDirectory: string) {
+        const { statSync, readdirSync } = await import("node:fs");
+        const mProvider = f => statSync(f).mtimeMs;
         const files = readdirSync(fromDirectory)
             .filter(x => BackupUtils.BACKUP_FILE_SUFFIXES.includes("." + extname(x)))
-            .sort(BackupUtils.comparator);
+            .sort((a, b) => BackupUtils.comparator(a, b, mProvider));
 
         if (!files.length) {
             return;
@@ -115,6 +118,8 @@ export class DatabaseSmuggler {
 
     public async import(options: DatabaseSmugglerImportOptions, fromFile: string): Promise<OperationCompletionAwaiter> {
         let countOfFileParts = 0;
+
+        const { existsSync } = await import("node:fs");
 
         let result: OperationCompletionAwaiter;
 
@@ -252,13 +257,28 @@ class ImportCommand extends RavenCommand<void> {
         this._selectedNodeTag = nodeTag;
     }
 
+    async send(agent: Dispatcher, requestOptions: HttpRequestParameters): Promise<{
+        response: HttpResponse;
+        bodyStream: Readable
+    }> {
+        const { body } = requestOptions;
+
+        const { readFileSync } = await import("node:fs");
+
+        if (body instanceof FormData) {
+            const buffer = readFileSync(this._file);
+            body.append("name", new Blob([buffer], { type: "text/plain" }));
+        }
+        return super.send(agent, requestOptions);
+    }
+
+
     createRequest(node: ServerNode): HttpRequestParameters {
         const uri = node.url + "/databases/" + node.database + "/smuggler/import?operationId=" + this._operationId;
 
         const multipart = new FormData();
         multipart.append("importOptions", this._serializer.serialize(this._options));
-        const buffer = readFileSync(this._file);
-        multipart.append("name", new Blob([buffer], { type: "text/plain" }));
+        // we append file in send method
 
         return {
             method: "POST",

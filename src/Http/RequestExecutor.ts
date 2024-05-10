@@ -1,4 +1,3 @@
-import { EOL } from "node:os";
 import { Readable } from "node:stream";
 import { acquireSemaphore, SemaphoreAcquisitionContext } from "../Utility/SemaphoreUtil.js";
 import { getLogger, ILogger } from "../Utility/LogUtil.js";
@@ -47,7 +46,9 @@ import { randomUUID } from "node:crypto";
 import { DatabaseHealthCheckOperation } from "../Documents/Operations/DatabaseHealthCheckOperation.js";
 import { GetNodeInfoCommand } from "../ServerWide/Commands/GetNodeInfoCommand.js";
 import { Semaphore } from "../Utility/Semaphore.js";
-import { Agent } from "undici";
+import { Dispatcher, Agent } from "undici-types";
+import { EOL } from "../Utility/OsUtil.js";
+import { importFix } from "../Utility/ImportUtil.js";
 
 const DEFAULT_REQUEST_OPTIONS = {};
 
@@ -182,15 +183,15 @@ export class RequestExecutor implements IDisposable {
 
     protected _firstTopologyUpdatePromiseInternal;
 
-    private _httpAgent: Agent;
+    private _httpAgent: Dispatcher;
 
     /*
       we don't initialize this here due to issue with cloudflare
       see: https://github.com/cloudflare/miniflare/issues/292
     */
-    private static KEEP_ALIVE_HTTP_AGENT: Agent = null;
+    private static KEEP_ALIVE_HTTP_AGENT: Dispatcher = null;
 
-    private static readonly HTTPS_AGENT_CACHE = new Map<string, Agent>();
+    private static readonly HTTPS_AGENT_CACHE = new Map<string, Dispatcher>();
 
     protected get firstTopologyUpdatePromise(): Promise<void> {
         return this._firstTopologyUpdatePromiseInternal;
@@ -336,7 +337,7 @@ export class RequestExecutor implements IDisposable {
             : null;
     }
 
-    public getHttpAgent(): Agent {
+    public async getHttpAgent(): Promise<Dispatcher> {
         if (this.conventions.customFetch) {
             return null;
         }
@@ -345,34 +346,35 @@ export class RequestExecutor implements IDisposable {
             return this._httpAgent;
         }
 
-        return this._httpAgent = this._createHttpAgent();
+        return this._httpAgent = await this._createHttpAgent();
     }
 
-    private _createHttpAgent(): Agent {
+    private async _createHttpAgent(): Promise<Dispatcher> {
         if (this._certificate) {
             const agentOptions = this._certificate.toAgentOptions();
             const cacheKey = JSON.stringify(agentOptions, null, 0);
             if (RequestExecutor.HTTPS_AGENT_CACHE.has(cacheKey)) {
                 return RequestExecutor.HTTPS_AGENT_CACHE.get(cacheKey);
             } else {
-                const agent = new Agent({
-                    ...agentOptions,
-                });
+                const agent = await RequestExecutor.createAgent(agentOptions);
 
                 RequestExecutor.HTTPS_AGENT_CACHE.set(cacheKey, agent);
                 return agent;
             }
         } else {
-            RequestExecutor.assertKeepAliveAgent();
-            return RequestExecutor.KEEP_ALIVE_HTTP_AGENT;
+            return RequestExecutor.KEEP_ALIVE_HTTP_AGENT ??= await RequestExecutor.createAgent({
+                pipelining: 0
+            });
         }
     }
 
-    private static assertKeepAliveAgent() {
-        if (!RequestExecutor.KEEP_ALIVE_HTTP_AGENT) {
-            RequestExecutor.KEEP_ALIVE_HTTP_AGENT = new Agent({
-                pipelining: 0
-            });
+    private static async createAgent(options: Agent.Options) {
+        try {
+            const { Agent: AgentInstance } = await import(importFix("undici"));
+            return new AgentInstance(options);
+        } catch (err) {
+            // If we can't import undici - we might be in cloudflare env - simply return no-agent.
+            return null;
         }
     }
 
@@ -1153,7 +1155,7 @@ export class RequestExecutor implements IDisposable {
         if (this._shouldExecuteOnAll(chosenNode, command)) {
             responseAndStream = await this._executeOnAllToFigureOutTheFastest(chosenNode, command);
         } else {
-            responseAndStream = await command.send(this.getHttpAgent(), request);
+            responseAndStream = await command.send(await this.getHttpAgent(), request);
         }
 
         // PERF: The reason to avoid rechecking every time is that servers wont change so rapidly
@@ -1300,7 +1302,7 @@ export class RequestExecutor implements IDisposable {
             !(command["prepareToBroadcast"]); // duck typing: !(command instanceof IBroadcast)
     }
 
-    private _executeOnAllToFigureOutTheFastest<TResult>(
+    private async _executeOnAllToFigureOutTheFastest<TResult>(
         chosenNode: ServerNode,
         command: RavenCommand<TResult>): Promise<{ response: HttpResponse, bodyStream: Readable }> {
         let preferredTask: Promise<IndexAndResponse> = null;
@@ -1313,6 +1315,8 @@ export class RequestExecutor implements IDisposable {
             const taskNumber = i;
             this.numberOfServerRequests++;
 
+            const agent = await this.getHttpAgent();
+
             task = Promise.resolve()
                 .then(() => {
                     const req = this._createRequest(nodes[taskNumber], command, TypeUtil.NOOP);
@@ -1320,7 +1324,7 @@ export class RequestExecutor implements IDisposable {
                         return;
                     }
                     this._setRequestHeaders(null, null, req);
-                    return command.send(this.getHttpAgent(), req);
+                    return command.send(agent, req);
                 })
                 .then(commandResult => new IndexAndResponse(taskNumber, commandResult.response, commandResult.bodyStream))
                 .catch(err => {

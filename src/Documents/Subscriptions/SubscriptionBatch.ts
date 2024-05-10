@@ -2,7 +2,6 @@ import { DocumentType } from "../DocumentAbstractions.js";
 import { getLogger } from "../../Utility/LogUtil.js";
 import { GenerateEntityIdOnTheClient } from "../Identity/GenerateEntityIdOnTheClient.js";
 import { throwError } from "../../Exceptions/index.js";
-import { EOL } from "node:os";
 import { CONSTANTS } from "../../Constants.js";
 import { StringUtil } from "../../Utility/StringUtil.js";
 import { createMetadataDictionary } from "../../Mapping/MetadataAsDictionary.js";
@@ -15,6 +14,7 @@ import { DocumentInfo } from "../Session/DocumentInfo.js";
 import { BatchFromServer, CounterIncludeItem } from "./BatchFromServer.js";
 import { IMetadataDictionary } from "../Session/IMetadataDictionary.js";
 import { EntityToJson } from "../Session/EntityToJson.js";
+import { EOL } from "../../Utility/OsUtil.js";
 
 export class SubscriptionBatch<T extends object> {
 

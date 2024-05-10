@@ -76,7 +76,6 @@ import { QueryHighlightings } from "../Queries/Highlighting/QueryHighlightings.j
 import { ExplanationOptions } from "../Queries/Explanation/ExplanationOptions.js";
 import { CountersByDocId } from "./CounterInternalTypes.js";
 import { IncludeBuilderBase } from "./Loaders/IncludeBuilderBase.js";
-import { EOL } from "node:os";
 import { GraphQueryToken } from "./Tokens/GraphQueryToken.js";
 import { IncludesUtil } from "./IncludesUtil.js";
 import { TimeSeriesIncludesToken } from "./Tokens/TimeSeriesIncludesToken.js";
@@ -89,6 +88,7 @@ import { AbstractTimeSeriesRange } from "../Operations/TimeSeries/AbstractTimeSe
 import { IAbstractDocumentQueryImpl } from "./IAbstractDocumentQueryImpl.js";
 import { RevisionIncludesToken } from "./Tokens/RevisionIncludesToken.js";
 import { IDisposable } from "../../Types/Contracts.js";
+import { EOL } from "../../Utility/OsUtil.js";
 
 /**
  * A query against a Raven index

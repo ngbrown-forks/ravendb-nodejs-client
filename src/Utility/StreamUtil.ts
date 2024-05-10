@@ -1,5 +1,6 @@
 import { finished, pipeline, Stream, Readable } from "node:stream";
 import { promisify } from "node:util";
+import { Buffer } from "node:buffer";
 
 export const finishedAsync: (src: any) => Promise<any> =
     promisify(finished);
