@@ -5,6 +5,9 @@ export default defineConfig(options => {
 		entry: {
 			ravendb: "src/index.ts"
 		},
+		external: [/node:.*/],
+		dts: true,
+		clean: true,
 		sourcemap: true,
 		...options
 	}
@@ -25,18 +28,12 @@ export default defineConfig(options => {
 			...commonOptions,
 			...productionOptions,
 			format: ["esm"],
-			dts: true,
-			clean: true,
-			sourcemap: true,
-			external: [/node:.*/]
+			outDir: "./dist/"
 		},
 		// CJS
 		{
 			...commonOptions,
 			...productionOptions,
-			entry: {
-				"ravendb": "src/index.ts"
-			},
 			format: "cjs",
 			outDir: "./dist/cjs/"
 		}

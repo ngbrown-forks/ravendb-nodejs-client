@@ -13,7 +13,6 @@
   "exports": {
     "./package.json": "./package.json",
     ".": {
-      "types": "./dist/ravendb.d.ts",
       "import": "./dist/ravendb.js",
       "require": "./dist/cjs/ravendb.cjs"
     }
