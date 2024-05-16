@@ -20,7 +20,7 @@ export class OperationExecutor {
 
     private readonly _store: IDocumentStore;
     private readonly _databaseName: string;
-    private readonly _requestExecutor: RequestExecutor;
+    private _requestExecutor: RequestExecutor;
 
     public constructor(store: DocumentStoreBase);
     public constructor(store: IDocumentStore, databaseName?: string);

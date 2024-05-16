@@ -51,6 +51,10 @@ export class OlapConnectionString extends ConnectionString {
 export class ElasticSearchConnectionString extends ConnectionString {
     public nodes: string[];
     public authentication?: Authentication;
+
+    /**
+     * @deprecated Elasticsearch compatibility isn't required anymore to connect with Elasticsearch server v8.x.
+     */
     public enableCompatibilityMode?: boolean;
 
     public type: ConnectionStringType = "ElasticSearch";

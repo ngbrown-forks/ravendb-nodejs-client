@@ -3,4 +3,5 @@ import { ReplicationBatchOptions, IndexBatchOptions } from "../../Session/IAdvan
 export interface BatchOptions {
     replicationOptions: ReplicationBatchOptions;
     indexOptions: IndexBatchOptions;
+    shardedOptions: ShardedBatchOptions;
 }

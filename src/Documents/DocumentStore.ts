@@ -378,22 +378,6 @@ export class DocumentStore extends DocumentStoreBase {
             () => this._databaseChanges.delete(this._getDatabaseChangesCacheKey(node)), node.nodeTag);
     }
 
-    public getLastDatabaseChangesStateException(): Error;
-    public getLastDatabaseChangesStateException(database: string): Error;
-    public getLastDatabaseChangesStateException(database: string, nodeTag: string): Error;
-    public getLastDatabaseChangesStateException(database?: string, nodeTag?: string): Error {
-        const node: DatabaseChangesOptions = {
-            databaseName: database || this.database,
-            nodeTag
-        };
-        const cacheKey = this._getDatabaseChangesCacheKey(node);
-        const databaseChanges = this._databaseChanges.get(cacheKey) as DatabaseChanges;
-        if (databaseChanges) {
-            return databaseChanges.lastConnectionStateException;
-        }
-
-        return null;
-    }
 
     // TBD public override IDatabaseChanges Changes(string database = null)
     // TBD protected virtual IDatabaseChanges CreateDatabaseChanges(string database)

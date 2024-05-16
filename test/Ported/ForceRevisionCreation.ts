@@ -6,7 +6,7 @@ import { RevisionsConfiguration } from "../../src/Documents/Operations/Revisions
 import { RevisionsCollectionConfiguration } from "../../src/Documents/Operations/RevisionsCollectionConfiguration.js";
 import { ConfigureRevisionsOperation } from "../../src/Documents/Operations/Revisions/ConfigureRevisionsOperation.js";
 
-(RavenTestContext.is60Server || RavenTestContext.isPullRequest ? describe.skip : describe)("ForceRevisionCreation", function () {
+(RavenTestContext.isPullRequest ? describe.skip : describe)("ForceRevisionCreation", function () {
 
     let store: IDocumentStore;
 

@@ -8,4 +8,5 @@ export interface SessionOptions {
     noCaching?: boolean;
     transactionMode?: TransactionMode;
     disableAtomicDocumentWritesInClusterWideTransaction?: boolean;
+    shardedBatchBehavior?: ShardedBatchBehavior;
 }

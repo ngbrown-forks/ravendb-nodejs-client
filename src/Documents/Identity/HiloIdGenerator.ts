@@ -16,11 +16,6 @@ export class HiloIdGenerator {
     private readonly _identityPartsSeparator: string;
     private _range: HiloRangeValue;
 
-    /**
-     * @deprecated Will be removed in next major version of the product. Use field Range.ServerTag instead.
-     * @private
-     */
-    private _serverTag: string = null;
 
     private _nextRangeTask: Lazy<void>;
 

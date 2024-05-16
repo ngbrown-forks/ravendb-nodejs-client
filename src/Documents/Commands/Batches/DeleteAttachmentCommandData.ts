@@ -4,10 +4,10 @@ import { throwError } from "../../../Exceptions/index.js";
 import { DocumentConventions } from "../../Conventions/DocumentConventions.js";
 
 export class DeleteAttachmentCommandData implements ICommandData {
-    public id: string;
-    public name: string;
-    public changeVector: string;
-    public type: CommandType = "AttachmentDELETE";
+    public readonly id: string;
+    public readonly name: string;
+    public readonly changeVector: string;
+    public readonly type: CommandType = "AttachmentDELETE";
 
     public constructor(documentId: string, name: string, changeVector: string) {
         if (StringUtil.isNullOrWhitespace(documentId)) {

@@ -157,7 +157,7 @@ export class RequestExecutor implements IDisposable {
 
     private static _backwardCompatibilityFailureCheckOperation = new GetStatisticsOperation("failure=check");
     private static readonly _failureCheckOperation = new DatabaseHealthCheckOperation();
-    private static _useOldFailureCheckOperation = new Set<string>();
+    private static readonly _useOldFailureCheckOperation = new Set<string>();
 
     private _failedNodesTimers: Map<ServerNode, NodeStatus> = new Map();
     protected _databaseName: string;

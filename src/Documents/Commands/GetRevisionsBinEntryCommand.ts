@@ -9,22 +9,38 @@ import { DocumentConventions } from "../Conventions/DocumentConventions.js";
 
 export class GetRevisionsBinEntryCommand extends RavenCommand<IRavenArrayResult> {
     private readonly _conventions: DocumentConventions;
-    private readonly _etag: number;
+    private readonly _start: number;
     private readonly _pageSize: number;
+    private readonly _continuationToken: string;
 
-    public constructor(conventions: DocumentConventions, etag: number, pageSize: number) {
+    public constructor(conventions: DocumentConventions, continuationToken: string)
+    public constructor(conventions: DocumentConventions, start: number, pageSize: number)
+    public constructor(conventions: DocumentConventions, startOrContinuationToken: number | string, pageSize?: number) {
         super();
 
         this._conventions = conventions;
-        this._etag = etag;
+
+        if (TypeUtil.isString(startOrContinuationToken)) {
+            this._continuationToken = startOrContinuationToken;
+            this._start = 0;
+            this._pageSize = null;
+            return;
+        }
+
+
+        this._start = startOrContinuationToken;
         this._pageSize = pageSize;
     }
 
     public createRequest(node: ServerNode): HttpRequestParameters {
-        let uri = node.url + "/databases/" + node.database + "/revisions/bin?etag=" + this._etag;
+        let uri = node.url + "/databases/" + node.database + "/revisions/bin?start=" + this._start;
 
         if (TypeUtil.isNullOrUndefined(this._pageSize)) {
             uri += "&pageSize=" + this._pageSize;
+        }
+
+        if (this._continuationToken) {
+            uri += "&continuationToken=" + this._continuationToken;
         }
 
         return {

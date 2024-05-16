@@ -11,5 +11,6 @@ export interface RestoreBackupConfigurationBase {
 
     type: RestoreType;
 
+    shardRestoreSettings: ShardedRestoreSettings;
     backupEncryptionSettings: BackupEncryptionSettings;
 }

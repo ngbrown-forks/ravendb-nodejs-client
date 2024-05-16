@@ -1,5 +1,6 @@
+import { IOperationProgress } from "./IOperationProgress.js";
 
-export interface BulkInsertProgress {
+export interface BulkInsertProgress extends IOperationProgress {
     total: number;
     batchCount: number;
     lastProcessedId: string;

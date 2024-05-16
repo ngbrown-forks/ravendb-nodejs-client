@@ -43,10 +43,10 @@ export interface ICommandData {
 
 export class DeleteCommandData implements ICommandData {
 
-    public id: string;
+    public readonly id: string;
     public name: string;
-    public changeVector: string;
-    public originalChangeVector: string;
+    public readonly changeVector: string;
+    public readonly originalChangeVector: string;
     public document: any;
 
     public get type(): CommandType {

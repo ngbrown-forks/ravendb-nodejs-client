@@ -15,7 +15,7 @@ import {
     ConfigureRevisionsOperation,
     ConfigureRevisionsOperationResult
 } from "../../src/Documents/Operations/Revisions/ConfigureRevisionsOperation.js";
-import { Dog, Entity, Genre, Movie, Rating, User } from "../Assets/Graph.js";
+import { Dog, Entity, Genre, Movie, Rating, User } from "../Assets/Samples";
 import { RequestExecutor } from "../../src/Http/RequestExecutor.js";
 import { Stopwatch } from "../../src/Utility/Stopwatch.js";
 import { delay, wrapWithTimeout } from "../../src/Utility/PromiseUtil.js";

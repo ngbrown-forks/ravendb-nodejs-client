@@ -5,7 +5,6 @@ export class QueryStatistics {
     public isStale: boolean;
     public durationInMs: number;
     public totalResults: number;
-    public longTotalResults: number;
     public skippedResults: number;
     public scannedResults: number;
     public timestamp: Date;
@@ -15,12 +14,12 @@ export class QueryStatistics {
     public resultEtag: number;
 
     public nodeTag: string;
+    public requestedByUser: boolean;
 
     public updateQueryStats(qr: QueryResult): void {
         this.isStale = qr.isStale;
         this.durationInMs = qr.durationInMs;
         this.totalResults = qr.totalResults;
-        this.longTotalResults = qr.longTotalResults;
         this.skippedResults = qr.skippedResults;
         this.scannedResults = qr.scannedResults;
         this.timestamp = qr.indexTimestamp;
@@ -29,5 +28,6 @@ export class QueryStatistics {
         this.lastQueryTime = qr.lastQueryTime;
         this.resultEtag = qr.resultEtag;
         this.nodeTag = qr.nodeTag;
+        this.requestedByUser = qr.requestedByUser;
     }
 }

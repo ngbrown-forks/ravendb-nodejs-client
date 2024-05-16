@@ -13,7 +13,7 @@ import { ObjectUtil } from "../../../src/Utility/ObjectUtil.js";
 // skipped for the time being
 // subscriptions are not working with server version 4.1
 // due to RavenDB-12127
-(RavenTestContext.is60Server ? describe.skip : describe)("RevisionsSubscriptionsTest", function () {
+describe("RevisionsSubscriptionsTest", function () {
     this.timeout(5 * 10 * 1000);
 
     let store: IDocumentStore;

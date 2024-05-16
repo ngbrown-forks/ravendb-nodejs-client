@@ -62,7 +62,8 @@ export interface OngoingTaskSqlEtlDetails extends OngoingTask {
 }
 
 export type OngoingTaskState =
-    "Enabled"
+    "None"
+    | "Enabled"
     | "Disabled"
     | "PartiallyEnabled";
 
@@ -72,6 +73,8 @@ export interface OngoingTaskSubscription extends OngoingTask {
     subscriptionName: string;
     subscriptionId: number;
     changeVectorForNextBatchStartingPoint: string;
+    changeVectorForNextBatchStartingPointPerShard: Record<string, string>;
+    archivedDataProcessingBehavior: ArchivedDataProcessingBehavior;
     lastBatchAckTime: Date;
     disabled: boolean;
     lastClientConnectionTime: Date;

@@ -10,4 +10,6 @@ export interface SubscriptionState {
     lastClientConnectionTime: string;
     raftCommandIndex: number;
     disabled: boolean;
+    archivedDataProcessingBehavior: ArchivedDataProcessingBehavior;
+    shardingState: SubscriptionShardingState;
 }

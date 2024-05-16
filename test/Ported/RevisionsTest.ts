@@ -22,7 +22,7 @@ import { delay } from "../../src/Utility/PromiseUtil.js";
 import { ObjectUtil } from "../../src/Utility/ObjectUtil.js";
 
 
-(RavenTestContext.is60Server ? describe.skip : describe)("RevisionsTest", function () {
+(RavenTestContext.isPullRequest ? describe.skip : describe)("RevisionsTest", function () {
 
     let store: IDocumentStore;
 

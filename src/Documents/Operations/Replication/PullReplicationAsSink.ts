@@ -9,9 +9,4 @@ export interface PullReplicationAsSink extends ExternalReplicationBase {
     certificatePassword?: string;
     accessName?: string;
     hubName?: string;
-
-    /**
-     * @deprecated Use HubName instead
-     */
-    hubDefinitionName?: string;
 }

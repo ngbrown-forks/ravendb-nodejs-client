@@ -5,7 +5,7 @@ import { AnalyzerDefinition } from "../../../src/Documents/Indexes/Analysis/Anal
 import { DeleteServerWideAnalyzerOperation } from "../../../src/ServerWide/Operations/Analyzers/DeleteServerWideAnalyzerOperation.js";
 import { PutServerWideAnalyzersOperation } from "../../../src/ServerWide/Operations/Analyzers/PutServerWideAnalyzersOperation.js";
 
-(RavenTestContext.is60Server ? describe.skip : describe)("RavenDB_16328_AnalyzersTest", function () {
+describe("RavenDB_16328_AnalyzersTest", function () {
 
     let store: IDocumentStore;
 

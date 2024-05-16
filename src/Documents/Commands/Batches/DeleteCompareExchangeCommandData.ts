@@ -3,7 +3,7 @@ import { DocumentConventions } from "../../Conventions/DocumentConventions.js";
 
 export class DeleteCompareExchangeCommandData implements ICommandData {
     private readonly _index: number;
-    public id: string;
+    public readonly id: string;
     public changeVector: string;
     public name: string;
 

@@ -8,4 +8,5 @@ export interface AutoIndexDefinition extends IndexDefinitionBase {
     collection: string;
     mapFields: Record<string, AutoIndexFieldOptions>;
     groupByFields: Record<string, AutoIndexFieldOptions>;
+    groupByFieldNames: string[];
 }

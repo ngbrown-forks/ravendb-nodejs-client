@@ -33,6 +33,8 @@ export const CONSTANTS = {
             CHANGE_VECTOR: "@change-vector",
             EXPIRES: "@expires",
             REFRESH: "@refresh",
+            ARCHIVE_AT: "@archive-at",
+            ARCHIVED: "@archived",
             ALL_DOCUMENTS_COLLECTION: "@all_docs",
             EMPTY_COLLECTION: "@empty",
             NESTED_OBJECT_TYPES: "@nested-object-types",
@@ -43,6 +45,10 @@ export const CONSTANTS = {
             REVISION_TIME_SERIES: "@timeseries-snapshot",
             IGNORE_CASE_TRANSFORM_REGEX:
                 /^@metadata(\.(@collection|@projection|@id|@conflict|@flags|Raven-Node-Type|@index-score|@last-modified|@change-vector|@expires|@nested-object-types(\.\w+)?))?$/
+        },
+
+        Querying: {
+            SHARD_CONTEXT_PARAMETER_NAME: "__shardContext",
         },
 
         PeriodicBackup: {
@@ -62,6 +68,11 @@ export const CONSTANTS = {
     }
 } as const;
 
+export const QUERY_STRING = {
+    NODE_TAG: "nodeTag",
+    SHARD_NUMBER: "shardNumber"
+} as const;
+
 export const HEADERS = {
     REQUEST_TIME: "Raven-Request-Time",
     REFRESH_TOPOLOGY: "Refresh-Topology",
@@ -73,12 +84,25 @@ export const HEADERS = {
     CLIENT_VERSION: "Raven-Client-Version",
     SERVER_VERSION: "Raven-Server-Version",
     ETAG: "ETag",
+    IF_MATCH: "If-Match",
     IF_NONE_MATCH: "If-None-Match",
     TRANSFER_ENCODING: "Transfer-Encoding",
     CONTENT_ENCODING: "Content-Encoding",
+    ACCEPT_ENCODING: "Accept-Encoding",
+    CONTENT_DISPOSITION: "Content-Disposition",
+    CONTENT_TYPE: "Content-Type",
     CONTENT_LENGTH: "Content-Length",
     INCREMENTAL_TIME_SERIES_PREFIX: "INC:",
+    ORIGIN: "Origin",
+    SHARDED: "Sharded",
+    ATTACHMENT_HASH: "Attachment-Hash",
+    ATTACHMENT_SIZE: "Attachment-Size",
     DATABASE_MISSING: "Database-Missing"
+} as const;
+
+export const ENCODINGS = {
+    GZIP: "gzip",
+    ZSTD: "zstd"
 } as const;
 
 export const COUNTERS = {
@@ -107,6 +131,3 @@ export const IDENTITIES = {
     DEFAULT_SEPARATOR: "/"
 } as const;
 
-export const OBSOLETE = {
-    GRAPH_API: "Graph API will be removed in next major version of the product."
-}

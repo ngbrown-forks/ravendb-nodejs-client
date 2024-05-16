@@ -29,6 +29,7 @@ export interface IndexStats {
     lockMode: IndexLockMode;
     type: IndexType;
     searchEngineType: SearchEngineType;
+    archivedDataProcessingBehavior: ArchivedDataProcessingBehavior;
     status: IndexRunningStatus;
     entriesCount: number;
     errorsCount: number;

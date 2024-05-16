@@ -14,7 +14,7 @@ import { User } from "../Assets/Entities.js";
 import { UnregisterReplicationHubAccessOperation } from "../../src/Documents/Operations/Replication/UnregisterReplicationHubAccessOperation.js";
 import { GetReplicationHubAccessOperation } from "../../src/Documents/Operations/Replication/GetReplicationHubAccessOperation.js";
 
-(RavenTestContext.is60Server || RavenTestContext.isPullRequest ? describe.skip : describe)("FilteredReplicationTest", function () {
+(RavenTestContext.isPullRequest ? describe.skip : describe)("FilteredReplicationTest", function () {
 
     let store: IDocumentStore;
     let replication: ReplicationTestContext;

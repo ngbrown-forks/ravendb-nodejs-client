@@ -6,7 +6,7 @@ import { RevisionsCollectionConfiguration } from "../../../src/Documents/Operati
 import { ConfigureRevisionsOperation } from "../../../src/Documents/Operations/Revisions/ConfigureRevisionsOperation.js";
 import { assertThat } from "../../Utils/AssertExtensions.js";
 
-(RavenTestContext.is60Server || RavenTestContext.isPullRequest ? describe.skip : describe)("RavenDB_13762", function () {
+(RavenTestContext.isPullRequest ? describe.skip : describe)("RavenDB_13762", function () {
 
     let store: IDocumentStore;
 

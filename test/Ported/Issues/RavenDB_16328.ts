@@ -6,7 +6,7 @@ import { assertThat, assertThrows } from "../../Utils/AssertExtensions.js";
 import { DeleteServerWideSorterOperation } from "../../../src/ServerWide/Operations/Sorters/DeleteServerWideSorterOperation.js";
 import { sorterCode } from "./RavenDB_8355.js";
 
-(RavenTestContext.is60Server ? describe.skip : describe)("RavenDB_16328", function () {
+describe("RavenDB_16328", function () {
 
     let store: IDocumentStore;
 
