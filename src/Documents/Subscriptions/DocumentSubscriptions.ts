@@ -25,6 +25,8 @@ import { TimeSeriesIncludesToken } from "../Session/Tokens/TimeSeriesIncludesTok
 import { QueryToken } from "../Session/Tokens/QueryToken.js";
 import { EOL } from "../../Utility/OsUtil.js";
 
+const INCLUDE_REVISIONS_RQL = " (Revisions = true)";
+
 export class DocumentSubscriptions implements IDisposable {
     private readonly _store: DocumentStore;
     private readonly _subscriptions: Map<IDisposable, boolean> = new Map();
@@ -124,7 +126,7 @@ export class DocumentSubscriptions implements IDisposable {
             queryBuilder.append("'");
 
             if (revisions) {
-                queryBuilder.append(" (Revisions = true)");
+                queryBuilder.append(INCLUDE_REVISIONS_RQL);
             }
 
             queryBuilder.append(" as doc");

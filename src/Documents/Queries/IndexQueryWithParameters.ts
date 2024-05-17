@@ -7,4 +7,6 @@ export abstract class IndexQueryWithParameters<T> extends IndexQueryBase<T> {
      */
     public skipDuplicateChecking: boolean;
 
+    public skipStatistics: boolean;
+
 }

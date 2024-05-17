@@ -48,16 +48,8 @@ export function writeIndexQuery(conventions: DocumentConventions, indexQuery: In
         Query: indexQuery.query
     } as ServerCasing<IndexQuery>;
 
-    if (indexQuery.pageSizeSet && indexQuery.pageSize >= 0) {
-        result.PageSize = indexQuery.pageSize;
-    }
-
     if (indexQuery.waitForNonStaleResults) {
         result.WaitForNonStaleResults = indexQuery.waitForNonStaleResults;
-    }
-
-    if (indexQuery.start > 0) {
-        result.Start = indexQuery.start;
     }
 
     if (!TypeUtil.isNullOrUndefined(indexQuery.waitForNonStaleResultsTimeout)) {

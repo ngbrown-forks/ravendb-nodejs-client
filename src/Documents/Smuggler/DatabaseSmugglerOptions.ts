@@ -23,6 +23,7 @@ export class DatabaseSmugglerOptions implements IDatabaseSmugglerOptions {
     public operateOnDatabaseRecordType: DatabaseRecordItemType[];
     public includeExpired: boolean;
     public includeArtificial: boolean;
+    public includeArchived: boolean;
     public removeAnalyzers: boolean;
     public transformScript: string;
     public maxStepsForTransformScript: number;
@@ -40,6 +41,7 @@ export class DatabaseSmugglerOptions implements IDatabaseSmugglerOptions {
         this.operateOnDatabaseRecordType = [...DatabaseSmugglerOptions.DEFAULT_OPERATE_ON_DATABASE_RECORD_TYPES];
         this.maxStepsForTransformScript = DatabaseSmugglerOptions.DEFAULT_MAX_STEPS_FOR_TRANSFORM_SCRIPT;
         this.includeExpired = true;
+        this.includeArchived = true;
         this.collections = [];
     }
 }

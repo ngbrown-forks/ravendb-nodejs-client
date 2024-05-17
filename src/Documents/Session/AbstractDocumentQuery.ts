@@ -76,7 +76,6 @@ import { QueryHighlightings } from "../Queries/Highlighting/QueryHighlightings.j
 import { ExplanationOptions } from "../Queries/Explanation/ExplanationOptions.js";
 import { CountersByDocId } from "./CounterInternalTypes.js";
 import { IncludeBuilderBase } from "./Loaders/IncludeBuilderBase.js";
-import { GraphQueryToken } from "./Tokens/GraphQueryToken.js";
 import { IncludesUtil } from "./IncludesUtil.js";
 import { TimeSeriesIncludesToken } from "./Tokens/TimeSeriesIncludesToken.js";
 import { CompareExchangeValueIncludesToken } from "./Tokens/CompareExchangeValueIncludesToken.js";
@@ -159,8 +158,6 @@ export abstract class AbstractDocumentQuery<T extends object, TSelf extends Abst
     protected _withTokens: QueryToken[] = [];
 
     protected _filterTokens: QueryToken[] = [];
-
-    protected _graphRawQuery: QueryToken;
 
     protected _start: number;
 
@@ -452,7 +449,6 @@ export abstract class AbstractDocumentQuery<T extends object, TSelf extends Abst
      * This shouldn't be used outside of unit tests unless you are well aware of the implications
      */
     public _waitForNonStaleResults(waitTimeout?: number): void {
-        //Graph queries may set this property multiple times
         if (this._theWaitForNonStaleResults) {
             if (!this._timeout || waitTimeout && this._timeout < waitTimeout) {
                 this._timeout = waitTimeout;
@@ -686,10 +682,6 @@ export abstract class AbstractDocumentQuery<T extends object, TSelf extends Abst
                 "RawQuery was called, cannot modify this query by calling on "
                 + "operations that would modify the query (such as Where, Select, OrderBy, GroupBy, etc)");
         }
-    }
-
-    public _graphQuery(query: string) {
-        this._graphRawQuery = new GraphQueryToken(query);
     }
 
     public addParameter(name: string, value: any): void {
@@ -1541,12 +1533,7 @@ export abstract class AbstractDocumentQuery<T extends object, TSelf extends Abst
 
         const queryText = new StringBuilder();
         this._buildDeclare(queryText);
-        if (this._graphRawQuery) {
-            this._buildWith(queryText);
-            this._buildGraphQuery(queryText);
-        } else {
-            this._buildFrom(queryText);
-        }
+        this._buildFrom(queryText);
         this._buildGroupBy(queryText);
         this._buildWhere(queryText);
         this._buildOrderBy(queryText);
@@ -1561,17 +1548,6 @@ export abstract class AbstractDocumentQuery<T extends object, TSelf extends Abst
         }
 
         return queryText.toString();
-    }
-
-    private _buildGraphQuery(queryText: StringBuilder) {
-        this._graphRawQuery.writeTo(queryText);
-    }
-
-    private _buildWith(queryText: StringBuilder) {
-        for (const withToken of this._withTokens) {
-            withToken.writeTo(queryText);
-            queryText.append(EOL);
-        }
     }
 
     private _buildPagination(queryText: StringBuilder) {
@@ -2427,10 +2403,6 @@ export abstract class AbstractDocumentQuery<T extends object, TSelf extends Abst
 
     public getQueryType(): DocumentType<T> {
         return this._clazz;
-    }
-
-    public getGraphRawQuery(): QueryToken {
-        return this._graphRawQuery;
     }
 
     public addFromAliasToWhereTokens(fromAlias: string): void {

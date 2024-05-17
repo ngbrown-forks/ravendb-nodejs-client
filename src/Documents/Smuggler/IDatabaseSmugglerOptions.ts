@@ -4,6 +4,8 @@ import { DatabaseRecordItemType } from "./DatabaseRecordItemType.js";
 export interface IDatabaseSmugglerOptions {
     operateOnTypes: DatabaseItemType[];
     includeExpired: boolean;
+    includeArtificial: boolean;
+    includeArchived: boolean;
     removeAnalyzers: boolean;
     transformScript: string;
     maxStepsForTransformScript: number;

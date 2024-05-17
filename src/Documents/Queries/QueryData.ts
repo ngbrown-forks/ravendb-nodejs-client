@@ -1,6 +1,7 @@
 import { DeclareToken } from "../Session/Tokens/DeclareToken.js";
 import { LoadToken } from "../Session/Tokens/LoadToken.js";
 import { ProjectionBehavior } from "./ProjectionBehavior.js";
+import { QueryStatistics } from "../Session/QueryStatistics.js";
 
 export class QueryData {
 
@@ -12,6 +13,7 @@ export class QueryData {
     public isCustomFunction: boolean;
     public mapReduce: boolean;
     public isProjectInto: boolean;
+    public queryStatistics: QueryStatistics;
     public projectionBehavior: ProjectionBehavior;
 
     public constructor(fields: string[], projections: string[]);
@@ -40,6 +42,10 @@ export class QueryData {
 
     public static customFunction(alias: string, func: string): QueryData {
         return new QueryData([func], [], alias, null, null, true);
+    }
+
+    public static throwProjectionIsAlreadyDone() {
+        throw new Error("Projection is already done. You should not project your result twice.");
     }
 
 }

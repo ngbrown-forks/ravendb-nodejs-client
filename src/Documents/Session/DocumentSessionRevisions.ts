@@ -14,6 +14,7 @@ import { LazyRevisionOperations } from "./Operations/Lazy/LazyRevisionOperations
 import { DocumentSession } from "./DocumentSession.js";
 import { GetRevisionsCountOperation } from "./Operations/GetRevisionsCountOperation.js";
 import { ILazyRevisionsOperations } from "./ILazyRevisionsOperations.js";
+import { IMetadataDictionary } from "./IMetadataDictionary.js";
 
 export class DocumentSessionRevisions extends DocumentSessionRevisionsBase implements IRevisionsSessionOperations {
 
@@ -49,9 +50,9 @@ export class DocumentSessionRevisions extends DocumentSessionRevisionsBase imple
         return operation.getRevisionsFor(options.documentType);
     }
 
-    public async getMetadataFor(id: string): Promise<MetadataAsDictionary[]>;
-    public async getMetadataFor(id: string, options: SessionRevisionsMetadataOptions): Promise<MetadataAsDictionary[]>;
-    public async getMetadataFor(id: string, options?: SessionRevisionsMetadataOptions): Promise<MetadataAsDictionary[]> {
+    public async getMetadataFor(id: string): Promise<IMetadataDictionary[]>;
+    public async getMetadataFor(id: string, options: SessionRevisionsMetadataOptions): Promise<IMetadataDictionary[]>;
+    public async getMetadataFor(id: string, options?: SessionRevisionsMetadataOptions): Promise<IMetadataDictionary[]> {
         options = Object.assign({
             pageSize: 25,
             start: 0

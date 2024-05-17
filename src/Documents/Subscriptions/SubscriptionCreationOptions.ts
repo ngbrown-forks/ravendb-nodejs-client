@@ -7,6 +7,8 @@ export interface SubscriptionCreationOptions {
     includes?: (builder: ISubscriptionIncludeBuilder) => void;
     changeVector?: string;
     mentorNode?: string;
+    pinToMentorNode?: boolean;
+    archivedDataProcessingBehavior: ArchivedDataProcessingBehavior;
     disabled?: boolean;
     documentType?: DocumentType;
 }
