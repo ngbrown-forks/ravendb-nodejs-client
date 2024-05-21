@@ -566,7 +566,7 @@ export { TimeSeriesCollectionConfiguration } from "./Documents/Operations/TimeSe
 export { TimeSeriesConfiguration } from "./Documents/Operations/TimeSeries/TimeSeriesConfiguration";
 export { TimeSeriesDetails } from "./Documents/Operations/TimeSeries/TimeSeriesDetails";
 export { TimeSeriesItemDetail } from "./Documents/Operations/TimeSeries/TimeSeriesItemDetail";
-export { TimeSeriesOperation } from "./Documents/Operations/TimeSeries/TimeSeriesOperation";
+export * from "./Documents/Operations/TimeSeries/TimeSeriesOperation";
 export { TimeSeriesPolicy } from "./Documents/Operations/TimeSeries/TimeSeriesPolicy";
 export { TimeSeriesRange } from "./Documents/Operations/TimeSeries/TimeSeriesRange";
 export { TimeSeriesCountRange } from "./Documents/Operations/TimeSeries/TimeSeriesCountRange";
