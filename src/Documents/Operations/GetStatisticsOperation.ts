@@ -36,6 +36,8 @@ export class GetStatisticsCommand extends RavenCommand<DatabaseStatistics> {
         super();
         this._debugTag = debugTag;
         this._selectedNodeTag = nodeTag;
+
+        this.timeout = 15_000;
     }
 
     public createRequest(node: ServerNode): HttpRequestParameters {

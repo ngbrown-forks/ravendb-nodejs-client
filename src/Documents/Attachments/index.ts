@@ -12,6 +12,10 @@ export interface AttachmentName {
     size: number;
 }
 
+export interface AttachmentNameWithCount extends AttachmentName {
+    count: number;
+}
+
 export interface IAttachmentObject extends CapitalizeType<AttachmentName> {
     getContentAsString(): string;
     getContentAsString(encoding: string): string;

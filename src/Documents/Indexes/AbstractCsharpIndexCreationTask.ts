@@ -1,6 +1,7 @@
 import { DocumentConventions } from "../Conventions/DocumentConventions.js";
 import { IndexDefinition, IndexDefinitionBuilder } from "./IndexDefinition.js";
 import { AbstractGenericIndexCreationTask } from "./AbstractGenericIndexCreationTask.js";
+import { INDEXES } from "../../Constants.js";
 
 /**
  * Base class for creating indexes using C# code in string.
@@ -48,6 +49,12 @@ export abstract class AbstractCsharpIndexCreationTask extends AbstractGenericInd
         indexDefinitionBuilder.priority = this.priority;
         indexDefinitionBuilder.state = this.state;
         indexDefinitionBuilder.deploymentMode = this.deploymentMode;
+        indexDefinitionBuilder.compoundFieldsStrings = this.compoundFieldsStrings;
+        indexDefinitionBuilder.archivedDataProcessingBehavior = this.archivedDataProcessingBehavior;
+
+        if (this.searchEngineType && this.searchEngineType !== "None") {
+            indexDefinitionBuilder.configuration[INDEXES.INDEXING_STATIC_SEARCH_ENGINE_TYPE] = this.searchEngineType;
+        }
 
         return indexDefinitionBuilder.toIndexDefinition(this.conventions);
     }

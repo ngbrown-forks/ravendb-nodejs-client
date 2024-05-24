@@ -9,6 +9,9 @@ import { RetentionPolicy } from "../Backups/RetentionPolicy.js";
 import { ElasticSearchEtlConfiguration } from "../Etl/ElasticSearch/ElasticSearchEtlConfiguration.js";
 import { OlapEtlConfiguration } from "../Etl/Olap/OlapEtlConfiguration.js";
 import { QueueEtlConfiguration } from "../Etl/Queue/QueueEtlConfiguration.js";
+import { ArchivedDataProcessingBehavior } from "../../DataArchival/ArchivedDataProcessingBehavior.js";
+import { QueueBrokerType } from "../Etl/ConnectionString.js";
+import { QueueSinkConfiguration } from "../QueueSink/QueueSinkConfiguration.js";
 
 export interface OngoingTask {
     taskId: number;
@@ -41,11 +44,16 @@ export type OngoingTaskConnectionStatus =
     | "Reconnect"
     | "NotOnThisNode";
 
-export interface OngoingTaskRavenEtlDetails extends OngoingTask {
+
+export interface OngoingTaskRavenEtl extends OngoingTask {
     taskType: "RavenEtl",
     destinationUrl: string;
+    destinationDatabase: string;
+    connectionStringName: string;
+    topologyDiscoveryUrls: string[];
     configuration: RavenEtlConfiguration;
 }
+
 
 export interface OngoingTaskReplication extends OngoingTask {
     taskType: "Replication",
@@ -56,8 +64,27 @@ export interface OngoingTaskReplication extends OngoingTask {
     delayReplicationFor: string;
 }
 
-export interface OngoingTaskSqlEtlDetails extends OngoingTask {
+export interface OngoingTaskElasticSearchEtl extends OngoingTask {
+    taskType: "ElasticSearchEtl",
+    connectionStringName: string;
+    nodesUrls: string[];
+    configuration: ElasticSearchEtlConfiguration;
+}
+
+export interface OngoingTaskQueueSink extends OngoingTask {
+    taskType: "QueueSink",
+    brokerType: QueueBrokerType;
+    connectionStringName: string;
+    url: string;
+    configuration: QueueSinkConfiguration;
+}
+
+export interface OngoingTaskSqlEtl extends OngoingTask {
     taskType: "SqlEtl",
+    destinationServer: string;
+    destinationDatabase: string;
+    connectionStringName: string;
+    connectionStringDefined: boolean;
     configuration: SqlEtlConfiguration;
 }
 
@@ -80,16 +107,17 @@ export interface OngoingTaskSubscription extends OngoingTask {
     lastClientConnectionTime: Date;
 }
 
-export interface OngoingTaskElasticSearchEtlDetails extends OngoingTask {
-    taskType: "ElasticSearchEtl",
-    configuration: ElasticSearchEtlConfiguration;
-}
-
-export interface OngoingTaskOlapEtlDetails extends OngoingTask {
+export interface OngoingTaskOlapEtl extends OngoingTask {
     taskType: "OlapEtl",
+    connectionStringName: string;
+    destination: string;
     configuration: OlapEtlConfiguration;
 }
 
-export interface OngoingTaskQueueEtlDetails extends OngoingTask {
+
+export interface OngoingTaskQueueEtl extends OngoingTask {
+    brokerType: QueueBrokerType;
+    connectionStringName: string;
+    url: string;
     configuration: QueueEtlConfiguration;
 }
