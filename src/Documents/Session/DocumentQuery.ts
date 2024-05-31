@@ -56,6 +56,7 @@ import { IAbstractDocumentQueryImpl } from "./IAbstractDocumentQueryImpl.js";
 import { ProjectionBehavior } from "../Queries/ProjectionBehavior.js";
 import { IFilterFactory } from "../Queries/IFilterFactory.js";
 import { FilterFactory } from "../Queries/FilterFactory.js";
+import { IQueryShardedContextBuilder } from "./Querying/Sharding/IQueryShardedContextBuilder.js";
 
 export const NESTED_OBJECT_TYPES_PROJECTION_FIELD = "__PROJECTED_NESTED_OBJECT_TYPES__";
 
@@ -887,6 +888,11 @@ export class DocumentQuery<T extends object>
             mode.dispose();
         }
 
+        return this;
+    }
+
+    shardContext(action: (buidler: IQueryShardedContextBuilder) => void): IDocumentQuery<T> {
+        this._shardContext(action);
         return this;
     }
 }

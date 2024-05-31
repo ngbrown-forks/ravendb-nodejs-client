@@ -88,6 +88,7 @@ import { IAbstractDocumentQueryImpl } from "./IAbstractDocumentQueryImpl.js";
 import { RevisionIncludesToken } from "./Tokens/RevisionIncludesToken.js";
 import { IDisposable } from "../../Types/Contracts.js";
 import { EOL } from "../../Utility/OsUtil.js";
+import { IQueryShardedContextBuilder } from "./Querying/Sharding/IQueryShardedContextBuilder.js";
 
 /**
  * A query against a Raven index

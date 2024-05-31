@@ -60,6 +60,10 @@ export abstract class RavenCommand<TResult> {
         return this._selectedNodeTag;
     }
 
+    public set selectedNodeTag(nodeTag: string) {
+        this._selectedNodeTag = nodeTag;
+    }
+
     public get numberOfAttempts(): number {
         return this._numberOfAttempts;
     }

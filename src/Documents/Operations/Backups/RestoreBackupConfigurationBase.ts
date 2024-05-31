@@ -1,5 +1,6 @@
 import { BackupEncryptionSettings } from "./BackupEncryptionSettings.js";
 import { RestoreType } from "./RestoreType.js";
+import { ShardedRestoreSettings } from "./Sharding/ShardedRestoreSettings.js";
 
 export interface RestoreBackupConfigurationBase {
     databaseName: string;

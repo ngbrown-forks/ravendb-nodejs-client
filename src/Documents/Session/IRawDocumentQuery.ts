@@ -3,9 +3,10 @@ import { IDocumentQueryBaseSingle } from "./IDocumentQueryBaseSingle.js";
 import { IEnumerableQuery } from "./IEnumerableQuery.js";
 import { FacetResult } from "../Queries/Facets/index.js";
 import { ProjectionBehavior } from "../Queries/ProjectionBehavior.js";
+import { IPagingDocumentQueryBase } from "./IPagingDocumentQueryBase.js";
 
 export interface IRawDocumentQuery<T extends object>
-    extends IQueryBase<T, IRawDocumentQuery<T>>, IDocumentQueryBaseSingle<T>, IEnumerableQuery<T> {
+    extends IQueryBase<T, IRawDocumentQuery<T>>, IPagingDocumentQueryBase<T, IRawDocumentQuery<T>>, IDocumentQueryBaseSingle<T>, IEnumerableQuery<T> {
 
     /**
      * Add a named parameter to the query

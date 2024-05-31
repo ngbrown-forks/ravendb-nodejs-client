@@ -13,6 +13,7 @@ import { ExpirationConfiguration } from "../../../Documents/Operations/Expiratio
 import { TimeSeriesConfiguration } from "../../../Documents/Operations/TimeSeries/TimeSeriesConfiguration.js";
 import { IEtlConfigurationBuilder } from "./IEtlConfigurationBuilder.js";
 import { IIntegrationConfigurationBuilder } from "./IIntegrationConfigurationBuilder.js";
+import { IReplicationConfigurationBuilder } from "./IReplicationConfigurationBuilder.js";
 
 
 export interface IDatabaseRecordBuilderBase {
@@ -25,9 +26,10 @@ export interface IDatabaseRecordBuilderBase {
     withAnalyzers(...analyzerDefinitions: AnalyzerDefinition[]): this;
     withIndexes(...indexDefinitions: IndexDefinition[]): this;
     withSettings(settings: Record<string, string>): this;
-    configureRevisions(revisions: RevisionsConfiguration): this;
+    configureRevisions(configuration: RevisionsConfiguration): this;
     withEtls(builder: (builder: IEtlConfigurationBuilder) => void): this;
     withBackups(builder: (builder: IBackupConfigurationBuilder) => void): this;
+    withReplication(builder: (builder: IReplicationConfigurationBuilder) => void): this;
     withConnectionStrings(builder : (builder: IConnectionStringConfigurationBuilder) => void): this;
     configureClient(configuration: ClientConfiguration): this;
     configureStudio(configuration: StudioConfiguration): this;

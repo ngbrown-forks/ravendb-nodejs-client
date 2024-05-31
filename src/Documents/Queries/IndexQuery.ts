@@ -32,9 +32,8 @@ export class IndexQuery extends IndexQueryWithParameters<IndexQueryParameters> {
             hasher.write(this.query, mapper);
             hasher.write(this.waitForNonStaleResults);
             hasher.write(this.skipDuplicateChecking);
+            hasher.write(this.skipStatistics);
             hasher.write(this.waitForNonStaleResultsTimeout || 0);
-            hasher.write(this.start);
-            hasher.write(this.pageSize);
             hasher.write(this.queryParameters, mapper);
             return hasher.getHash();
         } catch (err) {

@@ -30,6 +30,9 @@ import { OlapEtlConfiguration } from "../Documents/Operations/Etl/Olap/OlapEtlCo
 import { IntegrationConfigurations } from "./Operations/Integrations/PostgreSql/IntegrationConfigurations.js";
 import { ElasticSearchEtlConfiguration } from "../Documents/Operations/Etl/ElasticSearch/ElasticSearchEtlConfiguration.js";
 import { QueueEtlConfiguration } from "../Documents/Operations/Etl/Queue/QueueEtlConfiguration.js";
+import { DataArchivalConfiguration } from "../Documents/Operations/DataArchival/DataArchivalConfiguration.js";
+import { QueueSinkConfiguration } from "../Documents/Operations/QueueSink/QueueSinkConfiguration.js";
+import { ShardingConfiguration } from "./Sharding/ShardingConfiguration.js";
 
 export interface ScriptResolver {
     script: string;
@@ -51,6 +54,7 @@ export interface DatabaseRecord {
     databaseState?: DatabaseStateStatus;
     lockMode?: DatabaseLockMode;
     topology?: DatabaseTopology;
+    sharding?: ShardingConfiguration;
     conflictSolverConfig?: ConflictSolver;
     documentsCompression?: DocumentsCompressionConfiguration;
     sorters?: { [key: string]: SorterDefinition };
@@ -64,6 +68,7 @@ export interface DatabaseRecord {
     revisionsForConflicts?: RevisionsCollectionConfiguration;
     expiration?: ExpirationConfiguration;
     refresh?: RefreshConfiguration;
+    dataArchival?: DataArchivalConfiguration;
     integrations?: IntegrationConfigurations;
     periodicBackups?: PeriodicBackupConfiguration[];
     externalReplications?: ExternalReplication[];
@@ -79,6 +84,7 @@ export interface DatabaseRecord {
     elasticSearchEtls?: ElasticSearchEtlConfiguration[];
     olapEtls?: OlapEtlConfiguration[];
     queueEtls?: QueueEtlConfiguration[];
+    queueSinks?: QueueSinkConfiguration[];
     client?: ClientConfiguration;
     studio?: StudioConfiguration;
     truncatedClusterTransactionIndex?: number;

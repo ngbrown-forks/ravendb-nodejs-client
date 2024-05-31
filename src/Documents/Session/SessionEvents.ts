@@ -239,9 +239,11 @@ export class FailedRequestEventArgs {
 
 export class TopologyUpdatedEventArgs {
     public topology: Topology;
+    public reason: string;
 
-    public constructor(topology: Topology) {
+    public constructor(topology: Topology, reason: string) {
         this.topology = topology;
+        this.reason = reason;
     }
 }
 

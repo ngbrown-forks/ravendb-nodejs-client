@@ -33,19 +33,9 @@ export interface IQueryBase<T, TSelf extends IQueryBase<T, TSelf>> extends Query
     timings(timings: ValueCallback<QueryTimings>): TSelf;
 
     /**
-     * Skips the specified count.
-     */
-    skip(count: number): TSelf;
-
-    /**
      * Provide statistics about the query, such as total count of matching records
      */
     statistics(statsCallback: (stats: QueryStatistics) => void): TSelf;
-
-    /**
-     * Takes the specified count.
-     */
-    take(count: number): TSelf;
 
     /**
      * Select the default operator to use for TSelf query

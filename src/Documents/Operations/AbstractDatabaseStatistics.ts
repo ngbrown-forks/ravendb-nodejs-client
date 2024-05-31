@@ -1,3 +1,4 @@
+import { EssentialIndexInformation } from "./EssentialIndexInformation.js";
 
 export interface AbstractDatabaseStatistics<TIndexInformation extends EssentialIndexInformation> {
     countOfIndexes: number;

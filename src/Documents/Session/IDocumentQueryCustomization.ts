@@ -5,6 +5,7 @@ import { ValueCallback } from "../../Types/Callbacks.js";
 import { QueryTimings } from "../Queries/Timings/QueryTimings.js";
 import { ProjectionBehavior } from "../Queries/ProjectionBehavior.js";
 import { AbstractDocumentQuery } from "./AbstractDocumentQuery.js";
+import { IQueryShardedContextBuilder } from "./Querying/Sharding/IQueryShardedContextBuilder.js";
 
 export interface IDocumentQueryCustomization {
 
@@ -88,4 +89,6 @@ export interface IDocumentQueryCustomization {
     projection(projectionBehavior: ProjectionBehavior): IDocumentQueryCustomization;
 
     timings(timings: ValueCallback<QueryTimings>): IDocumentQueryCustomization;
+
+    shardContext(action: (builder: IQueryShardedContextBuilder) => void): IDocumentQueryCustomization;
 }

@@ -1,6 +1,7 @@
 import { IndexState, IndexPriority, IndexLockMode, IndexType, SearchEngineType } from "./Enums.js";
 import { IndexRunningStatus } from "./IndexingStatus.js";
 import { IndexSourceType } from "./IndexSourceType.js";
+import { ArchivedDataProcessingBehavior } from "../DataArchival/ArchivedDataProcessingBehavior.js";
 
 export interface IndexStats {
     name: string;

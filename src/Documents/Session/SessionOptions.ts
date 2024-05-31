@@ -1,5 +1,6 @@
 import { RequestExecutor } from "../../Http/RequestExecutor.js";
 import { TransactionMode } from "./TransactionMode.js";
+import { ShardedBatchBehavior } from "./ShardedBatchBehavior.js";
 
 export interface SessionOptions {
     database?: string;

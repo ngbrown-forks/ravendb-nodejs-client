@@ -8,6 +8,7 @@ import { IndexSourceType } from "./IndexSourceType.js";
 import { AdditionalAssembly } from "./AdditionalAssembly.js";
 import { IndexDeploymentMode } from "./IndexDeploymentMode.js";
 import { IndexDefinitionBase } from "./IndexDefinitionBase.js";
+import { ArchivedDataProcessingBehavior } from "../DataArchival/ArchivedDataProcessingBehavior.js";
 
 export interface IndexConfiguration {
     [key: string]: string;
@@ -30,7 +31,7 @@ export class IndexDefinition extends IndexDefinitionBase {
     public reduce: string;
     public fields: { [fieldName: string]: IndexFieldOptions } = {};
     private _indexSourceType: IndexSourceType;
-    public rchivedDataProcessingBehavior: ArchivedDataProcessingBehavior;
+    public archivedDataProcessingBehavior: ArchivedDataProcessingBehavior;
     public configuration: IndexConfiguration = {};
     public outputReduceToCollection: string;
     public reduceOutputIndex: number;

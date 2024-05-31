@@ -20,6 +20,7 @@ import { TimeSeriesRawResult } from "../Queries/TimeSeries/TimeSeriesRawResult.j
 import { Field } from "../../Types/index.js";
 import { ProjectionBehavior } from "../Queries/ProjectionBehavior.js";
 import { IFilterFactory } from "../Queries/IFilterFactory.js";
+import { IQueryShardedContextBuilder } from "./Querying/Sharding/IQueryShardedContextBuilder.js";
 
 /**
  * A query against a Raven index
@@ -151,6 +152,8 @@ export interface IDocumentQuery<T extends object>
     suggestUsing(suggestion: SuggestionBase): ISuggestionDocumentQuery<T>;
 
     suggestUsing(action: (builder: ISuggestionBuilder<T>) => void): ISuggestionDocumentQuery<T>;
+
+    shardContext(action: (buidler: IQueryShardedContextBuilder) => void): IDocumentQuery<T>;
 
     aggregateBy(action: (builder: IFacetBuilder<T>) => void): IAggregationDocumentQuery<T>;
 

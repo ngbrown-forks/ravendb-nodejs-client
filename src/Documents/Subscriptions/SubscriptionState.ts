@@ -1,3 +1,5 @@
+import { ArchivedDataProcessingBehavior } from "../DataArchival/ArchivedDataProcessingBehavior.js";
+import { SubscriptionShardingState } from "./SubscriptionShardingState.js";
 
 export interface SubscriptionState {
     query: string;
