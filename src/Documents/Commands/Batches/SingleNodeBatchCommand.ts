@@ -20,6 +20,8 @@ import { TypeUtil } from "../../../Utility/TypeUtil.js";
 import { ObjectUtil } from "../../../Utility/ObjectUtil.js";
 import { readToBuffer } from "../../../Utility/StreamUtil.js";
 import { Dispatcher } from "undici-types";
+import { IndexBatchOptions, ReplicationBatchOptions } from "../../Session/IAdvancedSessionOperations.js";
+import { ShardedBatchOptions } from "./ShardedBatchOptions.js";
 
 export class SingleNodeBatchCommand extends RavenCommand<BatchCommandResult> implements IDisposable {
     private _supportsAtomicWrites: boolean | null;
@@ -173,9 +175,13 @@ export class SingleNodeBatchCommand extends RavenCommand<BatchCommandResult> imp
             return "";
         }
 
+        return SingleNodeBatchCommand.appendOptions(this._options.indexOptions, this._options.replicationOptions, this._options.shardedOptions);
+
+    }
+
+    protected static appendOptions(indexOptions: IndexBatchOptions, replicationOptions: ReplicationBatchOptions, shardedOptions: ShardedBatchOptions): string {
         let result = "";
 
-        const replicationOptions = this._options.replicationOptions;
         if (replicationOptions) {
             result += `&waitForReplicasTimeout=${TimeUtil.millisToTimeSpan(replicationOptions.timeout)}`;
 
@@ -185,7 +191,6 @@ export class SingleNodeBatchCommand extends RavenCommand<BatchCommandResult> imp
             result += replicationOptions.majority ? "majority" : replicationOptions.replicas;
         }
 
-        const indexOptions = this._options.indexOptions;
         if (indexOptions) {
             result += "&waitForIndexesTimeout=";
             result += TimeUtil.millisToTimeSpan(indexOptions.timeout);
@@ -200,6 +205,12 @@ export class SingleNodeBatchCommand extends RavenCommand<BatchCommandResult> imp
                 for (const specificIndex of indexOptions.indexes) {
                     result += "&waitForSpecificIndex=" + encodeURIComponent(specificIndex);
                 }
+            }
+        }
+
+        if (shardedOptions) {
+            if (shardedOptions.batchBehavior !== "Default") {
+                result += "&shardedBatchBehavior=" + shardedOptions.batchBehavior;
             }
         }
 

@@ -54,7 +54,6 @@ describe("RavenDB_11217Test", function () {
                 .isEqualTo(0);
 
             const product1 = await session.load<Product>("products/1-A", {
-                includes: b => b.includeDocuments("supplier"),
                 documentType: Product
             });
 
@@ -83,7 +82,6 @@ describe("RavenDB_11217Test", function () {
 
             const product2 = await session.load<Product>("products/1-A", {
                 documentType: Product,
-                includes: b=> b.includeDocuments("supplier")
             });
             assertThat(product1)
                 .isNotSameAs(product2);
@@ -131,7 +129,6 @@ describe("RavenDB_11217Test", function () {
                 .isEqualTo(0);
 
             let products = await session.query(Product)
-                .include("supplier")
                 .all();
 
             assertThat(session.advanced.numberOfRequests)
@@ -159,7 +156,6 @@ describe("RavenDB_11217Test", function () {
 
             products = await session
                 .query(Product)
-                .include("supplier")
                 .all();
 
             assertThat(products)

@@ -8,6 +8,7 @@ import { IAbstractIndexCreationTask } from "./IAbstractIndexCreationTask.js";
 import { DocumentStoreBase } from "../DocumentStoreBase.js";
 import { IndexDeploymentMode } from "./IndexDeploymentMode.js";
 import { INDEXES } from "../../Constants.js";
+import { ArchivedDataProcessingBehavior } from "../DataArchival/ArchivedDataProcessingBehavior.js";
 
 export abstract class AbstractIndexCreationTaskBase<TIndexDefinition extends IndexDefinition>
     extends AbstractCommonApiForIndexes implements IAbstractIndexCreationTask {
@@ -22,8 +23,16 @@ export abstract class AbstractIndexCreationTaskBase<TIndexDefinition extends Ind
     public lockMode: IndexLockMode;
 
     public deploymentMode: IndexDeploymentMode;
+    public archivedDataProcessingBehavior: ArchivedDataProcessingBehavior;
     public searchEngineType: SearchEngineType;
     public state: IndexState;
+    public compoundFieldsStrings: string[][];
+
+    public compoundField(firstField: string, secondField: string) {
+        this.compoundFieldsStrings ??= [];
+
+        this.compoundFieldsStrings.push([firstField, secondField]);
+    }
 
     /**
      * Executes the index creation against the specified document store.
@@ -71,12 +80,12 @@ export abstract class AbstractIndexCreationTaskBase<TIndexDefinition extends Ind
                 indexDefinition.state = this.state;
             }
 
-            if (this.deploymentMode) {
-                indexDefinition.deploymentMode = this.deploymentMode;
+            if (this.archivedDataProcessingBehavior) {
+                indexDefinition.archivedDataProcessingBehavior = this.archivedDataProcessingBehavior;
             }
 
-            if (this.searchEngineType) {
-                indexDefinition.configuration[INDEXES.INDEXING_STATIC_SEARCH_ENGINE_TYPE] = this.searchEngineType;
+            if (this.deploymentMode) {
+                indexDefinition.deploymentMode = this.deploymentMode;
             }
 
             await store.maintenance.forDatabase(database)

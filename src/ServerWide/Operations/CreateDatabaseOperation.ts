@@ -44,7 +44,7 @@ export class CreateDatabaseCommand extends RavenCommand<DatabasePutResult> imple
     private _conventions: DocumentConventions;
     private readonly _databaseRecord: DatabaseRecord;
     private readonly _replicationFactor: number;
-    private readonly _etag: number;
+    private readonly _dbEtag: number;
     private readonly _databaseName: string;
 
     public constructor(conventions: DocumentConventions, databaseRecord: DatabaseRecord, replicationFactor: number, etag?: number) {
@@ -52,7 +52,7 @@ export class CreateDatabaseCommand extends RavenCommand<DatabasePutResult> imple
         this._conventions = conventions;
         this._databaseRecord = databaseRecord;
         this._replicationFactor = replicationFactor;
-        this._etag = etag;
+        this._dbEtag = etag;
 
         if (!databaseRecord || !databaseRecord.databaseName) {
             throwError("InvalidOperationException", "Database name is required");
@@ -72,7 +72,7 @@ export class CreateDatabaseCommand extends RavenCommand<DatabasePutResult> imple
             method: "PUT",
             headers: HeadersBuilder.create()
                 .typeAppJson()
-                .with(HEADERS.ETAG, `"${this._etag}"`)
+                .with(HEADERS.ETAG, `"${this._dbEtag}"`)
                 .build(),
             body: databaseDocumentJson
         };

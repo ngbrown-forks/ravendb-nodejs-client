@@ -78,6 +78,14 @@ async function fill(store: IDocumentStore) {
     c4.name = "Paulo Rogério";
     await session.store(c4);
 
+    const c5 = new Customer();
+    c5.name = "Paulo Rogerio Secondado";
+    await session.store(c5);
+
+    const c6 = new Customer();
+    c6.name = "Paulo Rogério Secondado";
+    await session.store(c6);
+
     await session.saveChanges();
 }
 
@@ -91,7 +99,7 @@ async function assertCount(store: IDocumentStore) {
             .search("name", "Rogério*");
 
         assertThat(await results.count())
-            .isEqualTo(4);
+            .isEqualTo(6);
     }
 }
 

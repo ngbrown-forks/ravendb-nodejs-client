@@ -250,4 +250,34 @@ describe("LoadTest - ported", function () {
             assert.deepStrictEqual(users2.map(x => x.id), ["Abc", "Afa"]);
         }
     });
+
+    it("loadStartingWith", async () => {
+        {
+            const session = store.openSession();
+            await session.store(new User(), "users/1");
+            await session.saveChanges();
+        }
+
+        {
+            const session = store.openSession();
+            const docs = await session.advanced.loadStartingWith("users/", { documentType: User });
+            assertThat(docs)
+                .hasSize(1);
+        }
+
+        {
+            const session = store.openSession();
+            for (let i = 0; i < 5; i++) {
+                await session.store(new User(), "users/");
+            }
+            await session.saveChanges();
+        }
+
+        {
+            const session = store.openSession();
+            const docs = await session.advanced.loadStartingWith("users/", { documentType: User });
+            assertThat(docs)
+                .hasSize(6);
+        }
+    });
 });

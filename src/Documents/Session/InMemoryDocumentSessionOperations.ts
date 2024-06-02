@@ -262,6 +262,7 @@ export abstract class InMemoryDocumentSessionOperations
         this._sessionInfo = new SessionInfo(this, options, documentStore);
         this._transactionMode = options.transactionMode;
         this.disableAtomicDocumentWritesInClusterWideTransaction = options.disableAtomicDocumentWritesInClusterWideTransaction;
+        const shardedBatchBehavior = options.shardedBatchBehavior ?? this.requestExecutor.conventions.sharding.batchBehavior;
     }
 
     protected abstract _generateId(entity: object): Promise<string>;
@@ -2260,6 +2261,15 @@ export abstract class InMemoryDocumentSessionOperations
 
         if (name.includes("@")) {
             throwError("InvalidArgumentException", "Time Series from type Rollup cannot be Incremental");
+        }
+    }
+
+    public assertNoIncludesInNonTrackingSession() {
+        if (this.noTracking) {
+            throw new Error("This session does not track any entities, because of that registering " +
+                "includes is forbidden to avoid false expectations when later load operations are performed " +
+                "on those and no requests are being sent to the server. Please avoid any 'include' " +
+                "operations during non-tracking session actions like load or query.")
         }
     }
 

@@ -28,6 +28,5 @@ export class QueryStatistics {
         this.lastQueryTime = qr.lastQueryTime;
         this.resultEtag = qr.resultEtag;
         this.nodeTag = qr.nodeTag;
-        this.requestedByUser = qr.requestedByUser;
     }
 }

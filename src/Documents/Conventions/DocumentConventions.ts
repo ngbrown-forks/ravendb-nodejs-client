@@ -18,6 +18,7 @@ import { ObjectUtil, ObjectChangeCaseOptions, FieldNameConversion } from "../../
 import { LoadBalanceBehavior } from "../../Http/LoadBalanceBehavior.js";
 import { BulkInsertConventions } from "./BulkInsertConventions.js";
 import { InMemoryDocumentSessionOperations } from "../Session/InMemoryDocumentSessionOperations.js";
+import { ShardingConventions } from "./ShardingConventions.js";
 
 const { plural } = Pluralize;
 
@@ -76,7 +77,6 @@ export class DocumentConventions {
     private _findJsType: (id: string, doc: object) => ObjectTypeDescriptor;
 
     private _useOptimisticConcurrency: boolean;
-    private _throwIfQueryPageSizeIsNotSet: boolean;
     private _maxNumberOfRequestsPerSession: number;
 
     private _requestTimeout: number | undefined;
@@ -107,6 +107,12 @@ export class DocumentConventions {
 
     public get bulkInsert() {
         return this._bulkInsert;
+    }
+
+    private readonly _sharding: ShardingConventions;
+
+    public get sharding() {
+        return this._sharding;
     }
 
     public constructor() {
@@ -144,6 +150,7 @@ export class DocumentConventions {
 
         this._maxNumberOfRequestsPerSession = 30;
         this._bulkInsert = new BulkInsertConventions(() => this._assertNotFrozen());
+        this._sharding = new ShardingConventions(this);
         this._maxHttpCacheSize = 128 * 1024 * 1024;
 
         this._knownEntityTypes = new Map();
@@ -560,15 +567,6 @@ export class DocumentConventions {
         this._disableTopologyUpdates = value;
     }
 
-    public get throwIfQueryPageSizeIsNotSet(): boolean {
-        return this._throwIfQueryPageSizeIsNotSet;
-    }
-
-    public set throwIfQueryPageSizeIsNotSet(value: boolean) {
-        this._assertNotFrozen();
-        this._throwIfQueryPageSizeIsNotSet = value;
-    }
-
     public get transformClassCollectionNameToDocumentIdPrefix() {
         return this._transformClassCollectionNameToDocumentIdPrefix;
     }
@@ -860,7 +858,7 @@ export class DocumentConventions {
         this._frozen = true;
     }
 
-    private _assertNotFrozen(): void {
+    public _assertNotFrozen(): void {
         if (this._frozen) {
             throwError("RavenException",
                 "Conventions has been frozen after documentStore.initialize() and no changes can be applied to them");

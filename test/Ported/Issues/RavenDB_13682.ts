@@ -120,8 +120,7 @@ describe("RavenDB_13682", function () {
                 "order by spatial.distance(\n" +
                 "    spatial.point(a.ShipTo.Location.Latitude, a.ShipTo.Location.Longitude),\n" +
                 "    spatial.point(35.2, -107.2 )\n" +
-                ")\n" +
-                "limit 1", Order)
+                ")", Order)
             .first();
 
             const metadata = s.advanced.getMetadataFor(d);

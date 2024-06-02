@@ -133,7 +133,7 @@ export class ClusterRequestExecutor extends RequestExecutor {
 
             this._updateNodeSelector(newTopology, parameters.forceUpdate);
 
-            this._onTopologyUpdatedInvoke(newTopology);
+            this._onTopologyUpdatedInvoke(newTopology, parameters.debugTag);
 
             return true;
         } catch (reason) {

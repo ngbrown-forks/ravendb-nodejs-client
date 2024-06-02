@@ -9,9 +9,10 @@ import { Highlightings } from "../Queries/Highlighting/Hightlightings.js";
 import { HighlightingParameters } from "../Queries/Highlighting/HighlightingParameters.js";
 import { IQueryIncludeBuilder } from "./Loaders/IQueryIncludeBuilder.js";
 import { Field } from "../../Types/index.js";
+import { IPagingDocumentQueryBase } from "./IPagingDocumentQueryBase.js";
 
 export interface IDocumentQueryBase<T extends object, TSelf extends IDocumentQueryBase<T, TSelf>>
-    extends IQueryBase<T, TSelf>, IFilterDocumentQueryBase<T, TSelf> {
+    extends IQueryBase<T, TSelf>, IFilterDocumentQueryBase<T, TSelf>, IPagingDocumentQueryBase<T, TSelf> {
 
     /**
      * Adds an ordering for a specific field to the query
@@ -42,12 +43,12 @@ export interface IDocumentQueryBase<T extends object, TSelf extends IDocumentQue
     distinct(): TSelf;
 
     /**
-     * Adds explanations of scores calculated for queried documents to the query result
+     * Explanations gives context how document was matched by query and provide information about how the score was calculated.
      */
     includeExplanations(explanations: ValueCallback<Explanations>): TSelf;
 
     /**
-     * Adds explanations of scores calculated for queried documents to the query result
+     * Explanations gives context how document was matched by query and provide information about how the score was calculated.
      */
     includeExplanations(options: ExplanationOptions, explanations: ValueCallback<Explanations>): TSelf;
 

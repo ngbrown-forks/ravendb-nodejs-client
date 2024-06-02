@@ -87,8 +87,8 @@ import { AbstractTimeSeriesRange } from "../Operations/TimeSeries/AbstractTimeSe
 import { IAbstractDocumentQueryImpl } from "./IAbstractDocumentQueryImpl.js";
 import { RevisionIncludesToken } from "./Tokens/RevisionIncludesToken.js";
 import { IDisposable } from "../../Types/Contracts.js";
-import { EOL } from "../../Utility/OsUtil.js";
 import { IQueryShardedContextBuilder } from "./Querying/Sharding/IQueryShardedContextBuilder.js";
+import { QueryShardedContextBuilder } from "./Querying/Sharding/QueryShardedContextBuilder.js";
 
 /**
  * A query against a Raven index
@@ -131,7 +131,7 @@ export abstract class AbstractDocumentQuery<T extends object, TSelf extends Abst
 
     protected _filterModeStack: boolean[] = [];
 
-    protected _queryParameters: { [key: string]: object } = {};
+    protected _queryParameters: { [key: string]: any } = {};
 
     protected _isIntersect: boolean;
 
@@ -673,6 +673,16 @@ export abstract class AbstractDocumentQuery<T extends object, TSelf extends Abst
         this.projectionBehavior = projectionBehavior;
     }
 
+    public _shardContext(action: (builder: IQueryShardedContextBuilder) => void): void {
+        const builderImpl = new QueryShardedContextBuilder();
+
+        action(builderImpl);
+
+        const shardContext =  builderImpl.documentIds.size === 1 ? Array.from(builderImpl.documentIds.keys())[0] : Array.from(builderImpl.documentIds);
+
+        this.queryParameters[CONSTANTS.Documents.Querying.SHARD_CONTEXT_PARAMETER_NAME] = shardContext;
+    }
+
     protected addGroupByAlias(fieldName: string, projectedName: string): void {
         this._aliasToGroupByFieldName[projectedName] = fieldName;
     }
@@ -796,12 +806,18 @@ export abstract class AbstractDocumentQuery<T extends object, TSelf extends Abst
         }
 
         if (TypeUtil.isString(pathOrIncludes)) {
+            if (this._theSession) {
+                this._theSession.assertNoIncludesInNonTrackingSession();
+            }
             this._documentIncludes.add(pathOrIncludes);
             return;
         }
 
         const { documentsToInclude } = pathOrIncludes;
-        if (documentsToInclude) {
+        if (documentsToInclude && documentsToInclude.size > 0) {
+            if (this._theSession) {
+                this._theSession.assertNoIncludesInNonTrackingSession();
+            }
             for (const doc of documentsToInclude) {
                 this._documentIncludes.add(doc);
             }
@@ -821,7 +837,11 @@ export abstract class AbstractDocumentQuery<T extends object, TSelf extends Abst
             this._includeRevisionsByChangeVector(pathOrIncludes.revisionsToIncludeByChangeVector);
         }
 
-        if (pathOrIncludes.compareExchangeValuesToInclude) {
+        if (pathOrIncludes.compareExchangeValuesToInclude && pathOrIncludes.compareExchangeValuesToInclude.size > 0) {
+            if (this._theSession) {
+                this._theSession.assertNoIncludesInNonTrackingSession();
+            }
+
             this._compareExchangeValueIncludesTokens = [];
 
             for (const compareExchangeValue of pathOrIncludes.compareExchangeValuesToInclude) {
@@ -1469,6 +1489,7 @@ export abstract class AbstractDocumentQuery<T extends object, TSelf extends Abst
      * Provide statistics about the query, such as total count of matching records
      */
     public _statistics(statsCallback: (stats: QueryStatistics) => void): void {
+        this._queryStats.requestedByUser = true;
         statsCallback(this._queryStats);
     }
 
@@ -1480,17 +1501,12 @@ export abstract class AbstractDocumentQuery<T extends object, TSelf extends Abst
     protected _generateIndexQuery(query: string): IndexQuery {
         const indexQuery = new IndexQuery();
         indexQuery.query = query;
-        indexQuery.start = this._start;
         indexQuery.waitForNonStaleResults = this._theWaitForNonStaleResults;
         indexQuery.waitForNonStaleResultsTimeout = this._timeout;
         indexQuery.queryParameters = this._queryParameters;
         indexQuery.disableCaching = this._disableCaching;
         indexQuery.projectionBehavior = this.projectionBehavior;
-
-        if (this._pageSize) {
-            indexQuery.pageSize = this._pageSize;
-        }
-
+        indexQuery.skipStatistics = !this._queryStats.requestedByUser;
         return indexQuery;
     }
 
@@ -1523,7 +1539,14 @@ export abstract class AbstractDocumentQuery<T extends object, TSelf extends Abst
 
     public toString(compatibilityMode: boolean = false): string {
         if (this._queryRaw) {
-            return this._queryRaw;
+            if (compatibilityMode) {
+                return this._queryRaw;
+            }
+
+            const rawQueryText = new StringBuilder(this._queryRaw);
+            this._buildPagination(rawQueryText);
+
+            return rawQueryText.toString();
         }
 
         if (this._currentClauseDepth) {
@@ -2227,7 +2250,7 @@ export abstract class AbstractDocumentQuery<T extends object, TSelf extends Abst
     public async longCount(): Promise<number> {
         this._take(0);
         const queryResult = await this.getQueryResult();
-        return queryResult.longTotalResults;
+        return queryResult.totalResults;
     }
 
     public async any(): Promise<boolean> {
@@ -2365,6 +2388,11 @@ export abstract class AbstractDocumentQuery<T extends object, TSelf extends Abst
         if (!counterToIncludeByDocId || !counterToIncludeByDocId.size) {
             return;
         }
+
+        if (this._theSession) {
+            this._theSession.assertNoIncludesInNonTrackingSession();
+        }
+
         this._counterIncludesTokens = [];
         this._includesAlias = alias;
 
@@ -2388,6 +2416,10 @@ export abstract class AbstractDocumentQuery<T extends object, TSelf extends Abst
     private _includeTimeSeries(alias: string, timeSeriesToInclude: Map<string, AbstractTimeSeriesRange[]>) {
         if (!timeSeriesToInclude || !timeSeriesToInclude.size) {
             return;
+        }
+
+        if (this._theSession) {
+            this._theSession.assertNoIncludesInNonTrackingSession();
         }
 
         this._timeSeriesIncludesTokens = [];
@@ -2466,12 +2498,24 @@ export abstract class AbstractDocumentQuery<T extends object, TSelf extends Abst
             this._revisionsIncludesTokens = [];
         }
 
+        if (this._theSession) {
+            this._theSession.assertNoIncludesInNonTrackingSession();
+        }
+
         this._revisionsIncludesTokens.push(RevisionIncludesToken.createForDate(dateTime));
     }
 
     private _includeRevisionsByChangeVector(revisionsToIncludeByChangeVector: Set<string>) {
         if (!this._revisionsIncludesTokens) {
             this._revisionsIncludesTokens = [];
+        }
+
+        if (!revisionsToIncludeByChangeVector || revisionsToIncludeByChangeVector.size === 0) {
+            return;
+        }
+
+        if (this._theSession) {
+            this._theSession.assertNoIncludesInNonTrackingSession();
         }
 
         for (const changeVector of revisionsToIncludeByChangeVector) {

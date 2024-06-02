@@ -56,8 +56,6 @@ export class QueryOperation {
         this._metadataOnly = metadataOnly;
         this._indexEntriesOnly = indexEntriesOnly;
         this._isProjectInto = isProjectInto;
-
-        this._assertPageSizeSet();
     }
 
     public createRequest(): QueryCommand {
@@ -77,21 +75,6 @@ export class QueryOperation {
 
     public setResult(queryResult: QueryResult): void {
         this.ensureIsAcceptableAndSaveResult(queryResult, null);
-    }
-
-    private _assertPageSizeSet(): void {
-        if (!this._session.conventions.isThrowIfQueryPageSizeIsNotSet()) {
-            return;
-        }
-
-        if (this._indexQuery.pageSizeSet) {
-            return;
-        }
-
-        throwError("InvalidOperationException",
-            "Attempt to query without explicitly specifying a page size. " +
-            "You can use .take() methods to set maximum number of results. " +
-            "By default the page size is set to Integer.MAX_VALUE and can cause severe performance degradation.");
     }
 
     private _startTiming(): void {

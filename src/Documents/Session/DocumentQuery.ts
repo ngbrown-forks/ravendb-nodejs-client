@@ -891,7 +891,7 @@ export class DocumentQuery<T extends object>
         return this;
     }
 
-    shardContext(action: (buidler: IQueryShardedContextBuilder) => void): IDocumentQuery<T> {
+    shardContext(action: (builder: IQueryShardedContextBuilder) => void): IDocumentQuery<T> {
         this._shardContext(action);
         return this;
     }

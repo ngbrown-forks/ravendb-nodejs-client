@@ -14,6 +14,7 @@ import { DocumentConventions } from "../Documents/Conventions/DocumentConvention
 import { ObjectTypeDescriptor } from "../Types/index.js";
 import { ObjectUtil } from "../Utility/ObjectUtil.js";
 import { Dispatcher } from "undici-types";
+import { RequestInit } from "undici";
 
 const log = getLogger({ module: "RavenCommand" });
 
@@ -37,10 +38,14 @@ export abstract class RavenCommand<TResult> {
     public timeout: number | undefined;
     protected _canCache: boolean;
     protected _canCacheAggressively: boolean;
+    protected _canReadFromCache: boolean = true;
     protected _selectedNodeTag: string;
+    private _selectedShardNumber: number;
     protected _numberOfAttempts: number;
 
     public failoverTopologyEtag = -2;
+
+    protected _etag: string;
 
     public abstract get isReadRequest(): boolean;
 
@@ -62,6 +67,14 @@ export abstract class RavenCommand<TResult> {
 
     public set selectedNodeTag(nodeTag: string) {
         this._selectedNodeTag = nodeTag;
+    }
+
+    get selectedShardNumber(): number {
+        return this._selectedShardNumber;
+    }
+
+    set selectedShardNumber(value: number) {
+        this._selectedShardNumber = value;
     }
 
     public get numberOfAttempts(): number {
@@ -279,7 +292,7 @@ export abstract class RavenCommand<TResult> {
     }
 
     protected static _throwInvalidResponse(cause: Error): void {
-        throwError("InvalidOperationException", "Response is invalid: " + cause.message, cause);
+        throwError("InvalidOperationException", "Response is invalid: " + cause, (cause as any).message, cause);
     }
 
     public onResponseFailure(response: HttpResponse): void {

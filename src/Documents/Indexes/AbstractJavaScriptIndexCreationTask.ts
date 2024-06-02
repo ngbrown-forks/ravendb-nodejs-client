@@ -12,6 +12,7 @@ import { StringUtil } from "../../Utility/StringUtil.js";
 import { DocumentConventions } from "../Conventions/DocumentConventions.js";
 import { StringBuilder } from "../../Utility/StringBuilder.js";
 import { BaseJavaScriptIndexCreationTask } from "./BaseJavaScriptIndexCreationTask.js";
+import { CONSTANTS, INDEXES } from "../../Constants.js";
 
 export class AbstractJavaScriptIndexCreationTask<TDocument extends object, TMapResult extends object = any>
     extends BaseJavaScriptIndexCreationTask<keyof TMapResult & string> {
@@ -109,6 +110,12 @@ export class AbstractJavaScriptIndexCreationTask<TDocument extends object, TMapR
         indexDefinitionBuilder.priority = this.priority;
         indexDefinitionBuilder.state = this.state;
         indexDefinitionBuilder.deploymentMode = this.deploymentMode;
+        indexDefinitionBuilder.compoundFieldsStrings = this.compoundFieldsStrings;
+
+        if (this.searchEngineType) {
+            indexDefinitionBuilder.configuration[INDEXES.INDEXING_STATIC_SEARCH_ENGINE_TYPE] = this.searchEngineType;
+        }
+
 
         return indexDefinitionBuilder.toIndexDefinition(this.conventions);
     }

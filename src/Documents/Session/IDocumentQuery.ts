@@ -153,7 +153,7 @@ export interface IDocumentQuery<T extends object>
 
     suggestUsing(action: (builder: ISuggestionBuilder<T>) => void): ISuggestionDocumentQuery<T>;
 
-    shardContext(action: (buidler: IQueryShardedContextBuilder) => void): IDocumentQuery<T>;
+    shardContext(action: (builder: IQueryShardedContextBuilder) => void): IDocumentQuery<T>;
 
     aggregateBy(action: (builder: IFacetBuilder<T>) => void): IAggregationDocumentQuery<T>;
 
