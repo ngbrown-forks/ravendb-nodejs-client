@@ -573,7 +573,7 @@ export class RequestExecutor implements IDisposable {
 
             this._topologyEtag = this._nodeSelector.getTopology().etag;
 
-            this._onTopologyUpdatedInvoke(topology);
+            this._onTopologyUpdatedInvoke(topology, parameters.debugTag);
 
             return true;
         } catch (reason) {
@@ -1993,8 +1993,8 @@ export class RequestExecutor implements IDisposable {
         }
     }
 
-    protected _onTopologyUpdatedInvoke(newTopology: Topology) {
-        this._emitter.emit("topologyUpdated", new TopologyUpdatedEventArgs(newTopology));
+    protected _onTopologyUpdatedInvoke(newTopology: Topology, reason: string) {
+        this._emitter.emit("topologyUpdated", new TopologyUpdatedEventArgs(newTopology, reason));
     }
 }
 

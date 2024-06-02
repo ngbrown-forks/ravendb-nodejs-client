@@ -11,6 +11,9 @@ import { DocumentConventions } from "../../Documents/Conventions/DocumentConvent
 import { HEADERS } from "../../Constants.js";
 import { IRaftCommand } from "../../Http/IRaftCommand.js";
 import { RaftIdGenerator } from "../../Utility/RaftIdGenerator.js";
+import { IDatabaseRecordBuilderInitializer } from "./Builder/IDatabaseRecordBuilderInitializer.js";
+import { TypeUtil } from "../../Utility/TypeUtil.js";
+import { DatabaseRecordBuilder } from "./DatabaseRecordBuilder.js";
 
 export class CreateDatabaseOperation implements IServerOperation<DatabasePutResult> {
 
@@ -21,18 +24,29 @@ export class CreateDatabaseOperation implements IServerOperation<DatabasePutResu
     private readonly _databaseRecord: DatabaseRecord;
     private readonly _replicationFactor: number;
 
-    public constructor(databaseRecord: DatabaseRecord, replicationFactor?: number) {
-        this._databaseRecord = databaseRecord;
-        const topology = databaseRecord.topology;
-        if (replicationFactor) {
-            this._replicationFactor = replicationFactor;
+    public constructor(builder: (builder: IDatabaseRecordBuilderInitializer) => void)
+    public constructor(databaseRecord: DatabaseRecord, replicationFactor?: number)
+    public constructor(databaseRecordOrBuilder: DatabaseRecord | ((builder: IDatabaseRecordBuilderInitializer) => void), replicationFactor?: number) {
+        if (TypeUtil.isFunction(databaseRecordOrBuilder)) {
+            const instance = DatabaseRecordBuilder.create();
+            databaseRecordOrBuilder(instance);
+
+            this._databaseRecord = instance.toDatabaseRecord();
+            this._replicationFactor = (this._databaseRecord.topology && this._databaseRecord.topology.replicationFactor) ?? 1;
         } else {
-            if (topology) {
-                this._replicationFactor = topology.replicationFactor > 0 ? topology.replicationFactor : 1;
+            this._databaseRecord = databaseRecordOrBuilder;
+            const topology = databaseRecordOrBuilder.topology;
+            if (replicationFactor) {
+                this._replicationFactor = replicationFactor;
             } else {
-                this._replicationFactor = 1;
+                if (topology) {
+                    this._replicationFactor = topology.replicationFactor > 0 ? topology.replicationFactor : 1;
+                } else {
+                    this._replicationFactor = 1;
+                }
             }
         }
+
     }
 
     public getCommand(conventions: DocumentConventions): RavenCommand<DatabasePutResult> {

@@ -14,7 +14,7 @@ class CompaniesByNameIndexResult {
     public count: number;
 }
 
-class CompaniesByNameIndex extends AbstractJavaScriptIndexCreationTask<Company, { key: string, count: number }> {
+export class CompaniesByNameIndex extends AbstractJavaScriptIndexCreationTask<Company, { key: string, count: number }> {
 
     public constructor() {
         super();

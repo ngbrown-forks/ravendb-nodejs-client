@@ -65,6 +65,7 @@ import { TimeSeriesRangeResult } from "../Operations/TimeSeries/TimeSeriesRangeR
 import { DatesComparator, leftDate, rightDate } from "../../Primitives/DatesComparator.js";
 import { TimeSeriesEntry } from "./TimeSeries/TimeSeriesEntry.js";
 import { reviveTimeSeriesRangeResult } from "../Operations/TimeSeries/GetTimeSeriesOperation.js";
+import { forBehavior } from "../Commands/Batches/ShardedBatchOptions.js";
 
 export abstract class InMemoryDocumentSessionOperations
     extends EventEmitter
@@ -262,7 +263,17 @@ export abstract class InMemoryDocumentSessionOperations
         this._sessionInfo = new SessionInfo(this, options, documentStore);
         this._transactionMode = options.transactionMode;
         this.disableAtomicDocumentWritesInClusterWideTransaction = options.disableAtomicDocumentWritesInClusterWideTransaction;
+
         const shardedBatchBehavior = options.shardedBatchBehavior ?? this.requestExecutor.conventions.sharding.batchBehavior;
+
+        const shardedBatchOptions = forBehavior(shardedBatchBehavior);
+        if (shardedBatchOptions) {
+            this._saveChangesOptions = {
+                shardedOptions: shardedBatchOptions,
+                replicationOptions: null,
+                indexOptions: null
+            }
+        }
     }
 
     protected abstract _generateId(entity: object): Promise<string>;
