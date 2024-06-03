@@ -1,7 +1,7 @@
 
 export interface QueueSinkScript {
-    name: string;
+    name?: string;
     queues: string[];
     script: string;
-    disabled: boolean;
+    disabled?: boolean;
 }

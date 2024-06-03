@@ -3,11 +3,11 @@ import { QueueSinkScript } from "./QueueSinkScript.js";
 
 export interface QueueSinkConfiguration {
     brokerType: QueueBrokerType;
-    taskId: number;
-    disabled: boolean;
+    taskId?: number;
+    disabled?: boolean;
     name: string;
-    mentorName: string;
-    pinToMentorNode: boolean;
+    mentorName?: string;
+    pinToMentorNode?: boolean;
     connectionStringName: string;
     scripts: QueueSinkScript[];
 }

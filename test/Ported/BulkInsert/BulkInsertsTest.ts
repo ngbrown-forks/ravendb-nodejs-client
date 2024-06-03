@@ -9,17 +9,23 @@ import { CONSTANTS } from "../../../src/Constants.js";
 import { DateUtil } from "../../../src/Utility/DateUtil.js";
 import { delay } from "../../../src/Utility/PromiseUtil.js";
 import { ObjectUtil } from "../../../src/Utility/ObjectUtil.js";
+import { assertThat } from "../../Utils/AssertExtensions.js";
 
 describe("bulk insert", function () {
 
     let store: IDocumentStore;
 
     beforeEach(async function () {
+        testContext.customizeStore = async store => {
+            store.conventions.disableTopologyUpdates = true;
+        };
         store = await testContext.getDocumentStore();
     });
 
-    afterEach(async () =>
-        await disposeTestDocumentStore(store));
+    afterEach(async () => {
+        testContext.customizeStore = null;
+        await disposeTestDocumentStore(store);
+    });
 
     it("simple bulk insert should work", async () => {
         const fooBar1 = new FooBar();
@@ -223,6 +229,36 @@ describe("bulk insert", function () {
             for (let i = 0; i < 3; i++) {
                 assert.strictEqual(nestedObjectTypes["items." + i], BulkTestItem.name);
                 assert.strictEqual(nestedObjectTypes["items." + i + ".created"], "date");
+            }
+        }
+    });
+
+    it("canBulkInsertOnStoreWithoutTopologyUpdates", async function() {
+        const fooBar1 = new FooBar();
+        fooBar1.name = "John Doe";
+
+        {
+            const innerStore = new DocumentStore(store.urls, store.database);
+            try {
+                innerStore.conventions.disableTopologyUpdates = true;
+                innerStore.initialize();
+
+                const bulkInsert = innerStore.bulkInsert();
+                try {
+                    await bulkInsert.store(fooBar1);
+                } finally {
+                    await bulkInsert.finish();
+                }
+
+                {
+                    const session = innerStore.openSession();
+                    const doc1 = await session.load("FooBars/1-A", FooBar);
+
+                    assertThat(doc1)
+                        .isNotNull();
+                }
+            } finally {
+                innerStore.dispose();
             }
         }
     });

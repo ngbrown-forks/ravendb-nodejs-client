@@ -1,4 +1,8 @@
-import { IDocumentStore, InMemoryDocumentSessionOperations } from "../../../src/index.js";
+import {
+    GetTimeSeriesStatisticsOperation,
+    IDocumentStore,
+    InMemoryDocumentSessionOperations
+} from "../../../src/index.js";
 import { disposeTestDocumentStore, testContext } from "../../Utils/TestUtil.js";
 import moment from "moment";
 import { User } from "../../Assets/Entities.js";
@@ -69,6 +73,43 @@ describe("TimeSeriesSessionTest", function () {
             assertThat(val)
                 .hasSize(3);
         }
+    });
+
+    it("canCreateSimpleTimeSeries3", async function() {
+        let res = await store.operations.send(new GetTimeSeriesStatisticsOperation("users/ayende"));
+
+        assertThat(res)
+            .isNull();
+
+        const baseLine = testContext.utcToday();
+        {
+            const session = store.openSession();
+            const user = new User();
+            user.name = "Oren";
+            await session.store(user, "users/ayende");
+
+            const tsf = session.timeSeriesFor("users/ayende", "Heartrate");
+            tsf.append(baseLine.clone().add(1, "minutes").toDate(), 59, "watches/fitbit");
+            tsf.append(baseLine.clone().add(2, "minutes").toDate(), 60, "watches/fitbit");
+            tsf.append(baseLine.clone().add(3, "minutes").toDate(), 61, "watches/fitbit");
+
+            await session.saveChanges();
+        }
+
+        res = await store.operations.send(new GetTimeSeriesStatisticsOperation("users/ayende"));
+        assertThat(res)
+            .isNotNull();
+        assertThat(res.timeSeries)
+            .hasSize(1);
+        assertThat(res.timeSeries[0].name)
+            .isEqualTo("Heartrate");
+        assertThat(res.timeSeries[0].numberOfEntries)
+            .isEqualTo(3);
+        assertThat(res.timeSeries[0].startDate.getTime())
+            .isEqualTo(baseLine.clone().add(1, "minutes").toDate().getTime());
+        assertThat(res.timeSeries[0].endDate.getTime())
+            .isEqualTo(baseLine.clone().add(3, "minutes").toDate().getTime());
+
     });
 
     it("timeSeriesShouldBeCaseInsensitiveAndKeepOriginalCasing", async () => {
