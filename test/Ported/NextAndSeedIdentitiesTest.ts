@@ -4,10 +4,10 @@ import { testContext, disposeTestDocumentStore } from "../Utils/TestUtil.js";
 import {
     IDocumentStore,
     GetIdentitiesOperation,
+    SeedIdentityForOperation,
+    NextIdentityForOperation
 } from "../../src/index.js";
 import { User } from "../Assets/Entities.js";
-import { NextIdentityForOperation } from "../../src/Documents/Operations/Identities/NextIdentityForOperation.js";
-import { SeedIdentityForOperation } from "../../src/Documents/Operations/Identities/SeedIdentityForOperation.js";
 import { assertThat } from "../Utils/AssertExtensions.js";
 
 describe("NextAndSeedIdentitiesTest", function () {

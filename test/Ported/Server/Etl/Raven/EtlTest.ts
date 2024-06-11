@@ -13,7 +13,7 @@ import { assertThat } from "../../../../Utils/AssertExtensions.js";
 import { User } from "../../../../Assets/Entities.js";
 import { ReplicationTestContext } from "../../../../Utils/ReplicationTestContext.js";
 import { DeleteOngoingTaskOperation } from "../../../../../src/Documents/Operations/OngoingTasks/DeleteOngoingTaskOperation.js";
-import { OngoingTaskRavenEtlDetails } from "../../../../../src/Documents/Operations/OngoingTasks/OngoingTask.js";
+import { OngoingTaskRavenEtl } from "../../../../../src/Documents/Operations/OngoingTasks/OngoingTask.js";
 
 (RavenTestContext.isPullRequest ? describe.skip : describe)(
     `${RavenTestContext.isPullRequest ? "[Skipped on PR] " : ""}` +
@@ -75,7 +75,7 @@ import { OngoingTaskRavenEtlDetails } from "../../../../../src/Documents/Operati
                 assertThat(await replication.waitForDocumentToReplicate(dst, "users/1", 10 * 1000, User))
                     .isNotNull();
 
-                const ongoingTask = await src.maintenance.send(new GetOngoingTaskInfoOperation(etlResult.taskId, "RavenEtl")) as OngoingTaskRavenEtlDetails;
+                const ongoingTask = await src.maintenance.send(new GetOngoingTaskInfoOperation(etlResult.taskId, "RavenEtl")) as OngoingTaskRavenEtl;
 
                 assertThat(ongoingTask)
                     .isNotNull();

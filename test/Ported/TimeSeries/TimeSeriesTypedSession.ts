@@ -1,26 +1,23 @@
 import { disposeTestDocumentStore, RavenTestContext, testContext } from "../../Utils/TestUtil.js";
-import { GetDatabaseRecordOperation, IDocumentStore } from "../../../src/index.js";
-import { TimeSeriesValue } from "../../../src/Documents/Session/TimeSeries/TimeSeriesValue.js";
+import {
+    GetDatabaseRecordOperation,
+    IDocumentStore,
+    TimeSeriesValue,
+    TimeSeriesAggregationResult,
+    TimeSeriesRawResult,
+    RawTimeSeriesPolicy,
+    TimeSeriesPolicy,
+    TimeSeriesConfiguration,
+    TimeSeriesCollectionConfiguration,
+    ConfigureTimeSeriesOperation,
+    ISessionDocumentRollupTypedTimeSeries
+} from "../../../src/index.js";
 import { User } from "../../Assets/Entities.js";
 import { assertThat } from "../../Utils/AssertExtensions.js";
 import moment from "moment";
-import { TimeSeriesAggregationResult } from "../../../src/Documents/Queries/TimeSeries/TimeSeriesAggregationResult.js";
-import { TimeSeriesRawResult } from "../../../src/Documents/Queries/TimeSeries/TimeSeriesRawResult.js";
-import { RawTimeSeriesPolicy } from "../../../src/Documents/Operations/TimeSeries/RawTimeSeriesPolicy.js";
 import { TimeValue } from "../../../src/Primitives/TimeValue.js";
-import { TimeSeriesPolicy } from "../../../src/Documents/Operations/TimeSeries/TimeSeriesPolicy.js";
-import { TimeSeriesConfiguration } from "../../../src/Documents/Operations/TimeSeries/TimeSeriesConfiguration.js";
-import {
-    TimeSeriesCollectionConfiguration
-} from "../../../src/Documents/Operations/TimeSeries/TimeSeriesCollectionConfiguration.js";
-import {
-    ConfigureTimeSeriesOperation
-} from "../../../src/Documents/Operations/TimeSeries/ConfigureTimeSeriesOperation.js";
 import { delay } from "../../../src/Utility/PromiseUtil.js";
-import {
-    ISessionDocumentRollupTypedTimeSeries
-} from "../../../src/Documents/Session/ISessionDocumentRollupTypedTimeSeries.js";
-import { TypedTimeSeriesRollupEntry } from "../../../src/Documents/Session/TimeSeries/TypedTimeSeriesRollupEntry.js";
+import { TypedTimeSeriesRollupEntry } from "../../../src/index.js";
 
 (RavenTestContext.isPullRequest ? describe.skip : describe)("TimeSeriesTypedSessionTest", function () {
 

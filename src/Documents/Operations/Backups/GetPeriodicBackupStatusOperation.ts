@@ -74,6 +74,10 @@ class GetPeriodicBackupStatusCommand extends RavenCommand<GetPeriodicBackupStatu
                     "status.error.at": "date"
                 }
             });
+
+        if (this.result.isSharded) {
+            throw new Error("Database is sharded, can't use GetPeriodicBackupStatusOperation. Use GetShardedPeriodicBackupStatusOperation instead.");
+        }
         return body;
     }
 }

@@ -1,4 +1,9 @@
-import { IDocumentStore, InMemoryDocumentSessionOperations } from "../../../src/index.js";
+import {
+    GetMultipleTimeSeriesOperation,
+    IDocumentStore,
+    InMemoryDocumentSessionOperations,
+    TimeSeriesRange
+} from "../../../src/index.js";
 import { disposeTestDocumentStore, testContext } from "../../Utils/TestUtil.js";
 import moment from "moment";
 import { Company, Order } from "../../Assets/Entities.js";
@@ -1726,6 +1731,161 @@ async function canLoadAsyncWithInclude_ArrayOfTimeSeriesLastRange(store: IDocume
         assertThat(speedrateValues[2].timestamp.getTime())
             .isEqualTo(baseline.clone().add(-8, "minutes").toDate().getTime());
     }
+
+    it("sessionLoadWithIncludeTimeSeries2", async () => {
+        const baseline = testContext.utcToday();
+
+        {
+            const session = store.openSession();
+            const order = new Order();
+            order.company = "companies/apple";
+            await session.store(order, "orders/1-A");
+
+            const company = new Company();
+            company.name = "apple";
+            await session.store(company, "companies/apple");
+
+            const tsf = session.timeSeriesFor("orders/1-A", "Heartrate");
+            tsf.append(baseline.toDate(), 67, "companies/apple");
+            tsf.append(baseline.clone().add(5, "minutes").toDate(), 64, "companies/apple");
+            tsf.append(baseline.clone().add(10, "minutes").toDate(), 65, "companies/google");
+
+            await session.saveChanges();
+        }
+
+        {
+            const session = store.openSession();
+            const company = new Company();
+            company.name = "google";
+            await session.store(company, "companies/google");
+
+            const res = await session.timeSeriesFor("orders/1-A", "Heartrate").get(null, null, i => i.includeDocument().includeTags());
+            assertThat(res)
+                .hasSize(3);
+
+            // should not go to server
+            const apple = await session.load("companies/apple", Company);
+            const google = await session.load("companies/google", Company);
+            assertThat(apple)
+                .isNotNull();
+            assertThat(google)
+                .isNotNull();
+
+            assertThat(session.advanced.numberOfRequests)
+                .isEqualTo(1);
+        }
+    });
+
+    it("sessionLoadWithIncludeTimeSeriesRanges", async function () {
+        const baseline = testContext.utcToday();
+
+        {
+            const session = store.openSession();
+
+            const order = new Order();
+            order.company = "companies/apple";
+            await session.store(order, "orders/1-A");
+
+            const company1 = new Company();
+            company1.name = "apple";
+            await session.store(company1, "companies/apple");
+
+            const company2 = new Company();
+            company2.name = "facebook";
+            await session.store(company2, "companies/facebook");
+
+            const company3 = new Company();
+            company3.name = "amazon";
+            await session.store(company3, "companies/amazon");
+
+            const company4 = new Company();
+            company4.name = "google";
+            await session.store(company4, "companies/google");
+
+            const tsf = session.timeSeriesFor("orders/1-A", "Heartrate");
+            tsf.append(baseline.toDate(), 67, "companies/apple");
+            tsf.append(baseline.clone().add(5, "minutes").toDate(), 64, "companies/apple");
+            tsf.append(baseline.clone().add(10, "minutes").toDate(), 65, "companies/google");
+
+            await session.saveChanges();
+        }
+
+        {
+            const session = store.openSession();
+            //get 3 points so they'll get saved in session
+            const nowDate = baseline.toDate();
+            const nowPlus5 = baseline.clone().add(5, "minutes").toDate();
+            const nowPlus10 = baseline.clone().add(10, "minutes").toDate();
+            await session.timeSeriesFor("orders/1-A", "Heartrate").get(nowDate, nowDate);
+            await session.timeSeriesFor("orders/1-A", "Heartrate").get(nowPlus5, nowPlus5);
+            await session.timeSeriesFor("orders/1-A", "Heartrate").get(nowPlus10, nowPlus10);
+
+            //ask for the entire range - will call MultipleTimeSeriesRanges operation
+            await session.timeSeriesFor("orders/1-A", "Heartrate").get(nowDate, nowPlus10, i => i.includeDocument().includeTags());
+
+            const inMemoryDocumentSession = session as unknown as InMemoryDocumentSessionOperations;
+            assertThat(inMemoryDocumentSession.includedDocumentsById)
+                .containsKey("orders/1-A")
+                .containsKey("companies/apple")
+                .containsKey("companies/google");
+        }
+    });
+
+    it("timeSeriesIncludeTagsCaseSensitive", async function() {
+        const baseline = testContext.utcToday();
+
+        {
+            const session = store.openSession();
+
+            const order = new Order();
+            order.company = "companies/google";
+            await session.store(order, "orders/1-A");
+
+            const company1 = new Company();
+            company1.name = "google";
+            await session.store(company1, "companies/google");
+
+            const company2 = new Company();
+            company2.name = "amazon";
+            await session.store(company2, "companies/amazon");
+
+            const company3 = new Company();
+            company3.name = "apple";
+            await session.store(company3, "companies/apple");
+
+            const tsf = session.timeSeriesFor("orders/1-A", "Heartrate");
+            tsf.append(baseline.toDate(), 67, "companies/apple");
+            tsf.append(baseline.clone().add(5, "minutes").toDate(), 68, "companies/apple");
+            tsf.append(baseline.clone().add(10, "minutes").toDate(), 69, "companies/amazon");
+
+            await session.saveChanges();
+        }
+
+        {
+            const session = store.openSession();
+            const reqRanges: TimeSeriesRange[] = [{
+                from: null,
+                to: null,
+                name: "Heartrate"
+            }];
+
+            const result = await session.timeSeriesFor("orders/1-A", "Heartrate")
+                .get(null, null, i => i.includeTags());
+            const resultMultiGet = await store.operations.send(new GetMultipleTimeSeriesOperation("orders/1-A", reqRanges, 0, 1000, i => i.includeTags()));
+
+            assertThat(resultMultiGet.values["Heartrate"])
+                .isNotNull();
+
+            const inMemoryDocumentSession = session as unknown as InMemoryDocumentSessionOperations;
+            assertThat(inMemoryDocumentSession.includedDocumentsById)
+                .containsKey("companies/google")
+                .containsKey("companies/apple")
+                .containsKey("companies/amazon");
+
+            assertThat(resultMultiGet.values["Heartrate"])
+                .hasSize(1);
+        }
+    });
 }
 
 class User {

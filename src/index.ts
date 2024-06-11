@@ -299,6 +299,7 @@ export * from "./Documents/Operations/OngoingTasks/OngoingTaskPullReplicationAsS
 export * from "./Documents/Operations/OngoingTasks/OngoingTaskPullReplicationAsHub.js";
 export * from "./Documents/Operations/OngoingTasks/OngoingTaskType.js";
 export * from "./Documents/Operations/OngoingTasks/RunningBackup.js";
+export * from "./Documents/Operations/OngoingTasks/OngoingTask.js";
 export * from "./Documents/Operations/OngoingTasks/NextBackup.js";
 export * from "./Documents/Operations/GetOngoingTaskInfoOperation.js";
 export * from "./Documents/Operations/OngoingTasks/ToggleOngoingTaskStateOperation.js";
@@ -406,7 +407,7 @@ export * from "./Documents/IDocumentStore.js";
 export * from "./Documents/IdTypeAndName.js";
 
 // SUBSCRIPTIONS
-export * from "./Documents/Subscriptions/SubscriptionBatch.js";
+export * from "./Documents/Subscriptions/SubscriptionBatchBase.js";
 export * from "./Documents/Subscriptions/DocumentSubscriptions.js";
 export * from "./Documents/Subscriptions/SubscriptionWorker.js";
 export * from "./Documents/Subscriptions/SubscriptionWorkerOptions.js";
@@ -524,6 +525,7 @@ export * from "./Documents/TimeSeries/TimeSeriesOperations.js";
 export * from "./Documents/Commands/StreamResult.js";
 export * from "./Documents/Session/SessionOptions.js";
 export * from "./Documents/Commands/CommandData.js";
+export * from "./Documents/Commands/GetDocumentsCommand.js";
 export * from "./Documents/Commands/Batches/CopyAttachmentCommandData.js";
 export * from "./Documents/Commands/Batches/DeleteAttachmentCommandData.js";
 export * from "./Documents/Commands/Batches/MoveAttachmentCommandData.js";

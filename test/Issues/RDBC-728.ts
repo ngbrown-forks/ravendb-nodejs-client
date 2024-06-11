@@ -1,4 +1,4 @@
-import { IDocumentStore } from "../../src/Documents/IDocumentStore.js";
+import { IDocumentStore } from "../../src/index.js";
 import { disposeTestDocumentStore, testContext } from "../Utils/TestUtil.js";
 import { assertThat } from "../Utils/AssertExtensions.js";
 

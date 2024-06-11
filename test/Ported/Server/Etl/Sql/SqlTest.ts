@@ -5,12 +5,12 @@ import {
     AddEtlOperation,
     UpdateEtlOperation,
     ResetEtlOperation,
+    OngoingTaskSqlEtl,
     SqlEtlConfiguration, SqlEtlTable, Transformation, GetOngoingTaskInfoOperation
 } from "../../../../../src/index.js";
 import { disposeTestDocumentStore, RavenTestContext, testContext } from "../../../../Utils/TestUtil.js";
 import { User } from "../../../../Assets/Entities.js";
 import { assertThat } from "../../../../Utils/AssertExtensions.js";
-import { OngoingTaskSqlEtlDetails } from "../../../../../src/Documents/Operations/OngoingTasks/OngoingTask.js";
 
 (RavenTestContext.isPullRequest ? describe.skip : describe)(
     `${RavenTestContext.isPullRequest ? "[Skipped on PR] " : ""}` +
@@ -64,7 +64,7 @@ import { OngoingTaskSqlEtlDetails } from "../../../../../src/Documents/Operation
 
         // and try to read ongoing sql task
 
-        const ongoingTask = await store.maintenance.send(new GetOngoingTaskInfoOperation(etlResult.taskId, "SqlEtl")) as OngoingTaskSqlEtlDetails;
+        const ongoingTask = await store.maintenance.send(new GetOngoingTaskInfoOperation(etlResult.taskId, "SqlEtl")) as OngoingTaskSqlEtl;
 
         assertThat(ongoingTask)
             .isNotNull();

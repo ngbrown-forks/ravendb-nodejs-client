@@ -6,8 +6,8 @@ import DocumentStore, {
     TypesAwareObjectMapper,
     DocumentConventions,
     PatchOperation,
+    PatchRequest
 } from "../../src/index.js";
-import { PatchRequest } from "../../src/Documents/Operations/PatchRequest.js";
 
 describe("RDBC-233", function () {
 

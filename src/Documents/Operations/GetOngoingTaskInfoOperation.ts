@@ -12,6 +12,7 @@ import { throwError } from "../../Exceptions/index.js";
 import { RavenEtlConfiguration } from "./Etl/RavenEtlConfiguration.js";
 import { SqlEtlConfiguration } from "./Etl/Sql/SqlEtlConfiguration.js";
 import { OlapEtlConfiguration } from "./Etl/Olap/OlapEtlConfiguration.js";
+import { QueueSinkConfiguration } from "./QueueSink/QueueSinkConfiguration.js";
 import { ElasticSearchEtlConfiguration } from "./Etl/ElasticSearch/ElasticSearchEtlConfiguration.js";
 import { QueueEtlConfiguration } from "./Etl/Queue/QueueEtlConfiguration.js";
 import { Transformation } from "./Etl/Transformation.js";
@@ -133,6 +134,12 @@ class GetOngoingTaskInfoCommand extends RavenCommand<OngoingTask> {
             case "PullReplicationAsSink": {
                 break;
             }
+            case "PullReplicationAsHub": {
+                break;
+            }
+            case "QueueSink": {
+                break;
+            }
             case "Backup": {
                 nestedTypes = {
                     lastFullBackup: "date",
@@ -168,5 +175,5 @@ const knownTypes = new Map<string, any>([
     [OlapEtlConfiguration.name, OlapEtlConfiguration],
     [ElasticSearchEtlConfiguration.name, ElasticSearchEtlConfiguration],
     [QueueEtlConfiguration.name, QueueEtlConfiguration],
-    [Transformation.name, Transformation]
+    [Transformation.name, Transformation],
 ]);

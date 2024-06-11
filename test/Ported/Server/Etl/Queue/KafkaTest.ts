@@ -3,10 +3,8 @@ import {
     AddEtlOperation, GetOngoingTaskInfoOperation,
     IDocumentStore,
     PutConnectionStringOperation,
-    QueueConnectionString, Transformation
+    QueueConnectionString, Transformation, OngoingTaskQueueEtl, QueueEtlConfiguration
 } from "../../../../../src/index.js";
-import { QueueEtlConfiguration } from "../../../../../src/Documents/Operations/Etl/Queue/QueueEtlConfiguration.js";
-import { OngoingTaskQueueEtlDetails } from "../../../../../src/Documents/Operations/OngoingTasks/OngoingTask.js";
 import { assertThat } from "../../../../Utils/AssertExtensions.js";
 
 
@@ -44,7 +42,7 @@ import { assertThat } from "../../../../Utils/AssertExtensions.js";
 
         const etlResult = await store.maintenance.send(new AddEtlOperation(etlConfiguration));
 
-        const ongoingTask = await store.maintenance.send(new GetOngoingTaskInfoOperation(etlResult.taskId, "QueueEtl")) as OngoingTaskQueueEtlDetails;
+        const ongoingTask = await store.maintenance.send(new GetOngoingTaskInfoOperation(etlResult.taskId, "QueueEtl")) as OngoingTaskQueueEtl;
 
         assertThat(ongoingTask)
             .isNotNull();

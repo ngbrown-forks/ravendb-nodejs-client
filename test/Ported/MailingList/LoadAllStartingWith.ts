@@ -1,7 +1,7 @@
 import assert from "node:assert"
-import { EntitiesCollectionObject, IDocumentStore } from "../../../src/index.js";
+import { EntitiesCollectionObject, IDocumentStore, Lazy } from "../../../src/index.js";
 import { disposeTestDocumentStore, testContext } from "../../Utils/TestUtil.js";
-import { Lazy } from "../../../src/Documents/Lazy.js";
+import { assertThat } from "../../Utils/AssertExtensions.js";
 
 export class Abc {
     public id: string;
@@ -53,6 +53,10 @@ describe("LoadAllStartingWith", function () {
             assert.strictEqual(test2Classes.length, 1);
             assert.strictEqual(testClasses["abc/1"].id, "abc/1");
             assert.strictEqual(test2Classes[0].id, "xyz/1");
+            assertThat(session.advanced.getChangeVectorFor(Object.values(testClasses)[0]))
+                .isNotNull();
+            assertThat(session.advanced.getChangeVectorFor(test2Classes[0]))
+                .isNotNull();
         }
     });
 });

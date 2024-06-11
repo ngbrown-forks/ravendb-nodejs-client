@@ -1,7 +1,9 @@
-import { IDocumentStore } from "../../src/Documents/IDocumentStore.js";
-import { IndexDefinition } from "../../src/Documents/Indexes/IndexDefinition.js";
-import { IndexFieldOptions } from "../../src/Documents/Indexes/IndexFieldOptions.js";
-import { PutIndexesOperation } from "../../src/Documents/Operations/Indexes/PutIndexesOperation.js";
+import {
+    IDocumentStore,
+    IndexDefinition,
+    IndexFieldOptions,
+    PutIndexesOperation
+} from "../../src/index.js";
 import { disposeTestDocumentStore, testContext } from "../Utils/TestUtil.js";
 import { assertThat } from "../Utils/AssertExtensions.js";
 

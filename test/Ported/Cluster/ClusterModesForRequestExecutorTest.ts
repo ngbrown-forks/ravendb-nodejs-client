@@ -1,16 +1,18 @@
 import { ClusterTestContext, RavenTestContext } from "../../Utils/TestUtil.js";
-import { DocumentStore } from "../../../src/Documents/DocumentStore.js";
-import { DocumentConventions } from "../../../src/Documents/Conventions/DocumentConventions.js";
-import { ServerNode } from "../../../src/Http/ServerNode.js";
-import { Topology } from "../../../src/Http/Topology.js";
-import { GetDatabaseTopologyCommand } from "../../../src/ServerWide/Commands/GetDatabaseTopologyCommand.js";
+import {
+    DocumentStore,
+    ServerNode,
+    Topology,
+    GetDatabaseTopologyCommand,
+    DocumentSession,
+    RequestExecutor,
+    GetStatisticsOperation,
+    UpdateTopologyParameters,
+    DocumentConventions
+} from "../../../src/index.js";
 import { delay } from "../../../src/Utility/PromiseUtil.js";
-import { DocumentSession } from "../../../src/Documents/Session/DocumentSession.js";
 import { User } from "../../Assets/Entities.js";
 import { assertThat } from "../../Utils/AssertExtensions.js";
-import { RequestExecutor } from "../../../src/Http/RequestExecutor.js";
-import { GetStatisticsOperation } from "../../../src/Documents/Operations/GetStatisticsOperation.js";
-import { UpdateTopologyParameters } from "../../../src/Http/UpdateTopologyParameters.js";
 
 (RavenTestContext.isPullRequest ? describe.skip : describe)("ClusterModesForRequestExecutorTest", function () {
 

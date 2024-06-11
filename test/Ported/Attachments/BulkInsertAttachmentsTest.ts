@@ -1,5 +1,5 @@
 import { disposeTestDocumentStore, testContext } from "../../Utils/TestUtil.js";
-import { ConflictSolver, GetCountersOperation, IDocumentStore } from "../../../src/index.js";
+import { GetCountersOperation, IDocumentStore } from "../../../src/index.js";
 import { User } from "../../Assets/Entities.js";
 import { assertThat, assertThrows } from "../../Utils/AssertExtensions.js";
 import { readToBuffer } from "../../../src/Utility/StreamUtil.js";
