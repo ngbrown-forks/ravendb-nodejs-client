@@ -9,8 +9,8 @@ import {
     CounterBatch,
     CounterBatchOperation,
     GetCountersOperation,
+    CONSTANTS
 } from "../../../src/index.js";
-import { CONSTANTS } from "../../../src/Constants.js";
 import { assertThat } from "../../Utils/AssertExtensions.js";
 
 describe("CountersSingleNodeTest", function () {

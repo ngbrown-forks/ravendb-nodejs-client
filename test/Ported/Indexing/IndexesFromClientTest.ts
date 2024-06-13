@@ -23,10 +23,10 @@ import {
     SetIndexesPriorityOperation,
     GetTermsOperation,
     AbstractJavaScriptIndexCreationTask,
+    DeleteIndexOperation,
+    QueryStatistics,
+    MoreLikeThisOptions
 } from "../../../src/index.js";
-import { DeleteIndexOperation } from "../../../src/Documents/Operations/Indexes/DeleteIndexOperation.js";
-import { QueryStatistics } from "../../../src/Documents/Session/QueryStatistics.js";
-import { MoreLikeThisOptions } from "../../../src/Documents/Queries/MoreLikeThis/MoreLikeThisOptions.js";
 import { IndexCreation } from "../../../src/Documents/Indexes/IndexCreation.js";
 import { delay } from "../../../src/Utility/PromiseUtil.js";
 

@@ -61,7 +61,7 @@ export class CompareExchangeSessionValue {
                 let entity: T;
 
                 if (this._originalValue && !TypeUtil.isNullOrUndefined(this._originalValue.value)) {
-                    entity = CompareExchangeValueResultParser.deserializeObject(this._originalValue.value, conventions, clazz);
+                    entity = CompareExchangeValueResultParser.deserializeObject(this._originalValue.value, conventions, clazz) as T;
                 }
 
                 const value = new CompareExchangeValue(this._key, this._index, entity, null);

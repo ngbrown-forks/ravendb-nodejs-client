@@ -18,6 +18,9 @@ import { delay } from "../../src/Utility/PromiseUtil.js";
 import { OngoingTaskBackup } from "../../src/Documents/Operations/OngoingTasks/OngoingTask.js";
 import { TimeUtil } from "../../src/Utility/TimeUtil.js";
 import { DatabaseRecordBuilder } from "../../src/ServerWide/Operations/DatabaseRecordBuilder.js";
+import {
+    GetShardedPeriodicBackupStatusOperation
+} from "../../src/Documents/Operations/Backups/Sharding/GetShardedPeriodicBackupStatusOperation.js";
 
 describe("BackupsTest", function () {
 
@@ -184,6 +187,13 @@ async function waitForBackupStatus(store: IDocumentStore, taskId: number, sharde
 
     while (sw.elapsed < 10_000) {
         if (sharded) {
+            const backupStatus = await store.maintenance.send(new GetShardedPeriodicBackupStatusOperation(taskId));
+
+            if (backupStatus) {
+                if (Object.values(backupStatus.statuses).every(x => x && x.lastFullBackup)) {
+                    return;
+                }
+            }
         } else {
             const backupStatus = await store.maintenance.send(new GetPeriodicBackupStatusOperation(taskId));
             if (backupStatus && backupStatus.status && backupStatus.status.lastFullBackup) {

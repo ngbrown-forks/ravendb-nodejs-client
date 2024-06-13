@@ -4,10 +4,10 @@ import { testContext, disposeTestDocumentStore, RavenTestContext } from "../../U
 import {
     DeleteDocumentCommand,
     GetStatisticsOperation, IDocumentSession,
-    IDocumentStore, PutAttachmentOperation
+    IDocumentStore, PutAttachmentOperation,
+    CONSTANTS
 } from "../../../src/index.js";
 import { User } from "../../Assets/Entities.js";
-import { CONSTANTS } from "../../../src/Constants.js";
 
 (RavenTestContext.isPullRequest ? describe.skip : describe)("AttachmentsRevisions", function () {
 

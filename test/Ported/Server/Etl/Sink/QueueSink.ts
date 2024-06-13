@@ -5,13 +5,14 @@ import {
     QueueSinkConfiguration,
     QueueConnectionString,
     AddQueueSinkOperation,
-    GetOngoingTaskInfoOperation, UpdateQueueSinkOperation
+    GetOngoingTaskInfoOperation,
+    UpdateQueueSinkOperation,
+    OngoingTaskQueueSink
 } from "../../../../../src/index.js";
-import { disposeTestDocumentStore, testContext } from "../../../../Utils/TestUtil.js";
+import { disposeTestDocumentStore, RavenTestContext, testContext } from "../../../../Utils/TestUtil.js";
 import { assertThat } from "../../../../Utils/AssertExtensions.js";
-import { OngoingTaskQueueSink } from "../../../../../src/Documents/Operations/OngoingTasks/OngoingTask.js";
 
-describe("QueueSinkTest", function () {
+(RavenTestContext.isPullRequest ? describe.skip : describe)("QueueSinkTest", function () {
     let store: IDocumentStore;
 
     beforeEach(async function () {
@@ -78,7 +79,7 @@ async function setupQueueSink(brokerType: QueueBrokerType, store: IDocumentStore
 
     sink.configuration.disabled = false;
 
-    const updateResult = await new UpdateQueueSinkOperation(taskId, sink.configuration);
+    const updateResult = await store.maintenance.send(new UpdateQueueSinkOperation(taskId, sink.configuration));
     assertThat(updateResult)
         .isNotNull();
 }

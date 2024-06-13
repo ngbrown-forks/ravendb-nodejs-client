@@ -1,7 +1,7 @@
 import {
     DocumentStore,
+    IAuthOptions
 } from "../../src/index.js";
-import { IAuthOptions } from "../../src/Auth/AuthOptions.js";
 import assert from "node:assert"
 
 describe("[RDBC-202] DocumentStore", function () {

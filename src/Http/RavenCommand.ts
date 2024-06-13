@@ -15,6 +15,8 @@ import { ObjectTypeDescriptor } from "../Types/index.js";
 import { ObjectUtil } from "../Utility/ObjectUtil.js";
 import { Dispatcher } from "undici-types";
 import { RequestInit } from "undici";
+import { HEADERS } from "../Constants.js";
+import { DefaultCommandResponseBehavior } from "./Behaviors/DefaultCommandResponseBehavior.js";
 
 const log = getLogger({ module: "RavenCommand" });
 
@@ -47,10 +49,18 @@ export abstract class RavenCommand<TResult> {
 
     protected _etag: string;
 
+    public get responseBehavior() {
+        return DefaultCommandResponseBehavior.INSTANCE;
+    }
+
     public abstract get isReadRequest(): boolean;
 
     public get responseType() {
         return this._responseType;
+    }
+
+    public set etag(value: string) {
+        this._etag = value;
     }
 
     public get canCache(): boolean {
@@ -88,8 +98,10 @@ export abstract class RavenCommand<TResult> {
     constructor(copy?: RavenCommand<TResult>) {
         if (copy instanceof RavenCommand) {
             this._canCache = copy._canCache;
+            this._canReadFromCache = copy._canReadFromCache;
             this._canCacheAggressively = copy._canCacheAggressively;
             this._selectedNodeTag = copy._selectedNodeTag;
+            this._selectedShardNumber = copy.selectedShardNumber;
             this._responseType = copy._responseType;
         } else {
             this._responseType = "Object";
@@ -183,7 +195,7 @@ export abstract class RavenCommand<TResult> {
             "When _responseType is set to RAW then please override this method to handle the response.");
     }
 
-    protected _urlEncode(value): string {
+    protected _urlEncode(value: string | number | boolean): string {
         return encodeURIComponent(value);
     }
 
@@ -265,7 +277,7 @@ export abstract class RavenCommand<TResult> {
 
     protected _addChangeVectorIfNotNull(changeVector: string, req: HttpRequestParameters): void {
         if (changeVector) {
-            req.headers["If-Match"] = `"${changeVector}"`;
+            req.headers[HEADERS.IF_MATCH] = `"${changeVector}"`;
         }
     }
 

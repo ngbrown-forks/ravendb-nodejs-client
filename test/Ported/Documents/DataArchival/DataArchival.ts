@@ -1,11 +1,7 @@
 
-import { GetDatabaseRecordOperation, IDocumentStore } from "../../../../src/index.js";
+import { GetDatabaseRecordOperation, IDocumentStore, DataArchivalConfiguration, ConfigureDataArchivalOperation } from "../../../../src/index.js";
 import { disposeTestDocumentStore, RavenTestContext, testContext } from "../../../Utils/TestUtil.js";
-import { DataArchivalConfiguration } from "../../../../src/Documents/Operations/DataArchival/DataArchivalConfiguration.js";
 import { assertThat } from "../../../Utils/AssertExtensions.js";
-import {
-    ConfigureDataArchivalOperation
-} from "../../../../src/Documents/Operations/DataArchival/ConfigureDataArchivalOperation.js";
 
 (RavenTestContext.isPullRequest ? describe.skip : describe)("DataArchival", function () {
     let store: IDocumentStore;

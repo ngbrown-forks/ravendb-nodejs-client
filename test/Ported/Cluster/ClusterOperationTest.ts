@@ -7,9 +7,9 @@ import {
     GetDatabaseTopologyCommand,
     IDocumentStore,
     GetDatabaseRecordOperation,
-    ReorderDatabaseMembersOperation
+    ReorderDatabaseMembersOperation,
+    NextIdentityForOperation
 } from "../../../src/index.js";
-import { NextIdentityForOperation } from "../../../src/index.js";
 import { assertThat, assertThrows } from "../../Utils/AssertExtensions.js";
 import { Stopwatch } from "../../../src/Utility/Stopwatch.js";
 import { User } from "../../Assets/Entities.js";

@@ -2,13 +2,11 @@ import assert from "node:assert"
 import { testContext, disposeTestDocumentStore } from "../../Utils/TestUtil.js";
 
 import DocumentStore, {
-    IDocumentStore, BulkInsertOperation, IMetadataDictionary,
+    IDocumentStore, BulkInsertOperation, IMetadataDictionary, CONSTANTS, ObjectUtil
 } from "../../../src/index.js";
 import { createMetadataDictionary } from "../../../src/Mapping/MetadataAsDictionary.js";
-import { CONSTANTS } from "../../../src/Constants.js";
 import { DateUtil } from "../../../src/Utility/DateUtil.js";
 import { delay } from "../../../src/Utility/PromiseUtil.js";
-import { ObjectUtil } from "../../../src/Utility/ObjectUtil.js";
 import { assertThat } from "../../Utils/AssertExtensions.js";
 
 describe("bulk insert", function () {

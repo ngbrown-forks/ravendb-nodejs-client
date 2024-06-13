@@ -35,7 +35,7 @@ export class CompareExchangeResult<T> {
         const exchangeResult = new CompareExchangeResult<T>();
         exchangeResult.index = response.Index;
         exchangeResult.successful = response.Successful;
-        exchangeResult.value = result;
+        exchangeResult.value = result as T;
 
         return exchangeResult;
     }

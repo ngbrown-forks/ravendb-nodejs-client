@@ -253,6 +253,9 @@ export * from "./Documents/Session/Operations/LoadStartingWithOperation.js";
 export * from "./Documents/Session/Operations/MultiGetOperation.js";
 export * from "./Documents/Session/Operations/QueryOperation.js";
 export * from "./Documents/Session/Operations/StreamOperation.js";
+export * from "./Documents/Operations/DataArchival/DataArchivalConfiguration.js";
+export * from "./Documents/Operations/DataArchival/ConfigureDataArchivalOperation.js";
+export * from "./Documents/Operations/DataArchival/ConfigureDataArchivalOperationResult.js";
 export * from "./Documents/Operations/Attachments/DeleteAttachmentOperation.js";
 export * from "./Documents/Operations/Attachments/PutAttachmentOperation.js";
 export * from "./Documents/Operations/PatchResult.js";
@@ -747,6 +750,7 @@ export * from "./ServerWide/Operations/ModifyDatabaseTopologyResult.js";
 
 // MAPPING
 export { TypesAwareObjectMapper, ITypesAwareObjectMapper } from "./Mapping/ObjectMapper.js";
+export { camelCaseReviver, pascalCaseReviver, camelCaseReplacer, pascalCaseReplacer } from "./Mapping/Json/index.js";
 
 // CONSTANTS
 export { CONSTANTS } from "./Constants.js";
