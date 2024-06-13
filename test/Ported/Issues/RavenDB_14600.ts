@@ -45,7 +45,10 @@ describe("RavenDB_14600Test", function () {
                 .isNotNull();
 
             for (const f of facets["employee"].values) {
-                await session.load(f.range);
+                const e = await session.load(f.range);
+                const cv = session.advanced.getChangeVectorFor(e);
+                assertThat(cv)
+                    .isNotNull();
             }
 
             assertThat(session.advanced.numberOfRequests)

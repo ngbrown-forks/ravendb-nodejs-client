@@ -37,10 +37,6 @@ export class ClusterRequestExecutor extends RequestExecutor {
     }
 
     public static createForSingleNode(
-        url: string, opts: IRequestExecutorOptions): ClusterRequestExecutor;
-    public static createForSingleNode(
-        url: string, opts: IRequestExecutorOptions): ClusterRequestExecutor;
-    public static createForSingleNode(
         url: string, opts: IRequestExecutorOptions): ClusterRequestExecutor {
         const initialUrls = [url];
 
@@ -127,9 +123,7 @@ export class ClusterRequestExecutor extends RequestExecutor {
             });
 
             const results = command.result;
-            const nodes = ServerNode.createFrom(results.topology);
-
-            const newTopology = new Topology(results.etag, nodes);
+            const newTopology = ServerNode.createFrom(results.topology, results.etag);
 
             this._updateNodeSelector(newTopology, parameters.forceUpdate);
 

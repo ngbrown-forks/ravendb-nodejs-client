@@ -9,7 +9,7 @@ import {
 import { ToggleDatabasesStateOperation } from "../../../src/Documents/Operations/ToggleDatabasesStateOperation.js";
 import { assertThat, assertThrows } from "../../Utils/AssertExtensions.js";
 import { AddDatabaseNodeOperation } from "../../../src/ServerWide/Operations/AddDatabaseNodeOperation.js";
-import { Genre } from "../../Assets/Samples";
+import { Genre } from "../../Assets/Samples.js";
 
 describe("DatabasesTest", function () {
 

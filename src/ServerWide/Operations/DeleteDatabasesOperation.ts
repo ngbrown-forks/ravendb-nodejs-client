@@ -8,6 +8,8 @@ import { HeadersBuilder } from "../../Utility/HttpUtil.js";
 import { DocumentConventions } from "../../Documents/Conventions/DocumentConventions.js";
 import { IRaftCommand } from "../../Http/IRaftCommand.js";
 import { RaftIdGenerator } from "../../Utility/RaftIdGenerator.js";
+import { TypeUtil } from "../../Utility/TypeUtil.js";
+import { ClientShardHelper } from "../../Utility/ClientShardHelper.js";
 
 export interface DeleteDatabaseResult {
     raftCommandIndex: number;
@@ -17,6 +19,7 @@ export interface DeleteDatabaseResult {
 export interface DeleteDatabasesParameters {
     databaseNames: string[];
     hardDelete: boolean;
+    shardNumber?: number;
     fromNodes?: string | string[];
     timeToWaitForConfirmation?: number;
 }
@@ -39,6 +42,13 @@ export class DeleteDatabasesOperation implements IServerOperation<DeleteDatabase
         }
 
         this._parameters = parameters;
+
+        if (!TypeUtil.isNullOrUndefined(parameters.shardNumber)) {
+            this._parameters = {
+                ...parameters,
+                databaseNames: parameters.databaseNames.map(x => ClientShardHelper.toShardName(x, parameters.shardNumber))
+            };
+        }
     }
 
     public getCommand(conventions: DocumentConventions): RavenCommand<DeleteDatabaseResult> {

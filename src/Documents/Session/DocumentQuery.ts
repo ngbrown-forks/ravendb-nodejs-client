@@ -130,6 +130,10 @@ export class DocumentQuery<T extends object>
 
         projectionBehavior ??= "Default";
 
+        if (this.isProjectInto || (this.fieldsToFetchToken?.projections?.length > 0)) {
+            QueryData.throwProjectionIsAlreadyDone();
+        }
+
         if (projectionType) {
             this._theSession.conventions.tryRegisterJsType(projectionType);
         }
@@ -616,7 +620,7 @@ export class DocumentQuery<T extends object>
         query._filterModeStack = [...this._filterModeStack];
         query._start = this._start;
         query._timeout = this._timeout;
-        query._queryStats = this._queryStats;
+        query._queryStats = queryData.queryStatistics ?? this._queryStats;
         query._theWaitForNonStaleResults = this._theWaitForNonStaleResults;
         query._negate = this._negate;
         //noinspection unchecked

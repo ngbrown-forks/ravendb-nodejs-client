@@ -9,18 +9,29 @@ import { ServerNode } from "../../Http/ServerNode.js";
 import { HttpRequestParameters } from "../../Primitives/Http.js";
 import { RaftIdGenerator } from "../../Utility/RaftIdGenerator.js";
 import { Stream } from "node:stream";
+import { TypeUtil } from "../../Utility/TypeUtil.js";
+import { ClientShardHelper } from "../../Utility/ClientShardHelper.js";
+import { shelljs } from "globals";
 
 export class ModifyDatabaseTopologyOperation implements IServerOperation<ModifyDatabaseTopologyResult> {
     private readonly _databaseName: string;
     private readonly _databaseTopology: DatabaseTopology;
 
-    public constructor(databaseName: string, databaseTopology: DatabaseTopology) {
-        if (!databaseTopology) {
+    public constructor(databaseName: string, databaseTopology: DatabaseTopology)
+    public constructor(databaseName: string, shardNumber: number, databaseTopology: DatabaseTopology)
+    public constructor(databaseName: string, databaseTopologyOrShardNumber: DatabaseTopology | number, databaseTopology?: DatabaseTopology) {
+        if (TypeUtil.isNullOrUndefined(databaseTopologyOrShardNumber)) {
             throwError("InvalidArgumentException", "DatabaseTopology cannot be null")
         }
 
-        this._databaseTopology = databaseTopology;
-        this._databaseName = databaseName;
+        if (TypeUtil.isNumber(databaseTopologyOrShardNumber)) {
+            this._databaseTopology = databaseTopology;
+            this._databaseName = ClientShardHelper.toShardName(databaseName, databaseTopologyOrShardNumber);
+        } else {
+            this._databaseName = databaseName;
+            this._databaseTopology = databaseTopology;
+        }
+
     }
 
     public get resultType(): OperationResultType {

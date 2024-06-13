@@ -3,7 +3,7 @@ import { CompareExchangeValue } from "./CompareExchangeValue.js";
 import { throwError } from "../../../Exceptions/index.js";
 import { TypeUtil } from "../../../Utility/TypeUtil.js";
 import { ObjectUtil } from "../../../Utility/ObjectUtil.js";
-import { CONSTANTS } from "../../../Constants.js";
+import { COMPARE_EXCHANGE, CONSTANTS } from "../../../Constants.js";
 import { MetadataAsDictionary, MetadataDictionary } from "../../../Mapping/MetadataAsDictionary.js";
 import { CompareExchangeResultClass, EntityConstructor } from "../../../Types/index.js";
 
@@ -93,12 +93,22 @@ export class CompareExchangeValueResultParser {
             metadata = !materializeMetadata ? MetadataDictionary.create(metadataRaw) : MetadataDictionary.materializeFromJson(metadataRaw);
         }
 
-        let rawValue = raw.object;
-        if (clazz && TypeUtil.isPrimitiveType(clazz) || TypeUtil.isPrimitive(rawValue)) {
-            return new CompareExchangeValue(key, index, rawValue, cv, metadata);
+        const value = CompareExchangeValueResultParser.deserializeObject(raw, conventions, clazz);
+        return new CompareExchangeValue(key, index, value, cv, metadata);
+
+    }
+
+    public static deserializeObject<T>(raw: object, conventions: DocumentConventions, clazz: CompareExchangeResultClass<T>) {
+        if (TypeUtil.isNullOrUndefined(raw)) {
+            return null;
+        }
+
+        if (clazz && TypeUtil.isPrimitiveType(clazz) || TypeUtil.isPrimitive(raw)) {
+            return raw;
         } else {
+            let rawValue = raw[COMPARE_EXCHANGE.OBJECT_FIELD_NAME];
             if (!rawValue) {
-                return new CompareExchangeValue(key, index, null, cv, metadata);
+                return null;
             } else {
                 const entityType = conventions.getJsTypeByDocumentType(clazz as EntityConstructor);
                 if (conventions.serverToLocalFieldNameConverter) {
@@ -109,8 +119,7 @@ export class CompareExchangeValueResultParser {
                             arrayRecursive: true
                         });
                 }
-                const entity = conventions.deserializeEntityFromJson(entityType, rawValue);
-                return new CompareExchangeValue(key, index, entity, cv, metadata);
+                return conventions.deserializeEntityFromJson(entityType, rawValue);
             }
         }
     }

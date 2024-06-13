@@ -14,6 +14,7 @@ import { PutCompareExchangeCommandData } from "../../Commands/Batches/PutCompare
 import { DeleteCompareExchangeCommandData } from "../../Commands/Batches/DeleteCompareExchangeCommandData.js";
 import { ITypesAwareObjectMapper } from "../../../Mapping/ObjectMapper.js";
 import { IMetadataDictionary } from "../../Session/IMetadataDictionary.js";
+import { CompareExchangeValueResultParser } from "./CompareExchangeValueResultParser.js";
 
 export class CompareExchangeSessionValue {
     private readonly _key: string;
@@ -60,11 +61,7 @@ export class CompareExchangeSessionValue {
                 let entity: T;
 
                 if (this._originalValue && !TypeUtil.isNullOrUndefined(this._originalValue.value)) {
-                    if (TypeUtil.isPrimitive(clazz) || !clazz) {
-                        entity = this._originalValue.value as T;
-                    } else {
-                        entity = EntityToJson.convertToEntity(clazz as EntityConstructor, this._key, this._originalValue.value, conventions);
-                    }
+                    entity = CompareExchangeValueResultParser.deserializeObject(this._originalValue.value, conventions, clazz);
                 }
 
                 const value = new CompareExchangeValue(this._key, this._index, entity, null);

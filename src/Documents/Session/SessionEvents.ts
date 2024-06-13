@@ -210,7 +210,7 @@ export class BeforeConversionToDocumentEventArgs {
 export class BeforeConversionToEntityEventArgs {
     public readonly id: string;
     public readonly type: DocumentType;
-    public readonly document: object;
+    public document: object;
     public readonly session: InMemoryDocumentSessionOperations;
 
     public constructor(session: InMemoryDocumentSessionOperations, id: string, type: DocumentType, document: object) {

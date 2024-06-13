@@ -28,7 +28,7 @@ import { SessionInfo } from "../Documents/Session/IDocumentSession.js";
 import { JsonSerializer } from "../Mapping/Json/Serializer.js";
 import { validateUri } from "../Utility/UriUtil.js";
 import { readToEnd } from "../Utility/StreamUtil.js";
-import { closeHttpResponse } from "../Utility/HttpUtil.js";
+import { closeHttpResponse, getEtagHeader } from "../Utility/HttpUtil.js";
 import { PromiseStatusTracker } from "../Utility/PromiseUtil.js";
 import { IBroadcast } from "./IBroadcast.js";
 import { StringUtil } from "../Utility/StringUtil.js";
@@ -90,17 +90,14 @@ export class NodeStatus implements IDisposable {
 
     private _nodeStatusCallback: (nodeStatus: NodeStatus) => Promise<void>;
     private _timerPeriodInMs: number;
-    public readonly nodeIndex: number;
     public readonly node: ServerNode;
     public readonly requestExecutor: RequestExecutor;
     private _timer: Timer;
 
     public constructor(
-        nodeIndex: number,
         node: ServerNode,
         requestExecutor: RequestExecutor,
         nodeStatusCallback: (nodeStatus: NodeStatus) => Promise<void>) {
-        this.nodeIndex = nodeIndex;
         this.node = node;
         this.requestExecutor = requestExecutor;
         this._timerPeriodInMs = 100;
@@ -566,7 +563,7 @@ export class RequestExecutor implements IDisposable {
             } else if (this._nodeSelector.onUpdateTopology(topology, parameters.forceUpdate)) {
                 this._disposeAllFailedNodesTimers();
 
-                if (this.conventions.readBalanceBehavior === "FastestNode") {
+                if (this.conventions.readBalanceBehavior === "FastestNode" && this._nodeSelector.inSpeedTestPhase()) {
                     this._nodeSelector.scheduleSpeedTest();
                 }
             }
@@ -644,6 +641,14 @@ export class RequestExecutor implements IDisposable {
 
     public chooseNodeForRequest<TResult>(cmd: RavenCommand<TResult>, sessionInfo: SessionInfo): CurrentIndexAndNode {
         if (!StringUtil.isNullOrWhitespace(cmd.selectedNodeTag)) {
+
+            const promotables = this._nodeSelector.getTopology().promotables;
+            for (const node of promotables) {
+                if (node.clusterTag === cmd.selectedNodeTag) {
+                    return new CurrentIndexAndNode(null, node);
+                }
+            }
+
             return this._nodeSelector.getRequestedNode(cmd.selectedNodeTag);
         }
 
@@ -993,6 +998,10 @@ export class RequestExecutor implements IDisposable {
 
         command.statusCode = response.status;
 
+        if (response.status < 400 || command.statusCode === 304) {
+            command.etag = getEtagHeader(response) ?? cachedChangeVector;
+        }
+
         let responseDispose: ResponseDisposeHandling = "Automatic";
 
         try {
@@ -1002,9 +1011,7 @@ export class RequestExecutor implements IDisposable {
 
                 cachedItem.notModified();
 
-                if (command.responseType === "Object") {
-                    await command.setResponseFromCache(cachedValue);
-                }
+                await command.responseBehavior.handleNotModified(command, response, cachedValue);
 
                 return;
             }
@@ -1441,20 +1448,8 @@ export class RequestExecutor implements IDisposable {
         switch (response.status) {
             case StatusCodes.NotFound: {
                 this._cache.setNotFound(url);
-                switch (command.responseType) {
-                    case "Empty": {
-                        return true;
-                    }
-                    case "Object": {
-                        return command.setResponseAsync(null, false)
-                            .then(() => true);
-                    }
-                    default: {
-                        command.setResponseRaw(response, null);
-                        break;
-                    }
-                }
-                return true;
+
+                return command.responseBehavior.tryHandleNotFound(command, response);
             }
 
             case StatusCodes.Forbidden: {
@@ -1521,8 +1516,7 @@ export class RequestExecutor implements IDisposable {
                     url, chosenNode, nodeIndex, command, req, response, await readBody(), null, sessionInfo, shouldRetry);
             }
             case StatusCodes.Conflict: {
-                RequestExecutor._handleConflict(response, await readBody());
-                break;
+                return command.responseBehavior.tryHandleConflict(response, await readBody());
             }
             case StatusCodes.TooEarly: {
                 if (!shouldRetry) {
@@ -1552,14 +1546,9 @@ export class RequestExecutor implements IDisposable {
                 return true;
             }
             default: {
-                command.onResponseFailure(response);
-                ExceptionDispatcher.throwException(response, await readBody());
+                return command.responseBehavior.tryHandleUnsuccessfulResponse(command, response, await readBody());
             }
         }
-    }
-
-    private static _handleConflict(response: HttpResponse, body: string): void {
-        ExceptionDispatcher.throwException(response, body);
     }
 
     private async _handleServerDown<TResult>(
@@ -1589,7 +1578,7 @@ export class RequestExecutor implements IDisposable {
         }
 
         if (!this._nodeSelector) {
-            this._spawnHealthChecks(chosenNode, nodeIndex);
+            this._spawnHealthChecks(chosenNode);
             return false;
         }
 
@@ -1603,7 +1592,7 @@ export class RequestExecutor implements IDisposable {
             return true;
         }
 
-        this._spawnHealthChecks(chosenNode, nodeIndex);
+        this._spawnHealthChecks(chosenNode);
 
 
         const currentIndexAndNode = this.chooseNodeForRequest(command, sessionInfo);
@@ -1667,7 +1656,7 @@ export class RequestExecutor implements IDisposable {
                         const node = this._nodeSelector.getTopology().nodes[index];
                         if (failedNodes.has(node)) {
                             // if other node succeed in broadcast we need to send health checks to the original failed node
-                            this._spawnHealthChecks(node, index);
+                            this._spawnHealthChecks(node);
                         }
                     });
                 }
@@ -1700,7 +1689,7 @@ export class RequestExecutor implements IDisposable {
                 command.failedNodes.set(node, error);
 
                 this._nodeSelector.onFailedRequest(failedIndex);
-                this._spawnHealthChecks(node, failedIndex);
+                this._spawnHealthChecks(node);
 
                 tasks.delete(failedPair[0]);
             }
@@ -1744,7 +1733,7 @@ export class RequestExecutor implements IDisposable {
     }
 
     public async handleServerNotResponsive(url: string, chosenNode: ServerNode, nodeIndex: number, e: Error) {
-        this._spawnHealthChecks(chosenNode, nodeIndex);
+        this._spawnHealthChecks(chosenNode);
         if (this._nodeSelector) {
             this._nodeSelector.onFailedRequest(nodeIndex);
         }
@@ -1767,7 +1756,7 @@ export class RequestExecutor implements IDisposable {
         return preferredNode.currentNode;
     }
 
-    private _spawnHealthChecks(chosenNode: ServerNode, nodeIndex: number): void {
+    private _spawnHealthChecks(chosenNode: ServerNode): void {
         if (this._disposed) {
             return;
         }
@@ -1783,7 +1772,6 @@ export class RequestExecutor implements IDisposable {
         this._log.info(`Spawn health checks for node ${chosenNode.url}.`);
 
         const nodeStatus: NodeStatus = new NodeStatus(
-            nodeIndex,
             chosenNode,
             this,
             (nStatus: NodeStatus) => this._checkNodeStatusCallback(nStatus));
@@ -1817,7 +1805,7 @@ export class RequestExecutor implements IDisposable {
             }
         }
 
-        if (!serverNode) {
+        if (!serverNode || TypeUtil.isNullOrUndefined(nodeIndex)) {
             return;
         }
 
@@ -1825,7 +1813,7 @@ export class RequestExecutor implements IDisposable {
             .then(() => {
                 return Promise.resolve(this._performHealthCheck(serverNode, nodeIndex))
                     .then(() => {
-                            status = this._failedNodesTimers[nodeStatus.nodeIndex];
+                            status = this._failedNodesTimers[nodeIndex];
                             if (status) {
                                 this._failedNodesTimers.delete(nodeStatus.node);
                                 status.dispose();

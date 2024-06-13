@@ -1,8 +1,11 @@
-import { IDisposable } from "../../../src/Types/Contracts.js";
-import { RequestExecutor } from "../../../src/Http/RequestExecutor.js";
+import {
+    IDisposable,
+    RequestExecutor,
+    RavenCommand,
+    IDocumentStore,
+    InMemoryDocumentSessionOperations
+} from "../../../src/index.js";
 import { throwError } from "../../../src/Exceptions/index.js";
-import { RavenCommand } from "../../../src/Http/RavenCommand.js";
-import { IDocumentStore, InMemoryDocumentSessionOperations } from "../../../src/index.js";
 
 export class DatabaseCommands implements IDisposable {
     private readonly _store: IDocumentStore;

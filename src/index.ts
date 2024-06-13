@@ -22,6 +22,8 @@ export * from "./Http/Topology.js";
 export * from "./Http/UriUtility.js";
 export * from "./Http/UpdateTopologyParameters.js";
 
+export * from "./Utility/ObjectUtil.js";
+
 // SERVERWIDE
 export * from "./ServerWide/index.js";
 export * from "./ServerWide/CompactSettings.js";
@@ -408,6 +410,7 @@ export * from "./Documents/IdTypeAndName.js";
 
 // SUBSCRIPTIONS
 export * from "./Documents/Subscriptions/SubscriptionBatchBase.js";
+export * from "./Documents/Subscriptions/SubscriptionBatch.js";
 export * from "./Documents/Subscriptions/DocumentSubscriptions.js";
 export * from "./Documents/Subscriptions/SubscriptionWorker.js";
 export * from "./Documents/Subscriptions/SubscriptionWorkerOptions.js";

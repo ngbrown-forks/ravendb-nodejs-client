@@ -459,6 +459,13 @@ describe("RavenDB_14006", function () {
             value1 = await session.advanced.clusterTransaction
                 .getCompareExchangeValue(companies[0].externalId, Address);
             assertThat(value1.value.city)
+                .isEqualTo("Torun");
+
+            session.advanced.clear();
+
+            value1 = await session.advanced.clusterTransaction
+                .getCompareExchangeValue(companies[0].externalId, Address);
+            assertThat(value1.value.city)
                 .isEqualTo("Bydgoszcz");
         }
     });
@@ -571,7 +578,7 @@ describe("RavenDB_14006", function () {
             value1 = await session.advanced.clusterTransaction
                 .getCompareExchangeValue(companies[0].externalId, Address);
             assertThat(value1.value.city)
-                .isEqualTo("Bydgoszcz");
+                .isEqualTo("Torun");
         }
     });
 
@@ -670,6 +677,14 @@ describe("RavenDB_14006", function () {
                 .getCompareExchangeValue(companies[0].externalId, Address);
 
             assertThat(value1.value.city)
+                .isEqualTo("Torun");
+
+            session.advanced.clear();
+
+            value1 = await session.advanced.clusterTransaction
+                .getCompareExchangeValue(companies[0].externalId, Address);
+
+            assertThat(value1.value.city)
                 .isEqualTo("Bydgoszcz");
         }
     });
@@ -718,6 +733,7 @@ describe("RavenDB_14006", function () {
                 "from index 'Companies/ByName' as c\n" +
                 "select incl(c)"
             )
+                .waitForNonStaleResults()
                 .statistics(s => stats = s)
                 .all();
 
@@ -747,6 +763,7 @@ describe("RavenDB_14006", function () {
                 "from index 'Companies/ByName' as c\n" +
                 "select incl(c)"
             )
+                .waitForNonStaleResults()
                 .statistics(s => stats = s)
                 .all();
 
@@ -784,6 +801,13 @@ describe("RavenDB_14006", function () {
                 .isGreaterThan(-1); // not from cache
             assertThat(stats.resultEtag)
                 .isNotEqualTo(resultEtag);
+
+            value1 = await session.advanced.clusterTransaction
+                .getCompareExchangeValue(companies[0].externalId, Address);
+            assertThat(value1.value.city)
+                .isEqualTo("Torun");
+
+            session.advanced.clear();
 
             value1 = await session.advanced.clusterTransaction
                 .getCompareExchangeValue(companies[0].externalId, Address);

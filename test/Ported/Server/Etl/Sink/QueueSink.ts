@@ -1,5 +1,4 @@
 import {
-    DocumentStore,
     IDocumentStore,
     PutConnectionStringOperation,
     QueueBrokerType,
@@ -9,9 +8,6 @@ import {
     GetOngoingTaskInfoOperation, UpdateQueueSinkOperation
 } from "../../../../../src/index.js";
 import { disposeTestDocumentStore, testContext } from "../../../../Utils/TestUtil.js";
-import {
-    PutConnectionStringCommand
-} from "../../../../../src/Documents/Operations/ConnectionStrings/PutConnectionStringOperation.js";
 import { assertThat } from "../../../../Utils/AssertExtensions.js";
 import { OngoingTaskQueueSink } from "../../../../../src/Documents/Operations/OngoingTasks/OngoingTask.js";
 
@@ -33,7 +29,7 @@ describe("QueueSinkTest", function () {
             bootstrapServers: "localhost:9092",
         }
 
-        await store.maintenance.send(new PutConnectionStringCommand(connectionString));
+        await store.maintenance.send(new PutConnectionStringOperation(connectionString));
 
         await setupQueueSink("Kafka", store, connectionString.name);
     });

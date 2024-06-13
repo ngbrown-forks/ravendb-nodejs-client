@@ -2,10 +2,10 @@ import assert from "node:assert"
 import { testContext, disposeTestDocumentStore } from "../../Utils/TestUtil.js";
 import {
     IDocumentStore,
-    DocumentStore
+    DocumentStore,
+    GetDocumentsCommand,
+    ObjectUtil
 } from "../../../src/index.js";
-import { GetDocumentsCommand } from "../../../src/Documents/Commands/GetDocumentsCommand.js";
-import { ObjectUtil } from "../../../src/Utility/ObjectUtil.js";
 
 describe("GetDocumentCommand streaming", function () {
 
