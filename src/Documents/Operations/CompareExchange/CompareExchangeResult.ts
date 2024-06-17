@@ -28,6 +28,10 @@ export class CompareExchangeResult<T> {
             throwError("InvalidOperationException", "Response is invalid. Index is missing");
         }
 
+        if (clazz) {
+            conventions.tryRegisterJsType(clazz as DocumentType);
+        }
+
         const raw = response.Value;
         const result = CompareExchangeValueResultParser.deserializeObject(raw, conventions, clazz);
 

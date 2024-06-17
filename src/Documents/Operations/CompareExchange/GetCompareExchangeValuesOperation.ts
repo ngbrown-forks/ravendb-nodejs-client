@@ -167,13 +167,8 @@ export class GetCompareExchangeValuesCommand<T> extends RavenCommand<{ [key: str
                     }
                 }
 
-                const { Object, ...rest} = item.Value;
-
                 return {
-                    value: {
-                        ...rest,
-                        object: Object
-                    },
+                    value: item.Value,
                     index: item.Index,
                     key: item.Key,
                     changeVector: item.ChangeVector

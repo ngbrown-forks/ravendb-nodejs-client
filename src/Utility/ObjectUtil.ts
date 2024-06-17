@@ -182,7 +182,7 @@ export class ObjectUtil {
                 key: value.Key,
                 changeVector: value.ChangeVector,
                 value: {
-                    object: value.Value?.Object
+                    Object: value.Value?.Object
                 }
             }
         }

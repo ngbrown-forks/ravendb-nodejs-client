@@ -9,16 +9,17 @@ import { ServerNode } from "../../Http/ServerNode.js";
 import { IRaftCommand } from "../../Http/IRaftCommand.js";
 import { RaftIdGenerator } from "../../Utility/RaftIdGenerator.js";
 import { ClientShardHelper } from "../../Utility/ClientShardHelper.js";
+import { TypeUtil } from "../../Utility/TypeUtil.js";
 
 export class PromoteDatabaseNodeOperation implements IServerOperation<DatabasePutResult> {
-    private _databaseName: string;
+    private readonly _databaseName: string;
     private readonly _node: string;
 
     public constructor(databaseName: string, node: string)
     public constructor(databaseName: string, node: string, shardNumber: number)
     public constructor(databaseName: string, node: string, shardNumber?: number) {
         this._node = node;
-        this._databaseName = ClientShardHelper.toShardName(databaseName, shardNumber);
+        this._databaseName = TypeUtil.isNullOrUndefined(shardNumber) ? databaseName : ClientShardHelper.toShardName(databaseName, shardNumber);
     }
 
     public get resultType(): OperationResultType {

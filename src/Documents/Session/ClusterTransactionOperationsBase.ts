@@ -8,7 +8,7 @@ import { CaseInsensitiveKeysMap } from "../../Primitives/CaseInsensitiveKeysMap.
 import { CompareExchangeSessionValue } from "../Operations/CompareExchange/CompareExchangeSessionValue.js";
 import {
     CompareExchangeResultItem,
-    CompareExchangeValueResultParser
+    CompareExchangeValueResultParser, ObjectNodeMarker
 } from "../Operations/CompareExchange/CompareExchangeValueResultParser.js";
 import { GetCompareExchangeValueOperation } from "../Operations/CompareExchange/GetCompareExchangeValueOperation.js";
 import { GetCompareExchangeValuesOperation } from "../Operations/CompareExchange/GetCompareExchangeValuesOperation.js";
@@ -119,7 +119,7 @@ export abstract class ClusterTransactionOperationsBase {
 
         this.session.incrementRequestCount();
 
-        const value = await this.session.operations.send<any>(new GetCompareExchangeValueOperation(key, null, false));
+        const value = await this.session.operations.send<any>(new GetCompareExchangeValueOperation(key, ObjectNodeMarker, false));
         if (TypeUtil.isNullOrUndefined(value)) {
             this.registerMissingCompareExchangeValue(key);
             return null;
@@ -293,7 +293,7 @@ export abstract class ClusterTransactionOperationsBase {
     protected _registerCompareExchangeInclude(value: CompareExchangeValue<object>) {
         ClusterTransactionOperationsBase._assertNotAtomicGuard(value);
 
-        if (!this.session.noTracking) {
+        if (this.session.noTracking) {
             return;
         }
 

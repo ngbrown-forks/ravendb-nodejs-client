@@ -555,7 +555,6 @@ describe("RavenDB_14006", function () {
                 value.value.city = "Bydgoszcz";
 
                 await innerSession.saveChanges();
-                innerSession.saveChanges();
             }
 
             companies = await session.advanced.rawQuery("declare function incl(c) {\n" +

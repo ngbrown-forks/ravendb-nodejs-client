@@ -75,7 +75,6 @@ class CompanyIndex_JavaScript extends AbstractRawJavaScriptIndexCreationTask {
         return "Companies/JavaScript";
     }
 
-
     constructor() {
         super();
 

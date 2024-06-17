@@ -10,9 +10,11 @@ import { CompareExchangeResultClass, EntityConstructor } from "../../../Types/in
 export interface CompareExchangeResultItem {
     index: number;
     key: string;
-    value: { object: object, "@metadata"?: any };
+    value: { Object: object, "@metadata"?: any };
     changeVector: string;
 }
+
+export const ObjectNodeMarker = Symbol("ObjectNodeMarker");
 
 export interface GetCompareExchangeValuesResponse {
     results: CompareExchangeResultItem[];
@@ -59,7 +61,7 @@ export class CompareExchangeValueResultParser {
         if (!values || !itemsKeys.length) {
             return null;
         }
-        return values[itemsKeys[0]];
+        return Object.values(values)[0];
     }
 
     public static getSingleValue<T>(
@@ -103,24 +105,32 @@ export class CompareExchangeValueResultParser {
             return null;
         }
 
-        if (clazz && TypeUtil.isPrimitiveType(clazz) || TypeUtil.isPrimitive(raw)) {
-            return raw;
-        } else {
-            let rawValue = raw[COMPARE_EXCHANGE.OBJECT_FIELD_NAME];
-            if (!rawValue) {
-                return null;
-            } else {
-                const entityType = conventions.getJsTypeByDocumentType(clazz as EntityConstructor);
-                if (conventions.serverToLocalFieldNameConverter) {
-                    rawValue = ObjectUtil.transformObjectKeys(
-                        rawValue, {
-                            defaultTransform: conventions.serverToLocalFieldNameConverter,
-                            recursive: true,
-                            arrayRecursive: true
-                        });
-                }
-                return conventions.deserializeEntityFromJson(entityType, rawValue);
-            }
+        const rawValue = raw[COMPARE_EXCHANGE.OBJECT_FIELD_NAME];
+        if (clazz && TypeUtil.isPrimitiveType(clazz) || TypeUtil.isPrimitive(rawValue)) {
+            return rawValue;
         }
+
+        if (clazz === ObjectNodeMarker) {
+            if (TypeUtil.isNullOrUndefined(rawValue)) {
+                return null;
+            }
+
+            return rawValue;
+        }
+
+        let value = COMPARE_EXCHANGE.OBJECT_FIELD_NAME in raw ? rawValue : raw;
+
+        const entityType = conventions.getJsTypeByDocumentType(clazz as EntityConstructor);
+        if (conventions.serverToLocalFieldNameConverter) {
+            value = ObjectUtil.transformObjectKeys(
+                value, {
+                    defaultTransform: conventions.serverToLocalFieldNameConverter,
+                    recursive: true,
+                    arrayRecursive: true
+                });
+        }
+        const entity = conventions.deserializeEntityFromJson(entityType, value);
+        return entity;
+
     }
 }

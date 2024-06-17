@@ -49,7 +49,7 @@ class AddQueueSinkCommand extends RavenCommand<AddQueueSinkOperationResult> impl
         const body = this._serializer.serialize(this._configuration);
 
         return {
-            method: "POST",
+            method: "PUT",
             uri,
             body,
             headers

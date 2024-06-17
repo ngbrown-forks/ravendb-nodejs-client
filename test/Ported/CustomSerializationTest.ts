@@ -15,7 +15,7 @@ class ClassTransformer implements ITypesAwareObjectMapper {
     }
 
     toObjectLiteral<TFrom extends object>(obj: TFrom, typeInfoCallback?: (typeInfo: TypeInfo) => void, knownTypes?: Map<string, ObjectTypeDescriptor>): object {
-        typeInfoCallback({
+        typeInfoCallback?.({
             typeName: obj.constructor.name
         });
 
