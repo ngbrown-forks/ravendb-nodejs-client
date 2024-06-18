@@ -2391,10 +2391,9 @@ export class DocumentsByEntityHolder implements Iterable<DocumentsByEntityEnumer
     public prepareEntitiesPuts(): IDisposable {
         this._prepareEntitiesPuts = true;
 
+        const turnOff = () => this._prepareEntitiesPuts = false;
         return {
-            dispose(): void {
-                this._prepareEntitiesPuts = false;
-            }
+            dispose: turnOff
         }
     }
 }

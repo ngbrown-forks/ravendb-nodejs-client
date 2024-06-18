@@ -55,6 +55,11 @@ class GetTimeSeriesStatisticsCommand extends RavenCommand<TimeSeriesStatistics> 
 
     async setResponseAsync(bodyStream: Stream, fromCache: boolean): Promise<string> {
         let body: string = null;
+
+        if (!bodyStream) {
+            this.result = null;
+            return null;
+        }
         const results = await this._defaultPipeline<ServerResponse<TimeSeriesStatistics>>(_ => body = _).process(bodyStream);
 
         const { timeSeries, ...restProps } = results;

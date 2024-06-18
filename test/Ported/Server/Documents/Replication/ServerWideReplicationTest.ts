@@ -5,12 +5,14 @@ import {
     IDocumentStore, PutConnectionStringOperation, RavenConnectionString, UpdateExternalReplicationOperation
 } from "../../../../../src/index.js";
 import { disposeTestDocumentStore, RavenTestContext, testContext } from "../../../../Utils/TestUtil.js";
-import { ServerWideExternalReplication } from "../../../../../src/ServerWide/Operations/OngoingTasks/ServerWideExternalReplication.js";
-import { PutServerWideExternalReplicationOperation } from "../../../../../src/ServerWide/Operations/OngoingTasks/PutServerWideExternalReplicationOperation.js";
-import { GetServerWideExternalReplicationOperation } from "../../../../../src/ServerWide/Operations/OngoingTasks/GetServerWideExternalReplicationOperation.js";
-import { ServerWideExternalReplicationResponse } from "../../../../../src/ServerWide/Operations/OngoingTasks/ServerWideTaskResponse.js";
+import {
+    ServerWideExternalReplication,
+    PutServerWideExternalReplicationOperation,
+    GetServerWideExternalReplicationOperation,
+    ServerWideExternalReplicationResponse,
+    DeleteServerWideTaskOperation
+} from "../../../../../src/index.js";
 import { assertThat } from "../../../../Utils/AssertExtensions.js";
-import { DeleteServerWideTaskOperation } from "../../../../../src/ServerWide/Operations/OngoingTasks/DeleteServerWideTaskOperation.js";
 import { randomUUID } from "node:crypto";
 import { PutConnectionStringResult } from "../../../../../src/Documents/Operations/ConnectionStrings/PutConnectionStringOperation.js";
 

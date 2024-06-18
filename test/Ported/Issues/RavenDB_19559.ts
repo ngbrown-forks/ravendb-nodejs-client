@@ -48,11 +48,17 @@ describe("RavenDB_19559Test", function () {
         {
             const result1 = await store.operations.send(new PutCompareExchangeValueOperation("key1", ["1", "2", "3"], 0));
             assertThat(result1.value)
-                .isEqualTo(["1", "2", "3"]);
+                .hasSize(3)
+                .contains("1")
+                .contains("2")
+                .contains("3");
 
             const result2 = await store.operations.send(new GetCompareExchangeValueOperation("key1"));
             assertThat(result2.value)
-                .isEqualTo(["1", "2", "3"]);
+                .hasSize(3)
+                .contains("1")
+                .contains("2")
+                .contains("3");
         }
     })
 })

@@ -18,7 +18,7 @@ import {
     GetClientConfigurationCommand,
 } from "../Documents/Operations/Configuration/GetClientConfigurationOperation.js";
 import CurrentIndexAndNode from "./CurrentIndexAndNode.js";
-import { HEADERS } from "../Constants.js";
+import { CONSTANTS, HEADERS, QUERY_STRING } from "../Constants.js";
 import { HttpRequestParameters, HttpResponse, HttpRequestParametersWithoutUri } from "../Primitives/Http.js";
 import { raceToResolution } from "../Utility/PromiseUtil.js";
 import { GetStatisticsOperation } from "../Documents/Operations/GetStatisticsOperation.js";
@@ -1413,15 +1413,15 @@ export class RequestExecutor implements IDisposable {
 
         if (command["getRaftUniqueRequestId"]) {
             const raftCommand = command as unknown as IRaftCommand;
+            builder = RequestExecutor.appendToQuery(builder, "raft-request-id", raftCommand.getRaftUniqueRequestId());
+        }
 
-            const raftRequestString = "raft-request-id=" + raftCommand.getRaftUniqueRequestId();
+        if (command.selectedNodeTag) {
+            builder = RequestExecutor.appendToQuery(builder, QUERY_STRING.NODE_TAG, command.selectedNodeTag);
+        }
 
-            let joinCharacter = builder.search ? "&" : "?";
-            if (!builder.search && req.uri.endsWith("?")) {
-                joinCharacter = "";
-            }
-
-            builder = new URL(builder.toString() + joinCharacter + raftRequestString);
+        if (!TypeUtil.isNullOrUndefined(command.selectedShardNumber)) {
+            builder = RequestExecutor.appendToQuery(builder, QUERY_STRING.SHARD_NUMBER, command.selectedShardNumber);
         }
 
         if (this._shouldBroadcast(command)) {
@@ -1431,6 +1431,12 @@ export class RequestExecutor implements IDisposable {
         req.uri = builder.toString();
 
         return req;
+    }
+
+    private static appendToQuery(builder: URL, key: string, value: string | number): URL {
+        const joinCharacter = builder.search ? "&" : "?";
+
+        return new URL(builder.toString() + joinCharacter + key + "=" + encodeURIComponent(value));
     }
 
     private async _handleUnsuccessfulResponse<TResult>(

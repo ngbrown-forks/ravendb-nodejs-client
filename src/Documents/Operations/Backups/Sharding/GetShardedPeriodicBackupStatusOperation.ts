@@ -6,7 +6,8 @@ import { RavenCommand } from "../../../../Http/RavenCommand.js";
 import { ServerNode } from "../../../../Http/ServerNode.js";
 import { HttpRequestParameters } from "../../../../Primitives/Http.js";
 import { Stream } from "node:stream";
-import { GetPeriodicBackupStatusOperationResult } from "../GetPeriodicBackupStatusOperationResult.js";
+import { ServerResponse } from "../../../../Types/index.js";
+import { revivePeriodicBackupStatus } from "../GetPeriodicBackupStatusOperation.js";
 
 export class GetShardedPeriodicBackupStatusOperation implements IMaintenanceOperation<GetShardedPeriodicBackupStatusOperationResult> {
     private readonly _taskId: number;
@@ -52,30 +53,15 @@ class GetShardedPeriodicBackupStatusCommand extends RavenCommand<GetShardedPerio
         }
 
         let body: string = null;
-        const results = await this._defaultPipeline(_ => body = _)
+        const results = await this._defaultPipeline<ServerResponse<GetShardedPeriodicBackupStatusOperationResult>>(_ => body = _)
             .process(bodyStream);
 
-        this.result = this._reviveResultTypes<GetShardedPeriodicBackupStatusOperationResult>(
-            results,
-            this._conventions,
-            {
-                nestedTypes: {
-                    "status.lastFullBackup": "date",
-                    "status.delayUntil": "date",
-                    "status.originalBackupTime": "date",
-                    "status.lastIncrementalBackup": "date",
-                    "status.lastFullBackupInternal": "date",
-                    "status.lastIncrementalBackupInternal": "date",
-                    "status.localBackup.lastIncrementalBackup": "date",
-                    "status.localBackup.lastFullBackup": "date",
-                    "status.nextBackup.dateTime": "date",
-                    "status.nextBackup.originalBackupTime": "date",
-                    "status.onGoingBackup.startTime": "date",
-                    "status.error.at": "date"
-                }
-            });
+        this.result = {
+            ...results,
+            statuses: reviveStatuses(results.statuses, this._conventions)
+        }
 
-        if (this.result.isSharded) {
+        if (!this.result.isSharded) {
             throw new Error("Database is sharded, can't use GetPeriodicBackupStatusOperation. Use GetShardedPeriodicBackupStatusOperation instead.");
         }
         return body;
@@ -84,4 +70,17 @@ class GetShardedPeriodicBackupStatusCommand extends RavenCommand<GetShardedPerio
 
 export interface GetShardedPeriodicBackupStatusOperationResult extends AbstractGetPeriodicBackupStatusOperationResult {
     statuses: Record<number, PeriodicBackupStatus>;
+}
+
+function reviveStatuses(statuses: Record<number, ServerResponse<PeriodicBackupStatus>>, conventions: DocumentConventions): Record<number, PeriodicBackupStatus> {
+    if (!statuses) {
+        return null;
+    }
+    const result = {} as Record<string, PeriodicBackupStatus>;
+
+    Object.entries(statuses).map(entry => {
+        result[entry[0]] = revivePeriodicBackupStatus(entry[1], conventions);
+    });
+
+    return result;
 }

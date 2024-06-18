@@ -1,7 +1,6 @@
-import { EntitiesCollectionObject, IDocumentStore } from "../../../src/index.js";
+import { EntitiesCollectionObject, IDocumentStore, Lazy } from "../../../src/index.js";
 import { disposeTestDocumentStore, testContext } from "../../Utils/TestUtil.js";
 import { Company, User } from "../../Assets/Entities.js";
-import { Lazy } from "../../../src/Documents/Lazy.js";
 import assert from "node:assert"
 import { assertThat } from "../../Utils/AssertExtensions.js";
 

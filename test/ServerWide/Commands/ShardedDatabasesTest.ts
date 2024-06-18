@@ -22,8 +22,6 @@ import { AddDatabaseShardOperation } from "../../../src/ServerWide/Sharding/AddD
         try {
             const database = testContext.getDatabaseName();
 
-            const numberOfNodes = 3;
-
             // create sharded db on two nodes (A, B) and single orchestrator on C
             let record = DatabaseRecordBuilder.create()
                 .sharded(database, b => b

@@ -1,9 +1,7 @@
-import { IDocumentStore } from "../../../src/Documents/IDocumentStore.js";
+import { IDocumentStore, QueryStatistics, SessionOptions } from "../../../src/index.js";
 import { disposeTestDocumentStore, testContext } from "../../Utils/TestUtil.js";
 import { Product, Supplier } from "../../Assets/Orders.js";
-import { SessionOptions } from "../../../src/Documents/Session/SessionOptions.js";
 import { assertThat, assertThrows } from "../../Utils/AssertExtensions.js";
-import { QueryStatistics } from "../../../src/Documents/Session/QueryStatistics.js";
 
 describe("RavenDB_11217Test", function () {
 

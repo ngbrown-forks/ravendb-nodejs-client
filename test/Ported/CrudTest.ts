@@ -3,9 +3,9 @@ import { testContext, disposeTestDocumentStore } from "../Utils/TestUtil.js";
 
 import {
     IDocumentStore,
+    GetDocumentsCommand
 } from "../../src/index.js";
 import { User } from "../Assets/Entities.js";
-import { GetDocumentsCommand } from "../../src/Documents/Commands/GetDocumentsCommand.js";
 
 describe("CRUD tests", function () {
 

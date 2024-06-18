@@ -7,11 +7,11 @@ import {
     DeleteAttachmentCommandData,
     CopyAttachmentCommandData,
     MoveAttachmentCommandData,
+    DeleteCommandData,
+    PatchCommandData
 } from "../../../src/index.js";
 import { Company } from "../../Assets/Entities.js";
 import { assertThat } from "../../Utils/AssertExtensions.js";
-import { DeleteCommandData } from "../../../src/Documents/Commands/CommandData.js";
-import { PatchCommandData } from "../../../src/Documents/Commands/Batches/PatchCommandData.js";
 
 describe("RavenDB-11552", function () {
 

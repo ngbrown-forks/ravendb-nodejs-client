@@ -123,6 +123,9 @@ describe("BackupsTest", function () {
             assertThat(backupResult)
                 .isNotNull();
 
+
+            assertThat(backupResult.statuses[1].lastFullBackup instanceof Date)
+                .isTrue();
             // props are asserted in waitForBackup method
 
 

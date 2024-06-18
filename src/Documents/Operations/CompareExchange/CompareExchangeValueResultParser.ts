@@ -106,7 +106,7 @@ export class CompareExchangeValueResultParser {
         }
 
         const rawValue = raw[COMPARE_EXCHANGE.OBJECT_FIELD_NAME];
-        if (clazz && TypeUtil.isPrimitiveType(clazz) || TypeUtil.isPrimitive(rawValue)) {
+        if (clazz && TypeUtil.isPrimitiveType(clazz)) {
             return rawValue;
         }
 
@@ -115,10 +115,18 @@ export class CompareExchangeValueResultParser {
                 return null;
             }
 
+            return TypeUtil.isObject(rawValue) ? rawValue : raw;
+        }
+
+        if (TypeUtil.isPrimitive(rawValue)) {
             return rawValue;
         }
 
-        let value = COMPARE_EXCHANGE.OBJECT_FIELD_NAME in raw ? rawValue : raw;
+        if (TypeUtil.isArray(rawValue)) {
+            return ObjectUtil.deepJsonClone(rawValue);
+        }
+
+        let value = (TypeUtil.isObject(raw) && COMPARE_EXCHANGE.OBJECT_FIELD_NAME in raw) ? rawValue : raw;
 
         const entityType = conventions.getJsTypeByDocumentType(clazz as EntityConstructor);
         if (conventions.serverToLocalFieldNameConverter) {

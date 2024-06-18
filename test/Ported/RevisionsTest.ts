@@ -812,7 +812,7 @@ import { ObjectUtil } from "../../src/Utility/ObjectUtil.js";
         assertThat(revisionsResult.totalResults)
             .isEqualTo(11);
         assertThat(revisionsResult.results)
-            .isEqualTo(5);
+            .hasSize(5);
 
         let revisionNames = revisionsResult.results.map(x => x.name);
 

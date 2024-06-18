@@ -33,9 +33,10 @@ export class ComplexProperty {
 import {
     AbstractJavaScriptIndexCreationTask,
     IDocumentStore,
+    MoreLikeThisOptions,
+    MoreLikeThisStopWords
 } from "../../../src/index.js";
-import { MoreLikeThisOptions } from "../../../src/Documents/Queries/MoreLikeThis/MoreLikeThisOptions.js";
-import { MoreLikeThisStopWords } from "../../../src/Documents/Queries/MoreLikeThis/MoreLikeThisStopWords.js";
+import {  } from "../../../src/index.js";
 import { assertThat } from "../../Utils/AssertExtensions.js";
 
 export class DataIndex extends AbstractJavaScriptIndexCreationTask<Data, Pick<Data, "body" | "whitespaceAnalyzerField">> {

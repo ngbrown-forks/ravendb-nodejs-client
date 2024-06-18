@@ -6,14 +6,16 @@ import {
     AddEtlOperation,
     UpdateEtlOperation,
     ResetEtlOperation,
-    RavenEtlConfiguration, Transformation, GetOngoingTaskInfoOperation
+    RavenEtlConfiguration,
+    Transformation,
+    GetOngoingTaskInfoOperation,
+    DeleteOngoingTaskOperation,
+    OngoingTaskRavenEtl
 } from "../../../../../src/index.js";
 import { disposeTestDocumentStore, RavenTestContext, testContext } from "../../../../Utils/TestUtil.js";
 import { assertThat } from "../../../../Utils/AssertExtensions.js";
 import { User } from "../../../../Assets/Entities.js";
 import { ReplicationTestContext } from "../../../../Utils/ReplicationTestContext.js";
-import { DeleteOngoingTaskOperation } from "../../../../../src/Documents/Operations/OngoingTasks/DeleteOngoingTaskOperation.js";
-import { OngoingTaskRavenEtl } from "../../../../../src/Documents/Operations/OngoingTasks/OngoingTask.js";
 
 (RavenTestContext.isPullRequest ? describe.skip : describe)(
     `${RavenTestContext.isPullRequest ? "[Skipped on PR] " : ""}` +

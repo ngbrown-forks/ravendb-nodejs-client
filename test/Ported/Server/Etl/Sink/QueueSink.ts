@@ -57,7 +57,7 @@ async function setupQueueSink(brokerType: QueueBrokerType, store: IDocumentStore
         connectionStringName,
         scripts: [
             {
-                name: null,
+                name: "Script #1",
                 queues: ["users"],
                 script: "this.a = 5",
             }

@@ -2,10 +2,15 @@ import assert from "node:assert";
 import "reflect-metadata";
 import { testContext, disposeTestDocumentStore } from "../Utils/TestUtil.js";
 
-import { DocumentConventions, IDocumentStore, ITypesAwareObjectMapper, ObjectTypeDescriptor } from "../../src/index.js";
-import { GetDocumentsCommand } from "../../src/Documents/Commands/GetDocumentsCommand.js";
+import {
+    DocumentConventions,
+    IDocumentStore,
+    ITypesAwareObjectMapper,
+    ObjectTypeDescriptor,
+    GetDocumentsCommand
+} from "../../src/index.js";
 import { TypeInfo } from "../../src/Mapping/ObjectMapper.js";
-import { Transform, Expose, instanceToPlain, plainToInstance, Type } from "class-transformer";
+import { Transform, instanceToPlain, plainToInstance, Type } from "class-transformer";
 import { assertThat } from "../Utils/AssertExtensions.js";
 
 class ClassTransformer implements ITypesAwareObjectMapper {
@@ -23,7 +28,7 @@ class ClassTransformer implements ITypesAwareObjectMapper {
     }
 
     fromObjectLiteral<TResult extends object>(rawResult: object, typeInfo?: TypeInfo, knownTypes?: Map<string, ObjectTypeDescriptor>): TResult {
-        const targetType = this._conventions.getJsTypeByDocumentType(typeInfo.typeName);
+        const targetType = this._conventions.getJsTypeByDocumentType(typeInfo?.typeName);
         if (targetType) {
             return plainToInstance(targetType as any, rawResult) as any;
         }
@@ -51,8 +56,11 @@ describe("CustomSerializationTest", function () {
         store = await testContext.getDocumentStore();
     });
 
-    afterEach(async () =>
-        await disposeTestDocumentStore(store));
+    afterEach(async () => {
+        await disposeTestDocumentStore(store);
+
+        testContext.customizeStore = null;
+    });
 
     it("can use custom serialization", async () => {
         {

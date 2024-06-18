@@ -63,7 +63,7 @@ class AddDatabaseShardCommand extends RavenCommand<AddDatabaseShardResult> imple
     }
 
     createRequest(node: ServerNode): HttpRequestParameters {
-        let uri = node.url + "/admin/databases/shard?name" + this._urlEncode(this._databaseName);
+        let uri = node.url + "/admin/databases/shard?name=" + this._urlEncode(this._databaseName);
 
         if (!TypeUtil.isNullOrUndefined(this._shardNumber)) {
            uri += "&shardNumber=" + this._shardNumber;
