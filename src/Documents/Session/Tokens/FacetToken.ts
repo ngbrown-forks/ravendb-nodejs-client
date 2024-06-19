@@ -202,9 +202,12 @@ export class FacetToken extends QueryToken {
     private static _getOptionsParameterName(
         facet: FacetBase,
         addQueryParameter: (o: any) => string): string {
-        return facet.options && facet.options !== FacetOptions.getDefaultOptions()
-            ? addQueryParameter(facet.options)
-            : null;
+        if (facet instanceof Facet) {
+            return facet.options && facet.options !== FacetOptions.getDefaultOptions()
+                ? addQueryParameter(facet.options)
+                : null;
+        }
+        return null;
     }
 }
 

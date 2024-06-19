@@ -5,9 +5,9 @@ import {
     IDocumentStore,
     PatchOperation,
     PatchByQueryOperation,
+    PatchRequest
 } from "../../src/index.js";
 import { User } from "../Assets/Entities.js";
-import { PatchRequest } from "../../src/Documents/Operations/PatchRequest.js";
 import { Users_ByName } from "./Indexing/IndexesFromClientTest.js";
 
 describe("PatchTest", function () {

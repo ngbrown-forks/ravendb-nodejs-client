@@ -8,11 +8,12 @@ import {
     DocumentStore,
     ConflictSolver,
     GetConflictsCommand,
-    PutDocumentCommand, GetOngoingTaskInfoOperation,
+    PutDocumentCommand,
+    GetOngoingTaskInfoOperation,
+    OngoingTaskReplication
 } from "../../../../src/index.js";
 import { ReplicationTestContext } from "../../../Utils/ReplicationTestContext.js";
 import { assertThat } from "../../../Utils/AssertExtensions.js";
-import { OngoingTaskReplication } from "../../../../src/Documents/Operations/OngoingTasks/OngoingTask.js";
 
 const _describe = RavenTestContext.isPullRequest ? describe.skip : describe;
 _describe(

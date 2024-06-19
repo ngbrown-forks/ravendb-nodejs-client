@@ -1,6 +1,9 @@
-import { GetTermsOperation, IDocumentStore } from "../../../../src/index.js";
+import {
+    GetTermsOperation,
+    IDocumentStore,
+    AbstractRawJavaScriptCountersIndexCreationTask
+} from "../../../../src/index.js";
 import { disposeTestDocumentStore, testContext } from "../../../Utils/TestUtil.js";
-import { AbstractRawJavaScriptCountersIndexCreationTask } from "../../../../src/Documents/Indexes/Counters/AbstractRawJavaScriptCountersIndexCreationTask.js";
 import { Address, Company, User } from "../../../Assets/Entities.js";
 import { assertThat } from "../../../Utils/AssertExtensions.js";
 

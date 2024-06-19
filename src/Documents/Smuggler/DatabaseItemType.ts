@@ -12,10 +12,6 @@ export type DatabaseItemType =
     | "LegacyAttachmentDeletions"
     | "DatabaseRecord"
     | "Unknown"
-    /**
-     * @deprecated Counters is not supported anymore. Will be removed in next major version of the product.
-     */
-    | "Counters"
     | "Attachments"
     | "CounterGroups"
     | "Subscriptions"

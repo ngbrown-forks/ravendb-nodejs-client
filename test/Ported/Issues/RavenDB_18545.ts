@@ -1,10 +1,8 @@
 import {
-    IDocumentStore, StopIndexOperation
+    IDocumentStore
 } from "../../../src/index.js";
 import { disposeTestDocumentStore, testContext } from "../../Utils/TestUtil.js";
-import { assertThat, assertThrows } from "../../Utils/AssertExtensions.js";
-import { User } from "../../Assets/Entities.js";
-import { AbstractJavaScriptIndexCreationTask } from "../../../src/Documents/Indexes/AbstractJavaScriptIndexCreationTask.js";
+import { assertThat } from "../../Utils/AssertExtensions.js";
 
 describe("RavenDB_18545", function () {
 

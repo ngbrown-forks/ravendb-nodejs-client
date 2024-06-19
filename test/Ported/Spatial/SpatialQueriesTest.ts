@@ -6,8 +6,8 @@ import {
     IDocumentStore,
     IndexDefinition,
     PutIndexesOperation,
+    SpatialField
 } from "../../../src/index.js";
-import { SpatialField } from "../../../src/Documents/Indexes/StronglyTyped.js";
 
 describe("SpatialQueriesTest", function () {
 

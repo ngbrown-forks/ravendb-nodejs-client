@@ -1,10 +1,12 @@
 import { disposeTestDocumentStore, testContext } from "../../Utils/TestUtil.js";
-import { IDocumentStore } from "../../../src/Documents/IDocumentStore.js";
 import {
-    AfterConversionToDocumentEventArgs, AfterConversionToEntityEventArgs,
-    BeforeConversionToDocumentEventArgs, BeforeConversionToEntityEventArgs
-} from "../../../src/Documents/Session/SessionEvents.js";
-import { ObjectUtil } from "../../../src/Utility/ObjectUtil.js";
+    AfterConversionToDocumentEventArgs,
+    AfterConversionToEntityEventArgs,
+    BeforeConversionToDocumentEventArgs,
+    BeforeConversionToEntityEventArgs,
+    ObjectUtil,
+    IDocumentStore
+} from "../../../src/index.js";
 import { assertThat } from "../../Utils/AssertExtensions.js";
 
 describe("RavenDB_9889", function () {
@@ -29,7 +31,7 @@ describe("RavenDB_9889", function () {
         store.addSessionListener("afterConversionToDocument", (event: AfterConversionToDocumentEventArgs) => {
             if (event.entity instanceof Item) {
                 const item = event.entity;
-                const document = ObjectUtil.clone(event.document.value);
+                const document = ObjectUtil.deepLiteralClone(event.document.value);
                 document.after = true;
 
                 event.document.value = document;
@@ -68,7 +70,7 @@ describe("RavenDB_9889", function () {
 
     it("canUseToEntityConversionEvents", async () => {
         store.addSessionListener("beforeConversionToEntity", (event: BeforeConversionToEntityEventArgs) => {
-            const document = ObjectUtil.clone(event.document) as Item;
+            const document = ObjectUtil.deepLiteralClone(event.document) as Item;
 
             document.before = true;
             event.document = document;

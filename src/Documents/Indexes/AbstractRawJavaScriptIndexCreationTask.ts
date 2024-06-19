@@ -1,5 +1,6 @@
 import { IndexDefinition } from "./IndexDefinition.js";
 import { AbstractIndexCreationTaskBase } from "./AbstractIndexCreationTaskBase.js";
+import { INDEXES } from "../../Constants.js";
 
 /**
  * Utility class to create javascript based indexes using not-strongly typed syntax.
@@ -102,6 +103,10 @@ export class AbstractRawJavaScriptIndexCreationTask extends AbstractIndexCreatio
         this._definition.priority = this.priority;
         this._definition.state = this.state;
         this._definition.deploymentMode = this.deploymentMode;
+
+        if (this.searchEngineType && this.searchEngineType !== "None") {
+            this._definition.configuration[INDEXES.INDEXING_STATIC_SEARCH_ENGINE_TYPE] = this.searchEngineType;
+        }
 
         return this._definition;
     }

@@ -7,6 +7,7 @@ import { DocumentInfo } from "../DocumentInfo.js";
 import { MetadataAsDictionary } from "../../../Mapping/MetadataAsDictionary.js";
 import { CONSTANTS } from "../../../Constants.js";
 import { DocumentType } from "../../DocumentAbstractions.js";
+import { IMetadataDictionary } from "../IMetadataDictionary.js";
 
 export class GetRevisionOperation {
 
@@ -110,7 +111,7 @@ export class GetRevisionOperation {
         return results;
     }
 
-    public getRevisionsMetadataFor(): MetadataAsDictionary[] {
+    public getRevisionsMetadataFor(): IMetadataDictionary[] {
         const resultsCount = this._result.results.length;
         const results = [] as MetadataAsDictionary[];
 

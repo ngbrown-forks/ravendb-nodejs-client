@@ -14,6 +14,9 @@ import { DocumentConventions } from "../Documents/Conventions/DocumentConvention
 import { ObjectTypeDescriptor } from "../Types/index.js";
 import { ObjectUtil } from "../Utility/ObjectUtil.js";
 import { Dispatcher } from "undici-types";
+import { RequestInit } from "undici";
+import { HEADERS } from "../Constants.js";
+import { DefaultCommandResponseBehavior } from "./Behaviors/DefaultCommandResponseBehavior.js";
 
 const log = getLogger({ module: "RavenCommand" });
 
@@ -37,15 +40,27 @@ export abstract class RavenCommand<TResult> {
     public timeout: number | undefined;
     protected _canCache: boolean;
     protected _canCacheAggressively: boolean;
+    protected _canReadFromCache: boolean = true;
     protected _selectedNodeTag: string;
+    private _selectedShardNumber: number;
     protected _numberOfAttempts: number;
 
     public failoverTopologyEtag = -2;
+
+    protected _etag: string;
+
+    public get responseBehavior() {
+        return DefaultCommandResponseBehavior.INSTANCE;
+    }
 
     public abstract get isReadRequest(): boolean;
 
     public get responseType() {
         return this._responseType;
+    }
+
+    public set etag(value: string) {
+        this._etag = value;
     }
 
     public get canCache(): boolean {
@@ -60,6 +75,18 @@ export abstract class RavenCommand<TResult> {
         return this._selectedNodeTag;
     }
 
+    public set selectedNodeTag(nodeTag: string) {
+        this._selectedNodeTag = nodeTag;
+    }
+
+    get selectedShardNumber(): number {
+        return this._selectedShardNumber;
+    }
+
+    set selectedShardNumber(value: number) {
+        this._selectedShardNumber = value;
+    }
+
     public get numberOfAttempts(): number {
         return this._numberOfAttempts;
     }
@@ -71,8 +98,10 @@ export abstract class RavenCommand<TResult> {
     constructor(copy?: RavenCommand<TResult>) {
         if (copy instanceof RavenCommand) {
             this._canCache = copy._canCache;
+            this._canReadFromCache = copy._canReadFromCache;
             this._canCacheAggressively = copy._canCacheAggressively;
             this._selectedNodeTag = copy._selectedNodeTag;
+            this._selectedShardNumber = copy.selectedShardNumber;
             this._responseType = copy._responseType;
         } else {
             this._responseType = "Object";
@@ -166,7 +195,7 @@ export abstract class RavenCommand<TResult> {
             "When _responseType is set to RAW then please override this method to handle the response.");
     }
 
-    protected _urlEncode(value): string {
+    protected _urlEncode(value: string | number | boolean): string {
         return encodeURIComponent(value);
     }
 
@@ -248,7 +277,7 @@ export abstract class RavenCommand<TResult> {
 
     protected _addChangeVectorIfNotNull(changeVector: string, req: HttpRequestParameters): void {
         if (changeVector) {
-            req.headers["If-Match"] = `"${changeVector}"`;
+            req.headers[HEADERS.IF_MATCH] = `"${changeVector}"`;
         }
     }
 
@@ -275,7 +304,7 @@ export abstract class RavenCommand<TResult> {
     }
 
     protected static _throwInvalidResponse(cause: Error): void {
-        throwError("InvalidOperationException", "Response is invalid: " + cause.message, cause);
+        throwError("InvalidOperationException", "Response is invalid: " + cause, (cause as any).message, cause);
     }
 
     public onResponseFailure(response: HttpResponse): void {

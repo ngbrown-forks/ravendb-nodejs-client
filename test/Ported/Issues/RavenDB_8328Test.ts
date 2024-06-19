@@ -1,5 +1,5 @@
 import assert from "node:assert"
-import { testContext, disposeTestDocumentStore, RavenTestContext } from "../../Utils/TestUtil.js";
+import { testContext, disposeTestDocumentStore } from "../../Utils/TestUtil.js";
 
 import {
     IDocumentStore,
@@ -7,7 +7,7 @@ import {
 } from "../../../src/index.js";
 import { assertThat } from "../../Utils/AssertExtensions.js";
 
-(RavenTestContext.is60Server ? describe.skip : describe)("Issue RavenDB-8328", function () {
+describe("Issue RavenDB-8328", function () {
 
     let store: IDocumentStore;
 

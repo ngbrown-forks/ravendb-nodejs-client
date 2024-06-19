@@ -1,12 +1,14 @@
-import { IDocumentStore } from "../../src/Documents/IDocumentStore.js";
+import {
+    IDocumentStore,
+    RevisionsConfiguration,
+    RevisionsCollectionConfiguration,
+    ConfigureRevisionsOperation
+} from "../../src/index.js";
 import { disposeTestDocumentStore, RavenTestContext, testContext } from "../Utils/TestUtil.js";
 import { Company } from "../Assets/Entities.js";
 import { assertThat, assertThrows } from "../Utils/AssertExtensions.js";
-import { RevisionsConfiguration } from "../../src/Documents/Operations/RevisionsConfiguration.js";
-import { RevisionsCollectionConfiguration } from "../../src/Documents/Operations/RevisionsCollectionConfiguration.js";
-import { ConfigureRevisionsOperation } from "../../src/Documents/Operations/Revisions/ConfigureRevisionsOperation.js";
 
-(RavenTestContext.is60Server || RavenTestContext.isPullRequest ? describe.skip : describe)("ForceRevisionCreation", function () {
+(RavenTestContext.isPullRequest ? describe.skip : describe)("ForceRevisionCreation", function () {
 
     let store: IDocumentStore;
 

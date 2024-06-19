@@ -1,20 +1,24 @@
 import { disposeTestDocumentStore, RavenTestContext, testContext } from "../Utils/TestUtil.js";
 import {
-    IDocumentStore, PullReplicationAsSink,
-    PullReplicationDefinition, PutConnectionStringOperation,
+    IDocumentStore,
+    PullReplicationAsSink,
+    PullReplicationDefinition,
+    PutConnectionStringOperation,
     PutPullReplicationAsHubOperation,
-    RavenConnectionString, TimeSeriesValue, UpdatePullReplicationAsSinkOperation
+    RavenConnectionString,
+    TimeSeriesValue,
+    UpdatePullReplicationAsSinkOperation,
+    ReplicationHubAccess,
+    RegisterReplicationHubAccessOperation,
+    UnregisterReplicationHubAccessOperation,
+    GetReplicationHubAccessOperation
 } from "../../src/index.js";
 import { ReplicationTestContext } from "../Utils/ReplicationTestContext.js";
-import { ReplicationHubAccess } from "../../src/Documents/Operations/Replication/ReplicationHubAccess.js";
-import { RegisterReplicationHubAccessOperation } from "../../src/Documents/Operations/Replication/RegisterReplicationHubAccessOperation.js";
 import { GenerateCertificateOperation } from "../Infrastructure/GenerateCertificateOperation.js";
 import { assertThat } from "../Utils/AssertExtensions.js";
 import { User } from "../Assets/Entities.js";
-import { UnregisterReplicationHubAccessOperation } from "../../src/Documents/Operations/Replication/UnregisterReplicationHubAccessOperation.js";
-import { GetReplicationHubAccessOperation } from "../../src/Documents/Operations/Replication/GetReplicationHubAccessOperation.js";
 
-(RavenTestContext.is60Server || RavenTestContext.isPullRequest ? describe.skip : describe)("FilteredReplicationTest", function () {
+(RavenTestContext.isPullRequest ? describe.skip : describe)("FilteredReplicationTest", function () {
 
     let store: IDocumentStore;
     let replication: ReplicationTestContext;

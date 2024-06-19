@@ -5,17 +5,24 @@ import { RavenCommand } from "../../Http/RavenCommand.js";
 import { ServerOperationExecutor } from "./ServerOperationExecutor.js";
 import { throwError } from "../../Exceptions/index.js";
 import { RequestExecutor } from "../../Http/RequestExecutor.js";
+import { TypeUtil } from "../../Utility/TypeUtil.js";
 
 export class MaintenanceOperationExecutor {
 
     private readonly _store: DocumentStoreBase;
+    private _nodeTag: string;
+    private _shardNumber: number;
     private readonly _databaseName: string;
     private _requestExecutor: RequestExecutor;
     private _serverOperationExecutor: ServerOperationExecutor;
 
-    public constructor(store: DocumentStoreBase, databaseName?: string) {
+    public constructor(store: DocumentStoreBase, databaseName?: string)
+    public constructor(store: DocumentStoreBase, databaseName: string, nodeTag: string, shardNumber: number)
+    public constructor(store: DocumentStoreBase, databaseName?: string, nodeTag?: string, shardNumber?: number) {
         this._store = store;
         this._databaseName = databaseName || store.database;
+        this._nodeTag = nodeTag;
+        this._shardNumber = shardNumber;
     }
 
     private get requestExecutor() {
@@ -41,7 +48,7 @@ export class MaintenanceOperationExecutor {
             return this;
         }
 
-        return new MaintenanceOperationExecutor(this._store, databaseName);
+        return new MaintenanceOperationExecutor(this._store, databaseName, this._nodeTag, this._shardNumber);
     }
 
     public async send(operation: AwaitableMaintenanceOperation): Promise<OperationCompletionAwaiter>;
@@ -52,6 +59,8 @@ export class MaintenanceOperationExecutor {
 
         this._assertDatabaseNameSet();
         const command = operation.getCommand(this.requestExecutor.conventions);
+
+        this.applyNodeTagAndShardNumberToCommandIfSet(command);
 
         await this.requestExecutor.execute(command as RavenCommand<TResult>);
 
@@ -69,6 +78,15 @@ export class MaintenanceOperationExecutor {
         if (!this._databaseName) {
             throwError("InvalidOperationException",
                 "Cannot use maintenance without a database defined, did you forget to call forDatabase?");
+        }
+    }
+
+    private applyNodeTagAndShardNumberToCommandIfSet(command: RavenCommand<unknown>) {
+        if (this._nodeTag) {
+            command.selectedNodeTag = this._nodeTag;
+        }
+        if (!TypeUtil.isNullOrUndefined(this._shardNumber)) {
+            command.selectedShardNumber = this._shardNumber;
         }
     }
 }

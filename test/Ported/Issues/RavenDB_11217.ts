@@ -1,9 +1,11 @@
-import { IDocumentStore } from "../../../src/Documents/IDocumentStore.js";
+import {
+    IDocumentStore,
+    QueryStatistics,
+    SessionOptions
+} from "../../../src/index.js";
 import { disposeTestDocumentStore, testContext } from "../../Utils/TestUtil.js";
 import { Product, Supplier } from "../../Assets/Orders.js";
-import { SessionOptions } from "../../../src/Documents/Session/SessionOptions.js";
 import { assertThat, assertThrows } from "../../Utils/AssertExtensions.js";
-import { QueryStatistics } from "../../../src/Documents/Session/QueryStatistics.js";
 
 describe("RavenDB_11217Test", function () {
 
@@ -54,7 +56,6 @@ describe("RavenDB_11217Test", function () {
                 .isEqualTo(0);
 
             const product1 = await session.load<Product>("products/1-A", {
-                includes: b => b.includeDocuments("supplier"),
                 documentType: Product
             });
 
@@ -83,7 +84,6 @@ describe("RavenDB_11217Test", function () {
 
             const product2 = await session.load<Product>("products/1-A", {
                 documentType: Product,
-                includes: b=> b.includeDocuments("supplier")
             });
             assertThat(product1)
                 .isNotSameAs(product2);
@@ -131,7 +131,6 @@ describe("RavenDB_11217Test", function () {
                 .isEqualTo(0);
 
             let products = await session.query(Product)
-                .include("supplier")
                 .all();
 
             assertThat(session.advanced.numberOfRequests)
@@ -159,7 +158,6 @@ describe("RavenDB_11217Test", function () {
 
             products = await session
                 .query(Product)
-                .include("supplier")
                 .all();
 
             assertThat(products)
@@ -180,14 +178,14 @@ describe("RavenDB_11217Test", function () {
         {
             const session = store.openSession(noTrackingOptions);
             const product1 = await session.load<Product>("products/1-A", Product);
-            const counters = await session.countersFor(product1.id);
+            const counters = session.countersFor(product1.id);
 
-            counters.get("c1");
+            await counters.get("c1");
 
             assertThat(session.advanced.numberOfRequests)
                 .isEqualTo(2);
 
-            counters.get("c1");
+            await counters.get("c1");
 
             assertThat(session.advanced.numberOfRequests)
                 .isEqualTo(3);

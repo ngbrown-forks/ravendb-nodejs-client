@@ -1,8 +1,11 @@
-import { GetCountersOperation, IDocumentStore } from "../../../src/index.js";
+import {
+    GetCountersOperation,
+    IDocumentStore,
+    GetDocumentsCommand
+} from "../../../src/index.js";
 import { disposeTestDocumentStore, testContext } from "../../Utils/TestUtil.js";
 import { User } from "../../Assets/Entities.js";
 import { assertThat } from "../../Utils/AssertExtensions.js";
-import { GetDocumentsCommand } from "../../../src/Documents/Commands/GetDocumentsCommand.js";
 
 describe("RavenDB_14919", function () {
 

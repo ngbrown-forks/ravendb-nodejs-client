@@ -1,8 +1,7 @@
 import { Transform } from "node:stream";
 import {
     ObjectUtil,
-    ObjectChangeCaseOptions,
-    ObjectChangeCaseOptionsBase, FieldNameConversion
+    ObjectChangeCaseOptions
 } from "../../../Utility/ObjectUtil.js";
 import { TypeUtil } from "../../../Utility/TypeUtil.js";
 

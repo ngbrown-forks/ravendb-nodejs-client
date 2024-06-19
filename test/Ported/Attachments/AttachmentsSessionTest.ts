@@ -4,11 +4,11 @@ import {
     AttachmentName,
     IDocumentStore,
     DeleteAttachmentOperation,
-    DeleteCommandData, AttachmentData
+    DeleteCommandData, AttachmentData,
+    CONSTANTS
 } from "../../../src/index.js";
 import { Readable, Writable } from "node:stream";
 import { User } from "../../Assets/Entities.js";
-import { CONSTANTS } from "../../../src/Constants.js";
 import { bufferToReadable, finishedAsync } from "../../../src/Utility/StreamUtil.js";
 
 describe("Attachments Session", function () {

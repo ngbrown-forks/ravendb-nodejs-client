@@ -20,7 +20,7 @@ export class OperationExecutor {
 
     private readonly _store: IDocumentStore;
     private readonly _databaseName: string;
-    private readonly _requestExecutor: RequestExecutor;
+    private _requestExecutor: RequestExecutor;
 
     public constructor(store: DocumentStoreBase);
     public constructor(store: IDocumentStore, databaseName?: string);
@@ -33,6 +33,15 @@ export class OperationExecutor {
             throwError("InvalidOperationException",
                 "Cannot use operations without a database defined, did you forget to call forDatabase?");
         }
+    }
+
+    private getRequestExecutor() {
+        if (this._requestExecutor) {
+            return this._requestExecutor;
+        }
+
+        this._requestExecutor = this._databaseName ? this._store.getRequestExecutor(this._databaseName) : null;
+        return this._requestExecutor;
     }
 
     public forDatabase(databaseName: string): OperationExecutor {
@@ -70,15 +79,15 @@ export class OperationExecutor {
         : Promise<OperationCompletionAwaiter | TResult | PatchOperationResult<TResult>> {
 
         const command =
-            operation.getCommand(this._store, this._requestExecutor.conventions, this._requestExecutor.cache);
+            operation.getCommand(this._store, this.getRequestExecutor().conventions, this.getRequestExecutor().cache);
 
-        await this._requestExecutor.execute(command as RavenCommand<TResult>, sessionInfo);
+        await this.getRequestExecutor().execute(command as RavenCommand<TResult>, sessionInfo);
 
         if (operation.resultType === "OperationId") {
             const idResult = command.result as OperationIdResult;
             return new OperationCompletionAwaiter(
-                this._requestExecutor,
-                this._requestExecutor.conventions,
+                this.getRequestExecutor(),
+                this.getRequestExecutor().conventions,
                 idResult.operationId,
                 command.selectedNodeTag || idResult.operationNodeTag);
 
@@ -96,7 +105,7 @@ export class OperationExecutor {
 
             const patchResult = command.result as any as PatchResult;
             patchOperationResult.status = patchResult.status;
-            const { conventions } = this._requestExecutor;
+            const { conventions } = this.getRequestExecutor();
             conventions.tryRegisterJsType(documentType);
             const entityType = conventions.getJsTypeByDocumentType(documentType);
             patchOperationResult.document = conventions.deserializeEntityFromJson(

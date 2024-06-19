@@ -2,27 +2,24 @@ import assert from "node:assert"
 import { testContext, disposeTestDocumentStore, RavenTestContext } from "../Utils/TestUtil.js";
 
 import {
-    ConfigureRevisionsOperation,
+    ConfigureRevisionsOperation, CONSTANTS,
     DocumentStore, GetStatisticsOperation,
     IDocumentStore,
     RevisionsCollectionConfiguration,
-    RevisionsConfiguration
+    RevisionsConfiguration,
+    GetRevisionsOperation,
+    GetRevisionsParameters,
+    ConfigureRevisionsOperationResult,
+    RevisionsResult,
+    GetRevisionsBinEntryCommand,
+    ObjectUtil
 } from "../../src/index.js";
 import { User } from "../Assets/Entities.js";
-import { ConfigureRevisionsOperationResult } from "../../src/Documents/Operations/Revisions/ConfigureRevisionsOperation.js";
-import { GetRevisionsBinEntryCommand } from "../../src/Documents/Commands/GetRevisionsBinEntryCommand.js";
 import { Company } from "../Assets/Orders.js";
 import { assertThat, assertThrows } from "../Utils/AssertExtensions.js";
-import {
-    GetRevisionsOperation,
-    GetRevisionsParameters
-} from "../../src/Documents/Operations/Revisions/GetRevisionsOperation.js";
-import { RevisionsResult } from "../../src/Documents/Operations/Revisions/RevisionsResult.js";
 import { delay } from "../../src/Utility/PromiseUtil.js";
-import { ObjectUtil } from "../../src/Utility/ObjectUtil.js";
 
-
-(RavenTestContext.is60Server ? describe.skip : describe)("RevisionsTest", function () {
+(RavenTestContext.isPullRequest ? describe.skip : describe)("RevisionsTest", function () {
 
     let store: IDocumentStore;
 
@@ -710,4 +707,133 @@ import { ObjectUtil } from "../../src/Utility/ObjectUtil.js";
                 .isEqualTo(3);
         }
     });
+
+    it("canGetRevisionsByChangeVectors2", async function() {
+        await testContext.setupRevisions(store, false, 5);
+
+        const user1 = new User();
+        user1.name = "Jane";
+
+        {
+            const session = store.openSession();
+            await session.store(user1);
+            await session.saveChanges();
+
+            for (let i = 0; i < 10; i++) {
+                const user = await session.load(user1.id, User);
+                user.name = "Jane" + i;
+                await session.saveChanges();
+            }
+        }
+
+        let allCVS: string[];
+
+        {
+            const session = store.openSession();
+            const metadata = await session.advanced.revisions.getMetadataFor(user1.id);
+            allCVS = metadata.map(x => x[CONSTANTS.Documents.Metadata.CHANGE_VECTOR]);
+
+            const revisionsByCv = await session.advanced.revisions.get(allCVS, User);
+            for (let i = 0; i < allCVS.length; i++) {
+                assertThat(revisionsByCv)
+                    .containsKey(allCVS[i]);
+
+                const user = await session.advanced.revisions.get(allCVS[i], User);
+                assertThat(revisionsByCv[allCVS[i]].name)
+                    .isEqualTo(user.name);
+            }
+        }
+    });
+
+    it("canGetRevisionsByChangeVectorsNonExist", async function () {
+        await testContext.setupRevisions(store, false, 5);
+
+        const user1 = new User();
+        user1.name = "Jane";
+
+        {
+            const session = store.openSession();
+            await session.store(user1);
+            await session.saveChanges();
+
+            for (let i = 0; i < 10; i++) {
+                const user = await session.load(user1.id, User);
+                user.name = "Jane" + i;
+                await session.saveChanges();
+            }
+        }
+
+        {
+            const session = store.openSession();
+            const allCvs = ["AB:1", "AB:2", "AB:3"];
+            const revisionsByCv = await session.advanced.revisions.get(allCvs, User);
+
+            assertThat(Object.keys(revisionsByCv))
+                .hasSize(3);
+
+            for (const val of Object.values(revisionsByCv)) {
+                assertThat(val)
+                    .isNull();
+            }
+
+            const cv = "AB:1";
+            const revision = await session.advanced.revisions.get(cv, User);
+            assertThat(revision)
+                .isNull();
+        }
+    })
+
+    it("canGetRevisionsByIdStartTake", async function() {
+        await testContext.setupRevisions(store, false, 123);
+
+        const user1 = new User();
+        user1.name = "Jane";
+
+        {
+            const session = store.openSession();
+            await session.store(user1);
+            await session.saveChanges();
+
+            for (let i = 0; i < 10; i++) {
+                const user = await session.load(user1.id, User);
+                user.name = "Jane" + i;
+                await session.saveChanges();
+            }
+        }
+
+        let revisionsResult = await store.operations.send(new GetRevisionsOperation(user1.id, {
+            start: 0,
+            pageSize: 5,
+            documentType: User
+        }));
+        assertThat(revisionsResult.totalResults)
+            .isEqualTo(11);
+        assertThat(revisionsResult.results)
+            .hasSize(5);
+
+        let revisionNames = revisionsResult.results.map(x => x.name);
+
+        for (let i = revisionsResult.totalResults - 2; i >= 5; i--) {
+            assertThat(revisionNames)
+                .contains("Jane" + i);
+        }
+
+        revisionsResult = await store.operations.send(new GetRevisionsOperation(user1.id, {
+            start: 6,
+            pageSize: 5,
+            documentType: User
+        }));
+
+        assertThat(revisionsResult.totalResults)
+            .isEqualTo(11);
+        assertThat(revisionsResult.results)
+            .hasSize(5);
+
+        revisionNames = revisionsResult.results.map(x => x.name);
+
+        for (let i = revisionsResult.totalResults - 2 - 6; i >= 0; i--) {
+            assertThat(revisionNames)
+                .contains("Jane" + i);
+        }
+    })
 });

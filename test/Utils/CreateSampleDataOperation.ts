@@ -1,6 +1,12 @@
-import { IMaintenanceOperation } from "../../src/Documents/Operations/OperationAbstractions.js";
-import { RavenCommand } from "../../src/Http/RavenCommand.js";
-import { DatabaseItemType, DocumentConventions, IRaftCommand, OperationResultType, ServerNode } from "../../src/index.js";
+import {
+    DatabaseItemType,
+    DocumentConventions,
+    IRaftCommand,
+    OperationResultType,
+    ServerNode,
+    RavenCommand,
+    IMaintenanceOperation
+} from "../../src/index.js";
 import { HttpRequestParameters } from "../../src/Primitives/Http.js";
 import { RaftIdGenerator } from "../../src/Utility/RaftIdGenerator.js";
 

@@ -3,16 +3,18 @@ import { CompareExchangeValue } from "./CompareExchangeValue.js";
 import { throwError } from "../../../Exceptions/index.js";
 import { TypeUtil } from "../../../Utility/TypeUtil.js";
 import { ObjectUtil } from "../../../Utility/ObjectUtil.js";
-import { CONSTANTS } from "../../../Constants.js";
+import { COMPARE_EXCHANGE, CONSTANTS } from "../../../Constants.js";
 import { MetadataAsDictionary, MetadataDictionary } from "../../../Mapping/MetadataAsDictionary.js";
 import { CompareExchangeResultClass, EntityConstructor } from "../../../Types/index.js";
 
 export interface CompareExchangeResultItem {
     index: number;
     key: string;
-    value: { object: object, "@metadata"?: any };
+    value: { Object: object, "@metadata"?: any };
     changeVector: string;
 }
+
+export const ObjectNodeMarker = Symbol("ObjectNodeMarker");
 
 export interface GetCompareExchangeValuesResponse {
     results: CompareExchangeResultItem[];
@@ -59,7 +61,7 @@ export class CompareExchangeValueResultParser {
         if (!values || !itemsKeys.length) {
             return null;
         }
-        return values[itemsKeys[0]];
+        return Object.values(values)[0];
     }
 
     public static getSingleValue<T>(
@@ -93,25 +95,50 @@ export class CompareExchangeValueResultParser {
             metadata = !materializeMetadata ? MetadataDictionary.create(metadataRaw) : MetadataDictionary.materializeFromJson(metadataRaw);
         }
 
-        let rawValue = raw.object;
-        if (clazz && TypeUtil.isPrimitiveType(clazz) || TypeUtil.isPrimitive(rawValue)) {
-            return new CompareExchangeValue(key, index, rawValue, cv, metadata);
-        } else {
-            if (!rawValue) {
-                return new CompareExchangeValue(key, index, null, cv, metadata);
-            } else {
-                const entityType = conventions.getJsTypeByDocumentType(clazz as EntityConstructor);
-                if (conventions.serverToLocalFieldNameConverter) {
-                    rawValue = ObjectUtil.transformObjectKeys(
-                        rawValue, {
-                            defaultTransform: conventions.serverToLocalFieldNameConverter,
-                            recursive: true,
-                            arrayRecursive: true
-                        });
-                }
-                const entity = conventions.deserializeEntityFromJson(entityType, rawValue);
-                return new CompareExchangeValue(key, index, entity, cv, metadata);
-            }
+        const value = CompareExchangeValueResultParser.deserializeObject(raw, conventions, clazz);
+        return new CompareExchangeValue(key, index, value, cv, metadata);
+
+    }
+
+    public static deserializeObject<T>(raw: object, conventions: DocumentConventions, clazz: CompareExchangeResultClass<T>) {
+        if (TypeUtil.isNullOrUndefined(raw)) {
+            return null;
         }
+
+        const rawValue = raw[COMPARE_EXCHANGE.OBJECT_FIELD_NAME];
+        if (clazz && TypeUtil.isPrimitiveType(clazz)) {
+            return rawValue;
+        }
+
+        if (clazz === ObjectNodeMarker) {
+            if (TypeUtil.isNullOrUndefined(rawValue)) {
+                return null;
+            }
+
+            return TypeUtil.isObject(rawValue) ? rawValue : raw;
+        }
+
+        if (TypeUtil.isPrimitive(rawValue)) {
+            return rawValue;
+        }
+
+        if (TypeUtil.isArray(rawValue)) {
+            return ObjectUtil.deepJsonClone(rawValue);
+        }
+
+        let value = (TypeUtil.isObject(raw) && COMPARE_EXCHANGE.OBJECT_FIELD_NAME in raw) ? rawValue : raw;
+
+        const entityType = conventions.getJsTypeByDocumentType(clazz as EntityConstructor);
+        if (conventions.serverToLocalFieldNameConverter) {
+            value = ObjectUtil.transformObjectKeys(
+                value, {
+                    defaultTransform: conventions.serverToLocalFieldNameConverter,
+                    recursive: true,
+                    arrayRecursive: true
+                });
+        }
+        const entity = conventions.deserializeEntityFromJson(entityType, value);
+        return entity;
+
     }
 }

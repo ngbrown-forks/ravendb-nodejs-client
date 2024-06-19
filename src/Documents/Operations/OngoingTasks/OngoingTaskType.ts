@@ -9,4 +9,5 @@ export type OngoingTaskType =
     | "Backup"
     | "Subscription"
     | "PullReplicationAsHub"
-    | "PullReplicationAsSink";
+    | "PullReplicationAsSink"
+    | "QueueSink";

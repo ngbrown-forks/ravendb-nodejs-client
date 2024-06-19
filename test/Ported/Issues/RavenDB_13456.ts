@@ -9,7 +9,7 @@ import { disposeTestDocumentStore, RavenTestContext, testContext } from "../../U
 import { Company } from "../../Assets/Entities.js";
 import { assertThat, assertThrows } from "../../Utils/AssertExtensions.js";
 
-(RavenTestContext.is60Server ? describe.skip : describe)("RavenDB_13456", function () {
+(RavenTestContext.isPullRequest ? describe.skip : describe)("RavenDB_13456", function () {
 
     let store: IDocumentStore;
 

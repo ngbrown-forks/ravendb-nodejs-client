@@ -1,6 +1,11 @@
 import assert from "node:assert"
 
-import { IDocumentStore, IndexDefinition, IndexFieldOptions, PutIndexesOperation } from "../../../src/index.js";
+import {
+    IDocumentStore,
+    IndexDefinition,
+    IndexFieldOptions,
+    PutIndexesOperation
+} from "../../../src/index.js";
 import { disposeTestDocumentStore, testContext } from "../../Utils/TestUtil.js";
 import { User } from "../../Assets/Entities.js";
 

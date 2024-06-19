@@ -6,8 +6,8 @@ import {
     AbstractJavaScriptIndexCreationTask,
     IDocumentStore,
     QueryStatistics,
+    SpatialField
 } from "../../../src/index.js";
-import { SpatialField } from "../../../src/Documents/Indexes/StronglyTyped.js";
 
 describe("SpatialSearchTest", function () {
 

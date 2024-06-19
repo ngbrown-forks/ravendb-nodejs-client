@@ -1,8 +1,10 @@
-import { IDocumentStore } from "../../../src/index.js";
+import {
+    IDocumentStore,
+    StartTransactionsRecordingOperation,
+    StopTransactionsRecordingOperation
+} from "../../../src/index.js";
 import { disposeTestDocumentStore, TemporaryDirContext, testContext } from "../../Utils/TestUtil.js";
 import path from "node:path";
-import { StartTransactionsRecordingOperation } from "../../../src/Documents/Operations/TransactionsRecording/StartTransactionsRecordingOperation.js";
-import { StopTransactionsRecordingOperation } from "../../../src/Documents/Operations/TransactionsRecording/StopTransactionsRecordingOperation.js";
 import { assertThat } from "../../Utils/AssertExtensions.js";
 import fs from "node:fs";
 import { CreateSampleDataOperation } from "../../Utils/CreateSampleDataOperation.js";

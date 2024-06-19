@@ -3,7 +3,6 @@ import { acquireSemaphore } from "../../Utility/SemaphoreUtil.js";
 import { IRavenObject } from "../../Types/IRavenObject.js";
 import { DocumentStore } from "../DocumentStore.js";
 import { DocumentConventions } from "../Conventions/DocumentConventions.js";
-import { DefaultHiLoIdGenerator } from "./DefaultHiLoIdGenerator.js";
 import { Semaphore } from "../../Utility/Semaphore.js";
 
 export class MultiTypeHiLoIdGenerator {
@@ -36,7 +35,7 @@ export class MultiTypeHiLoIdGenerator {
             return null;
         }
 
-        const tag = await this._conventions.transformClassCollectionNameToDocumentIdPrefix(typeTagName);
+        const tag = this._conventions.transformClassCollectionNameToDocumentIdPrefix(typeTagName);
 
         let value = this._idGeneratorsByTag[tag];
         if (value) {
@@ -121,7 +120,7 @@ export class MultiTypeHiLoIdGenerator {
     }
 
     protected _createGeneratorFor(tag: string): HiloIdGenerator {
-        return new DefaultHiLoIdGenerator(tag, this._store, this._dbName, this._identityPartsSeparator);
+        return new HiloIdGenerator(tag, this._store, this._dbName, this._identityPartsSeparator);
     }
 
     public async returnUnusedRange() {

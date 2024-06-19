@@ -52,7 +52,7 @@ describe("RavenDB-11703", function () {
             await delay(100);
         }
 
-        await Promise.race([errored, wrapWithTimeout(act(), 2000)]);
+        await Promise.race([errored, wrapWithTimeout(act(), 5000)]);
 
         assert.strictEqual(changesList.length, 2, "Expected exactly 2 changes to show up.");
 
@@ -104,7 +104,7 @@ describe("RavenDB-11703", function () {
             await delay(100);
         }
 
-        await Promise.race([errored, wrapWithTimeout(act(), 2000)]);
+        await Promise.race([errored, wrapWithTimeout(act(), 5000)]);
 
         assert.strictEqual(changesList.length, 2, "Expected exactly 2 changes to show up.");
 

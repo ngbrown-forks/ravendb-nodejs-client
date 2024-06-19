@@ -1,15 +1,14 @@
-import { IDatabaseChanges } from "./IDatabaseChanges.js";
 import { IDisposable } from "../../Types/Contracts.js";
 
-export interface IConnectableChanges<T extends IDatabaseChanges> extends IDisposable {
+export interface IConnectableChanges<T> extends IDisposable {
 
     connected: boolean;
 
-    ensureConnectedNow(): Promise<IDatabaseChanges>;
+    ensureConnectedNow(): Promise<T>;
 
-    on(type: "connectionStatus", handler: () => void);
-    on(type: "error", handler: (error: Error) => void);
+    on(type: "connectionStatus", handler: () => void): void;
+    on(type: "error", handler: (error: Error) => void): void;
 
-    off(type: "connectionStatus", handler: () => void);
-    off(type: "error", handler: (error: Error) => void);
+    off(type: "connectionStatus", handler: () => void): void;
+    off(type: "error", handler: (error: Error) => void): void;
 }

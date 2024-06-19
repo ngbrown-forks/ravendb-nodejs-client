@@ -4,7 +4,7 @@ import { testContext, disposeTestDocumentStore } from "../../Utils/TestUtil.js";
 
 import {
     SessionOptions,
-    IDocumentStore, CONSTANTS, GetCompareExchangeValueOperation, PutCompareExchangeValueOperation,
+    IDocumentStore, GetCompareExchangeValueOperation, PutCompareExchangeValueOperation,
 } from "../../../src/index.js";
 import { assertThat, assertThrows } from "../../Utils/AssertExtensions.js";
 import { COMPARE_EXCHANGE } from "../../../src/Constants.js";

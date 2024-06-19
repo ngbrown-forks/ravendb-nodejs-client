@@ -9,15 +9,13 @@ import {
     PutConnectionStringOperation,
     PutPullReplicationAsHubOperation,
     RavenConnectionString,
-    UpdatePullReplicationAsSinkOperation
+    UpdatePullReplicationAsSinkOperation,
+    ReplicationHubAccess,
+    RegisterReplicationHubAccessOperation
 } from "../../../../src/index.js";
 import { ReplicationTestContext } from "../../../Utils/ReplicationTestContext.js";
 import moment from "moment";
 import { GenerateCertificateOperation } from "../../../Infrastructure/GenerateCertificateOperation.js";
-import { ReplicationHubAccess } from "../../../../src/Documents/Operations/Replication/ReplicationHubAccess.js";
-import {
-    RegisterReplicationHubAccessOperation
-} from "../../../../src/Documents/Operations/Replication/RegisterReplicationHubAccessOperation.js";
 import { assertThat } from "../../../Utils/AssertExtensions.js";
 import { delay } from "../../../../src/Utility/PromiseUtil.js";
 

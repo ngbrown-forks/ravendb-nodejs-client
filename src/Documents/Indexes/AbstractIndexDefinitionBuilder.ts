@@ -22,6 +22,7 @@ export abstract class AbstractIndexDefinitionBuilder<TIndexDefinition extends In
     public lockMode: IndexLockMode;
     public priority: IndexPriority;
     public state: IndexState;
+    public compoundFieldsStrings: string[][];
     public deploymentMode: IndexDeploymentMode;
     public outputReduceToCollection: string;
     public patternForOutputReduceToCollectionReferences: string;
@@ -59,6 +60,7 @@ export abstract class AbstractIndexDefinitionBuilder<TIndexDefinition extends In
             indexDefinition.outputReduceToCollection = this.outputReduceToCollection;
             indexDefinition.patternForOutputReduceToCollectionReferences = this.patternForOutputReduceToCollectionReferences;
             indexDefinition.patternReferencesCollectionName = this.patternReferencesCollectionName;
+            indexDefinition.compoundFields = this.compoundFieldsStrings;
 
             const suggestions: { [suggestionOption: string]: boolean } = Object.fromEntries(Array.from(this.suggestionsOptions)
                 .map(( item) =>

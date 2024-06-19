@@ -1,11 +1,11 @@
-import { IDocumentStore } from "../../../src/index.js";
-import { disposeTestDocumentStore, testContext } from "../../Utils/TestUtil.js";
-import { GetLogsConfigurationOperation } from "../../../src/ServerWide/Operations/Logs/GetLogsConfigurationOperation.js";
-import { assertThat } from "../../Utils/AssertExtensions.js";
 import {
+    IDocumentStore,
+    GetLogsConfigurationOperation,
     SetLogsConfigurationOperation,
     SetLogsConfigurationParameters
-} from "../../../src/ServerWide/Operations/Logs/SetLogsConfigurationOperation.js";
+} from "../../../src/index.js";
+import { disposeTestDocumentStore, testContext } from "../../Utils/TestUtil.js";
+import { assertThat } from "../../Utils/AssertExtensions.js";
 
 describe("LogsConfigurationTest", function () {
 

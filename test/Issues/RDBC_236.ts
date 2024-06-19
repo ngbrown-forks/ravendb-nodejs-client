@@ -4,9 +4,9 @@ import { testContext, disposeTestDocumentStore } from "../Utils/TestUtil.js";
 
 import {
     IDocumentStore,
+    GetDocumentsCommand
 } from "../../src/index.js";
 import { DateUtil } from "../../src/Utility/DateUtil.js";
-import { GetDocumentsCommand } from "../../src/Documents/Commands/GetDocumentsCommand.js";
 import { StringUtil } from "../../src/Utility/StringUtil.js";
 
 // getTimezoneOffset() returns reversed offset, hence the "-"

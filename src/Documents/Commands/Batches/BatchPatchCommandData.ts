@@ -18,9 +18,9 @@ export interface IdAndChangeVector {
 export class BatchPatchCommandData implements ICommandData {
     private readonly _seenIds: Set<string> = CaseInsensitiveStringSet.create();
     private readonly _ids: IdAndChangeVector[] = [];
-    private _name: string = null;
-    private _patch: PatchRequest;
-    private _patchIfMissing: PatchRequest;
+    private readonly _name: string = null;
+    private readonly _patch: PatchRequest;
+    private readonly _patchIfMissing: PatchRequest;
 
     public constructor(patch: PatchRequest, patchIfMissing: PatchRequest, ...ids: string[]);
     public constructor(patch: PatchRequest, patchIfMissing: PatchRequest, ...ids: IdAndChangeVector[]);

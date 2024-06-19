@@ -168,10 +168,10 @@ export class BulkInsertOnProgressEventArgs {
 }
 
 export class AfterConversionToDocumentEventArgs {
-    public id: string;
-    public entity: object;
-    public document: Reference<object>;
-    public session: InMemoryDocumentSessionOperations;
+    public readonly id: string;
+    public readonly entity: object;
+    public readonly document: Reference<object>;
+    public readonly session: InMemoryDocumentSessionOperations;
 
     public constructor(session: InMemoryDocumentSessionOperations, id: string, entity: object, document: Reference<object>) {
         this.session = session;
@@ -182,10 +182,10 @@ export class AfterConversionToDocumentEventArgs {
 }
 
 export class AfterConversionToEntityEventArgs {
-    public id: string;
-    public document: object;
-    public entity: object;
-    public session: InMemoryDocumentSessionOperations;
+    public readonly id: string;
+    public readonly document: object;
+    public readonly entity: object;
+    public readonly session: InMemoryDocumentSessionOperations;
 
     public constructor(session: InMemoryDocumentSessionOperations, id: string, document: object, entity: object) {
         this.session = session;
@@ -196,9 +196,9 @@ export class AfterConversionToEntityEventArgs {
 }
 
 export class BeforeConversionToDocumentEventArgs {
-    public id: string;
-    public entity: object;
-    public session: InMemoryDocumentSessionOperations;
+    public readonly id: string;
+    public readonly entity: object;
+    public readonly session: InMemoryDocumentSessionOperations;
 
     public constructor(session: InMemoryDocumentSessionOperations, id: string, entity: object) {
         this.session = session;
@@ -208,10 +208,10 @@ export class BeforeConversionToDocumentEventArgs {
 }
 
 export class BeforeConversionToEntityEventArgs {
-    public id: string;
-    public type: DocumentType;
+    public readonly id: string;
+    public readonly type: DocumentType;
     public document: object;
-    public session: InMemoryDocumentSessionOperations;
+    public readonly session: InMemoryDocumentSessionOperations;
 
     public constructor(session: InMemoryDocumentSessionOperations, id: string, type: DocumentType, document: object) {
         this.session = session;
@@ -222,11 +222,11 @@ export class BeforeConversionToEntityEventArgs {
 }
 
 export class FailedRequestEventArgs {
-    public database: string;
-    public url: string;
-    public error: Error;
-    public request: HttpRequestParameters;
-    public response: HttpResponse;
+    public readonly database: string;
+    public readonly url: string;
+    public readonly error: Error;
+    public readonly request: HttpRequestParameters;
+    public readonly response: HttpResponse;
 
     public constructor(database: string, url: string, error: Error, request: HttpRequestParameters, response: HttpResponse) {
         this.database = database;
@@ -239,17 +239,19 @@ export class FailedRequestEventArgs {
 
 export class TopologyUpdatedEventArgs {
     public topology: Topology;
+    public reason: string;
 
-    public constructor(topology: Topology) {
+    public constructor(topology: Topology, reason: string) {
         this.topology = topology;
+        this.reason = reason;
     }
 }
 
 export class BeforeRequestEventArgs {
-    public database: string;
-    public url: string;
-    public request: HttpRequestParameters;
-    public attemptNumber: number;
+    public readonly database: string;
+    public readonly url: string;
+    public readonly request: HttpRequestParameters;
+    public readonly attemptNumber: number;
 
     public constructor(database: string, url: string, request: HttpRequestParameters, attemptNumber: number) {
         this.database = database;

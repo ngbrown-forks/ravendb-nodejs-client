@@ -1,11 +1,13 @@
-import { IDocumentStore } from "../../../src/Documents/IDocumentStore.js";
+import {
+    IDocumentStore,
+    PointField,
+    AbstractJavaScriptIndexCreationTask,
+    SpatialField
+} from "../../../src/index.js";
 import { disposeTestDocumentStore, testContext } from "../../Utils/TestUtil.js";
 import { assertThat } from "../../Utils/AssertExtensions.js";
-import { PointField } from "../../../src/Documents/Queries/Spatial/PointField.js";
 import { CreateSampleDataOperation } from "../../Utils/CreateSampleDataOperation.js";
 import { Order } from "../../Assets/Orders.js";
-import { AbstractJavaScriptIndexCreationTask } from "../../../src/Documents/Indexes/AbstractJavaScriptIndexCreationTask.js";
-import { SpatialField } from "../../../src/Documents/Indexes/StronglyTyped.js";
 
 describe("RavenDB_13682", function () {
 
@@ -120,8 +122,7 @@ describe("RavenDB_13682", function () {
                 "order by spatial.distance(\n" +
                 "    spatial.point(a.ShipTo.Location.Latitude, a.ShipTo.Location.Longitude),\n" +
                 "    spatial.point(35.2, -107.2 )\n" +
-                ")\n" +
-                "limit 1", Order)
+                ")", Order)
             .first();
 
             const metadata = s.advanced.getMetadataFor(d);

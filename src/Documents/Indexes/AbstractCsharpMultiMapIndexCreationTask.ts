@@ -2,6 +2,7 @@ import { throwError } from "../../Exceptions/index.js";
 import { IndexDefinition, IndexDefinitionBuilder } from "./IndexDefinition.js";
 import { DocumentConventions } from "../Conventions/DocumentConventions.js";
 import { AbstractGenericIndexCreationTask } from "./AbstractGenericIndexCreationTask.js";
+import { INDEXES } from "../../Constants.js";
 
 export class AbstractCsharpMultiMapIndexCreationTask extends AbstractGenericIndexCreationTask {
 
@@ -48,6 +49,10 @@ export class AbstractCsharpMultiMapIndexCreationTask extends AbstractGenericInde
         indexDefinitionBuilder.priority = this.priority;
         indexDefinitionBuilder.state = this.state;
         indexDefinitionBuilder.deploymentMode = this.deploymentMode;
+
+        if (this.searchEngineType) {
+            indexDefinitionBuilder.configuration[INDEXES.INDEXING_STATIC_SEARCH_ENGINE_TYPE] = this.searchEngineType;
+        }
 
         const indexDefinition = indexDefinitionBuilder.toIndexDefinition(this.conventions, false);
         indexDefinition.maps = new Set(this.maps);

@@ -61,12 +61,16 @@ describe("RavenDB_17041Test", function () {
                 .isEqualTo(1);
             assertThat(loaded.role)
                 .isEqualTo("role/1");
+            assertThat(session.advanced.getChangeVectorFor(loaded))
+                .isNotNull();
 
             loaded = await session.load("role/2", RoleData);
             assertThat(session.advanced.numberOfRequests)
                 .isEqualTo(1);
             assertThat(loaded.role)
                 .isEqualTo("role/2");
+            assertThat(session.advanced.getChangeVectorFor(loaded))
+                .isNotNull();
         }
     });
 });

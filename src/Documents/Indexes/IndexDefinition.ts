@@ -8,6 +8,7 @@ import { IndexSourceType } from "./IndexSourceType.js";
 import { AdditionalAssembly } from "./AdditionalAssembly.js";
 import { IndexDeploymentMode } from "./IndexDeploymentMode.js";
 import { IndexDefinitionBase } from "./IndexDefinitionBase.js";
+import { ArchivedDataProcessingBehavior } from "../DataArchival/ArchivedDataProcessingBehavior.js";
 
 export interface IndexConfiguration {
     [key: string]: string;
@@ -24,11 +25,13 @@ export class IndexDefinition extends IndexDefinitionBase {
     public lockMode: IndexLockMode;
     public indexType: IndexType;
     public additionalSources: { [key: string]: string } = {};
+    public compoundFields: string[][] = [];
     public additionalAssemblies: AdditionalAssembly[] = [];
     public maps: Set<string> = new Set();
     public reduce: string;
     public fields: { [fieldName: string]: IndexFieldOptions } = {};
     private _indexSourceType: IndexSourceType;
+    public archivedDataProcessingBehavior: ArchivedDataProcessingBehavior;
     public configuration: IndexConfiguration = {};
     public outputReduceToCollection: string;
     public reduceOutputIndex: number;
@@ -99,6 +102,7 @@ export class IndexDefinition extends IndexDefinitionBase {
 export class IndexDefinitionBuilder extends AbstractIndexDefinitionBuilder<IndexDefinition>{
 
     public map: string;
+    public archivedDataProcessingBehavior: ArchivedDataProcessingBehavior;
 
     public constructor(indexName?: string) {
         super(indexName);
@@ -114,7 +118,9 @@ export class IndexDefinitionBuilder extends AbstractIndexDefinitionBuilder<Index
                 "Map is required to generate an index, you cannot create an index without a valid Map property (in index " + this._indexName + ").");
         }
 
-        return super.toIndexDefinition(conventions, validateMap);
+        const indexDefinition = super.toIndexDefinition(conventions, validateMap);
+        indexDefinition.archivedDataProcessingBehavior = this.archivedDataProcessingBehavior;
+        return indexDefinition;
     }
 
     protected _toIndexDefinition(indexDefinition: IndexDefinition, conventions: DocumentConventions) {

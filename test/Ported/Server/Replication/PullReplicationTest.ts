@@ -1,15 +1,17 @@
-import { IDocumentStore } from "../../../../src/Documents/IDocumentStore.js";
+import {
+    IDocumentStore,
+    PutPullReplicationAsHubOperation,
+    ModifyOngoingTaskResult,
+    PullReplicationAsSink,
+    GetOngoingTaskInfoOperation,
+    OngoingTaskPullReplicationAsSink,
+    GetPullReplicationHubTasksInfoOperation,
+    PullReplicationDefinition
+} from "../../../../src/index.js";
 import { disposeTestDocumentStore, RavenTestContext, testContext } from "../../../Utils/TestUtil.js";
 import { ReplicationTestContext } from "../../../Utils/ReplicationTestContext.js";
-import { PutPullReplicationAsHubOperation } from "../../../../src/Documents/Operations/Replication/PutPullReplicationAsHubOperation.js";
 import { User } from "../../../Assets/Entities.js";
-import { ModifyOngoingTaskResult } from "../../../../src/ServerWide/ModifyOnGoingTaskResult.js";
-import { PullReplicationAsSink } from "../../../../src/Documents/Operations/Replication/PullReplicationAsSink.js";
 import { assertThat } from "../../../Utils/AssertExtensions.js";
-import { GetOngoingTaskInfoOperation } from "../../../../src/Documents/Operations/GetOngoingTaskInfoOperation.js";
-import { OngoingTaskPullReplicationAsSink } from "../../../../src/Documents/Operations/OngoingTasks/OngoingTaskPullReplicationAsSink.js";
-import { GetPullReplicationHubTasksInfoOperation } from "../../../../src/Documents/Operations/OngoingTasks/GetPullReplicationHubTasksInfoOperation.js";
-import { PullReplicationDefinition } from "../../../../src/Documents/Operations/Replication/PullReplicationDefinition.js";
 import { delay } from "../../../../src/Utility/PromiseUtil.js";
 
 (RavenTestContext.isPullRequest ? describe.skip : describe)("PullReplicationTest", function () {
@@ -54,7 +56,7 @@ import { delay } from "../../../../src/Utility/PromiseUtil.js";
 
                 await setupPullReplication(name, sink, hub);
 
-                await replication.waitForDocumentToReplicate<User>(sink, "foo/bar", 3_000, User);
+                await replication.waitForDocumentToReplicate<User>(sink, "foo/bar", 8_000, User);
             } finally {
                 hub.dispose();
             }
@@ -86,7 +88,7 @@ import { delay } from "../../../../src/Utility/PromiseUtil.js";
 
                 const pullTasks = await setupPullReplication(name, sink, hub);
 
-                assertThat(await replication.waitForDocumentToReplicate<User>(sink, "foo/bar", 3_000, User))
+                assertThat(await replication.waitForDocumentToReplicate<User>(sink, "foo/bar", 8_000, User))
                     .isNotNull();
 
                 const sinkResult = (await sink.maintenance.send(new GetOngoingTaskInfoOperation(pullTasks[0].taskId, "PullReplicationAsSink"))) as OngoingTaskPullReplicationAsSink;
@@ -140,7 +142,7 @@ import { delay } from "../../../../src/Utility/PromiseUtil.js";
 
                 const pullTasks = await setupPullReplication(name, sink, hub);
 
-                assertThat(await replication.waitForDocumentToReplicate<User>(sink, "foo/bar", 3_000, User))
+                assertThat(await replication.waitForDocumentToReplicate<User>(sink, "foo/bar", 8_000, User))
                     .isNotNull();
 
                 await replication.deleteOngoingTask(hub, hubResult.taskId, "PullReplicationAsHub");
@@ -153,7 +155,7 @@ import { delay } from "../../../../src/Utility/PromiseUtil.js";
                     await session.saveChanges();
                 }
 
-                assertThat(await replication.waitForDocumentToReplicate<User>(sink, "foo/bar2", 3_000, User))
+                assertThat(await replication.waitForDocumentToReplicate<User>(sink, "foo/bar2", 8_000, User))
                     .isNull();
             } finally {
                 hub.dispose();
@@ -414,7 +416,7 @@ import { delay } from "../../../../src/Utility/PromiseUtil.js";
                 hub = await testContext.getDocumentStore();
 
                 const definitionName = "pull-replication" + hub.database;
-                const timeout = 3_000;
+                const timeout = 8_000;
 
                 const pullDefinition: PullReplicationDefinition = {
                     name: definitionName
@@ -429,7 +431,7 @@ import { delay } from "../../../../src/Utility/PromiseUtil.js";
                 }
 
                 await setupPullReplication(definitionName, sink, hub);
-                assertThat(await replication.waitForDocumentToReplicate<User>(sink, "users/1", 3_000, User))
+                assertThat(await replication.waitForDocumentToReplicate<User>(sink, "users/1", timeout, User))
                     .isNotNull();
 
                 pullDefinition.disabled = true;

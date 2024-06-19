@@ -1,11 +1,13 @@
-import { IDocumentStore } from "../../../src/Documents/IDocumentStore.js";
+import {
+    IDocumentStore,
+    SorterDefinition,
+    PutSortersOperation,
+    DeleteSorterOperation,
+    RavenErrorType
+} from "../../../src/index.js";
 import { disposeTestDocumentStore, testContext } from "../../Utils/TestUtil.js";
-import { SorterDefinition } from "../../../src/Documents/Queries/Sorting/SorterDefinition.js";
-import { PutSortersOperation } from "../../../src/Documents/Operations/Sorters/PutSortersOperation.js";
 import { Company } from "../../Assets/Entities.js";
 import { assertThat, assertThrows } from "../../Utils/AssertExtensions.js";
-import { DeleteSorterOperation } from "../../../src/Documents/Operations/Sorters/DeleteSorterOperation.js";
-import { RavenErrorType } from "../../../src/Exceptions/index.js";
 
 describe("RavenDB_8355", function () {
 

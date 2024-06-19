@@ -1,7 +1,6 @@
 import fs from "node:fs";
 import path from "node:path";
 import url from "node:url";
-import { IDisposable, IDocumentStore, IAuthOptions } from "../../src/index.js";
 import { RavenTestDriver } from "../TestDriver/index.js";
 import { RavenServerLocator } from "../TestDriver/RavenServerLocator.js";
 import { getError, throwError } from "../../src/Exceptions/index.js";
@@ -18,7 +17,10 @@ import {
     GetClusterTopologyCommand,
     GetDatabaseRecordOperation,
     IDocumentSession,
-    ServerNode
+    ServerNode,
+    IDisposable,
+    IDocumentStore,
+    IAuthOptions
 } from "../../src/index.js";
 import { sync } from "rimraf";
 import { ChildProcess } from "node:child_process";
@@ -135,8 +137,6 @@ class TestSecuredServiceLocator extends RavenServerLocator {
 export class RavenTestContext extends RavenTestDriver implements IDisposable {
 
     public static isPullRequest = !process.env["RAVEN_License"];
-
-    public static is60Server = process.env["RAVENDB_SERVER_VERSION"] >= "6.0";
 
     private readonly _locator: RavenServerLocator;
     private readonly _securedLocator: RavenServerLocator;
@@ -295,7 +295,9 @@ export class RavenTestContext extends RavenTestDriver implements IDisposable {
     public async getDocumentStore(
         database: string, secured: boolean, waitForIndexingTimeoutInMs?: number): Promise<DocumentStore>;
     public async getDocumentStore(
-        database = "test_db", secured = false, waitForIndexingTimeoutInMs: number = null): Promise<DocumentStore> {
+        database: string, secured: boolean, waitForIndexingTimeoutInMs?: number, customizeDatabaseRecord?: (record: DatabaseRecord) => void): Promise<DocumentStore>;
+    public async getDocumentStore(
+        database = "test_db", secured = false, waitForIndexingTimeoutInMs: number = null, customizeDatabaseRecord?: (record: DatabaseRecord) => void): Promise<DocumentStore> {
 
         const databaseName = database + "_" + (++RavenTestContext._index);
         log.info(`getDocumentStore for db ${ database }.`);
@@ -314,6 +316,8 @@ export class RavenTestContext extends RavenTestDriver implements IDisposable {
         if (this._customizeDbRecord) {
             this._customizeDbRecord(databaseRecord);
         }
+
+        customizeDatabaseRecord?.(databaseRecord);
 
         const createDatabaseOperation = new CreateDatabaseOperation(databaseRecord);
         const createDatabaseResult = await documentStore.maintenance.server.send(createDatabaseOperation);
@@ -448,7 +452,7 @@ class TestCloudServiceLocator extends RavenServerLocator {
 
 export class ClusterTestContext extends RavenTestDriver implements IDisposable {
 
-    private _toDispose: IDisposable[] = [];
+    private readonly _toDispose: IDisposable[] = [];
 
     private _dbCounter = 1;
 

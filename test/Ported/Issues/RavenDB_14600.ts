@@ -1,5 +1,8 @@
 import { disposeTestDocumentStore, testContext } from "../../Utils/TestUtil.js";
-import { AbstractJavaScriptIndexCreationTask, IDocumentStore } from "../../../src/index.js";
+import {
+    AbstractJavaScriptIndexCreationTask,
+    IDocumentStore
+} from "../../../src/index.js";
 import { Employee, Order } from "../../Assets/Orders.js";
 import { assertThat } from "../../Utils/AssertExtensions.js";
 
@@ -45,7 +48,10 @@ describe("RavenDB_14600Test", function () {
                 .isNotNull();
 
             for (const f of facets["employee"].values) {
-                await session.load(f.range);
+                const e = await session.load(f.range);
+                const cv = session.advanced.getChangeVectorFor(e);
+                assertThat(cv)
+                    .isNotNull();
             }
 
             assertThat(session.advanced.numberOfRequests)

@@ -85,8 +85,7 @@ describe("HiLo", function () {
 
         const hiLoKeyGenerator = new HiloIdGenerator("users", store, store.database,"/");
         const ids = [];
-        const firstNextId = await hiLoKeyGenerator.nextId();
-        ids.push(firstNextId);
+        ids.push(await getNextId(hiLoKeyGenerator));
 
         hiloDoc.Max = 12;
         await session.store(hiloDoc, "Raven/Hilo/users", {
@@ -94,7 +93,7 @@ describe("HiLo", function () {
         });
         await session.saveChanges();
         for (let i = 0; i < 128; i++) {
-            const nextId = await hiLoKeyGenerator.nextId();
+            const nextId = await getNextId(hiLoKeyGenerator);
             assert.ok(!ids.includes(nextId));
             ids.push(nextId);
         }
@@ -324,3 +323,9 @@ describe("HiLo", function () {
     });
 
 });
+
+async function getNextId(idGenerator: HiloIdGenerator) {
+    const nextId = await idGenerator.getNextId();
+    return nextId.id;
+
+}

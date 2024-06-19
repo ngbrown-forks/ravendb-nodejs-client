@@ -180,7 +180,7 @@ describe("RavenDB-8761", function () {
                 .groupBy(GroupBy.array("lines[].product"))
                 .selectKey(null, "products")
                 .selectCount()
-                .orderBy("count")
+                .orderBy("count", "Long")
                 .ofType<ProductCount>(ProductCount)
                 .all();
 
@@ -218,7 +218,7 @@ describe("RavenDB-8761", function () {
                 .groupBy(GroupBy.array("lines[].product"), GroupBy.field("shipTo.country"))
                 .selectKey("lines[].product", "products")
                 .selectCount()
-                .orderBy("count")
+                .orderBy("count", "Long")
                 .ofType<ProductCount>(ProductCount)
                 .all();
 
@@ -246,7 +246,7 @@ describe("RavenDB-8761", function () {
                 .selectKey("lines[].product", "products")
                 .selectKey("lines[].quantity", "quantities")
                 .selectCount()
-                .orderBy("count")
+                .orderBy("count", "Long")
                 .ofType(ProductCount)
                 .all();
 

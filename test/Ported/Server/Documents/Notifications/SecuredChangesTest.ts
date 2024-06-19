@@ -1,11 +1,8 @@
 import assert from "node:assert"
 import { testContext, disposeTestDocumentStore } from "../../../../Utils/TestUtil.js";
 
-import {
-    IDocumentStore,
-} from "../../../../../src/index.js";
 import { User } from "../../../../Assets/Entities.js";
-import { DocumentChange } from "../../../../../src/index.js";
+import { DocumentChange, IDocumentStore } from "../../../../../src/index.js";
 import { AsyncQueue } from "../../../../Utils/AsyncQueue.js";
 import { throwError } from "../../../../../src/Exceptions/index.js";
 

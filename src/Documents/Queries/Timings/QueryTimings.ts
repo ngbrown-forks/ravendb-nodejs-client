@@ -3,6 +3,7 @@ import { QueryResult } from "../QueryResult.js";
 export class QueryTimings {
     public durationInMs: number;
     public timings: { [key: string]: QueryTimings };
+    public queryPlan: any;
 
     public update(queryResult: QueryResult): void {
         this.durationInMs = 0;

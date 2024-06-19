@@ -1,16 +1,23 @@
-import { GetOngoingTaskInfoOperation, IDocumentStore, PeriodicBackupConfiguration } from "../../src/index.js";
+import {
+    BackupType,
+    GetOngoingTaskInfoOperation,
+    IDocumentStore,
+    PeriodicBackupConfiguration,
+    UpdatePeriodicBackupOperation,
+    StartBackupOperation,
+    GetPeriodicBackupStatusOperation,
+    OngoingTaskBackup,
+    GetShardedPeriodicBackupStatusOperation,
+    DatabaseRecordBuilder
+} from "../../src/index.js";
 import { disposeTestDocumentStore, RavenTestContext, TemporaryDirContext, testContext } from "../Utils/TestUtil.js";
 import path from "node:path";
 import fs from "node:fs";
-import { UpdatePeriodicBackupOperation } from "../../src/Documents/Operations/Backups/UpdatePeriodicBackupOperation.js";
-import { StartBackupOperation } from "../../src/Documents/Operations/Backups/StartBackupOperation.js";
-import { GetPeriodicBackupStatusOperation } from "../../src/Documents/Operations/Backups/GetPeriodicBackupStatusOperation.js";
 import { assertThat } from "../Utils/AssertExtensions.js";
 import { sync } from "rimraf";
 import { Stopwatch } from "../../src/Utility/Stopwatch.js";
 import { throwError } from "../../src/Exceptions/index.js";
 import { delay } from "../../src/Utility/PromiseUtil.js";
-import { OngoingTaskBackup } from "../../src/Documents/Operations/OngoingTasks/OngoingTask.js";
 import { TimeUtil } from "../../src/Utility/TimeUtil.js";
 
 (RavenTestContext.isPullRequest ? describe.skip : describe)("BackupsTest", function () {
@@ -19,7 +26,6 @@ import { TimeUtil } from "../../src/Utility/TimeUtil.js";
     let temporaryDirContext: TemporaryDirContext;
 
     beforeEach(async function () {
-        store = await testContext.getDocumentStore();
         temporaryDirContext = new TemporaryDirContext();
     });
 
@@ -29,22 +35,12 @@ import { TimeUtil } from "../../src/Utility/TimeUtil.js";
     });
 
     it("canBackupDatabase", async () => {
+        store = await testContext.getDocumentStore();
         const backupDir = path.join(temporaryDirContext.tempDir, "backup");
         fs.mkdirSync(backupDir);
 
         try {
-            const backupConfiguration: PeriodicBackupConfiguration = {
-                name: "myBackup",
-                backupType: "Snapshot",
-                fullBackupFrequency: "20 * * * *",
-                localSettings: {
-                    folderPath: path.resolve(backupDir)
-                }
-            };
-
-            const operation = new UpdatePeriodicBackupOperation(backupConfiguration);
-            const backupOperationResult = await store.maintenance.send(operation);
-
+            const backupOperationResult = await configureBackup("Snapshot", backupDir, store);
             await waitForResponsibleNodeUpdate(store, backupOperationResult.taskId);
 
             const startBackupOperation = new StartBackupOperation(true, backupOperationResult.taskId);
@@ -55,7 +51,7 @@ import { TimeUtil } from "../../src/Utility/TimeUtil.js";
 
             await waitForBackup(backupDir);
 
-            await waitForBackupStatus(store, backupOperationResult.taskId);
+            await waitForBackupStatus(store, backupOperationResult.taskId, false);
 
             const backupStatus = await store.maintenance.send(
                 new GetPeriodicBackupStatusOperation(backupOperationResult.taskId));
@@ -75,7 +71,70 @@ import { TimeUtil } from "../../src/Utility/TimeUtil.js";
         }
     });
 
+    async function configureBackup(snapshot: BackupType, backup: string, store: IDocumentStore) {
+        const backupConfiguration: PeriodicBackupConfiguration = {
+            name: "myBackup",
+            backupType: snapshot,
+            fullBackupFrequency: "20 * * * *",
+            localSettings: {
+                folderPath: path.resolve(backup)
+            }
+        };
+
+        const operation = new UpdatePeriodicBackupOperation(backupConfiguration);
+        const backupOperationResult = await store.maintenance.send(operation);
+        return backupOperationResult;
+    }
+
+    it("canBackupShardedDatabase", async function () {
+        testContext.customizeDbRecord = record => {
+            const databaseRecord = DatabaseRecordBuilder.create().sharded("test_db", b => {
+                b
+                    .addShard(1, s => s.addNode("A"))
+                    .addShard(2, s => s.addNode("A"))
+                    .orchestrator(o => o.addNode("A"))
+            }).toDatabaseRecord();
+
+            record.sharding = databaseRecord.sharding;
+        }
+        let backupDir: string;
+        try {
+            store = await testContext.getDocumentStore();
+
+            backupDir = path.join(temporaryDirContext.tempDir, "backupSharded");
+            fs.mkdirSync(backupDir);
+            const backupOperationResult = await configureBackup("Backup", backupDir, store);
+
+            await waitForResponsibleNodeUpdate(store, backupOperationResult.taskId);
+
+            const startBackupOperation = new StartBackupOperation(true, backupOperationResult.taskId);
+            const send = await store.maintenance.send(startBackupOperation);
+            const backupOperation = send.operationId;
+            assertThat(backupOperation)
+                .isGreaterThan(0);
+
+            await waitForBackup(backupDir);
+            await waitForBackupStatus(store, backupOperationResult.taskId, true);
+
+            const backupResult = await store.maintenance.send(new GetShardedPeriodicBackupStatusOperation(backupOperationResult.taskId));
+
+            assertThat(backupResult)
+                .isNotNull();
+
+
+            assertThat(backupResult.statuses[1].lastFullBackup instanceof Date)
+                .isTrue();
+            // props are asserted in waitForBackup method
+
+
+        } finally {
+            testContext.customizeDbRecord = null;
+            sync(backupDir);
+        }
+    });
+
     it("canSetupRetentionPolicy", async () => {
+        store = await testContext.getDocumentStore();
         const backupConfiguration: PeriodicBackupConfiguration = {
             name: "myBackup",
             disabled: true,
@@ -114,7 +173,7 @@ async function waitForResponsibleNodeUpdate(store: IDocumentStore, taskId: numbe
 async function waitForBackup(backup: string) {
     const sw = Stopwatch.createStarted();
 
-    while (sw.elapsed < 10_000) {
+    while (sw.elapsed < 30_000) {
         const files = fs.readdirSync(backup);
         if (files.length) {
             // make sure backup was finished
@@ -124,14 +183,25 @@ async function waitForBackup(backup: string) {
     }
 }
 
-async function waitForBackupStatus(store: IDocumentStore, taskId: number) {
+async function waitForBackupStatus(store: IDocumentStore, taskId: number, sharded: boolean) {
     const sw = Stopwatch.createStarted();
 
     while (sw.elapsed < 10_000) {
-        const backupStatus = await store.maintenance.send(new GetPeriodicBackupStatusOperation(taskId));
-        if (backupStatus && backupStatus.status && backupStatus.status.lastFullBackup) {
-            return;
+        if (sharded) {
+            const backupStatus = await store.maintenance.send(new GetShardedPeriodicBackupStatusOperation(taskId));
+
+            if (backupStatus) {
+                if (Object.values(backupStatus.statuses).every(x => x && x.lastFullBackup)) {
+                    return;
+                }
+            }
+        } else {
+            const backupStatus = await store.maintenance.send(new GetPeriodicBackupStatusOperation(taskId));
+            if (backupStatus && backupStatus.status && backupStatus.status.lastFullBackup) {
+                return;
+            }
         }
+
 
         await delay(200);
     }

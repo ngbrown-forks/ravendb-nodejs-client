@@ -6,6 +6,7 @@ import { IndexQuery } from "../Queries/IndexQuery.js";
 import { ValueCallback } from "../../Types/Callbacks.js";
 import { QueryTimings } from "../Queries/Timings/QueryTimings.js";
 import { ProjectionBehavior } from "../Queries/ProjectionBehavior.js";
+import { IQueryShardedContextBuilder } from "./Querying/Sharding/IQueryShardedContextBuilder.js";
 
 export class DocumentQueryCustomization
     implements IDocumentQueryCustomization {
@@ -88,6 +89,11 @@ export class DocumentQueryCustomization
 
     public projection(projectionBehavior: ProjectionBehavior): IDocumentQueryCustomization {
         this._query._projection(projectionBehavior);
+        return this;
+    }
+
+    public shardContext(action: (builder: IQueryShardedContextBuilder) => void): IDocumentQueryCustomization {
+        this._query._shardContext(action);
         return this;
     }
 

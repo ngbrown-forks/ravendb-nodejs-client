@@ -1,36 +1,30 @@
-import { HttpRequestParameters } from "../../Primitives/Http.js";
-import { RavenCommand } from "../../Http/RavenCommand.js";
 import { QueryResult } from "../Queries/QueryResult.js";
 import { DocumentConventions } from "../Conventions/DocumentConventions.js";
 import { IndexQuery, writeIndexQuery } from "../Queries/IndexQuery.js";
 import { throwError } from "../../Exceptions/index.js";
-import { ServerNode } from "../../Http/ServerNode.js";
-import { JsonSerializer } from "../../Mapping/Json/Serializer.js";
 import { Stream } from "node:stream";
-import { RavenCommandResponsePipeline } from "../../Http/RavenCommandResponsePipeline.js";
-import { StringBuilder } from "../../Utility/StringBuilder.js";
 import { ServerCasing, ServerResponse } from "../../Types/index.js";
 import { QueryTimings } from "../Queries/Timings/QueryTimings.js";
 import { StringUtil } from "../../Utility/StringUtil.js";
-import { readToEnd, stringToReadable } from "../../Utility/StreamUtil.js";
+import { readToEnd } from "../../Utility/StreamUtil.js";
 import { ObjectUtil } from "../../Utility/ObjectUtil.js";
 import { InMemoryDocumentSessionOperations } from "../Session/InMemoryDocumentSessionOperations.js";
+import { AbstractQueryCommand } from "./AbstractQueryCommand.js";
 
 export interface QueryCommandOptions {
     metadataOnly?: boolean;
     indexEntriesOnly?: boolean;
 }
 
-export class QueryCommand extends RavenCommand<QueryResult> {
-
-    protected _session: InMemoryDocumentSessionOperations;
+export class QueryCommand extends AbstractQueryCommand<QueryResult, { [param: string]: object }> {
+    private readonly _conventions: DocumentConventions;
     private readonly _indexQuery: IndexQuery;
-    private readonly _metadataOnly: boolean;
-    private readonly _indexEntriesOnly: boolean;
+    protected readonly _session: InMemoryDocumentSessionOperations;
+
 
     public constructor(
         session: InMemoryDocumentSessionOperations, indexQuery: IndexQuery, opts: QueryCommandOptions) {
-        super();
+        super(indexQuery, !indexQuery.disableCaching, opts?.metadataOnly, opts?.indexEntriesOnly, false);
 
         this._session = session;
 
@@ -39,46 +33,15 @@ export class QueryCommand extends RavenCommand<QueryResult> {
         }
 
         this._indexQuery = indexQuery;
-
-        opts = opts || {};
-        this._metadataOnly = opts.metadataOnly;
-        this._indexEntriesOnly = opts.indexEntriesOnly;
+        this._conventions = session.conventions;
     }
 
-    public createRequest(node: ServerNode): HttpRequestParameters {
-        this._canCache = !this._indexQuery.disableCaching;
+    protected getQueryHash(): string {
+        return this._indexQuery.getQueryHash(this._session.conventions.objectMapper);
+    }
 
-        // we won't allow aggressive caching of queries with WaitForNonStaleResults
-        this._canCacheAggressively = this._canCache && !this._indexQuery.waitForNonStaleResults;
-
-        const path = new StringBuilder(node.url)
-            .append("/databases/")
-            .append(node.database)
-            .append("/queries?queryHash=")
-            // we need to add a query hash because we are using POST queries
-            // so we need to unique parameter per query so the query cache will
-            // work properly
-            .append(this._indexQuery.getQueryHash(this._session.conventions.objectMapper));
-
-        if (this._metadataOnly) {
-            path.append("&metadataOnly=true");
-        }
-
-        if (this._indexEntriesOnly) {
-            path.append("&debug=entries");
-        }
-
-        path.append("&addTimeSeriesNames=true");
-
-        const uri = path.toString();
-        const body = writeIndexQuery(this._session.conventions, this._indexQuery);
-        const headers = this._headers().typeAppJson().build();
-        return {
-            method: "POST",
-            uri,
-            headers,
-            body
-        };
+    protected _getContent(): string {
+        return writeIndexQuery(this._session.conventions, this._indexQuery);
     }
 
     public async setResponseAsync(bodyStream: Stream, fromCache: boolean): Promise<string> {
@@ -92,10 +55,6 @@ export class QueryCommand extends RavenCommand<QueryResult> {
             bodyStream, this._session.conventions, fromCache, b => body = b);
 
         return body;
-    }
-
-    public get isReadRequest(): boolean {
-        return true;
     }
 
     public static async parseQueryResultResponseAsync(
@@ -150,7 +109,6 @@ export class QueryCommand extends RavenCommand<QueryResult> {
             isStale: json.IsStale,
             skippedResults: json.SkippedResults,
             totalResults: json.TotalResults,
-            longTotalResults: json.LongTotalResults,
             highlightings: json.Highlightings,
             explanations: json.Explanations,
             timingsInMs: json.TimingsInMs,

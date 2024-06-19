@@ -1,12 +1,15 @@
-import { IDocumentStore, SorterDefinition } from "../../../src/index.js";
+import {
+    IDocumentStore,
+    SorterDefinition,
+    PutServerWideSortersOperation,
+    DeleteServerWideSorterOperation
+} from "../../../src/index.js";
 import { disposeTestDocumentStore, RavenTestContext, testContext } from "../../Utils/TestUtil.js";
 import { Company } from "../../Assets/Entities.js";
-import { PutServerWideSortersOperation } from "../../../src/ServerWide/Operations/Sorters/PutServerWideSortersOperation.js";
 import { assertThat, assertThrows } from "../../Utils/AssertExtensions.js";
-import { DeleteServerWideSorterOperation } from "../../../src/ServerWide/Operations/Sorters/DeleteServerWideSorterOperation.js";
 import { sorterCode } from "./RavenDB_8355.js";
 
-(RavenTestContext.is60Server ? describe.skip : describe)("RavenDB_16328", function () {
+(RavenTestContext.isPullRequest ? describe.skip : describe)("RavenDB_16328", function () {
 
     let store: IDocumentStore;
 

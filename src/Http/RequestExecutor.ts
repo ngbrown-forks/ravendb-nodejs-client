@@ -18,7 +18,7 @@ import {
     GetClientConfigurationCommand,
 } from "../Documents/Operations/Configuration/GetClientConfigurationOperation.js";
 import CurrentIndexAndNode from "./CurrentIndexAndNode.js";
-import { HEADERS } from "../Constants.js";
+import { HEADERS, QUERY_STRING } from "../Constants.js";
 import { HttpRequestParameters, HttpResponse, HttpRequestParametersWithoutUri } from "../Primitives/Http.js";
 import { raceToResolution } from "../Utility/PromiseUtil.js";
 import { GetStatisticsOperation } from "../Documents/Operations/GetStatisticsOperation.js";
@@ -28,7 +28,7 @@ import { SessionInfo } from "../Documents/Session/IDocumentSession.js";
 import { JsonSerializer } from "../Mapping/Json/Serializer.js";
 import { validateUri } from "../Utility/UriUtil.js";
 import { readToEnd } from "../Utility/StreamUtil.js";
-import { closeHttpResponse } from "../Utility/HttpUtil.js";
+import { closeHttpResponse, getEtagHeader } from "../Utility/HttpUtil.js";
 import { PromiseStatusTracker } from "../Utility/PromiseUtil.js";
 import { IBroadcast } from "./IBroadcast.js";
 import { StringUtil } from "../Utility/StringUtil.js";
@@ -90,17 +90,14 @@ export class NodeStatus implements IDisposable {
 
     private _nodeStatusCallback: (nodeStatus: NodeStatus) => Promise<void>;
     private _timerPeriodInMs: number;
-    public readonly nodeIndex: number;
     public readonly node: ServerNode;
     public readonly requestExecutor: RequestExecutor;
     private _timer: Timer;
 
     public constructor(
-        nodeIndex: number,
         node: ServerNode,
         requestExecutor: RequestExecutor,
         nodeStatusCallback: (nodeStatus: NodeStatus) => Promise<void>) {
-        this.nodeIndex = nodeIndex;
         this.node = node;
         this.requestExecutor = requestExecutor;
         this._timerPeriodInMs = 100;
@@ -157,7 +154,7 @@ export class RequestExecutor implements IDisposable {
 
     private static _backwardCompatibilityFailureCheckOperation = new GetStatisticsOperation("failure=check");
     private static readonly _failureCheckOperation = new DatabaseHealthCheckOperation();
-    private static _useOldFailureCheckOperation = new Set<string>();
+    private static readonly _useOldFailureCheckOperation = new Set<string>();
 
     private _failedNodesTimers: Map<ServerNode, NodeStatus> = new Map();
     protected _databaseName: string;
@@ -566,14 +563,14 @@ export class RequestExecutor implements IDisposable {
             } else if (this._nodeSelector.onUpdateTopology(topology, parameters.forceUpdate)) {
                 this._disposeAllFailedNodesTimers();
 
-                if (this.conventions.readBalanceBehavior === "FastestNode") {
+                if (this.conventions.readBalanceBehavior === "FastestNode" && this._nodeSelector.inSpeedTestPhase()) {
                     this._nodeSelector.scheduleSpeedTest();
                 }
             }
 
             this._topologyEtag = this._nodeSelector.getTopology().etag;
 
-            this._onTopologyUpdatedInvoke(topology);
+            this._onTopologyUpdatedInvoke(topology, parameters.debugTag);
 
             return true;
         } catch (reason) {
@@ -644,6 +641,14 @@ export class RequestExecutor implements IDisposable {
 
     public chooseNodeForRequest<TResult>(cmd: RavenCommand<TResult>, sessionInfo: SessionInfo): CurrentIndexAndNode {
         if (!StringUtil.isNullOrWhitespace(cmd.selectedNodeTag)) {
+
+            const promotables = this._nodeSelector.getTopology().promotables;
+            for (const node of promotables) {
+                if (node.clusterTag === cmd.selectedNodeTag) {
+                    return new CurrentIndexAndNode(null, node);
+                }
+            }
+
             return this._nodeSelector.getRequestedNode(cmd.selectedNodeTag);
         }
 
@@ -993,6 +998,10 @@ export class RequestExecutor implements IDisposable {
 
         command.statusCode = response.status;
 
+        if (response.status < 400 || command.statusCode === 304) {
+            command.etag = getEtagHeader(response) ?? cachedChangeVector;
+        }
+
         let responseDispose: ResponseDisposeHandling = "Automatic";
 
         try {
@@ -1002,9 +1011,7 @@ export class RequestExecutor implements IDisposable {
 
                 cachedItem.notModified();
 
-                if (command.responseType === "Object") {
-                    await command.setResponseFromCache(cachedValue);
-                }
+                await command.responseBehavior.handleNotModified(command, response, cachedValue);
 
                 return;
             }
@@ -1406,15 +1413,15 @@ export class RequestExecutor implements IDisposable {
 
         if (command["getRaftUniqueRequestId"]) {
             const raftCommand = command as unknown as IRaftCommand;
+            builder = RequestExecutor.appendToQuery(builder, "raft-request-id", raftCommand.getRaftUniqueRequestId());
+        }
 
-            const raftRequestString = "raft-request-id=" + raftCommand.getRaftUniqueRequestId();
+        if (command.selectedNodeTag) {
+            builder = RequestExecutor.appendToQuery(builder, QUERY_STRING.NODE_TAG, command.selectedNodeTag);
+        }
 
-            let joinCharacter = builder.search ? "&" : "?";
-            if (!builder.search && req.uri.endsWith("?")) {
-                joinCharacter = "";
-            }
-
-            builder = new URL(builder.toString() + joinCharacter + raftRequestString);
+        if (!TypeUtil.isNullOrUndefined(command.selectedShardNumber)) {
+            builder = RequestExecutor.appendToQuery(builder, QUERY_STRING.SHARD_NUMBER, command.selectedShardNumber);
         }
 
         if (this._shouldBroadcast(command)) {
@@ -1424,6 +1431,12 @@ export class RequestExecutor implements IDisposable {
         req.uri = builder.toString();
 
         return req;
+    }
+
+    private static appendToQuery(builder: URL, key: string, value: string | number): URL {
+        const joinCharacter = builder.search ? "&" : "?";
+
+        return new URL(builder.toString() + joinCharacter + key + "=" + encodeURIComponent(value));
     }
 
     private async _handleUnsuccessfulResponse<TResult>(
@@ -1441,20 +1454,8 @@ export class RequestExecutor implements IDisposable {
         switch (response.status) {
             case StatusCodes.NotFound: {
                 this._cache.setNotFound(url);
-                switch (command.responseType) {
-                    case "Empty": {
-                        return true;
-                    }
-                    case "Object": {
-                        return command.setResponseAsync(null, false)
-                            .then(() => true);
-                    }
-                    default: {
-                        command.setResponseRaw(response, null);
-                        break;
-                    }
-                }
-                return true;
+
+                return command.responseBehavior.tryHandleNotFound(command, response);
             }
 
             case StatusCodes.Forbidden: {
@@ -1521,8 +1522,7 @@ export class RequestExecutor implements IDisposable {
                     url, chosenNode, nodeIndex, command, req, response, await readBody(), null, sessionInfo, shouldRetry);
             }
             case StatusCodes.Conflict: {
-                RequestExecutor._handleConflict(response, await readBody());
-                break;
+                return command.responseBehavior.tryHandleConflict(response, await readBody());
             }
             case StatusCodes.TooEarly: {
                 if (!shouldRetry) {
@@ -1552,14 +1552,9 @@ export class RequestExecutor implements IDisposable {
                 return true;
             }
             default: {
-                command.onResponseFailure(response);
-                ExceptionDispatcher.throwException(response, await readBody());
+                return command.responseBehavior.tryHandleUnsuccessfulResponse(command, response, await readBody());
             }
         }
-    }
-
-    private static _handleConflict(response: HttpResponse, body: string): void {
-        ExceptionDispatcher.throwException(response, body);
     }
 
     private async _handleServerDown<TResult>(
@@ -1589,7 +1584,7 @@ export class RequestExecutor implements IDisposable {
         }
 
         if (!this._nodeSelector) {
-            this._spawnHealthChecks(chosenNode, nodeIndex);
+            this._spawnHealthChecks(chosenNode);
             return false;
         }
 
@@ -1603,7 +1598,7 @@ export class RequestExecutor implements IDisposable {
             return true;
         }
 
-        this._spawnHealthChecks(chosenNode, nodeIndex);
+        this._spawnHealthChecks(chosenNode);
 
 
         const currentIndexAndNode = this.chooseNodeForRequest(command, sessionInfo);
@@ -1667,7 +1662,7 @@ export class RequestExecutor implements IDisposable {
                         const node = this._nodeSelector.getTopology().nodes[index];
                         if (failedNodes.has(node)) {
                             // if other node succeed in broadcast we need to send health checks to the original failed node
-                            this._spawnHealthChecks(node, index);
+                            this._spawnHealthChecks(node);
                         }
                     });
                 }
@@ -1700,7 +1695,7 @@ export class RequestExecutor implements IDisposable {
                 command.failedNodes.set(node, error);
 
                 this._nodeSelector.onFailedRequest(failedIndex);
-                this._spawnHealthChecks(node, failedIndex);
+                this._spawnHealthChecks(node);
 
                 tasks.delete(failedPair[0]);
             }
@@ -1744,7 +1739,7 @@ export class RequestExecutor implements IDisposable {
     }
 
     public async handleServerNotResponsive(url: string, chosenNode: ServerNode, nodeIndex: number, e: Error) {
-        this._spawnHealthChecks(chosenNode, nodeIndex);
+        this._spawnHealthChecks(chosenNode);
         if (this._nodeSelector) {
             this._nodeSelector.onFailedRequest(nodeIndex);
         }
@@ -1767,7 +1762,7 @@ export class RequestExecutor implements IDisposable {
         return preferredNode.currentNode;
     }
 
-    private _spawnHealthChecks(chosenNode: ServerNode, nodeIndex: number): void {
+    private _spawnHealthChecks(chosenNode: ServerNode): void {
         if (this._disposed) {
             return;
         }
@@ -1783,7 +1778,6 @@ export class RequestExecutor implements IDisposable {
         this._log.info(`Spawn health checks for node ${chosenNode.url}.`);
 
         const nodeStatus: NodeStatus = new NodeStatus(
-            nodeIndex,
             chosenNode,
             this,
             (nStatus: NodeStatus) => this._checkNodeStatusCallback(nStatus));
@@ -1817,7 +1811,7 @@ export class RequestExecutor implements IDisposable {
             }
         }
 
-        if (!serverNode) {
+        if (!serverNode || TypeUtil.isNullOrUndefined(nodeIndex)) {
             return;
         }
 
@@ -1825,7 +1819,7 @@ export class RequestExecutor implements IDisposable {
             .then(() => {
                 return Promise.resolve(this._performHealthCheck(serverNode, nodeIndex))
                     .then(() => {
-                            status = this._failedNodesTimers[nodeStatus.nodeIndex];
+                            status = this._failedNodesTimers[nodeIndex];
                             if (status) {
                                 this._failedNodesTimers.delete(nodeStatus.node);
                                 status.dispose();
@@ -1993,8 +1987,8 @@ export class RequestExecutor implements IDisposable {
         }
     }
 
-    protected _onTopologyUpdatedInvoke(newTopology: Topology) {
-        this._emitter.emit("topologyUpdated", new TopologyUpdatedEventArgs(newTopology));
+    protected _onTopologyUpdatedInvoke(newTopology: Topology, reason: string) {
+        this._emitter.emit("topologyUpdated", new TopologyUpdatedEventArgs(newTopology, reason));
     }
 }
 

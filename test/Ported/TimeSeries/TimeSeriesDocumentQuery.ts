@@ -1,9 +1,11 @@
 import { disposeTestDocumentStore, testContext } from "../../Utils/TestUtil.js";
-import { IDocumentStore } from "../../../src/index.js";
+import {
+    IDocumentStore,
+    TimeSeriesAggregationResult,
+    TimeSeriesRawResult
+} from "../../../src/index.js";
 import { User } from "../../Assets/Entities.js";
-import { TimeSeriesAggregationResult } from "../../../src/Documents/Queries/TimeSeries/TimeSeriesAggregationResult.js";
 import { assertThat } from "../../Utils/AssertExtensions.js";
-import { TimeSeriesRawResult } from "../../../src/Documents/Queries/TimeSeries/TimeSeriesRawResult.js";
 
 describe("TimeSeriesDocumentQuery", function () {
 

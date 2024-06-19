@@ -29,8 +29,9 @@ import { TimeSeriesValuesHelper } from "./Session/TimeSeries/TimeSeriesValuesHel
 import { Timer } from "../Primitives/Timer.js";
 import { EventEmitter } from "node:events";
 import { BulkInsertOnProgressEventArgs } from "./Session/SessionEvents.js";
+import { BulkInsertOperationBase } from "./BulkInsert/BulkInsertOperationBase.js";
 
-export class BulkInsertOperation {
+export class BulkInsertOperation extends BulkInsertOperationBase<object> {
 
     private static _countersBulkInsertOperationClass = class CountersBulkInsertOperation {
         private readonly _operation: BulkInsertOperation;
@@ -62,7 +63,7 @@ export class BulkInsertOperation {
                     if (isFirst || !StringUtil.equalsIgnoreCase(this._id, id)) {
                         if (!isFirst) {
                             //we need to end the command for the previous document id
-                            this._operation._currentWriter.push("]}},");
+                            this._operation._writer.push("]}},");
                         } else if (!this._operation._first) {
                             this._operation._writeComma();
                         }
@@ -76,7 +77,7 @@ export class BulkInsertOperation {
                     }
 
                     if (this._countersInBatch >= CountersBulkInsertOperation.MAX_COUNTERS_IN_BATCH) {
-                        this._operation._currentWriter.push("]}},");
+                        this._operation._writer.push("]}},");
 
                         this._writePrefixForNewCommand();
                     }
@@ -89,11 +90,11 @@ export class BulkInsertOperation {
 
                     this._first = false;
 
-                    this._operation._currentWriter.push(`{"Type":"Increment","CounterName":"`);
+                    this._operation._writer.push(`{"Type":"Increment","CounterName":"`);
                     this._operation._writeString(name);
-                    this._operation._currentWriter.push(`","Delta":`);
-                    this._operation._currentWriter.push(delta.toString());
-                    this._operation._currentWriter.push("}");
+                    this._operation._writer.push(`","Delta":`);
+                    this._operation._writer.push(delta.toString());
+                    this._operation._writer.push("}");
 
                 } catch (e) {
                     this._operation._handleErrors(this._id, e);
@@ -108,7 +109,7 @@ export class BulkInsertOperation {
                 return;
             }
 
-            this._operation._currentWriter.push("]}}");
+            this._operation._writer.push("]}}");
             this._id = null;
         }
 
@@ -116,11 +117,11 @@ export class BulkInsertOperation {
             this._first = true;
             this._countersInBatch = 0;
 
-            this._operation._currentWriter.push(`{"Id":"`);
+            this._operation._writer.push(`{"Id":"`);
             this._operation._writeString(this._id);
-            this._operation._currentWriter.push(`","Type":"Counters","Counters":{"DocumentId":"`);
+            this._operation._writer.push(`","Type":"Counters","Counters":{"DocumentId":"`);
             this._operation._writeString(this._id);
-            this._operation._currentWriter.push(`","Operations":[`);
+            this._operation._writer.push(`","Operations":[`);
         }
     }
 
@@ -147,21 +148,21 @@ export class BulkInsertOperation {
                         this._operation._writeComma();
                     }
 
-                    this._operation._currentWriter.push(`{"Id":"`);
+                    this._operation._writer.push(`{"Id":"`);
                     this._operation._writeString(id);
-                    this._operation._currentWriter.push(`","Type":"AttachmentPUT","Name":"`);
+                    this._operation._writer.push(`","Type":"AttachmentPUT","Name":"`);
                     this._operation._writeString(name);
 
                     if (contentType) {
-                        this._operation._currentWriter.push(`","ContentType":"`);
+                        this._operation._writer.push(`","ContentType":"`);
                         this._operation._writeString(contentType);
                     }
 
-                    this._operation._currentWriter.push(`","ContentLength":`);
-                    this._operation._currentWriter.push(bytes.length.toString());
-                    this._operation._currentWriter.push("}");
+                    this._operation._writer.push(`","ContentLength":`);
+                    this._operation._writer.push(bytes.length.toString());
+                    this._operation._writer.push("}");
 
-                    this._operation._currentWriter.push(bytes);
+                    this._operation._writer.push(bytes);
                 } catch (e) {
                     this._operation._handleErrors(id, e);
                 }
@@ -179,14 +180,12 @@ export class BulkInsertOperation {
     private readonly _generateEntityIdOnTheClient: GenerateEntityIdOnTheClient;
 
     private readonly _requestExecutor: RequestExecutor;
-    private _bulkInsertExecuteTask: Promise<any>;
-    private _completedWithError = false;
+
 
     private _first: boolean = true;
     private _inProgressCommand: CommandType;
     private readonly _countersOperation = new BulkInsertOperation._countersBulkInsertOperationClass(this);
     private readonly _attachmentsOperation = new BulkInsertOperation._attachmentsBulkInsertOperationClass(this);
-    private _operationId = -1;
     private _nodeTag: string;
 
     private _useCompression: boolean = false;
@@ -194,11 +193,8 @@ export class BulkInsertOperation {
 
     private _concurrentCheck: number = 0;
     private _isInitialWrite: boolean = true;
-
-    private _bulkInsertAborted: Promise<void>;
     private _abortReject: (error: Error) => void;
-    private _aborted: boolean;
-    private _currentWriter: Readable;
+
     private _requestBodyStream: PassThrough;
     private _pipelineFinished: Promise<void>;
 
@@ -209,10 +205,11 @@ export class BulkInsertOperation {
     private _heartbeatCheckInterval = 40_000;
 
     public constructor(database: string, store: IDocumentStore, options?: BulkInsertOptions) {
+        super();
         this._conventions = store.conventions;
         this._store = store;
         if (StringUtil.isNullOrEmpty(database)) {
-            this._throwNoDatabase();
+            BulkInsertOperation._throwNoDatabase();
         }
         this._requestExecutor = store.getRequestExecutor(database);
         this._useCompression = options ? options.useCompression : false;
@@ -268,7 +265,7 @@ export class BulkInsertOperation {
 
         this._first = false;
         this._inProgressCommand = "None";
-        this._currentWriter.push("{\"Type\":\"HeartBeat\"}");
+        this._writer.push("{\"Type\":\"HeartBeat\"}");
     }
 
     private static _checkServerVersion(serverVersion: string): boolean {
@@ -278,6 +275,10 @@ export class BulkInsertOperation {
             const minor = versionParsed.length > 1 ? Number.parseInt(versionParsed[1]) : 0;
             const build = versionParsed.length> 2 ? Number.parseInt(versionParsed[2]) : 0;
             if (Number.isNaN(major) || Number.isNaN(minor)) {
+                return false;
+            }
+
+            if (major === 6 && build < 2) {
                 return false;
             }
 
@@ -306,27 +307,12 @@ export class BulkInsertOperation {
         this._useCompression = value;
     }
 
-    private async _throwBulkInsertAborted(e: Error) {
-        let errorFromServer: Error;
-        try {
-            errorFromServer = await this._getExceptionFromOperation();
-        } catch {
-            // server is probably down, will propagate the original exception
-        }
-
-        if (errorFromServer) {
-            throw errorFromServer;
-        }
-
-        throwError("BulkInsertAbortedException", "Failed to execute bulk insert", e);
-    }
-
-    private _throwNoDatabase(): void {
+    private static _throwNoDatabase(): void {
         throwError("BulkInsertInvalidOperationException", "Cannot start bulk insert operation without specifying a name of a database to operate on."
             + "Database name can be passed as an argument when bulk insert is being created or default database can be defined using 'DocumentStore.setDatabase' method.");
     }
 
-    private async _waitForId(): Promise<void> {
+    protected async _waitForId(): Promise<void> {
         if (this._operationId !== -1) {
             return;
         }
@@ -401,7 +387,7 @@ export class BulkInsertOperation {
             this._lastWriteToStream = new Date();
             BulkInsertOperation._verifyValidId(id);
 
-            if (!this._currentWriter) {
+            if (!this._writer) {
                 await this._waitForId();
                 await this._ensureStream();
             }
@@ -454,10 +440,10 @@ export class BulkInsertOperation {
 
         json = this._conventions.transformObjectKeysToRemoteFieldNameConvention(json);
 
-        this._currentWriter.push(`{"Id":"`);
+        this._writer.push(`{"Id":"`);
         this._writeString(id);
         const jsonString = JsonSerializer.getDefault().serialize(json);
-        this._currentWriter.push(`","Type":"PUT","Document":${jsonString}}`);
+        this._writer.push(`","Type":"PUT","Document":${jsonString}}`);
 
     }
 
@@ -498,25 +484,16 @@ export class BulkInsertOperation {
             const c = input[i];
             if (`"` === c) {
                 if (i === 0 || input[i - 1] !== `\\`) {
-                    this._currentWriter.push("\\");
+                    this._writer.push("\\");
                 }
             }
 
-            this._currentWriter.push(c);
+            this._writer.push(c);
         }
     }
 
     private _writeComma() {
-        this._currentWriter.push(",");
-    }
-
-    private async _executeBeforeStore() {
-        if (!this._currentWriter) {
-            await this._waitForId();
-            await this._ensureStream();
-        }
-
-        await this._checkIfBulkInsertWasAborted();
+        this._writer.push(",");
     }
 
     private async _checkIfBulkInsertWasAborted() {
@@ -526,7 +503,7 @@ export class BulkInsertOperation {
             } catch (error) {
                 await this._throwBulkInsertAborted(error);
             } finally {
-                this._currentWriter.emit("end");
+                this._writer.emit("end");
             }
         }
 
@@ -534,7 +511,7 @@ export class BulkInsertOperation {
             try {
                 await this._bulkInsertAborted;
             } finally {
-                this._currentWriter.emit("end");
+                this._writer.emit("end");
             }
         }
     }
@@ -550,7 +527,7 @@ export class BulkInsertOperation {
         }
     }
 
-    private async _getExceptionFromOperation(): Promise<Error> {
+    protected async _getExceptionFromOperation(): Promise<Error> {
         const stateRequest = new GetOperationStateCommand(this._operationId, this._nodeTag);
         await this._requestExecutor.execute(stateRequest);
         if (!stateRequest.result) {
@@ -566,9 +543,9 @@ export class BulkInsertOperation {
         return getError("BulkInsertAbortedException", result.error);
     }
 
-    private async _ensureStream() {
+    protected async _ensureStream() {
         try {
-            this._currentWriter = new PassThrough();
+            this._writer = new PassThrough();
 
             this._requestBodyStream = new PassThrough();
             const bulkCommand =
@@ -577,8 +554,8 @@ export class BulkInsertOperation {
 
             const bulkCommandPromise = this._requestExecutor.execute(bulkCommand);
 
-            this._pipelineFinished = pipelineAsync(this._currentWriter, this._requestBodyStream);
-            this._currentWriter.push("[");
+            this._pipelineFinished = pipelineAsync(this._writer, this._requestBodyStream);
+            this._writer.push("[");
 
             this._bulkInsertExecuteTask = Promise.all([
                 bulkCommandPromise,
@@ -617,9 +594,9 @@ export class BulkInsertOperation {
         try {
             this._endPreviousCommandIfNeeded();
 
-            if (this._currentWriter) {
-                this._currentWriter.push("]");
-                this._currentWriter.push(null);
+            if (this._writer) {
+                this._writer.push("]");
+                this._writer.push(null);
             }
 
             if (this._operationId === -1) {
@@ -778,7 +755,7 @@ export class BulkInsertOperation {
 
                         this._writePrefixForNewCommand();
                     } else if (this._timeSeriesInBatch >= this._operation._timeSeriesBatchSize) {
-                        this._operation._currentWriter.push("]}},");
+                        this._operation._writer.push("]}},");
                         this._writePrefixForNewCommand();
                     }
 
@@ -790,11 +767,11 @@ export class BulkInsertOperation {
 
                     this._first = false;
 
-                    this._operation._currentWriter.push("[");
-                    this._operation._currentWriter.push(timestamp.getTime().toString());
+                    this._operation._writer.push("[");
+                    this._operation._writer.push(timestamp.getTime().toString());
                     this._operation._writeComma();
 
-                    this._operation._currentWriter.push(values.length.toString());
+                    this._operation._writer.push(values.length.toString());
                     this._operation._writeComma();
 
                     let firstValue = true;
@@ -805,16 +782,16 @@ export class BulkInsertOperation {
                         }
 
                         firstValue = false;
-                        this._operation._currentWriter.push((value ?? 0).toString());
+                        this._operation._writer.push((value ?? 0).toString());
                     }
 
                     if (tag) {
-                        this._operation._currentWriter.push(`,"`);
+                        this._operation._writer.push(`,"`);
                         this._operation._writeString(tag);
-                        this._operation._currentWriter.push(`"`);
+                        this._operation._writer.push(`"`);
                     }
 
-                    this._operation._currentWriter.push("]");
+                    this._operation._writer.push("]");
                 } catch (e) {
                     this._operation._handleErrors(this._id, e);
                 }
@@ -827,18 +804,18 @@ export class BulkInsertOperation {
             this._first = true;
             this._timeSeriesInBatch = 0;
 
-            this._operation._currentWriter.push(`{"Id":"`);
+            this._operation._writer.push(`{"Id":"`);
             this._operation._writeString(this._id);
-            this._operation._currentWriter.push(`","Type":"TimeSeriesBulkInsert","TimeSeries":{"Name":"`);
+            this._operation._writer.push(`","Type":"TimeSeriesBulkInsert","TimeSeries":{"Name":"`);
             this._operation._writeString(this._name);
-            this._operation._currentWriter.push(`","TimeFormat":"UnixTimeInMs","Appends":[`);
+            this._operation._writer.push(`","TimeFormat":"UnixTimeInMs","Appends":[`);
         }
 
         dispose(): void {
             this._operation._inProgressCommand = "None";
 
             if (!this._first) {
-                this._operation._currentWriter.push("]}}");
+                this._operation._writer.push("]}}");
             }
         }
     }

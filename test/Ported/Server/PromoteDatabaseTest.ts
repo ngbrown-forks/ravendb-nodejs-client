@@ -1,6 +1,8 @@
 import { disposeTestDocumentStore, testContext } from "../../Utils/TestUtil.js";
-import { IDocumentStore } from "../../../src/index.js";
-import { PromoteDatabaseNodeOperation } from "../../../src/ServerWide/Operations/PromoteDatabaseNodeOperation.js";
+import {
+    IDocumentStore,
+    PromoteDatabaseNodeOperation
+} from "../../../src/index.js";
 
 describe("PromoteDatabaseTest", function () {
 

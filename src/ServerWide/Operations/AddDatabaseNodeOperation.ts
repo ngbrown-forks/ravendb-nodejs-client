@@ -8,14 +8,24 @@ import { RavenCommand } from "../../Http/RavenCommand.js";
 import { ServerNode } from "../../Http/ServerNode.js";
 import { IRaftCommand } from "../../Http/IRaftCommand.js";
 import { RaftIdGenerator } from "../../Utility/RaftIdGenerator.js";
+import { TypeUtil } from "../../Utility/TypeUtil.js";
+import { ClientShardHelper } from "../../Utility/ClientShardHelper.js";
 
 export class AddDatabaseNodeOperation implements IServerOperation<DatabasePutResult> {
     private readonly _databaseName: string;
     private readonly _node: string;
 
-    public constructor(databaseName: string, node?: string) {
-        this._databaseName = databaseName;
-        this._node = node;
+    public constructor(databaseName: string, node?: string)
+    public constructor(databaseName: string, shardNumber: number, node?: string)
+    public constructor(databaseName: string, nodeOrShardNumber?: string | number, node?: string) {
+
+        if (!TypeUtil.isNullOrUndefined(nodeOrShardNumber) && TypeUtil.isNumber(nodeOrShardNumber)) {
+            this._databaseName = ClientShardHelper.toShardName(databaseName, nodeOrShardNumber);
+            this._node = node;
+        } else {
+            this._databaseName = databaseName;
+            this._node = nodeOrShardNumber as string;
+        }
     }
 
     public get resultType(): OperationResultType {

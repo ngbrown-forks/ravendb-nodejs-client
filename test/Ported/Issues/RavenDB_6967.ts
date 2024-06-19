@@ -3,11 +3,11 @@ import {
     IDocumentStore,
     IndexDefinition,
     PutIndexesOperation,
-    StopIndexingOperation
+    StopIndexingOperation,
+    DeleteIndexErrorsOperation
 } from "../../../src/index.js";
 import { disposeTestDocumentStore, testContext } from "../../Utils/TestUtil.js";
 import { RavenTestHelper } from "../../Utils/RavenTestHelper.js";
-import { DeleteIndexErrorsOperation } from "../../../src/Documents/Operations/Indexes/DeleteIndexErrorsOperation.js";
 import { assertThat, assertThrows } from "../../Utils/AssertExtensions.js";
 import { Company } from "../../Assets/Entities.js";
 

@@ -8,7 +8,7 @@ import { CaseInsensitiveKeysMap } from "../../Primitives/CaseInsensitiveKeysMap.
 import { CompareExchangeSessionValue } from "../Operations/CompareExchange/CompareExchangeSessionValue.js";
 import {
     CompareExchangeResultItem,
-    CompareExchangeValueResultParser
+    CompareExchangeValueResultParser, ObjectNodeMarker
 } from "../Operations/CompareExchange/CompareExchangeValueResultParser.js";
 import { GetCompareExchangeValueOperation } from "../Operations/CompareExchange/GetCompareExchangeValueOperation.js";
 import { GetCompareExchangeValuesOperation } from "../Operations/CompareExchange/GetCompareExchangeValuesOperation.js";
@@ -31,6 +31,7 @@ export abstract class ClusterTransactionOperationsBase {
 
     protected readonly _session: DocumentSession;
     private readonly _state = CaseInsensitiveKeysMap.create<CompareExchangeSessionValue>();
+    private readonly _compareExchangeIncludes = CaseInsensitiveKeysMap.create<CompareExchangeValue<object>>();
 
     private _missingDocumentsTooAtomicGuardIndex: Map<string, string>;
 
@@ -102,6 +103,9 @@ export abstract class ClusterTransactionOperationsBase {
 
     public clear(): void {
         this._state.clear();
+
+        this._compareExchangeIncludes.clear();
+        this._missingDocumentsTooAtomicGuardIndex?.clear();
     }
 
     protected async _getCompareExchangeValueInternal<T>(key: string): Promise<CompareExchangeValue<T>>
@@ -115,7 +119,7 @@ export abstract class ClusterTransactionOperationsBase {
 
         this.session.incrementRequestCount();
 
-        const value = await this.session.operations.send<any>(new GetCompareExchangeValueOperation(key, null, false));
+        const value = await this.session.operations.send<any>(new GetCompareExchangeValueOperation(key, ObjectNodeMarker, false));
         if (TypeUtil.isNullOrUndefined(value)) {
             this.registerMissingCompareExchangeValue(key);
             return null;
@@ -240,7 +244,7 @@ export abstract class ClusterTransactionOperationsBase {
         return value;
     }
 
-    public registerCompareExchangeValues(values: Record<string, CompareExchangeResultItem>, includingMissingAtomicGuards: boolean) {
+    public registerCompareExchangeIncludes(values: Record<string, CompareExchangeResultItem>, includingMissingAtomicGuards: boolean) {
         if (this.session.noTracking) {
             return;
         }
@@ -258,19 +262,20 @@ export abstract class ClusterTransactionOperationsBase {
 
                     this._missingDocumentsTooAtomicGuardIndex.set(val.key.substring(COMPARE_EXCHANGE.RVN_ATOMIC_PREFIX.length), val.changeVector);
                 } else {
-                    this.registerCompareExchangeValue(val);
+                    this._registerCompareExchangeInclude(val);
                 }
             }
         }
     }
 
     public registerCompareExchangeValue(value: CompareExchangeValue<any>): CompareExchangeSessionValue {
-        if (StringUtil.startsWithIgnoreCase(value.key, COMPARE_EXCHANGE.RVN_ATOMIC_PREFIX)) {
-            throwError("InvalidOperationException", "'" + value.key + "' is an atomic guard and you cannot load it via the session");
-        }
+        ClusterTransactionOperationsBase._assertNotAtomicGuard(value);
+
         if (this.session.noTracking) {
             return new CompareExchangeSessionValue(value);
         }
+
+        this._compareExchangeIncludes.delete(value.key);
 
         let sessionValue = this._state.get(value.key);
 
@@ -285,10 +290,36 @@ export abstract class ClusterTransactionOperationsBase {
         return sessionValue;
     }
 
+    protected _registerCompareExchangeInclude(value: CompareExchangeValue<object>) {
+        ClusterTransactionOperationsBase._assertNotAtomicGuard(value);
+
+        if (this.session.noTracking) {
+            return;
+        }
+
+        this._compareExchangeIncludes.set(value.key, value);
+    }
+
+    private static _assertNotAtomicGuard(value: CompareExchangeValue<object> ) {
+        if (StringUtil.startsWithIgnoreCase(value.key, COMPARE_EXCHANGE.RVN_ATOMIC_PREFIX)) {
+            throwError("InvalidOperationException", "'" + value.key + "' is an atomic guard and you cannot load it via the session");
+        }
+    }
+
     private _tryGetCompareExchangeValueFromSession(key: string, valueSetter: (value: CompareExchangeSessionValue) => void) {
         const value = this._state.get(key);
         valueSetter(value);
-        return !TypeUtil.isNullOrUndefined(value);
+        if (!TypeUtil.isNullOrUndefined(value)) {
+            return true;
+        }
+
+        const includeValue = this._compareExchangeIncludes.get(key);
+        if (includeValue) {
+            valueSetter(this.registerCompareExchangeValue(includeValue));
+            return true;
+        }
+
+        return false;
     }
 
     public prepareCompareExchangeEntities(result: SaveChangesData) {

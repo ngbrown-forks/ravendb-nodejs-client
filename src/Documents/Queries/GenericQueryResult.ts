@@ -11,7 +11,6 @@ export interface QueryResultExplanations {
 export class GenericQueryResult<TResult, TIncludes> extends QueryResultBase<TResult, TIncludes> {
 
     public totalResults: number;
-    public longTotalResults: number;
 
     /**
      *  The total results for the query, taking into account the

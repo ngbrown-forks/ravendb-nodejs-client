@@ -1,4 +1,4 @@
-import { Stream, Readable } from "node:stream";
+import { Readable } from "node:stream";
 import { HttpResponse } from "../../Primitives/Http.js";
 import { closeHttpResponse } from "../../Utility/HttpUtil.js";
 import { CapitalizeType } from "../../Types/index.js";
@@ -10,6 +10,10 @@ export interface AttachmentName {
     hash: string;
     contentType: string;
     size: number;
+}
+
+export interface AttachmentNameWithCount extends AttachmentName {
+    count: number;
 }
 
 export interface IAttachmentObject extends CapitalizeType<AttachmentName> {

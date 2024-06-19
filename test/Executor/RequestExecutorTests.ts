@@ -9,9 +9,9 @@ import {
     GetNextOperationIdCommand,
     GetDatabaseNamesOperation,
     ServerNode,
-    IDocumentStore
+    IDocumentStore,
+    UpdateTopologyParameters
 } from "../../src/index.js";
-import { UpdateTopologyParameters } from "../../src/Http/UpdateTopologyParameters.js";
 
 describe("Request executor", function () {
 

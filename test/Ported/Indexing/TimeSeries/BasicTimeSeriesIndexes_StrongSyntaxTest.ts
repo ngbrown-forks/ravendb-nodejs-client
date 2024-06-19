@@ -1,6 +1,6 @@
 import {
+    AbstractCsharpTimeSeriesIndexCreationTask,
     AbstractMultiMapTimeSeriesIndexCreationTask,
-    AbstractTimeSeriesIndexCreationTask,
     IDocumentStore
 } from "../../../../src/index.js";
 import { disposeTestDocumentStore, testContext } from "../../../Utils/TestUtil.js";
@@ -109,7 +109,7 @@ describe("BasicTimeSeriesIndexes_StrongSyntaxTest", function () {
 });
 
 
-class MyTsIndex extends AbstractTimeSeriesIndexCreationTask {
+class MyTsIndex extends AbstractCsharpTimeSeriesIndexCreationTask {
     public constructor() {
         super();
 

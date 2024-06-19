@@ -1,9 +1,11 @@
-import { IDocumentStore } from "../../../src/Documents/IDocumentStore.js";
+import {
+    IDocumentStore,
+    GetLogsConfigurationOperation,
+    SetLogsConfigurationOperation,
+    LogMode
+} from "../../../src/index.js";
 import { disposeTestDocumentStore, testContext } from "../../Utils/TestUtil.js";
-import { GetLogsConfigurationOperation } from "../../../src/ServerWide/Operations/Logs/GetLogsConfigurationOperation.js";
-import { LogMode } from "../../../src/ServerWide/Operations/Logs/LogMode.js";
 import { throwError } from "../../../src/Exceptions/index.js";
-import { SetLogsConfigurationOperation } from "../../../src/ServerWide/Operations/Logs/SetLogsConfigurationOperation.js";
 import { TimeUtil } from "../../../src/Utility/TimeUtil.js";
 import { assertThat } from "../../Utils/AssertExtensions.js";
 

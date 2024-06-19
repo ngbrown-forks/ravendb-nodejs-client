@@ -5,15 +5,15 @@ import {
     IDocumentStore,
     StreamQueryStatistics,
     StreamResult, TimeSeriesRawResult,
+    CONSTANTS,
+    ObjectUtil
 } from "../../../../src/index.js";
 import assert from "node:assert"
 import { User } from "../../../Assets/Entities.js";
 import { finishedAsync } from "../../../../src/Utility/StreamUtil.js";
-import { CONSTANTS } from "../../../../src/Constants.js";
 import { parseJsonStreamVerbose } from "../../../Utils/Json.js";
 import { getStringWritable } from "../../../Utils/Streams.js";
 import { assertThat } from "../../../Utils/AssertExtensions.js";
-import { ObjectUtil } from "../../../../src/Utility/ObjectUtil.js";
 
 describe("query streaming", function () {
 

@@ -1,26 +1,26 @@
 import { ChildProcess } from "node:child_process";
 
-import { CONSTANTS } from "../../src/Constants.js";
-import { DocumentStore } from "../../src/Documents/DocumentStore.js";
-import { IDocumentStore } from "../../src/Documents/IDocumentStore.js";
-import { GetStatisticsOperation } from "../../src/Documents/Operations/GetStatisticsOperation.js";
+import {
+    CONSTANTS,
+    DocumentStore,
+    IDocumentStore,
+    GetStatisticsOperation,
+    IDisposable,
+    RevisionsConfiguration,
+    RevisionsCollectionConfiguration,
+    ConfigureRevisionsOperation,
+    ConfigureRevisionsOperationResult,
+    RequestExecutor,
+    GetIndexErrorsOperation
+} from "../../src/index.js";
 import { throwError } from "../../src/Exceptions/index.js";
-import { IDisposable } from "../../src/Types/Contracts.js";
 import { getLogger } from "../../src/Utility/LogUtil.js";
 import { RavenServerLocator } from "./RavenServerLocator.js";
 import { RavenServerRunner } from "./RavenServerRunner.js";
-import { RevisionsConfiguration } from "../../src/Documents/Operations/RevisionsConfiguration.js";
-import { RevisionsCollectionConfiguration } from "../../src/Documents/Operations/RevisionsCollectionConfiguration.js";
-import {
-    ConfigureRevisionsOperation,
-    ConfigureRevisionsOperationResult
-} from "../../src/Documents/Operations/Revisions/ConfigureRevisionsOperation.js";
-import { Dog, Entity, Genre, Movie, Rating, User } from "../Assets/Graph.js";
-import { RequestExecutor } from "../../src/Http/RequestExecutor.js";
+import { Dog, Entity, Genre, Movie, Rating, User } from "../Assets/Samples.js";
 import { Stopwatch } from "../../src/Utility/Stopwatch.js";
 import { delay, wrapWithTimeout } from "../../src/Utility/PromiseUtil.js";
 import { ClusterTestContext } from "../Utils/TestUtil.js";
-import { GetIndexErrorsOperation } from "../../src/index.js";
 import { TimeUtil } from "../../src/Utility/TimeUtil.js";
 import { ProxyAgent } from "undici";
 import { EOL } from "../../src/Utility/OsUtil.js";

@@ -3,7 +3,8 @@ import assert from "node:assert"
 import {assertThat} from "../Utils/AssertExtensions.js";
 import {
     AddDatabaseNodeOperation,
-    CreateDatabaseOperation, DocumentStore,
+    CreateDatabaseOperation,
+    DocumentStore,
     getAllNodesFromTopology,
     IDocumentStore
 } from "../../src/index.js";

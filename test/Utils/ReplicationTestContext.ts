@@ -7,15 +7,18 @@ import {
     ModifyOngoingTaskResult,
     IMaintenanceOperation,
     OngoingTaskType,
-    DeleteOngoingTaskOperation, UpdateExternalReplicationOperation, GetDatabaseRecordOperation, PullReplicationAsSink
+    DocumentType,
+    DeleteOngoingTaskOperation,
+    UpdateExternalReplicationOperation,
+    GetDatabaseRecordOperation,
+    PullReplicationAsSink,
+    ExternalReplicationBase,
+    UpdatePullReplicationAsSinkOperation
 } from "../../src/index.js";
 import { Stopwatch } from "../../src/Utility/Stopwatch.js";
-import { DocumentType } from "../../src/index.js";
 import { delay } from "../../src/Utility/PromiseUtil.js";
 import { randomUUID } from "node:crypto";
 import { assertThat } from "./AssertExtensions.js";
-import { ExternalReplicationBase } from "../../src/Documents/Replication/ExternalReplicationBase.js";
-import { UpdatePullReplicationAsSinkOperation } from "../../src/Documents/Operations/Replication/UpdatePullReplicationAsSinkOperation.js";
 
 export class ReplicationTestContext {
 

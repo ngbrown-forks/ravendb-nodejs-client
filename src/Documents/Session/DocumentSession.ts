@@ -1,4 +1,4 @@
-import { pipeline, Writable, Transform, TransformCallback, Readable } from "node:stream";
+import { pipeline, Writable, Transform, TransformCallback } from "node:stream";
 import { DocumentQuery } from "./DocumentQuery.js";
 import { MultiLoaderWithInclude } from "./Loaders/MultiLoaderWithInclude.js";
 import { BatchOperation } from "./Operations/BatchOperation.js";
@@ -61,9 +61,7 @@ import { SessionOptions } from "./SessionOptions.js";
 import { ISessionDocumentCounters } from "./ISessionDocumentCounters.js";
 import { SessionDocumentCounters } from "./SessionDocumentCounters.js";
 import { IncludeBuilder } from "./Loaders/IncludeBuilder.js";
-import { IGraphDocumentQuery } from "./IGraphDocumentQuery.js";
 import { SingleNodeBatchCommand } from "../Commands/Batches/SingleNodeBatchCommand.js";
-import { GraphDocumentQuery } from "./GraphDocumentQuery.js";
 import { AbstractDocumentQuery } from "./AbstractDocumentQuery.js";
 import { ISessionDocumentTimeSeries } from "./ISessionDocumentTimeSeries.js";
 import { ISessionDocumentTypedTimeSeries } from "./ISessionDocumentTypedTimeSeries.js";
@@ -1068,14 +1066,6 @@ export class DocumentSession extends InMemoryDocumentSessionOperations
     public countersFor(entity: object): ISessionDocumentCounters;
     public countersFor(entityOrId: string | object): ISessionDocumentCounters {
         return new SessionDocumentCounters(this, entityOrId as any);
-    }
-
-    /**
-     * @deprecated Graph API will be removed in next major version of the product.
-     */
-    public graphQuery<TEntity extends object>(
-        query: string, documentType?: DocumentType<TEntity>): IGraphDocumentQuery<TEntity> {
-        return new GraphDocumentQuery<TEntity>(this, query, documentType);
     }
 
     public timeSeriesFor(documentId: string, name: string): ISessionDocumentTimeSeries;

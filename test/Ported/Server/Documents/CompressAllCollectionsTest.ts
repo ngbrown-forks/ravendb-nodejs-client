@@ -1,6 +1,9 @@
-import { GetDatabaseRecordOperation, IDocumentStore } from "../../../../src/index.js";
+import {
+    GetDatabaseRecordOperation,
+    IDocumentStore,
+    UpdateDocumentsCompressionConfigurationOperation
+} from "../../../../src/index.js";
 import { disposeTestDocumentStore, RavenTestContext, testContext } from "../../../Utils/TestUtil.js";
-import { UpdateDocumentsCompressionConfigurationOperation } from "../../../../src/ServerWide/Operations/DocumentsCompression/UpdateDocumentsCompressionConfigurationOperation.js";
 import { assertThat } from "../../../Utils/AssertExtensions.js";
 
 (RavenTestContext.isPullRequest ? describe.skip : describe)("CompressAllCollectionsTest", function () {

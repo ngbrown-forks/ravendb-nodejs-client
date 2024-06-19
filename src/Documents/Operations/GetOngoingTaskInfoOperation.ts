@@ -133,6 +133,12 @@ class GetOngoingTaskInfoCommand extends RavenCommand<OngoingTask> {
             case "PullReplicationAsSink": {
                 break;
             }
+            case "PullReplicationAsHub": {
+                break;
+            }
+            case "QueueSink": {
+                break;
+            }
             case "Backup": {
                 nestedTypes = {
                     lastFullBackup: "date",
@@ -168,5 +174,5 @@ const knownTypes = new Map<string, any>([
     [OlapEtlConfiguration.name, OlapEtlConfiguration],
     [ElasticSearchEtlConfiguration.name, ElasticSearchEtlConfiguration],
     [QueueEtlConfiguration.name, QueueEtlConfiguration],
-    [Transformation.name, Transformation]
+    [Transformation.name, Transformation],
 ]);

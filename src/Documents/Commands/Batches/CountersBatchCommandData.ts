@@ -6,11 +6,11 @@ import { DocumentCountersOperation } from "../../Operations/Counters/DocumentCou
 import { CounterOperation } from "../../Operations/Counters/CounterOperation.js";
 
 export class CountersBatchCommandData implements ICommandData {
-    private _id: string;
-    private _name: string;
-    private _changeVector: string;
+    private readonly _id: string;
+    private readonly _name: string;
+    private readonly _changeVector: string;
     private _fromEtl: boolean;
-    private _counters: DocumentCountersOperation;
+    private readonly _counters: DocumentCountersOperation;
 
     public constructor(documentId: string, counterOperation: CounterOperation);
     public constructor(documentId: string, counterOperations: CounterOperation[]);

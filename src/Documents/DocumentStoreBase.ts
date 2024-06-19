@@ -167,7 +167,7 @@ export abstract class DocumentStoreBase
         return this._subscriptions;
     }
 
-    private _lastRaftIndexPerDatabase: Map<string, number> = CaseInsensitiveKeysMap.create();
+    private readonly _lastRaftIndexPerDatabase: Map<string, number> = CaseInsensitiveKeysMap.create();
 
     public getLastTransactionIndex(database: string): number {
         const index = this._lastRaftIndexPerDatabase.get(database);

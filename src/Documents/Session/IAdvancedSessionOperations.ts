@@ -21,13 +21,15 @@ import { JavaScriptArray } from "./JavaScriptArray.js";
 import { DocumentResultStream } from "./DocumentResultStream.js";
 import { Writable } from "node:stream";
 import { IDocumentQueryBuilder } from "./IDocumentQueryBuilder.js";
-import { IGraphDocumentQuery } from "./IGraphDocumentQuery.js";
 import { JavaScriptMap } from "./JavaScriptMap.js";
 import { ConditionalLoadResult } from "./ConditionalLoadResult.js";
 import { EntityInfo } from "./DocumentsById.js";
 
 export type StreamQueryStatisticsCallback = (stats: StreamQueryStatistics) => void;
 
+/**
+ * It gives the ability to construct queries with the usage of {@link IDocumentQuery} interface
+ */
 export interface IAdvancedSessionOperations extends IAdvancedDocumentSessionOperations, IDocumentQueryBuilder {
 
     /**
@@ -70,13 +72,6 @@ export interface IAdvancedSessionOperations extends IAdvancedDocumentSessionOper
      */
 
     rawQuery<TResult extends object>(query: string, documentType?: DocumentType<TResult>): IRawDocumentQuery<TResult>;
-
-    /**
-     * @deprecated Graph API will be removed in next major version of the product.
-     * @param query query
-     * @param documentType document type
-     */
-    graphQuery<TResult extends object>(query: string, documentType?: DocumentType<TResult>): IGraphDocumentQuery<TResult>;
 
     exists(id: string): Promise<boolean>;
 

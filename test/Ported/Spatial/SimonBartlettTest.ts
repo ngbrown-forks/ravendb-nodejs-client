@@ -5,8 +5,8 @@ import {
     AbstractJavaScriptIndexCreationTask,
     IDocumentStore,
     SpatialOptions,
+    SpatialField
 } from "../../../src/index.js";
-import { SpatialField } from "../../../src/Documents/Indexes/StronglyTyped.js";
 
 describe("SimonBartlettTest", function () {
 

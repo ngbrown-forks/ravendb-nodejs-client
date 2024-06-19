@@ -1,9 +1,12 @@
-import { AbstractJavaScriptIndexCreationTask, IDocumentStore } from "../../../src/index.js";
+import {
+    AbstractJavaScriptIndexCreationTask,
+    IDocumentStore
+} from "../../../src/index.js";
 import { disposeTestDocumentStore, RavenTestContext, testContext } from "../../Utils/TestUtil.js";
 import { assertThat } from "../../Utils/AssertExtensions.js";
 import { delay } from "../../../src/Utility/PromiseUtil.js";
 
-(RavenTestContext.is60Server || RavenTestContext.isPullRequest ? describe.skip : describe)("CanQueryAndIncludeRevisionsTest", function () {
+(RavenTestContext.isPullRequest ? describe.skip : describe)("CanQueryAndIncludeRevisionsTest", function () {
 
     let store: IDocumentStore;
 

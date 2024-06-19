@@ -26,4 +26,6 @@ export type DatabaseRecordItemType =
     | "QueueConnectionStrings"
     | "QueueEtl"
     | "IndexesHistory"
-    | "Refresh";
+    | "Refresh"
+    | "QueueSinks"
+    | "DataArchival";

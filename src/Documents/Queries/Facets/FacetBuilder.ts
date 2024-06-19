@@ -64,7 +64,11 @@ export class FacetBuilder<T> implements IFacetBuilder<T>, IFacetOperations<T> {
     }
 
     public withOptions(options: FacetOptions): IFacetOperations<T> {
-        this.getFacet().options = options;
+        const facet = this.getFacet();
+        if (facet instanceof Facet) {
+            facet.options = options;
+        }
+
         return this;
     }
 

@@ -2,10 +2,10 @@ import {
     AbstractJavaScriptIndexCreationTask,
     IDocumentStore,
     PutIndexesOperation,
+    FacetBase,
+    Facet,
+    RangeFacet
 } from "../../src/index.js";
-import { FacetBase } from "../../src/Documents/Queries/Facets/FacetBase.js";
-import { Facet } from "../../src/Documents/Queries/Facets/Facet.js";
-import { RangeFacet } from "../../src/Documents/Queries/Facets/RangeFacet.js";
 
 export class FacetTestContext {
     public async createCameraCostIndex(store: IDocumentStore) {

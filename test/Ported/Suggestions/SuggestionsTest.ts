@@ -1,7 +1,13 @@
 import assert from "node:assert"
 
-import { IDocumentStore, IndexDefinition, IndexFieldOptions, PutIndexesOperation, SuggestionOptions } from "../../../src/index.js";
-import { disposeTestDocumentStore, RavenTestContext, testContext } from "../../Utils/TestUtil.js";
+import {
+    IDocumentStore,
+    IndexDefinition,
+    IndexFieldOptions,
+    PutIndexesOperation,
+    SuggestionOptions
+} from "../../../src/index.js";
+import { disposeTestDocumentStore, testContext } from "../../Utils/TestUtil.js";
 import { Users_ByName } from "../Indexing/IndexesFromClientTest.js";
 import { assertThat } from "../../Utils/AssertExtensions.js";
 

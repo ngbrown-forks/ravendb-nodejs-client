@@ -13,7 +13,7 @@ describe("RavenDB_15531", function () {
     afterEach(async () =>
         await disposeTestDocumentStore(store));
 
-    it("shouldWork", async () => {
+    it("updateSessionChangesAfterTrackedEntityIsRefreshed", async () => {
         const session = store.openSession();
 
         const doc = Object.assign(new SimpleDoc(), {

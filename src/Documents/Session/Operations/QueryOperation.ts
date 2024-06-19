@@ -11,7 +11,6 @@ import {
 } from "../../DocumentAbstractions.js";
 import { CONSTANTS, TIME_SERIES } from "../../../Constants.js";
 import { TypeUtil } from "../../../Utility/TypeUtil.js";
-import { StringUtil } from "../../../Utility/StringUtil.js";
 import { Reference } from "../../../Utility/Reference.js";
 import { NESTED_OBJECT_TYPES_PROJECTION_FIELD } from "../DocumentQuery.js";
 import { TimeSeriesAggregationResult } from "../../Queries/TimeSeries/TimeSeriesAggregationResult.js";
@@ -56,8 +55,6 @@ export class QueryOperation {
         this._metadataOnly = metadataOnly;
         this._indexEntriesOnly = indexEntriesOnly;
         this._isProjectInto = isProjectInto;
-
-        this._assertPageSizeSet();
     }
 
     public createRequest(): QueryCommand {
@@ -77,21 +74,6 @@ export class QueryOperation {
 
     public setResult(queryResult: QueryResult): void {
         this.ensureIsAcceptableAndSaveResult(queryResult, null);
-    }
-
-    private _assertPageSizeSet(): void {
-        if (!this._session.conventions.isThrowIfQueryPageSizeIsNotSet()) {
-            return;
-        }
-
-        if (this._indexQuery.pageSizeSet) {
-            return;
-        }
-
-        throwError("InvalidOperationException",
-            "Attempt to query without explicitly specifying a page size. " +
-            "You can use .take() methods to set maximum number of results. " +
-            "By default the page size is set to Integer.MAX_VALUE and can cause severe performance degradation.");
     }
 
     private _startTiming(): void {
@@ -190,7 +172,8 @@ export class QueryOperation {
             }
 
             if (queryResult.compareExchangeValueIncludes) {
-                this._session.clusterSession.registerCompareExchangeValues(queryResult.compareExchangeValueIncludes, false);
+                const clusterSession = this._session.clusterSession;
+                clusterSession.registerCompareExchangeIncludes(queryResult.compareExchangeValueIncludes, false);
             }
 
             if (queryResult.revisionIncludes) {

@@ -23,11 +23,13 @@ export class GetMultipleTimeSeriesOperation implements IOperation<TimeSeriesDeta
     private readonly _start: number;
     private readonly _pageSize: number;
     private readonly _includes: (includeBuilder: ITimeSeriesIncludeBuilder) => void;
+    private readonly _returnFullResults: boolean;
 
     public constructor(docId: string, ranges: TimeSeriesRange[])
     public constructor(docId: string, ranges: TimeSeriesRange[], start: number, pageSize: number)
     public constructor(docId: string, ranges: TimeSeriesRange[], start: number, pageSize: number, includes: (includeBuilder: ITimeSeriesIncludeBuilder) => void)
-    public constructor(docId: string, ranges: TimeSeriesRange[], start?: number, pageSize?: number, includes?: (includeBuilder: ITimeSeriesIncludeBuilder) => void) {
+    public constructor(docId: string, ranges: TimeSeriesRange[], start?: number, pageSize?: number, includes?: (includeBuilder: ITimeSeriesIncludeBuilder) => void, returnFullResults?: boolean)
+    public constructor(docId: string, ranges: TimeSeriesRange[], start?: number, pageSize?: number, includes?: (includeBuilder: ITimeSeriesIncludeBuilder) => void, returnFullResults?: boolean) {
         if (!ranges) {
             throwError("InvalidArgumentException", "Ranges cannot be null");
         }
@@ -39,6 +41,7 @@ export class GetMultipleTimeSeriesOperation implements IOperation<TimeSeriesDeta
         this._pageSize = pageSize ?? TypeUtil.MAX_INT32;
         this._ranges = ranges;
         this._includes = includes;
+        this._returnFullResults = returnFullResults;
     }
 
     public get resultType(): OperationResultType {
@@ -46,7 +49,7 @@ export class GetMultipleTimeSeriesOperation implements IOperation<TimeSeriesDeta
     }
 
     getCommand(store: IDocumentStore, conventions: DocumentConventions, httpCache: HttpCache): RavenCommand<TimeSeriesDetails> {
-        return new GetMultipleTimeSeriesCommand(conventions, this._docId, this._ranges, this._start, this._pageSize, this._includes);
+        return new GetMultipleTimeSeriesCommand(conventions, this._docId, this._ranges, this._start, this._pageSize, this._includes, this._returnFullResults);
     }
 }
 
@@ -57,6 +60,7 @@ export class GetMultipleTimeSeriesCommand extends RavenCommand<TimeSeriesDetails
     private readonly _start: number;
     private readonly _pageSize: number;
     private readonly _includes: (includeBuilder: ITimeSeriesIncludeBuilder) => void;
+    private readonly _returnFullResults: boolean;
 
     constructor(
         conventions: DocumentConventions,
@@ -64,7 +68,8 @@ export class GetMultipleTimeSeriesCommand extends RavenCommand<TimeSeriesDetails
         ranges: TimeSeriesRange[],
         start: number,
         pageSize: number,
-        includes?: (includeBuilder: ITimeSeriesIncludeBuilder) => void) {
+        includes?: (includeBuilder: ITimeSeriesIncludeBuilder) => void,
+        returnFullResults?: boolean) {
         super();
 
         if (!docId) {
@@ -77,6 +82,7 @@ export class GetMultipleTimeSeriesCommand extends RavenCommand<TimeSeriesDetails
         this._start = start;
         this._pageSize = pageSize;
         this._includes = includes;
+        this._returnFullResults = returnFullResults;
     }
 
     createRequest(node: ServerNode): HttpRequestParameters {
@@ -99,6 +105,11 @@ export class GetMultipleTimeSeriesCommand extends RavenCommand<TimeSeriesDetails
             pathBuilder
                 .append("&pageSize=")
                 .append(this._pageSize.toString());
+        }
+
+        if (this._returnFullResults) {
+            pathBuilder
+                .append("&full=true");
         }
 
         if (!this._ranges.length) {

@@ -2,8 +2,14 @@ import assert from "node:assert"
 import { disposeTestDocumentStore, testContext } from "../../Utils/TestUtil.js";
 
 import { Camera, FacetTestContext } from "../../Utils/FacetTestContext.js";
-import { FacetOptions } from "../../../src/Documents/Queries/Facets/index.js";
-import { Facet, FacetSetup, IDocumentStore, PutIndexesOperation, IndexDefinition } from "../../../src/index.js";
+import {
+    Facet,
+    FacetSetup,
+    IDocumentStore,
+    PutIndexesOperation,
+    IndexDefinition,
+    FacetOptions
+} from "../../../src/index.js";
 import orderBy from "lodash.orderby";
 
 describe("FacetPagingTest", function () {

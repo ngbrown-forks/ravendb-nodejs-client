@@ -1,14 +1,16 @@
 import {
     GetMultipleTimeSeriesOperation,
-    GetTimeSeriesOperation, GetTimeSeriesStatisticsOperation,
+    GetTimeSeriesOperation,
+    GetTimeSeriesStatisticsOperation,
     IDocumentStore,
     SessionOptions,
     TimeSeriesBatchOperation,
-    TimeSeriesOperation
+    TimeSeriesOperation,
+    AppendOperation,
+    DeleteOperation
 } from "../../../src/index.js";
 import { disposeTestDocumentStore, testContext } from "../../Utils/TestUtil.js";
 import { User } from "../../Assets/Entities.js";
-import { AppendOperation, DeleteOperation } from "../../../src/Documents/Operations/TimeSeries/TimeSeriesOperation.js";
 import { assertThat, assertThrows } from "../../Utils/AssertExtensions.js";
 import { RawQueryResult } from "./TimeSeriesRawQuery.js";
 

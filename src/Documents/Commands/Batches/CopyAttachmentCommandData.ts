@@ -4,11 +4,11 @@ import { throwError } from "../../../Exceptions/index.js";
 import { DocumentConventions } from "../../Conventions/DocumentConventions.js";
 
 export class CopyAttachmentCommandData implements ICommandData {
-    public id: string;
-    public changeVector: string;
-    public name: string;
-    private _destinationId: string;
-    private _destinationName: string;
+    public readonly id: string;
+    public readonly changeVector: string;
+    public readonly name: string;
+    private readonly _destinationId: string;
+    private readonly _destinationName: string;
 
     public get type(): CommandType {
         return "AttachmentCOPY";

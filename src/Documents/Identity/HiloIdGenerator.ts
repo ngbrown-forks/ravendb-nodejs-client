@@ -16,11 +16,6 @@ export class HiloIdGenerator {
     private readonly _identityPartsSeparator: string;
     private _range: HiloRangeValue;
 
-    /**
-     * @deprecated Will be removed in next major version of the product. Use field Range.ServerTag instead.
-     * @private
-     */
-    private _serverTag: string = null;
 
     private _nextRangeTask: Lazy<void>;
 
@@ -33,19 +28,14 @@ export class HiloIdGenerator {
         this._range = new HiloRangeValue(1, 0, null);
     }
 
-    /**
-     * @deprecated Will be removed in next major version of the product. Use the getDocumentIdFromId(NextId) overload.
-     * @param nextId next id
-     * @protected
-     */
-    protected _getDocumentIdFromId(nextId: number) {
-        return this._prefix + nextId + "-" + this._serverTag;
+    protected _getDocumentIdFromId(result: NextId) {
+        return this._prefix + result.id + "-" + result.serverTag;
     }
 
     // noinspection JSUnusedLocalSymbols
     public async generateDocumentId(entity: object): Promise<string> {
         const nextId = await this.getNextId();
-        return this._getDocumentIdFromId(nextId.id);
+        return this._getDocumentIdFromId(nextId);
     }
 
 
@@ -97,11 +87,6 @@ export class HiloIdGenerator {
         }
     }
 
-    public async nextId(): Promise<number> {
-        const result = await this.getNextId();
-        return result.id;
-    }
-
     protected async _getNextRange(): Promise<void> {
         const hiloCmd = new NextHiloCommand(
             this._tag,
@@ -116,7 +101,6 @@ export class HiloIdGenerator {
         const result: HiLoResult = hiloCmd.result;
         this._prefix = result.prefix;
         this._lastBatchSize = result.lastSize;
-        this._serverTag = result.serverTag || null;
         this._lastRangeAt = result.lastRangeAt;
 
         this._range = new HiloRangeValue(result.low, result.high, result.serverTag);

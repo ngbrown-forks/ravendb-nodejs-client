@@ -1,5 +1,5 @@
 import { ClusterTestContext, RavenTestContext } from "../../../Utils/TestUtil.js";
-import { DocumentStore } from "../../../../src/Documents/DocumentStore.js";
+import { DocumentStore } from "../../../../src/index.js";
 import { User } from "../../../Assets/Entities.js";
 import { assertThat } from "../../../Utils/AssertExtensions.js";
 

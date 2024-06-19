@@ -1,9 +1,11 @@
-import { AbstractRawJavaScriptIndexCreationTask, GetTermsOperation, IDocumentStore } from "../../../../src/index.js";
+import {
+    AbstractRawJavaScriptIndexCreationTask,
+    GetTermsOperation,
+    IDocumentStore,
+    AbstractRawJavaScriptTimeSeriesIndexCreationTask
+} from "../../../../src/index.js";
 import { disposeTestDocumentStore, testContext } from "../../../Utils/TestUtil.js";
 import moment from "moment";
-import {
-    AbstractRawJavaScriptTimeSeriesIndexCreationTask
-} from "../../../../src/Documents/Indexes/TimeSeries/AbstractRawJavaScriptTimeSeriesIndexCreationTask.js";
 import { Employee } from "../../../Assets/Orders.js";
 import { Address, Company, User } from "../../../Assets/Entities.js";
 import { assertThat } from "../../../Utils/AssertExtensions.js";

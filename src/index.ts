@@ -22,6 +22,8 @@ export * from "./Http/Topology.js";
 export * from "./Http/UriUtility.js";
 export * from "./Http/UpdateTopologyParameters.js";
 
+export * from "./Utility/ObjectUtil.js";
+
 // SERVERWIDE
 export * from "./ServerWide/index.js";
 export * from "./ServerWide/CompactSettings.js";
@@ -32,6 +34,22 @@ export * from "./ServerWide/DocumentsCompressionConfiguration.js";
 export * from "./ServerWide/DeletionInProgressStatus.js";
 export * from "./ServerWide/IDatabaseTaskStatus.js";
 export * from "./ServerWide/Operations/BuildNumber.js";
+export * from "./ServerWide/Operations/Builder/IBackupConfigurationBuilder.js";
+export * from "./ServerWide/Operations/Builder/IConnectionStringConfigurationBuilder.js";
+export * from "./ServerWide/Operations/Builder/IDatabaseRecordBuilder.js";
+export * from "./ServerWide/Operations/Builder/IDatabaseRecordBuilderBase.js";
+export * from "./ServerWide/Operations/Builder/IDatabaseRecordBuilderInitializer.js";
+export * from "./ServerWide/Operations/Builder/IEtlConfigurationBuilder.js";
+export * from "./ServerWide/Operations/Builder/IIntegrationConfigurationBuilder.js";
+export * from "./ServerWide/Operations/Builder/IOrchestratorTopologyConfigurationBuilder.js";
+export * from "./ServerWide/Operations/Builder/IReplicationConfigurationBuilder.js";
+export * from "./ServerWide/Operations/Builder/IShardedDatabaseRecordBuilder.js";
+export * from "./ServerWide/Operations/Builder/IShardedTopologyConfigurationBuilder.js";
+export * from "./ServerWide/Operations/Builder/IShardTopologyConfigurationBuilder.js";
+export * from "./ServerWide/Operations/Builder/ITopologyConfigurationBuilder.js";
+export * from "./ServerWide/Operations/Builder/ITopologyConfigurationBuilderBase.js";
+export * from "./ServerWide/Operations/DatabaseRecordBuilder.js";
+
 export * from "./ServerWide/Operations/GetBuildNumberOperation.js";
 export * from "./ServerWide/Operations/ReorderDatabaseMembersOperation.js";
 export * from "./ServerWide/Operations/ConfigureRevisionsForConflictsOperation.js";
@@ -57,7 +75,6 @@ export * from "./ServerWide/Operations/Logs/GetLogsConfigurationResult.js";
 export * from "./ServerWide/Operations/Logs/GetLogsConfigurationOperation.js";
 export * from "./ServerWide/Operations/Logs/LogMode.js";
 export * from "./ServerWide/Operations/Logs/SetLogsConfigurationOperation.js";
-export * from "./ServerWide/Operations/Configuration/DeleteServerWideBackupConfigurationOperation.js";
 export * from "./ServerWide/Operations/Configuration/GetServerWideClientConfigurationOperation.js";
 export * from "./ServerWide/Operations/Configuration/GetServerWideBackupConfigurationsOperation.js";
 export * from "./ServerWide/Operations/Configuration/PutServerWideBackupConfigurationOperation.js";
@@ -66,6 +83,7 @@ export * from "./ServerWide/Operations/Configuration/DatabaseSettings.js";
 export * from "./ServerWide/Operations/Configuration/GetDatabaseSettingsOperation.js";
 export * from "./ServerWide/Operations/Configuration/PutDatabaseSettingsOperation.js";
 
+export { OrchestratorTopology } from "./ServerWide/OrchestratorTopology.js";
 export { GetDatabaseTopologyCommand } from "./ServerWide/Commands/GetDatabaseTopologyCommand.js";
 export { GetClusterTopologyCommand } from "./ServerWide/Commands/GetClusterTopologyCommand.js";
 export { GetTcpInfoCommand } from "./ServerWide/Commands/GetTcpInfoCommand.js";
@@ -78,7 +96,7 @@ export * from "./ServerWide/Operations/ModifyConflictSolverOperation.js";
 export * from "./Documents/Operations/Etl/ConnectionString.js";
 
 // OPERATIONS AND COMMANDS
-export { BulkInsertOperation } from "./Documents/BulkInsertOperation.js";
+export { BulkInsertOperation, IAttachmentsBulkInsert, ICountersBulkInsert, ITimeSeriesBulkInsert, ITypedTimeSeriesBulkInsert, BulkInsertOptions } from "./Documents/BulkInsertOperation.js";
 export { BulkInsertProgress } from "./Documents/Operations/BulkInsertProgress.js";
 export { CollectionDetails } from "./Documents/Operations/CollectionDetails.js";
 export * from "./Documents/Operations/Backups/BackupConfiguration.js";
@@ -86,10 +104,11 @@ export * from "./Documents/Operations/Backups/DelayBackupOperation.js";
 export * from "./Documents/Operations/Backups/BackupTaskType.js";
 export { DatabaseHealthCheckOperation } from "./Documents/Operations/DatabaseHealthCheckOperation.js";
 export { DetailedCollectionStatistics } from "./Documents/Operations/DetailedCollectionStatistics.js";
+export { GetEssentialStatisticsOperation } from "./Documents/Operations/GetEssentialStatisticsOperation.js";
 export { GetDetailedCollectionStatisticsOperation } from "./Documents/Operations/GetDetailedCollectionStatisticsOperation.js";
 export * from "./Documents/Operations/OperationAbstractions.js";
 export { CompactDatabaseOperation } from "./Documents/Operations/CompactDatabaseOperation.js";
-export { PutConnectionStringOperation } from "./Documents/Operations/ConnectionStrings/PutConnectionStringOperation.js";
+export { PutConnectionStringOperation, PutConnectionStringResult } from "./Documents/Operations/ConnectionStrings/PutConnectionStringOperation.js";
 export { PatchOperation } from "./Documents/Operations/PatchOperation.js";
 export { DeleteSorterOperation } from "./Documents/Operations/Sorters/DeleteSorterOperation.js";
 export { PutSortersOperation } from "./Documents/Operations/Sorters/PutSortersOperation.js";
@@ -252,6 +271,9 @@ export * from "./Documents/Session/Operations/LoadStartingWithOperation.js";
 export * from "./Documents/Session/Operations/MultiGetOperation.js";
 export * from "./Documents/Session/Operations/QueryOperation.js";
 export * from "./Documents/Session/Operations/StreamOperation.js";
+export * from "./Documents/Operations/DataArchival/DataArchivalConfiguration.js";
+export * from "./Documents/Operations/DataArchival/ConfigureDataArchivalOperation.js";
+export * from "./Documents/Operations/DataArchival/ConfigureDataArchivalOperationResult.js";
 export * from "./Documents/Operations/Attachments/DeleteAttachmentOperation.js";
 export * from "./Documents/Operations/Attachments/PutAttachmentOperation.js";
 export * from "./Documents/Operations/PatchResult.js";
@@ -267,6 +289,11 @@ export * from "./Documents/Operations/Configuration/StudioConfiguration.js";
 export * from "./Documents/Operations/Configuration/StudioEnvironment.js";
 export * from "./Documents/Operations/ConnectionStrings/GetConnectionStringsOperation.js";
 export * from "./Documents/Operations/ConnectionStrings/RemoveConnectionStringOperation.js";
+export * from "./Documents/Operations/QueueSink/QueueSinkConfiguration.js";
+export * from "./Documents/Operations/QueueSink/AddQueueSinkOperation.js";
+export * from "./Documents/Operations/QueueSink/QueueSinkScript.js";
+export * from "./Documents/Operations/QueueSink/UpdateQueueSinkOperation.js";
+export * from "./Documents/Operations/QueueSink/AddQueueSinkOperationResult.js";
 export * from "./Documents/Operations/Etl/Queue/EtlQueue.js";
 export * from "./Documents/Operations/Etl/Queue/QueueEtlConfiguration.js";
 export * from "./Documents/Operations/Etl/Queue/KafkaConnectionSettings.js";
@@ -295,6 +322,7 @@ export * from "./Documents/Operations/OngoingTasks/OngoingTaskPullReplicationAsS
 export * from "./Documents/Operations/OngoingTasks/OngoingTaskPullReplicationAsHub.js";
 export * from "./Documents/Operations/OngoingTasks/OngoingTaskType.js";
 export * from "./Documents/Operations/OngoingTasks/RunningBackup.js";
+export * from "./Documents/Operations/OngoingTasks/OngoingTask.js";
 export * from "./Documents/Operations/OngoingTasks/NextBackup.js";
 export * from "./Documents/Operations/GetOngoingTaskInfoOperation.js";
 export * from "./Documents/Operations/OngoingTasks/ToggleOngoingTaskStateOperation.js";
@@ -339,6 +367,9 @@ export * from "./Documents/Operations/Backups/RestoreFromGoogleCloudConfiguratio
 export * from "./Documents/Operations/Backups/RestoreFromS3Configuration.js";
 export * from "./Documents/Operations/Backups/RestoreType.js";
 export * from "./Documents/Operations/Backups/RetentionPolicy.js";
+export * from "./Documents/Operations/Backups/Sharding/GetShardedPeriodicBackupStatusOperation.js";
+export * from "./Documents/Operations/Backups/Sharding/ShardedRestoreSettings.js";
+export * from "./Documents/Operations/Backups/Sharding/SingleShardRestoreSetting.js";
 
 // INDEXES
 export { GetIndexOperation } from "./Documents/Operations/Indexes/GetIndexOperation.js";
@@ -349,6 +380,7 @@ export * from "./Documents/Indexes/IndexDefinition.js";
 export * from "./Documents/Indexes/AbstractCommonApiForIndexes.js";
 export * from "./Documents/Indexes/AbstractIndexDefinitionBuilder.js";
 export * from "./Documents/Indexes/IAbstractIndexCreationTask.js";
+export * from "./Documents/Indexes/IndexCreation.js";
 export * from "./Documents/Indexes/Errors.js";
 export * from "./Documents/Indexes/LuceneIndexInputType.js";
 export * from "./Documents/Indexes/AdditionalAssembly.js";
@@ -374,7 +406,6 @@ export * from "./Documents/Indexes/AbstractRawJavaScriptIndexCreationTask.js";
 export * from "./Documents/Indexes/AutoIndexDefinition.js";
 export * from "./Documents/Indexes/AutoIndexFieldOptions.js";
 export * from "./Documents/Indexes/Spatial/AutoSpatialOptions.js";
-export * from "./Documents/Indexes/Counters/AbstractCountersIndexCreationTask.js";
 export * from "./Documents/Indexes/Counters/AbstractGenericCountersIndexCreationTask.js";
 export * from "./Documents/Indexes/Counters/AbstractCsharpCountersIndexCreationTask.js";
 export * from "./Documents/Indexes/Counters/AbstractMultiMapCountersIndexCreationTask.js";
@@ -385,7 +416,6 @@ export * from "./Documents/Indexes/TimeSeries/AbstractGenericTimeSeriesIndexCrea
 export * from "./Documents/Indexes/TimeSeries/AbstractMultiMapTimeSeriesIndexCreationTask.js";
 export * from "./Documents/Indexes/TimeSeries/AbstractCsharpTimeSeriesIndexCreationTask.js";
 export * from "./Documents/Indexes/TimeSeries/AbstractRawJavaScriptTimeSeriesIndexCreationTask.js";
-export * from "./Documents/Indexes/TimeSeries/AbstractTimeSeriesIndexCreationTask.js";
 export * from "./Documents/Indexes/TimeSeries/TimeSeriesIndexDefinition.js";
 export * from "./Documents/Indexes/TimeSeries/TimeSeriesIndexDefinitionBuilder.js";
 
@@ -402,6 +432,7 @@ export * from "./Documents/IDocumentStore.js";
 export * from "./Documents/IdTypeAndName.js";
 
 // SUBSCRIPTIONS
+export * from "./Documents/Subscriptions/SubscriptionBatchBase.js";
 export * from "./Documents/Subscriptions/SubscriptionBatch.js";
 export * from "./Documents/Subscriptions/DocumentSubscriptions.js";
 export * from "./Documents/Subscriptions/SubscriptionWorker.js";
@@ -425,7 +456,6 @@ export * from "./Documents/Session/DocumentsChanges.js";
 export * from "./Documents/Session/DocumentSession.js";
 export * from "./Documents/Session/EntityToJson.js";
 export * from "./Documents/Session/ForceRevisionStrategy.js";
-export * from "./Documents/Session/GraphDocumentQuery.js";
 export * from "./Documents/Session/GroupByDocumentQuery.js";
 export * from "./Documents/Session/GroupByField.js";
 export * from "./Documents/Session/IAbstractDocumentQuery.js";
@@ -441,7 +471,6 @@ export * from "./Documents/Session/IDocumentQueryBaseSingle.js";
 export * from "./Documents/Session/IDocumentSession.js";
 export * from "./Documents/Session/IEnumerableQuery.js";
 export * from "./Documents/Session/IFilterDocumentQueryBase.js";
-export * from "./Documents/Session/IGraphDocumentQuery.js";
 export * from "./Documents/Session/IGroupByDocumentQuery.js";
 export * from "./Documents/Session/IncludesUtil.js";
 export * from "./Documents/Session/InMemoryDocumentSessionOperations.js";
@@ -522,6 +551,8 @@ export * from "./Documents/TimeSeries/TimeSeriesOperations.js";
 export * from "./Documents/Commands/StreamResult.js";
 export * from "./Documents/Session/SessionOptions.js";
 export * from "./Documents/Commands/CommandData.js";
+export * from "./Documents/Commands/GetRevisionsBinEntryCommand.js";
+export * from "./Documents/Commands/GetDocumentsCommand.js";
 export * from "./Documents/Commands/Batches/CopyAttachmentCommandData.js";
 export * from "./Documents/Commands/Batches/DeleteAttachmentCommandData.js";
 export * from "./Documents/Commands/Batches/MoveAttachmentCommandData.js";
@@ -552,7 +583,7 @@ export { ConfigureTimeSeriesOperation } from "./Documents/Operations/TimeSeries/
 export { ConfigureTimeSeriesOperationResult } from "./Documents/Operations/TimeSeries/ConfigureTimeSeriesOperationResult.js";
 export { ConfigureTimeSeriesPolicyOperation } from "./Documents/Operations/TimeSeries/ConfigureTimeSeriesPolicyOperation.js";
 export { ConfigureTimeSeriesValueNamesOperation } from "./Documents/Operations/TimeSeries/ConfigureTimeSeriesValueNamesOperation.js";
-export { GetMultipleTimeSeriesOperation } from "./Documents/Operations/TimeSeries/GetMultipleTimeSeriesOperation.js";
+export { GetMultipleTimeSeriesOperation, GetMultipleTimeSeriesCommand } from "./Documents/Operations/TimeSeries/GetMultipleTimeSeriesOperation.js";
 export { GetTimeSeriesOperation } from "./Documents/Operations/TimeSeries/GetTimeSeriesOperation.js";
 export { GetTimeSeriesStatisticsOperation } from "./Documents/Operations/TimeSeries/GetTimeSeriesStatisticsOperation.js";
 export { RawTimeSeriesPolicy } from "./Documents/Operations/TimeSeries/RawTimeSeriesPolicy.js";
@@ -562,7 +593,7 @@ export { TimeSeriesCollectionConfiguration } from "./Documents/Operations/TimeSe
 export { TimeSeriesConfiguration } from "./Documents/Operations/TimeSeries/TimeSeriesConfiguration.js";
 export { TimeSeriesDetails } from "./Documents/Operations/TimeSeries/TimeSeriesDetails.js";
 export { TimeSeriesItemDetail } from "./Documents/Operations/TimeSeries/TimeSeriesItemDetail.js";
-export { TimeSeriesOperation } from "./Documents/Operations/TimeSeries/TimeSeriesOperation.js";
+export { TimeSeriesOperation, AppendOperation, DeleteOperation, IncrementOperation } from "./Documents/Operations/TimeSeries/TimeSeriesOperation.js";
 export { TimeSeriesPolicy } from "./Documents/Operations/TimeSeries/TimeSeriesPolicy.js";
 export { TimeSeriesRange } from "./Documents/Operations/TimeSeries/TimeSeriesRange.js";
 export { TimeSeriesCountRange } from "./Documents/Operations/TimeSeries/TimeSeriesCountRange.js";
@@ -738,8 +769,18 @@ export * from "./ServerWide/Operations/Integrations/PostgreSql/PostgreSqlConfigu
 export * from "./ServerWide/Operations/ModifyDatabaseTopologyOperation.js";
 export * from "./ServerWide/Operations/ModifyDatabaseTopologyResult.js";
 
+export * from "./ServerWide/Sharding/AddDatabaseShardOperation.js";
+export * from "./ServerWide/Sharding/AddNodeToOrchestratorTopologyOperation.js";
+export * from "./ServerWide/Sharding/MigrationStatus.js";
+export * from "./ServerWide/Sharding/OrchestratorConfiguration.js";
+export * from "./ServerWide/Sharding/PrefixedShardingSetting.js";
+export * from "./ServerWide/Sharding/RemoveNodeFromOrchestratorTopologyOperation.js";
+export * from "./ServerWide/Sharding/ShardBucketMigration.js";
+export * from "./ServerWide/Sharding/ShardingConfiguration.js";
+
 // MAPPING
-export { TypesAwareObjectMapper, ITypesAwareObjectMapper } from "./Mapping/ObjectMapper.js";
+export { TypesAwareObjectMapper, ITypesAwareObjectMapper, TypeInfo } from "./Mapping/ObjectMapper.js";
+export { camelCaseReviver, pascalCaseReviver, camelCaseReplacer, pascalCaseReplacer } from "./Mapping/Json/index.js";
 
 // CONSTANTS
 export { CONSTANTS } from "./Constants.js";

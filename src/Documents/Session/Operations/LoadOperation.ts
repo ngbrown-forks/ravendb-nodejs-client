@@ -79,12 +79,16 @@ export class LoadOperation {
     }
 
     public withCompareExchange(compareExchangeValues: string[]) {
-        this._compareExchangeValuesToInclude = compareExchangeValues;
+        if (compareExchangeValues && compareExchangeValues.length > 0) {
+            this._session.assertNoIncludesInNonTrackingSession();
+            this._compareExchangeValuesToInclude = compareExchangeValues;
+        }
         return this;
     }
 
     public withCounters(counters: string[]): LoadOperation {
-        if (counters) {
+        if (counters && counters.length > 0) {
+            this._session.assertNoIncludesInNonTrackingSession();
             this._countersToInclude = counters;
         }
 
@@ -95,10 +99,14 @@ export class LoadOperation {
     public withRevisions(revisionByDateTimeBefore: Date): LoadOperation;
     public withRevisions(revisions: string[] | Date): LoadOperation {
         if (TypeUtil.isArray(revisions)) {
-            this._revisionsToIncludeByChangeVector = revisions;
+            if (revisions.length > 0) {
+                this._session.assertNoIncludesInNonTrackingSession();
+                this._revisionsToIncludeByChangeVector = revisions;
+            }
         }
 
         if (TypeUtil.isDate(revisions)) {
+            this._session.assertNoIncludesInNonTrackingSession();
             this._revisionsToIncludeByDateTimeBefore = revisions;
         }
 
@@ -106,19 +114,24 @@ export class LoadOperation {
     }
 
     public withAllCounters() {
+        this._session.assertNoIncludesInNonTrackingSession();
         this._includeAllCounters = true;
         return this;
     }
 
     public withTimeSeries(timeSeries: AbstractTimeSeriesRange[]) {
         if (timeSeries) {
+            this._session.assertNoIncludesInNonTrackingSession();
             this._timeSeriesToInclude = timeSeries;
         }
         return this;
     }
 
     public withIncludes(includes: string[]): LoadOperation {
-        this._includes = includes || [];
+        if (includes && includes.length > 0) {
+            this._session.assertNoIncludesInNonTrackingSession();
+            this._includes = includes;
+        }
         return this;
     }
 
@@ -242,7 +255,7 @@ export class LoadOperation {
         const includingMissingAtomicGuards = this._session.transactionMode === "ClusterWide";
         if (this._compareExchangeValuesToInclude || includingMissingAtomicGuards) {
             const clusterSession = this._session.clusterSession;
-            clusterSession.registerCompareExchangeValues(result.compareExchangeValueIncludes, includingMissingAtomicGuards);
+            clusterSession.registerCompareExchangeIncludes(result.compareExchangeValueIncludes, includingMissingAtomicGuards);
         }
 
         for (const document of result.results) {

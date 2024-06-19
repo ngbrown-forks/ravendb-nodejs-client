@@ -1,5 +1,9 @@
 import { disposeTestDocumentStore, testContext } from "../../Utils/TestUtil.js";
-import { AbstractJavaScriptMultiMapIndexCreationTask, GetIndexErrorsOperation, IDocumentStore } from "../../../src/index.js";
+import {
+    AbstractJavaScriptMultiMapIndexCreationTask,
+    GetIndexErrorsOperation,
+    IDocumentStore
+} from "../../../src/index.js";
 import { assertThat } from "../../Utils/AssertExtensions.js";
 
 describe("MultiMapWithCustomProperties", function () {

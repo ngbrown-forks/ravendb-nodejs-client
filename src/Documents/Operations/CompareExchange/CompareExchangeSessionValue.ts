@@ -3,7 +3,7 @@ import { ICompareExchangeValue } from "./ICompareExchangeValue.js";
 import { CompareExchangeValueState } from "./CompareExchangeValueState.js";
 import { throwError } from "../../../Exceptions/index.js";
 import { TypeUtil } from "../../../Utility/TypeUtil.js";
-import { CompareExchangeResultClass, EntityConstructor } from "../../../Types/index.js";
+import { CompareExchangeResultClass } from "../../../Types/index.js";
 import { CompareExchangeValueJsonConverter } from "./CompareExchangeValueJsonConverter.js";
 import { COMPARE_EXCHANGE, CONSTANTS } from "../../../Constants.js";
 import { StringUtil } from "../../../Utility/StringUtil.js";
@@ -14,6 +14,7 @@ import { PutCompareExchangeCommandData } from "../../Commands/Batches/PutCompare
 import { DeleteCompareExchangeCommandData } from "../../Commands/Batches/DeleteCompareExchangeCommandData.js";
 import { ITypesAwareObjectMapper } from "../../../Mapping/ObjectMapper.js";
 import { IMetadataDictionary } from "../../Session/IMetadataDictionary.js";
+import { CompareExchangeValueResultParser } from "./CompareExchangeValueResultParser.js";
 
 export class CompareExchangeSessionValue {
     private readonly _key: string;
@@ -60,11 +61,7 @@ export class CompareExchangeSessionValue {
                 let entity: T;
 
                 if (this._originalValue && !TypeUtil.isNullOrUndefined(this._originalValue.value)) {
-                    if (TypeUtil.isPrimitive(clazz) || !clazz) {
-                        entity = this._originalValue.value as T;
-                    } else {
-                        entity = EntityToJson.convertToEntity(clazz as EntityConstructor, this._key, this._originalValue.value, conventions);
-                    }
+                    entity = CompareExchangeValueResultParser.deserializeObject(this._originalValue.value, conventions, clazz) as T;
                 }
 
                 const value = new CompareExchangeValue(this._key, this._index, entity, null);

@@ -5,10 +5,10 @@ import {
     IRavenObject,
     ObjectTypeDescriptor,
     PropsBasedObjectLiteralDescriptor,
-    DocumentConventions
+    DocumentConventions,
+    TypeInfo
 } from "../../src/index.js";
 import { DateUtil } from "../../src/Utility/DateUtil.js";
-import { TypeInfo } from "../../src/Mapping/ObjectMapper.js";
 import { TypeUtil } from "../../src/Utility/TypeUtil.js";
 
 describe("ObjectMapper", function () {

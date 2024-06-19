@@ -4,11 +4,11 @@ import {
     DocumentStore,
     IDocumentStore,
     StreamResult,
+    CONSTANTS,
+    ObjectUtil
 } from "../../../../src/index.js";
 import assert from "node:assert"
 import { User } from "../../../Assets/Entities.js";
-import { CONSTANTS } from "../../../../src/Constants.js";
-import { ObjectUtil } from "../../../../src/Utility/ObjectUtil.js";
 
 describe("document streaming", function () {
 

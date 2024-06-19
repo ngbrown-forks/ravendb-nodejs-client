@@ -1,8 +1,8 @@
 import { RevisionsCollectionObject } from "../../Types/index.js";
 import { DocumentType } from "../DocumentAbstractions.js";
-import { MetadataAsDictionary } from "../../Mapping/MetadataAsDictionary.js";
 import { ForceRevisionStrategy } from "./ForceRevisionStrategy.js";
 import { ILazyRevisionsOperations } from "./ILazyRevisionsOperations.js";
+import { IMetadataDictionary } from "./IMetadataDictionary.js";
 
 /**
  * Revisions advanced session operations
@@ -26,13 +26,13 @@ export interface IRevisionsSessionOperations {
      * Returns metadata of all previous document revisions for specified document
      *  ordered by most recent revisions first.
      */
-    getMetadataFor(id: string): Promise<MetadataAsDictionary[]>;
+    getMetadataFor(id: string): Promise<IMetadataDictionary[]>;
 
     /**
      * Returns metadata of previous document revisions for specified document (with optional paging)
      *  ordered by most recent revisions first.
      */
-    getMetadataFor(id: string, options: SessionRevisionsMetadataOptions): Promise<MetadataAsDictionary[]>;
+    getMetadataFor(id: string, options: SessionRevisionsMetadataOptions): Promise<IMetadataDictionary[]>;
 
     /**
      * Returns a document revision by date.

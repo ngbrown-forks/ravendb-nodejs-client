@@ -27,12 +27,11 @@ import {
     AbstractCsharpIndexCreationTask,
     SetIndexesLockOperationParameters,
     SetIndexesPriorityOperationParameters,
+    AbstractJavaScriptIndexCreationTask
 } from "../../../src/index.js";
 import { UsersIndex, UsersInvalidIndex, UsersIndexWithPascalCasedFields } from "../../Assets/Indexes.js";
 import { TypeUtil } from "../../../src/Utility/TypeUtil.js";
 import { assertThat } from "../../Utils/AssertExtensions.js";
-import { AbstractJavaScriptIndexCreationTask } from "../../../src/Documents/Indexes/AbstractJavaScriptIndexCreationTask.js";
-import { delay } from "../../../src/Utility/PromiseUtil.js";
 
 describe("Index operations", function () {
 

@@ -1,5 +1,8 @@
 import { disposeTestDocumentStore, testContext } from "../../Utils/TestUtil.js";
-import { IDocumentStore, TimeSeriesChange } from "../../../src/index.js";
+import {
+    IDocumentStore,
+    TimeSeriesChange
+} from "../../../src/index.js";
 import { AsyncQueue } from "../../Utils/AsyncQueue.js";
 import { throwError } from "../../../src/Exceptions/index.js";
 import { User } from "../../Assets/Entities.js";

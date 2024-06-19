@@ -3,6 +3,7 @@ export interface DatabasePutResult {
     name: string;
     topology: DatabaseTopology;
     nodesAddedTo: string[];
+    shardsDefined: boolean;
 }
 
 export type DatabasePromotionStatus =

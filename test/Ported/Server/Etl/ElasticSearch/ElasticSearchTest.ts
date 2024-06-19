@@ -1,15 +1,15 @@
 
 import {
     AddEtlOperation,
-    ElasticSearchConnectionString, GetOngoingTaskInfoOperation,
+    ElasticSearchConnectionString,
+    GetOngoingTaskInfoOperation,
     IDocumentStore,
-    PutConnectionStringOperation, Transformation
+    PutConnectionStringOperation,
+    Transformation,
+    OngoingTaskElasticSearchEtl,
+    ElasticSearchEtlConfiguration
 } from "../../../../../src/index.js";
 import { disposeTestDocumentStore, RavenTestContext, testContext } from "../../../../Utils/TestUtil.js";
-import {
-    ElasticSearchEtlConfiguration
-} from "../../../../../src/Documents/Operations/Etl/ElasticSearch/ElasticSearchEtlConfiguration.js";
-import { OngoingTaskElasticSearchEtlDetails } from "../../../../../src/Documents/Operations/OngoingTasks/OngoingTask.js";
 import { assertThat } from "../../../../Utils/AssertExtensions.js";
 
 (RavenTestContext.isPullRequest ? describe.skip : describe)("ElasticSearchTest", () => {
@@ -46,7 +46,7 @@ import { assertThat } from "../../../../Utils/AssertExtensions.js";
 
         const etlResult = await store.maintenance.send(new AddEtlOperation(etlConfiguration));
 
-        const ongoingTask = await store.maintenance.send(new GetOngoingTaskInfoOperation(etlResult.taskId, "ElasticSearchEtl")) as OngoingTaskElasticSearchEtlDetails;
+        const ongoingTask = await store.maintenance.send(new GetOngoingTaskInfoOperation(etlResult.taskId, "ElasticSearchEtl")) as OngoingTaskElasticSearchEtl;
 
         assertThat(ongoingTask)
             .isNotNull();

@@ -4,12 +4,12 @@ import {
     DatabaseRecord,
     DeleteDatabasesOperation,
     GetDatabaseRecordOperation,
-    IDocumentStore
+    IDocumentStore,
+    ToggleDatabasesStateOperation,
+    AddDatabaseNodeOperation
 } from "../../../src/index.js";
-import { ToggleDatabasesStateOperation } from "../../../src/Documents/Operations/ToggleDatabasesStateOperation.js";
 import { assertThat, assertThrows } from "../../Utils/AssertExtensions.js";
-import { AddDatabaseNodeOperation } from "../../../src/ServerWide/Operations/AddDatabaseNodeOperation.js";
-import { Genre } from "../../Assets/Graph.js";
+import { Genre } from "../../Assets/Samples.js";
 
 describe("DatabasesTest", function () {
 

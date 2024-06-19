@@ -4,4 +4,4 @@ export type CounterOperationType =
     | "Delete"
     | "Get"
     | "Put"
-;
+    | "GetAll";

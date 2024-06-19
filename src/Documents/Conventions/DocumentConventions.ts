@@ -14,10 +14,11 @@ import { throwError } from "../../Exceptions/index.js";
 import { CONSTANTS } from "../../Constants.js";
 import { TypeUtil } from "../../Utility/TypeUtil.js";
 import { DateUtil, DateUtilOpts } from "../../Utility/DateUtil.js";
-import { ObjectUtil, ObjectChangeCaseOptions, FieldNameConversion } from "../../Utility/ObjectUtil.js";
+import { ObjectUtil, FieldNameConversion } from "../../Utility/ObjectUtil.js";
 import { LoadBalanceBehavior } from "../../Http/LoadBalanceBehavior.js";
 import { BulkInsertConventions } from "./BulkInsertConventions.js";
 import { InMemoryDocumentSessionOperations } from "../Session/InMemoryDocumentSessionOperations.js";
+import { ShardingConventions } from "./ShardingConventions.js";
 
 const { plural } = Pluralize;
 
@@ -76,7 +77,6 @@ export class DocumentConventions {
     private _findJsType: (id: string, doc: object) => ObjectTypeDescriptor;
 
     private _useOptimisticConcurrency: boolean;
-    private _throwIfQueryPageSizeIsNotSet: boolean;
     private _maxNumberOfRequestsPerSession: number;
 
     private _requestTimeout: number | undefined;
@@ -107,6 +107,12 @@ export class DocumentConventions {
 
     public get bulkInsert() {
         return this._bulkInsert;
+    }
+
+    private readonly _sharding: ShardingConventions;
+
+    public get sharding() {
+        return this._sharding;
     }
 
     public constructor() {
@@ -144,6 +150,7 @@ export class DocumentConventions {
 
         this._maxNumberOfRequestsPerSession = 30;
         this._bulkInsert = new BulkInsertConventions(() => this._assertNotFrozen());
+        this._sharding = new ShardingConventions(this);
         this._maxHttpCacheSize = 128 * 1024 * 1024;
 
         this._knownEntityTypes = new Map();
@@ -468,27 +475,6 @@ export class DocumentConventions {
     }
 
     /**
-     * If set to 'true' then it will throw an exception when any query is performed (in session)
-     * without explicit page size set.
-     * This can be useful for development purposes to pinpoint all the possible performance bottlenecks
-     * since from 4.0 there is no limitation for number of results returned from server.
-     */
-    public isThrowIfQueryPageSizeIsNotSet(): boolean {
-        return this._throwIfQueryPageSizeIsNotSet;
-    }
-
-    /**
-     * If set to 'true' then it will throw an exception when any query is performed (in session)
-     * without explicit page size set.
-     * This can be useful for development purposes to pinpoint all the possible performance bottlenecks
-     * since from 4.0 there is no limitation for number of results returned from server.
-     */
-    public setThrowIfQueryPageSizeIsNotSet(throwIfQueryPageSizeIsNotSet: boolean): void {
-        this._assertNotFrozen();
-        this._throwIfQueryPageSizeIsNotSet = throwIfQueryPageSizeIsNotSet;
-    }
-
-    /**
      * Whether UseOptimisticConcurrency is set to true by default for all opened sessions
      */
     public isUseOptimisticConcurrency(): boolean {
@@ -579,15 +565,6 @@ export class DocumentConventions {
     public set disableTopologyUpdates(value: boolean) {
         this._assertNotFrozen();
         this._disableTopologyUpdates = value;
-    }
-
-    public get throwIfQueryPageSizeIsNotSet(): boolean {
-        return this._throwIfQueryPageSizeIsNotSet;
-    }
-
-    public set throwIfQueryPageSizeIsNotSet(value: boolean) {
-        this._assertNotFrozen();
-        this._throwIfQueryPageSizeIsNotSet = value;
     }
 
     public get transformClassCollectionNameToDocumentIdPrefix() {
@@ -881,7 +858,7 @@ export class DocumentConventions {
         this._frozen = true;
     }
 
-    private _assertNotFrozen(): void {
+    public _assertNotFrozen(): void {
         if (this._frozen) {
             throwError("RavenException",
                 "Conventions has been frozen after documentStore.initialize() and no changes can be applied to them");

@@ -3,8 +3,8 @@ import { testContext, disposeTestDocumentStore } from "../../Utils/TestUtil.js";
 
 import {
     IDocumentStore,
+    AbstractJavaScriptIndexCreationTask
 } from "../../../src/index.js";
-import { AbstractJavaScriptIndexCreationTask } from "../../../src/Documents/Indexes/AbstractJavaScriptIndexCreationTask.js";
 
 describe("Issue RavenDB-5669", function () {
 

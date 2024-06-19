@@ -56,6 +56,7 @@ import { IAbstractDocumentQueryImpl } from "./IAbstractDocumentQueryImpl.js";
 import { ProjectionBehavior } from "../Queries/ProjectionBehavior.js";
 import { IFilterFactory } from "../Queries/IFilterFactory.js";
 import { FilterFactory } from "../Queries/FilterFactory.js";
+import { IQueryShardedContextBuilder } from "./Querying/Sharding/IQueryShardedContextBuilder.js";
 
 export const NESTED_OBJECT_TYPES_PROJECTION_FIELD = "__PROJECTED_NESTED_OBJECT_TYPES__";
 
@@ -128,6 +129,10 @@ export class DocumentQuery<T extends object>
         projectionBehavior?: ProjectionBehavior): IDocumentQuery<TProjection> {
 
         projectionBehavior ??= "Default";
+
+        if (this.isProjectInto || (this.fieldsToFetchToken?.projections?.length > 0)) {
+            QueryData.throwProjectionIsAlreadyDone();
+        }
 
         if (projectionType) {
             this._theSession.conventions.tryRegisterJsType(projectionType);
@@ -615,7 +620,7 @@ export class DocumentQuery<T extends object>
         query._filterModeStack = [...this._filterModeStack];
         query._start = this._start;
         query._timeout = this._timeout;
-        query._queryStats = this._queryStats;
+        query._queryStats = queryData?.queryStatistics ?? this._queryStats;
         query._theWaitForNonStaleResults = this._theWaitForNonStaleResults;
         query._negate = this._negate;
         //noinspection unchecked
@@ -887,6 +892,11 @@ export class DocumentQuery<T extends object>
             mode.dispose();
         }
 
+        return this;
+    }
+
+    shardContext(action: (builder: IQueryShardedContextBuilder) => void): IDocumentQuery<T> {
+        this._shardContext(action);
         return this;
     }
 }

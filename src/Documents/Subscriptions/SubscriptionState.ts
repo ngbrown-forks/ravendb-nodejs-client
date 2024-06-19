@@ -1,3 +1,5 @@
+import { ArchivedDataProcessingBehavior } from "../DataArchival/ArchivedDataProcessingBehavior.js";
+import { SubscriptionShardingState } from "./SubscriptionShardingState.js";
 
 export interface SubscriptionState {
     query: string;
@@ -10,4 +12,6 @@ export interface SubscriptionState {
     lastClientConnectionTime: string;
     raftCommandIndex: number;
     disabled: boolean;
+    archivedDataProcessingBehavior: ArchivedDataProcessingBehavior;
+    shardingState: SubscriptionShardingState;
 }

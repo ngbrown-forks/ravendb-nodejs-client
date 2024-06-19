@@ -5,7 +5,7 @@ import { WhereParams } from "../Session/WhereParams.js";
 import { DocumentQuery } from "../Session/DocumentQuery.js";
 
 export class FilterFactory<T extends object> implements IFilterFactory<T> {
-    private _documentQuery: IAbstractDocumentQuery<T>;
+    private readonly _documentQuery: IAbstractDocumentQuery<T>;
 
     public constructor(documentQuery: IAbstractDocumentQuery<T>, filterLimit: number = Number.MAX_SAFE_INTEGER) {
         this._documentQuery = documentQuery;
