@@ -11,7 +11,6 @@ import { RaftIdGenerator } from "../../Utility/RaftIdGenerator.js";
 import { Stream } from "node:stream";
 import { TypeUtil } from "../../Utility/TypeUtil.js";
 import { ClientShardHelper } from "../../Utility/ClientShardHelper.js";
-import { shelljs } from "globals";
 
 export class ModifyDatabaseTopologyOperation implements IServerOperation<ModifyDatabaseTopologyResult> {
     private readonly _databaseName: string;

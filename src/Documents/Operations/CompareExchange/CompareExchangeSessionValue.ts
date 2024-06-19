@@ -3,7 +3,7 @@ import { ICompareExchangeValue } from "./ICompareExchangeValue.js";
 import { CompareExchangeValueState } from "./CompareExchangeValueState.js";
 import { throwError } from "../../../Exceptions/index.js";
 import { TypeUtil } from "../../../Utility/TypeUtil.js";
-import { CompareExchangeResultClass, EntityConstructor } from "../../../Types/index.js";
+import { CompareExchangeResultClass } from "../../../Types/index.js";
 import { CompareExchangeValueJsonConverter } from "./CompareExchangeValueJsonConverter.js";
 import { COMPARE_EXCHANGE, CONSTANTS } from "../../../Constants.js";
 import { StringUtil } from "../../../Utility/StringUtil.js";

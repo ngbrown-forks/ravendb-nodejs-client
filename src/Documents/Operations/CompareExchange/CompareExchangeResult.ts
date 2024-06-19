@@ -1,9 +1,7 @@
 import { DocumentConventions } from "../../Conventions/DocumentConventions.js";
 import { throwError } from "../../../Exceptions/index.js";
-import { TypeUtil } from "../../../Utility/TypeUtil.js";
 import { CompareExchangeResultClass, ServerCasing, ServerResponse } from "../../../Types/index.js";
 import { DocumentType } from "../../DocumentAbstractions.js";
-import { ObjectUtil } from "../../../Utility/ObjectUtil.js";
 import { CompareExchangeValueResultParser } from "./CompareExchangeValueResultParser.js";
 
 export interface CompareExchangeResultResponse {

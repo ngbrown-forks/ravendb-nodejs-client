@@ -1,5 +1,4 @@
 import { IIndexQuery } from "./IIndexQuery.js";
-import { TypeUtil } from "../../Utility/TypeUtil.js";
 import { ProjectionBehavior } from "./ProjectionBehavior.js";
 
 export class IndexQueryBase<T> implements IIndexQuery {

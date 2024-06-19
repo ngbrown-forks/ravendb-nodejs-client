@@ -1,4 +1,4 @@
-import { Stream, Readable } from "node:stream";
+import { Readable } from "node:stream";
 import { HttpResponse } from "../../Primitives/Http.js";
 import { closeHttpResponse } from "../../Utility/HttpUtil.js";
 import { CapitalizeType } from "../../Types/index.js";

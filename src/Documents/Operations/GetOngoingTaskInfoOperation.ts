@@ -12,7 +12,6 @@ import { throwError } from "../../Exceptions/index.js";
 import { RavenEtlConfiguration } from "./Etl/RavenEtlConfiguration.js";
 import { SqlEtlConfiguration } from "./Etl/Sql/SqlEtlConfiguration.js";
 import { OlapEtlConfiguration } from "./Etl/Olap/OlapEtlConfiguration.js";
-import { QueueSinkConfiguration } from "./QueueSink/QueueSinkConfiguration.js";
 import { ElasticSearchEtlConfiguration } from "./Etl/ElasticSearch/ElasticSearchEtlConfiguration.js";
 import { QueueEtlConfiguration } from "./Etl/Queue/QueueEtlConfiguration.js";
 import { Transformation } from "./Etl/Transformation.js";

@@ -1,5 +1,5 @@
 import { UsersIndex } from "../Assets/Indexes.js";
-import { DocumentConventions, DocumentStore, GetDatabaseRecordOperation } from "../../src/index.js";
+import { DocumentStore, GetDatabaseRecordOperation } from "../../src/index.js";
 import { ClusterTestContext, RavenTestContext } from "../Utils/TestUtil.js";
 import { User } from "../Assets/Entities.js";
 import { assertThat } from "../Utils/AssertExtensions.js";

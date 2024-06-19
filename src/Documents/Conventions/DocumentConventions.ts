@@ -14,7 +14,7 @@ import { throwError } from "../../Exceptions/index.js";
 import { CONSTANTS } from "../../Constants.js";
 import { TypeUtil } from "../../Utility/TypeUtil.js";
 import { DateUtil, DateUtilOpts } from "../../Utility/DateUtil.js";
-import { ObjectUtil, ObjectChangeCaseOptions, FieldNameConversion } from "../../Utility/ObjectUtil.js";
+import { ObjectUtil, FieldNameConversion } from "../../Utility/ObjectUtil.js";
 import { LoadBalanceBehavior } from "../../Http/LoadBalanceBehavior.js";
 import { BulkInsertConventions } from "./BulkInsertConventions.js";
 import { InMemoryDocumentSessionOperations } from "../Session/InMemoryDocumentSessionOperations.js";

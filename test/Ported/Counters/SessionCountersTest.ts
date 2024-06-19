@@ -299,7 +299,7 @@ describe("SessionCountersTest", function () {
             assertThat(session.advanced.numberOfRequests)
                 .isEqualTo(1);
 
-            session.countersFor("users/1-A").get("likes");
+            await session.countersFor("users/1-A").get("likes");
             assertThat(session.advanced.numberOfRequests)
                 .isEqualTo(1);
         }
@@ -826,7 +826,7 @@ describe("SessionCountersTest", function () {
             assertThat(session.advanced.numberOfRequests)
                 .isEqualTo(1);
 
-            session.delete("users/1-A");
+            await session.delete("users/1-A");
             await session.saveChanges();
 
             assertThat(session.advanced.numberOfRequests)

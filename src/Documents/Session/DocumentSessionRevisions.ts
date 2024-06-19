@@ -4,7 +4,6 @@ import {
     SessionRevisionsOptions
 } from "./IRevisionsSessionOperations.js";
 import { InMemoryDocumentSessionOperations } from "./InMemoryDocumentSessionOperations.js";
-import { MetadataAsDictionary } from "../../Mapping/MetadataAsDictionary.js";
 import { GetRevisionOperation } from "./Operations/GetRevisionOperation.js";
 import { TypeUtil } from "../../Utility/TypeUtil.js";
 import { DocumentType } from "../DocumentAbstractions.js";

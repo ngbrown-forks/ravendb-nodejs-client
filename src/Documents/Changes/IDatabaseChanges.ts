@@ -1,8 +1,6 @@
-import { ObjectTypeDescriptor } from "../../Types/index.js";
 import { DocumentChange } from "./DocumentChange.js";
 import { OperationStatusChange } from "./OperationStatusChange.js";
 import { IndexChange } from "./IndexChange.js";
-import { IChangesObservable } from "./IChangesObservable.js";
 import { IConnectableChanges } from "./IConnectableChanges.js";
 import { CounterChange } from "./CounterChange.js";
 import { TimeSeriesChange } from "./TimeSeriesChange.js";

@@ -1,6 +1,5 @@
 import { DocumentType } from "../DocumentAbstractions.js";
 import { getLogger } from "../../Utility/LogUtil.js";
-import { DocumentStore } from "../DocumentStore.js";
 import { SubscriptionWorkerOptions } from "./SubscriptionWorkerOptions.js";
 import { Socket } from "node:net";
 import { pipeline, Readable, Transform } from "node:stream";

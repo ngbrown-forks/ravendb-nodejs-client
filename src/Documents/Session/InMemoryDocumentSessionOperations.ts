@@ -43,7 +43,6 @@ import { JsonOperation } from "../../Mapping/JsonOperation.js";
 import { IRavenObject } from "../../Types/IRavenObject.js";
 import { GetDocumentsCommand } from "../Commands/GetDocumentsCommand.js";
 import { DocumentConventions } from "../Conventions/DocumentConventions.js";
-import { JsonSerializer } from "../../Mapping/Json/Serializer.js";
 import { OperationExecutor } from "../Operations/OperationExecutor.js";
 import { createMetadataDictionary } from "../../Mapping/MetadataAsDictionary.js";
 import { IndexBatchOptions, ReplicationBatchOptions } from "./IAdvancedSessionOperations.js";

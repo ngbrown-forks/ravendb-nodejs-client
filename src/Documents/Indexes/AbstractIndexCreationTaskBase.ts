@@ -7,7 +7,6 @@ import { AbstractCommonApiForIndexes } from "./AbstractCommonApiForIndexes.js";
 import { IAbstractIndexCreationTask } from "./IAbstractIndexCreationTask.js";
 import { DocumentStoreBase } from "../DocumentStoreBase.js";
 import { IndexDeploymentMode } from "./IndexDeploymentMode.js";
-import { INDEXES } from "../../Constants.js";
 import { ArchivedDataProcessingBehavior } from "../DataArchival/ArchivedDataProcessingBehavior.js";
 
 export abstract class AbstractIndexCreationTaskBase<TIndexDefinition extends IndexDefinition>

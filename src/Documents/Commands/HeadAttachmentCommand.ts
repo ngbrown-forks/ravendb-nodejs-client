@@ -5,7 +5,7 @@ import { StringUtil } from "../../Utility/StringUtil.js";
 import { throwError } from "../../Exceptions/index.js";
 import { ServerNode } from "../../Http/ServerNode.js";
 import { StatusCodes } from "../../Http/StatusCode.js";
-import { Stream, Readable } from "node:stream";
+import { Readable } from "node:stream";
 import { getRequiredEtagHeader } from "../../Utility/HttpUtil.js";
 import { HEADERS } from "../../Constants.js";
 

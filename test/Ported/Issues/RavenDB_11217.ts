@@ -178,14 +178,14 @@ describe("RavenDB_11217Test", function () {
         {
             const session = store.openSession(noTrackingOptions);
             const product1 = await session.load<Product>("products/1-A", Product);
-            const counters = await session.countersFor(product1.id);
+            const counters = session.countersFor(product1.id);
 
-            counters.get("c1");
+            await counters.get("c1");
 
             assertThat(session.advanced.numberOfRequests)
                 .isEqualTo(2);
 
-            counters.get("c1");
+            await counters.get("c1");
 
             assertThat(session.advanced.numberOfRequests)
                 .isEqualTo(3);

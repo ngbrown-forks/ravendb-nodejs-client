@@ -1,5 +1,5 @@
 import assert from "node:assert"
-import { testContext, disposeTestDocumentStore, RavenTestContext } from "../../Utils/TestUtil.js";
+import { testContext, disposeTestDocumentStore } from "../../Utils/TestUtil.js";
 
 import {
     IDocumentStore,

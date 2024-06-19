@@ -3,7 +3,6 @@ import { RavenCommandResponsePipeline } from "../../../Http/RavenCommandResponse
 import { DocumentConventions } from "../../../Documents/Conventions/DocumentConventions.js";
 import { ObjectUtil } from "../../../Utility/ObjectUtil.js";
 import { JsonlStringer } from "../../../ext/stream-json/jsonl/Stringer.js";
-import { JsonlParser } from "../../../ext/stream-json/jsonl/Parser.js";
 
 export function getDocumentResultsAsObjects(
     conventions: DocumentConventions,

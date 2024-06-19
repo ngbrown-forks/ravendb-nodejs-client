@@ -1,5 +1,5 @@
 import {
-    AbstractTimeSeriesIndexCreationTask,
+    AbstractCsharpTimeSeriesIndexCreationTask,
     IDocumentStore,
     StreamResult
 } from "../../../src/index.js";
@@ -71,7 +71,7 @@ describe("TimeSeriesIndexStreamTest", function () {
 });
 
 
-class MyTsIndex extends AbstractTimeSeriesIndexCreationTask {
+class MyTsIndex extends AbstractCsharpTimeSeriesIndexCreationTask {
     public constructor() {
         super();
 

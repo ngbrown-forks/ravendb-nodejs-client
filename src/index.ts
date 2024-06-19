@@ -406,7 +406,6 @@ export * from "./Documents/Indexes/AbstractRawJavaScriptIndexCreationTask.js";
 export * from "./Documents/Indexes/AutoIndexDefinition.js";
 export * from "./Documents/Indexes/AutoIndexFieldOptions.js";
 export * from "./Documents/Indexes/Spatial/AutoSpatialOptions.js";
-export * from "./Documents/Indexes/Counters/AbstractCountersIndexCreationTask.js";
 export * from "./Documents/Indexes/Counters/AbstractGenericCountersIndexCreationTask.js";
 export * from "./Documents/Indexes/Counters/AbstractCsharpCountersIndexCreationTask.js";
 export * from "./Documents/Indexes/Counters/AbstractMultiMapCountersIndexCreationTask.js";
@@ -417,7 +416,6 @@ export * from "./Documents/Indexes/TimeSeries/AbstractGenericTimeSeriesIndexCrea
 export * from "./Documents/Indexes/TimeSeries/AbstractMultiMapTimeSeriesIndexCreationTask.js";
 export * from "./Documents/Indexes/TimeSeries/AbstractCsharpTimeSeriesIndexCreationTask.js";
 export * from "./Documents/Indexes/TimeSeries/AbstractRawJavaScriptTimeSeriesIndexCreationTask.js";
-export * from "./Documents/Indexes/TimeSeries/AbstractTimeSeriesIndexCreationTask.js";
 export * from "./Documents/Indexes/TimeSeries/TimeSeriesIndexDefinition.js";
 export * from "./Documents/Indexes/TimeSeries/TimeSeriesIndexDefinitionBuilder.js";
 

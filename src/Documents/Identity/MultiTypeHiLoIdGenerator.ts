@@ -35,7 +35,7 @@ export class MultiTypeHiLoIdGenerator {
             return null;
         }
 
-        const tag = await this._conventions.transformClassCollectionNameToDocumentIdPrefix(typeTagName);
+        const tag = this._conventions.transformClassCollectionNameToDocumentIdPrefix(typeTagName);
 
         let value = this._idGeneratorsByTag[tag];
         if (value) {

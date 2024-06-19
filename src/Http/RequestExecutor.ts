@@ -18,7 +18,7 @@ import {
     GetClientConfigurationCommand,
 } from "../Documents/Operations/Configuration/GetClientConfigurationOperation.js";
 import CurrentIndexAndNode from "./CurrentIndexAndNode.js";
-import { CONSTANTS, HEADERS, QUERY_STRING } from "../Constants.js";
+import { HEADERS, QUERY_STRING } from "../Constants.js";
 import { HttpRequestParameters, HttpResponse, HttpRequestParametersWithoutUri } from "../Primitives/Http.js";
 import { raceToResolution } from "../Utility/PromiseUtil.js";
 import { GetStatisticsOperation } from "../Documents/Operations/GetStatisticsOperation.js";

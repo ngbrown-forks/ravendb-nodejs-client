@@ -12,7 +12,7 @@ import { StringUtil } from "../../Utility/StringUtil.js";
 import { DocumentConventions } from "../Conventions/DocumentConventions.js";
 import { StringBuilder } from "../../Utility/StringBuilder.js";
 import { BaseJavaScriptIndexCreationTask } from "./BaseJavaScriptIndexCreationTask.js";
-import { CONSTANTS, INDEXES } from "../../Constants.js";
+import { INDEXES } from "../../Constants.js";
 
 export class AbstractJavaScriptIndexCreationTask<TDocument extends object, TMapResult extends object = any>
     extends BaseJavaScriptIndexCreationTask<keyof TMapResult & string> {

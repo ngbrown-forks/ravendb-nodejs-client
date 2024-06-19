@@ -2,7 +2,6 @@ import { ObjectTypeDescriptor, ObjectLiteralDescriptor, EntityConstructor } from
 import { throwError } from "../Exceptions/index.js";
 import { TypeUtil } from "../Utility/TypeUtil.js";
 import { getLogger } from "../Utility/LogUtil.js";
-import { StringUtil } from "../Utility/StringUtil.js";
 import { DocumentConventions } from "../Documents/Conventions/DocumentConventions.js";
 import { ObjectUtil } from "../Utility/ObjectUtil.js";
 import { CONSTANTS } from "../Constants.js";

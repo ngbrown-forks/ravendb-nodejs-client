@@ -11,7 +11,6 @@ import {
 } from "../../DocumentAbstractions.js";
 import { CONSTANTS, TIME_SERIES } from "../../../Constants.js";
 import { TypeUtil } from "../../../Utility/TypeUtil.js";
-import { StringUtil } from "../../../Utility/StringUtil.js";
 import { Reference } from "../../../Utility/Reference.js";
 import { NESTED_OBJECT_TYPES_PROJECTION_FIELD } from "../DocumentQuery.js";
 import { TimeSeriesAggregationResult } from "../../Queries/TimeSeries/TimeSeriesAggregationResult.js";

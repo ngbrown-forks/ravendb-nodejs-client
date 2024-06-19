@@ -4,7 +4,6 @@ import { CollectionStatistics } from "./CollectionStatistics.js";
 import { RavenCommand } from "../../Http/RavenCommand.js";
 import { DocumentConventions } from "../Conventions/DocumentConventions.js";
 import { ServerNode } from "../../Http/ServerNode.js";
-import { JsonSerializer } from "../../Mapping/Json/Serializer.js";
 import { Stream } from "node:stream";
 import { ObjectUtil } from "../../Utility/ObjectUtil.js";
 

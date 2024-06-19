@@ -31,7 +31,7 @@ describe("RavenDB_9889", function () {
         store.addSessionListener("afterConversionToDocument", (event: AfterConversionToDocumentEventArgs) => {
             if (event.entity instanceof Item) {
                 const item = event.entity;
-                const document = ObjectUtil.clone(event.document.value);
+                const document = ObjectUtil.deepLiteralClone(event.document.value);
                 document.after = true;
 
                 event.document.value = document;
@@ -70,7 +70,7 @@ describe("RavenDB_9889", function () {
 
     it("canUseToEntityConversionEvents", async () => {
         store.addSessionListener("beforeConversionToEntity", (event: BeforeConversionToEntityEventArgs) => {
-            const document = ObjectUtil.clone(event.document) as Item;
+            const document = ObjectUtil.deepLiteralClone(event.document) as Item;
 
             document.before = true;
             event.document = document;

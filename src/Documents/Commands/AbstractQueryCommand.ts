@@ -1,5 +1,5 @@
 import { RavenCommand } from "../../Http/RavenCommand.js";
-import { IndexQuery, writeIndexQuery } from "../Queries/IndexQuery.js";
+import { IndexQuery } from "../Queries/IndexQuery.js";
 import { ServerNode } from "../../Http/ServerNode.js";
 import { HttpRequestParameters } from "../../Primitives/Http.js";
 import { StringBuilder } from "../../Utility/StringBuilder.js";

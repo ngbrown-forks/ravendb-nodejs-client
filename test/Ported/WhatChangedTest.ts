@@ -34,7 +34,7 @@ describe("WhatChangedTest", function () {
 
             const user = await newSession.load<User>("users/1");
             user.age = 5;
-            const changes = await newSession.advanced.whatChanged();
+            const changes = newSession.advanced.whatChanged();
             assert.strictEqual(changes["users/1"].length, 1);
 
             assert.strictEqual(changes["users/1"][0].change, "NewField");
