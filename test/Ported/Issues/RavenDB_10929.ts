@@ -1,11 +1,11 @@
 import {
     CreateDatabaseOperation,
     GetDatabaseRecordOperation,
-    IDocumentStore
+    IDocumentStore,
+    UpdateDatabaseOperation
 } from "../../../src/index.js";
 import { disposeTestDocumentStore, RavenTestContext, testContext } from "../../Utils/TestUtil.js";
 import { assertThat, assertThrows } from "../../Utils/AssertExtensions.js";
-import { UpdateDatabaseOperation } from "../../../src/ServerWide/Operations/UpdateDatabaseOperation.js";
 import { Company } from "../../Assets/Entities.js";
 
 (RavenTestContext.isPullRequest ? describe.skip : describe)("RavenDB_10929Test", function () {

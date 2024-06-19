@@ -1,14 +1,13 @@
-import { DocumentStore, GetDatabaseRecordOperation } from "../../../src/index.js";
-import { ClusterTestContext, RavenTestContext } from "../../Utils/TestUtil.js";
-import { DatabaseRecordBuilder } from "../../../src/ServerWide/Operations/DatabaseRecordBuilder.js";
 import {
-    AddNodeToOrchestratorTopologyOperation
-} from "../../../src/ServerWide/Sharding/AddNodeToOrchestratorTopologyOperation.js";
-import { assertThat } from "../../Utils/AssertExtensions.js";
-import {
+    DocumentStore,
+    GetDatabaseRecordOperation,
+    DatabaseRecordBuilder,
+    AddDatabaseShardOperation,
+    AddNodeToOrchestratorTopologyOperation,
     RemoveNodeFromOrchestratorTopologyOperation
-} from "../../../src/ServerWide/Sharding/RemoveNodeFromOrchestratorTopologyOperation.js";
-import { AddDatabaseShardOperation } from "../../../src/ServerWide/Sharding/AddDatabaseShardOperation.js";
+} from "../../../src/index.js";
+import { ClusterTestContext, RavenTestContext } from "../../Utils/TestUtil.js";
+import { assertThat } from "../../Utils/AssertExtensions.js";
 
 (RavenTestContext.isPullRequest ? describe.skip : describe)("ShardedDatabasesTest", function () {
     let testContext: ClusterTestContext;

@@ -1,8 +1,10 @@
 import { disposeTestDocumentStore, RavenTestContext, testContext } from "../../Utils/TestUtil.js";
 import { assertThat } from "../../Utils/AssertExtensions.js";
-import { ConfigureExpirationOperation } from "../../../src/Documents/Operations/Expiration/ConfigureExpirationOperation.js";
-import { IDocumentStore } from "../../../src/Documents/IDocumentStore.js";
-import { ExpirationConfiguration } from "../../../src/Documents/Operations/Expiration/ExpirationConfiguration.js";
+import {
+    ConfigureExpirationOperation,
+    IDocumentStore,
+    ExpirationConfiguration
+} from "../../../src/index.js";
 
 (RavenTestContext.isPullRequest ? describe.skip : describe)("ExpirationConfigurationTest", function () {
 

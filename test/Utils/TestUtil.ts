@@ -1,7 +1,6 @@
 import fs from "node:fs";
 import path from "node:path";
 import url from "node:url";
-import { IDisposable, IDocumentStore, IAuthOptions } from "../../src/index.js";
 import { RavenTestDriver } from "../TestDriver/index.js";
 import { RavenServerLocator } from "../TestDriver/RavenServerLocator.js";
 import { getError, throwError } from "../../src/Exceptions/index.js";
@@ -18,7 +17,10 @@ import {
     GetClusterTopologyCommand,
     GetDatabaseRecordOperation,
     IDocumentSession,
-    ServerNode
+    ServerNode,
+    IDisposable,
+    IDocumentStore,
+    IAuthOptions
 } from "../../src/index.js";
 import { sync } from "rimraf";
 import { ChildProcess } from "node:child_process";

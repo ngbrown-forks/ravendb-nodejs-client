@@ -5,7 +5,7 @@ import {
     PutClientConfigurationOperation,
     SessionOptions
 } from "../../../src/index.js";
-import { disposeTestDocumentStore, RavenTestContext, testContext } from "../../Utils/TestUtil.js";
+import { disposeTestDocumentStore, testContext } from "../../Utils/TestUtil.js";
 import { Company } from "../../Assets/Entities.js";
 import { assertThat, assertThrows } from "../../Utils/AssertExtensions.js";
 

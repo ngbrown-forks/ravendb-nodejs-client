@@ -1,6 +1,8 @@
 import { disposeTestDocumentStore, testContext } from "../../Utils/TestUtil.js";
-import { GetEssentialStatisticsOperation } from "../../../src/Documents/Operations/GetEssentialStatisticsOperation.js";
-import { IDocumentStore } from "../../../src/index.js";
+import {
+    IDocumentStore,
+    GetEssentialStatisticsOperation
+} from "../../../src/index.js";
 import { assertThat } from "../../Utils/AssertExtensions.js";
 import { Company } from "../../Assets/Entities.js";
 import { CompaniesByNameIndex } from "./RavenDB_9745.js";

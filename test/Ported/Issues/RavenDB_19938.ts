@@ -8,20 +8,21 @@ import {
     DocumentsCompressionConfiguration,
     ExpirationConfiguration,
     GetDatabaseRecordOperation,
-    IDocumentStore, IndexDefinition, PeriodicBackupConfiguration,
+    IDocumentStore,
+    IndexDefinition,
+    PeriodicBackupConfiguration,
     RefreshConfiguration,
     RevisionsCollectionConfiguration,
-    RevisionsConfiguration, SorterDefinition,
+    RevisionsConfiguration,
+    SorterDefinition,
     StudioConfiguration,
-    TimeSeriesConfiguration
+    TimeSeriesConfiguration,
+    IDatabaseRecordBuilderInitializer,
+    OrchestratorTopology
 } from "../../../src/index.js";
 import { disposeTestDocumentStore, testContext } from "../../Utils/TestUtil.js";
 import { assertThat, assertThrows } from "../../Utils/AssertExtensions.js";
-import {
-    IDatabaseRecordBuilderInitializer
-} from "../../../src/ServerWide/Operations/Builder/IDatabaseRecordBuilderInitializer.js";
-import { DatabaseRecordBuilder } from "../../../src/ServerWide/Operations/DatabaseRecordBuilder.js";
-import { OrchestratorTopology } from "../../../src/ServerWide/OrchestratorTopology.js";
+import { DatabaseRecordBuilder } from "../../../src/index.js";
 
 describe("RavenDB_19938Test", function () {
     let store: IDocumentStore;

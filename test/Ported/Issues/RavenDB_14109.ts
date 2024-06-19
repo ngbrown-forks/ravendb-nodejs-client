@@ -1,8 +1,10 @@
-import { IDocumentStore } from "../../../src/Documents/IDocumentStore.js";
+import {
+    IDocumentStore,
+    StreamQueryStatistics
+} from "../../../src/index.js";
 import { disposeTestDocumentStore, testContext } from "../../Utils/TestUtil.js";
 import { Company } from "../../Assets/Orders.js";
 import { finishedAsync } from "../../../src/Utility/StreamUtil.js";
-import { StreamQueryStatistics } from "../../../src/Documents/Session/StreamQueryStatistics.js";
 import { assertThat } from "../../Utils/AssertExtensions.js";
 
 describe("RavenDB_14109Test", function () {

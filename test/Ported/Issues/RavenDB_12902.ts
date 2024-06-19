@@ -1,9 +1,11 @@
-import { IDocumentStore } from "../../../src/Documents/IDocumentStore.js";
+import {
+    IDocumentStore,
+    QueryStatistics,
+    AbstractJavaScriptIndexCreationTask
+} from "../../../src/index.js";
 import { disposeTestDocumentStore, testContext } from "../../Utils/TestUtil.js";
-import { QueryStatistics } from "../../../src/Documents/Session/QueryStatistics.js";
 import { User } from "../../Assets/Entities.js";
 import { assertThat } from "../../Utils/AssertExtensions.js";
-import { AbstractJavaScriptIndexCreationTask } from "../../../src/index.js";
 
 describe("RavenDB_12902", function () {
 

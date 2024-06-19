@@ -2,12 +2,13 @@ import {
     AbstractCsharpIndexCreationTask,
     AbstractCsharpMultiMapIndexCreationTask,
     AbstractRawJavaScriptIndexCreationTask,
-    GetIndexOperation, GetIndexStatisticsOperation,
+    GetIndexOperation,
+    GetIndexStatisticsOperation,
     IAbstractIndexCreationTask,
+    IndexCreation,
     IDocumentStore
 } from "../../../src/index.js";
 import { disposeTestDocumentStore, testContext } from "../../Utils/TestUtil.js";
-import { IndexCreation } from "../../../src/Documents/Indexes/IndexCreation.js";
 import { assertThat } from "../../Utils/AssertExtensions.js";
 import { INDEXES } from "../../../src/Constants.js";
 

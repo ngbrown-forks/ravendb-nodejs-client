@@ -1,4 +1,9 @@
-import { DocumentStore, EntityToJson, IDocumentStore, PutDocumentCommand } from "../../src/index.js";
+import {
+    DocumentStore,
+    EntityToJson,
+    IDocumentStore,
+    PutDocumentCommand
+} from "../../src/index.js";
 import { ClusterTestContext, disposeTestDocumentStore, RavenTestContext, testContext } from "../Utils/TestUtil.js";
 import { throwError } from "../../src/Exceptions/index.js";
 import { HttpRequestParameters, HttpResponse } from "../../src/Primitives/Http.js";

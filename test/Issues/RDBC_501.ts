@@ -1,4 +1,8 @@
-import { IDocumentStore, TimeSeriesAggregationResult, TimeSeriesValue } from "../../src/index.js";
+import {
+    IDocumentStore,
+    TimeSeriesAggregationResult,
+    TimeSeriesValue
+} from "../../src/index.js";
 import { disposeTestDocumentStore, testContext } from "../Utils/TestUtil.js";
 
 import { assertThat } from "../Utils/AssertExtensions.js";

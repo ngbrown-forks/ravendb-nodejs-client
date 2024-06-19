@@ -1,8 +1,6 @@
 import { IDocumentSession, IDocumentStore } from "../../../src/index.js";
 import { disposeTestDocumentStore, testContext } from "../../Utils/TestUtil.js";
 import { assertThat } from "../../Utils/AssertExtensions.js";
-import { stringToReadable } from "../../../src/Utility/StreamUtil.js";
-import { Test } from "mocha";
 
 describe("RavenDB_18664", function () {
 

@@ -1,10 +1,12 @@
-import { IDocumentStore } from "../../../src/Documents/IDocumentStore.js";
+import {
+    IDocumentStore,
+    RevisionsConfiguration,
+    RevisionsCollectionConfiguration,
+    ConfigureRevisionsOperation,
+    GetDetailedCollectionStatisticsOperation
+} from "../../../src/index.js";
 import { disposeTestDocumentStore, testContext } from "../../Utils/TestUtil.js";
-import { RevisionsConfiguration } from "../../../src/Documents/Operations/RevisionsConfiguration.js";
-import { RevisionsCollectionConfiguration } from "../../../src/Documents/Operations/RevisionsCollectionConfiguration.js";
-import { ConfigureRevisionsOperation } from "../../../src/Documents/Operations/Revisions/ConfigureRevisionsOperation.js";
 import { Company } from "../../Assets/Orders.js";
-import { GetDetailedCollectionStatisticsOperation } from "../../../src/Documents/Operations/GetDetailedCollectionStatisticsOperation.js";
 import { assertThat } from "../../Utils/AssertExtensions.js";
 
 describe("RavenDB_14881", function () {

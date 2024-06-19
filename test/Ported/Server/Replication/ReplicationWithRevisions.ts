@@ -1,8 +1,10 @@
-import { IDocumentStore } from "../../../../src/Documents/IDocumentStore.js";
+import {
+    IDocumentStore,
+    RevisionsCollectionConfiguration,
+    ConfigureRevisionsForConflictsOperation
+} from "../../../../src/index.js";
 import { disposeTestDocumentStore, RavenTestContext, testContext } from "../../../Utils/TestUtil.js";
 import { ReplicationTestContext } from "../../../Utils/ReplicationTestContext.js";
-import { RevisionsCollectionConfiguration } from "../../../../src/Documents/Operations/RevisionsCollectionConfiguration.js";
-import { ConfigureRevisionsForConflictsOperation } from "../../../../src/ServerWide/Operations/ConfigureRevisionsForConflictsOperation.js";
 import { assertThat } from "../../../Utils/AssertExtensions.js";
 import { Company, User } from "../../../Assets/Entities.js";
 

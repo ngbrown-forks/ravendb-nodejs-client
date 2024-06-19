@@ -1,5 +1,5 @@
 import { throwError } from "../../src/Exceptions/index.js";
-import { IAuthOptions } from "../../src/Auth/AuthOptions.js";
+import { IAuthOptions } from "../../src/index.js";
 
 export abstract class RavenServerLocator {
 

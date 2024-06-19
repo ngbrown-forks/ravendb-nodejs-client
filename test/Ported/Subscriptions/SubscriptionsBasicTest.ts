@@ -2,23 +2,26 @@ import { Company, Order, User } from "../../Assets/Entities.js";
 import assert from "node:assert"
 import { testContext, disposeTestDocumentStore } from "../../Utils/TestUtil.js";
 
-import DocumentStore, {
+import {
     IDocumentStore,
     SubscriptionWorkerOptions,
     SubscriptionBatch,
     SubscriptionCreationOptions,
-    SubscriptionWorker, ToggleOngoingTaskStateOperation, SubscriptionUpdateOptions, Lazy
+    SubscriptionWorker,
+    ToggleOngoingTaskStateOperation,
+    SubscriptionUpdateOptions,
+    GetOngoingTaskInfoOperation,
+    OngoingTaskSubscription,
+    ObjectUtil,
+    DocumentStore
 } from "../../../src/index.js";
 import { AsyncQueue } from "../../Utils/AsyncQueue.js";
 import { acquireSemaphore } from "../../../src/Utility/SemaphoreUtil.js";
 import { getError, throwError } from "../../../src/Exceptions/index.js";
 import { TypeUtil } from "../../../src/Utility/TypeUtil.js";
-import { GetOngoingTaskInfoOperation } from "../../../src/Documents/Operations/GetOngoingTaskInfoOperation.js";
-import { OngoingTaskSubscription } from "../../../src/Documents/Operations/OngoingTasks/OngoingTask.js";
 import { assertThat, assertThrows } from "../../Utils/AssertExtensions.js";
 import { TimeValue } from "../../../src/Primitives/TimeValue.js";
 import { Semaphore } from "../../../src/Utility/Semaphore.js";
-import { ObjectUtil } from "../../../src/Utility/ObjectUtil.js";
 
 describe("SubscriptionsBasicTest", function () {
     const _reasonableWaitTime = 15 * 1000;

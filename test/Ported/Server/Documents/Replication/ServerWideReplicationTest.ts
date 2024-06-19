@@ -1,20 +1,22 @@
 import {
-    CreateDatabaseOperation, DeleteDatabasesOperation,
+    CreateDatabaseOperation,
+    DeleteDatabasesOperation,
     ExternalReplication,
     GetDatabaseRecordOperation,
-    IDocumentStore, PutConnectionStringOperation, RavenConnectionString, UpdateExternalReplicationOperation
-} from "../../../../../src/index.js";
-import { disposeTestDocumentStore, RavenTestContext, testContext } from "../../../../Utils/TestUtil.js";
-import {
+    IDocumentStore,
+    PutConnectionStringOperation,
+    RavenConnectionString,
+    UpdateExternalReplicationOperation,
     ServerWideExternalReplication,
     PutServerWideExternalReplicationOperation,
     GetServerWideExternalReplicationOperation,
     ServerWideExternalReplicationResponse,
-    DeleteServerWideTaskOperation
+    DeleteServerWideTaskOperation,
+    PutConnectionStringResult
 } from "../../../../../src/index.js";
+import { disposeTestDocumentStore, RavenTestContext, testContext } from "../../../../Utils/TestUtil.js";
 import { assertThat } from "../../../../Utils/AssertExtensions.js";
 import { randomUUID } from "node:crypto";
-import { PutConnectionStringResult } from "../../../../../src/Documents/Operations/ConnectionStrings/PutConnectionStringOperation.js";
 
 (RavenTestContext.isPullRequest ? describe.skip : describe)("ServerWideReplicationTest", function () {
 

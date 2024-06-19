@@ -10,14 +10,14 @@ import {
     TimeSeriesConfiguration,
     TimeSeriesCollectionConfiguration,
     ConfigureTimeSeriesOperation,
-    ISessionDocumentRollupTypedTimeSeries
+    ISessionDocumentRollupTypedTimeSeries,
+    TypedTimeSeriesRollupEntry
 } from "../../../src/index.js";
 import { User } from "../../Assets/Entities.js";
 import { assertThat } from "../../Utils/AssertExtensions.js";
 import moment from "moment";
 import { TimeValue } from "../../../src/Primitives/TimeValue.js";
 import { delay } from "../../../src/Utility/PromiseUtil.js";
-import { TypedTimeSeriesRollupEntry } from "../../../src/index.js";
 
 (RavenTestContext.isPullRequest ? describe.skip : describe)("TimeSeriesTypedSessionTest", function () {
 

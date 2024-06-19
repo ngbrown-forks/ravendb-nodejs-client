@@ -7,9 +7,9 @@ import {
     IDocumentStore,
     ITypesAwareObjectMapper,
     ObjectTypeDescriptor,
-    GetDocumentsCommand
+    GetDocumentsCommand,
+    TypeInfo
 } from "../../src/index.js";
-import { TypeInfo } from "../../src/Mapping/ObjectMapper.js";
 import { Transform, instanceToPlain, plainToInstance, Type } from "class-transformer";
 import { assertThat } from "../Utils/AssertExtensions.js";
 

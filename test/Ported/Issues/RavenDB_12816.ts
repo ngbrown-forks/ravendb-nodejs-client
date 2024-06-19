@@ -1,4 +1,9 @@
-import { Facet, FacetSetup, IDocumentStore, RangeFacet } from "../../../src/index.js";
+import {
+    Facet,
+    FacetSetup,
+    IDocumentStore,
+    RangeFacet
+} from "../../../src/index.js";
 import { disposeTestDocumentStore, testContext } from "../../Utils/TestUtil.js";
 import { Camera, CameraCostIndex, FacetTestContext } from "../../Utils/FacetTestContext.js";
 import { assertThat, assertThrows } from "../../Utils/AssertExtensions.js";

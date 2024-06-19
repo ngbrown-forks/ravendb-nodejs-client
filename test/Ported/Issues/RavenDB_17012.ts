@@ -1,9 +1,11 @@
-import { GetStatisticsOperation, IDocumentStore } from "../../../src/index.js";
+import {
+    GetStatisticsOperation,
+    IDocumentStore,
+    BulkInsertOptions
+} from "../../../src/index.js";
 import { disposeTestDocumentStore, testContext } from "../../Utils/TestUtil.js";
 import { User } from "../../Assets/Entities.js";
-import { BulkInsertOptions } from "../../../src/Documents/BulkInsertOperation.js";
 import { assertThat } from "../../Utils/AssertExtensions.js";
-
 
 describe("RavenDB_17012Test", function () {
 

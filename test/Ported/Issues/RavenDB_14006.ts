@@ -1,4 +1,9 @@
-import { AbstractJavaScriptIndexCreationTask, IDocumentStore, QueryStatistics, SessionOptions } from "../../../src/index.js";
+import {
+    AbstractJavaScriptIndexCreationTask,
+    IDocumentStore,
+    QueryStatistics,
+    SessionOptions
+} from "../../../src/index.js";
 import { disposeTestDocumentStore, testContext } from "../../Utils/TestUtil.js";
 import { Address, Company, Employee } from "../../Assets/Orders.js";
 import { assertThat } from "../../Utils/AssertExtensions.js";

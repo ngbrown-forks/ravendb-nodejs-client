@@ -1,7 +1,10 @@
-import { IDocumentStore } from "../../../src/Documents/IDocumentStore.js";
+import {
+    IDocumentStore,
+    CONSTANTS,
+    RefreshConfiguration,
+    ConfigureRefreshOperation
+} from "../../../src/index.js";
 import { disposeTestDocumentStore, RavenTestContext, testContext } from "../../Utils/TestUtil.js";
-import { RefreshConfiguration } from "../../../src/Documents/Operations/Refresh/RefreshConfiguration.js";
-import { ConfigureRefreshOperation } from "../../../src/Documents/Operations/Refresh/ConfigureRefreshOperation.js";
 import { User } from "../../Assets/Entities.js";
 import moment from "moment";
 import { Stopwatch } from "../../../src/Utility/Stopwatch.js";
@@ -9,7 +12,6 @@ import { throwError } from "../../../src/Exceptions/index.js";
 import { assertThat } from "../../Utils/AssertExtensions.js";
 import { delay } from "../../../src/Utility/PromiseUtil.js";
 import { DateUtil } from "../../../src/Utility/DateUtil.js";
-import { CONSTANTS } from "../../../src/Constants.js";
 
 (RavenTestContext.isPullRequest ? describe.skip : describe)("RavenDB_13735", function () {
 

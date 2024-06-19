@@ -1,4 +1,8 @@
-import { DocumentStore, GetCompareExchangeValuesOperation, SessionOptions } from "../../../../src/index.js";
+import {
+    DocumentStore,
+    GetCompareExchangeValuesOperation,
+    SessionOptions
+} from "../../../../src/index.js";
 import { ClusterTestContext, RavenTestContext, } from "../../../Utils/TestUtil.js";
 import { assertThat } from "../../../Utils/AssertExtensions.js";
 

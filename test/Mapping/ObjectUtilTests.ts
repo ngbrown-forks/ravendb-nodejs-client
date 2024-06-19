@@ -1,4 +1,7 @@
-import { ObjectChangeCaseOptions, ObjectUtil } from "../../src/index.js";
+import {
+    ObjectChangeCaseOptions,
+    ObjectUtil
+} from "../../src/index.js";
 import assert from "node:assert"
 
 describe("ObjectUtil", function () {

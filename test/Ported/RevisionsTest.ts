@@ -6,21 +6,18 @@ import {
     DocumentStore, GetStatisticsOperation,
     IDocumentStore,
     RevisionsCollectionConfiguration,
-    RevisionsConfiguration
+    RevisionsConfiguration,
+    GetRevisionsOperation,
+    GetRevisionsParameters,
+    ConfigureRevisionsOperationResult,
+    RevisionsResult,
+    GetRevisionsBinEntryCommand,
+    ObjectUtil
 } from "../../src/index.js";
 import { User } from "../Assets/Entities.js";
-import { ConfigureRevisionsOperationResult } from "../../src/Documents/Operations/Revisions/ConfigureRevisionsOperation.js";
-import { GetRevisionsBinEntryCommand } from "../../src/Documents/Commands/GetRevisionsBinEntryCommand.js";
 import { Company } from "../Assets/Orders.js";
 import { assertThat, assertThrows } from "../Utils/AssertExtensions.js";
-import {
-    GetRevisionsOperation,
-    GetRevisionsParameters
-} from "../../src/Documents/Operations/Revisions/GetRevisionsOperation.js";
-import { RevisionsResult } from "../../src/Documents/Operations/Revisions/RevisionsResult.js";
 import { delay } from "../../src/Utility/PromiseUtil.js";
-import { ObjectUtil } from "../../src/Utility/ObjectUtil.js";
-
 
 (RavenTestContext.isPullRequest ? describe.skip : describe)("RevisionsTest", function () {
 

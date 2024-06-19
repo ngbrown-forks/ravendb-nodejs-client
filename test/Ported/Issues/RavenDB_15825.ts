@@ -1,14 +1,15 @@
 import {
     DocumentConventions,
-    FacetOptions, IDocumentSession,
+    FacetOptions,
+    IDocumentSession,
     IDocumentStore,
     IndexQueryParameters,
-    QueryStatistics
+    QueryStatistics,
+    AbstractJavaScriptIndexCreationTask
 } from "../../../src/index.js";
 import { disposeTestDocumentStore, testContext } from "../../Utils/TestUtil.js";
 import { HashCalculator } from "../../../src/Documents/Queries/HashCalculator.js";
 import { assertThat } from "../../Utils/AssertExtensions.js";
-import { AbstractJavaScriptIndexCreationTask } from "../../../src/Documents/Indexes/AbstractJavaScriptIndexCreationTask.js";
 
 describe("RavenDB_15825", function () {
 

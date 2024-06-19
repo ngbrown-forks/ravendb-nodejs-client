@@ -1,5 +1,10 @@
 
-import { GetDatabaseRecordOperation, IDocumentStore, DataArchivalConfiguration, ConfigureDataArchivalOperation } from "../../../../src/index.js";
+import {
+    GetDatabaseRecordOperation,
+    IDocumentStore,
+    DataArchivalConfiguration,
+    ConfigureDataArchivalOperation
+} from "../../../../src/index.js";
 import { disposeTestDocumentStore, RavenTestContext, testContext } from "../../../Utils/TestUtil.js";
 import { assertThat } from "../../../Utils/AssertExtensions.js";
 

@@ -2,7 +2,8 @@ import assert from "node:assert"
 import { testContext, disposeTestDocumentStore } from "../../Utils/TestUtil.js";
 
 import {
-    AbstractCsharpMultiMapIndexCreationTask, GetIndexOperation,
+    AbstractCsharpMultiMapIndexCreationTask,
+    GetIndexOperation,
     IDocumentStore,
 } from "../../../src/index.js";
 

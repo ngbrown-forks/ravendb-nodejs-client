@@ -1,9 +1,13 @@
-import { AbstractJavaScriptIndexCreationTask, IDocumentStore, ResetIndexOperation } from "../../../src/index.js";
-import { disposeTestDocumentStore, RavenTestContext, testContext } from "../../Utils/TestUtil.js";
+import {
+    AbstractJavaScriptIndexCreationTask,
+    IDocumentStore,
+    ResetIndexOperation,
+    DeleteServerWideAnalyzerOperation,
+    PutServerWideAnalyzersOperation,
+    AnalyzerDefinition
+} from "../../../src/index.js";
+import { disposeTestDocumentStore, testContext } from "../../Utils/TestUtil.js";
 import { assertThat, assertThrows } from "../../Utils/AssertExtensions.js";
-import { AnalyzerDefinition } from "../../../src/Documents/Indexes/Analysis/AnalyzerDefinition.js";
-import { DeleteServerWideAnalyzerOperation } from "../../../src/ServerWide/Operations/Analyzers/DeleteServerWideAnalyzerOperation.js";
-import { PutServerWideAnalyzersOperation } from "../../../src/ServerWide/Operations/Analyzers/PutServerWideAnalyzersOperation.js";
 
 describe("RavenDB_16328_AnalyzersTest", function () {
 

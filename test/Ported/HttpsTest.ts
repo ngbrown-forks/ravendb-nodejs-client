@@ -3,20 +3,23 @@ import { testContext, disposeTestDocumentStore } from "../Utils/TestUtil.js";
 
 import {
     CertificateRawData,
-    CreateClientCertificateOperation, DatabaseAccess, DeleteCertificateOperation,
-    DocumentStore, GetCertificateOperation, GetCertificatesOperation,
-    IDocumentStore, PutClientCertificateOperation,
+    CreateClientCertificateOperation,
+    DatabaseAccess,
+    DeleteCertificateOperation,
+    DocumentStore,
+    GetCertificateOperation,
+    GetCertificatesOperation,
+    ReplaceClusterCertificateOperation,
+    IDocumentStore,
+    PutClientCertificateOperation,
+    EditClientCertificateOperation,
+    EditClientCertificateParameters,
+    GetCertificateMetadataOperation,
+    GetCertificatesMetadataOperation
 } from "../../src/index.js";
 import { assertThat, assertThrows } from "../Utils/AssertExtensions.js";
 import { Parse } from "unzipper";
-import { bufferToReadable, readToBuffer, readToEnd, } from "../../src/Utility/StreamUtil.js";
-import { ReplaceClusterCertificateOperation } from "../../src/ServerWide/Operations/Certificates/ReplaceClusterCertificateOperation.js";
-import {
-    EditClientCertificateOperation,
-    EditClientCertificateParameters
-} from "../../src/ServerWide/Operations/Certificates/EditClientCertificateOperation.js";
-import { GetCertificateMetadataOperation } from "../../src/ServerWide/Operations/Certificates/GetCertificateMetadataOperation.js";
-import { GetCertificatesMetadataOperation } from "../../src/ServerWide/Operations/Certificates/GetCertificatesMetadataOperation.js";
+import { bufferToReadable, readToBuffer, readToEnd } from "../../src/Utility/StreamUtil.js";
 
 describe("HttpsTest", function () {
 

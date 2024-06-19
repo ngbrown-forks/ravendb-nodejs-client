@@ -1,4 +1,8 @@
-import { IDocumentStore, SubscriptionCreationOptions, SubscriptionWorkerOptions } from "../../../src/index.js";
+import {
+    IDocumentStore,
+    SubscriptionCreationOptions,
+    SubscriptionWorkerOptions
+} from "../../../src/index.js";
 import { disposeTestDocumentStore, testContext } from "../../Utils/TestUtil.js";
 import { assertThat, assertThrows } from "../../Utils/AssertExtensions.js";
 

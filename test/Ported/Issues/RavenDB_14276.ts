@@ -1,7 +1,9 @@
-import { IDocumentStore } from "../../../src/Documents/IDocumentStore.js";
+import {
+    IDocumentStore,
+    SessionBeforeStoreEventArgs
+} from "../../../src/index.js";
 import { disposeTestDocumentStore, testContext } from "../../Utils/TestUtil.js";
 import { User } from "../../Assets/Entities.js";
-import { SessionBeforeStoreEventArgs } from "../../../src/Documents/Session/SessionEvents.js";
 import { assertThat } from "../../Utils/AssertExtensions.js";
 
 describe("RavenDB_14276", function () {

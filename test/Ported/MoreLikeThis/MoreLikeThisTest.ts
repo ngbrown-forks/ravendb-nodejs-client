@@ -36,7 +36,6 @@ import {
     MoreLikeThisOptions,
     MoreLikeThisStopWords
 } from "../../../src/index.js";
-import {  } from "../../../src/index.js";
 import { assertThat } from "../../Utils/AssertExtensions.js";
 
 export class DataIndex extends AbstractJavaScriptIndexCreationTask<Data, Pick<Data, "body" | "whitespaceAnalyzerField">> {

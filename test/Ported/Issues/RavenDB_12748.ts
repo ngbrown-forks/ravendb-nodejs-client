@@ -1,4 +1,8 @@
-import { AbstractJavaScriptIndexCreationTask, IDocumentStore, RangeBuilder } from "../../../src/index.js";
+import {
+    AbstractJavaScriptIndexCreationTask,
+    IDocumentStore,
+    RangeBuilder
+} from "../../../src/index.js";
 import { disposeTestDocumentStore, testContext } from "../../Utils/TestUtil.js";
 import { Order } from "../../Assets/Faceted.js";
 import { assertThat } from "../../Utils/AssertExtensions.js";

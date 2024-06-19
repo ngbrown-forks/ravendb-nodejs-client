@@ -4,10 +4,10 @@ import { testContext, disposeTestDocumentStore } from "../../Utils/TestUtil.js";
 
 import {
     IDocumentStore,
+    Explanations,
+    ExplanationOptions,
+    AbstractJavaScriptIndexCreationTask
 } from "../../../src/index.js";
-import { Explanations } from "../../../src/Documents/Queries/Explanation/Explanations.js";
-import { ExplanationOptions } from "../../../src/Documents/Queries/Explanation/ExplanationOptions.js";
-import { AbstractJavaScriptIndexCreationTask } from "../../../src/Documents/Indexes/AbstractJavaScriptIndexCreationTask.js";
 
 class CompaniesByNameIndexResult {
     public key: string;

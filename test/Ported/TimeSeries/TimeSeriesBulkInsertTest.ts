@@ -1,8 +1,12 @@
-import { GetCountersOperation, IDocumentStore, TimeSeriesEntry } from "../../../src/index.js";
+import {
+    GetCountersOperation,
+    IDocumentStore,
+    TimeSeriesEntry,
+    IAttachmentsBulkInsert
+} from "../../../src/index.js";
 import { disposeTestDocumentStore, testContext } from "../../Utils/TestUtil.js";
 import { User } from "../../Assets/Entities.js";
 import { assertThat, assertThrows } from "../../Utils/AssertExtensions.js";
-import { IAttachmentsBulkInsert } from "../../../src/Documents/BulkInsertOperation.js"; //TODO: import from index.js wherever possible?
 import { readToBuffer } from "../../../src/Utility/StreamUtil.js";
 import { HEADERS } from "../../../src/Constants.js";
 

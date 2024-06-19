@@ -1,25 +1,20 @@
 import { disposeTestDocumentStore, RavenTestContext, testContext } from "../../Utils/TestUtil.js";
-import { GetDatabaseRecordOperation, IDocumentStore } from "../../../src/index.js";
-import { TimeSeriesConfiguration } from "../../../src/Documents/Operations/TimeSeries/TimeSeriesConfiguration.js";
 import {
-    ConfigureTimeSeriesOperation
-} from "../../../src/Documents/Operations/TimeSeries/ConfigureTimeSeriesOperation.js";
+    GetDatabaseRecordOperation,
+    IDocumentStore,
+    TimeSeriesConfiguration,
+    ConfigureTimeSeriesOperation,
+    TimeSeriesCollectionConfiguration,
+    ConfigureRawTimeSeriesPolicyOperation,
+    ConfigureTimeSeriesPolicyOperation,
+    TimeSeriesPolicy,
+    RawTimeSeriesPolicy
+} from "../../../src/index.js";
 import { CaseInsensitiveKeysMap } from "../../../src/Primitives/CaseInsensitiveKeysMap.js";
-import {
-    TimeSeriesCollectionConfiguration
-} from "../../../src/Documents/Operations/TimeSeries/TimeSeriesCollectionConfiguration.js";
 import { TimeValue } from "../../../src/Primitives/TimeValue.js";
-import { TimeSeriesPolicy } from "../../../src/Documents/Operations/TimeSeries/TimeSeriesPolicy.js";
-import { RawTimeSeriesPolicy } from "../../../src/Documents/Operations/TimeSeries/RawTimeSeriesPolicy.js";
 import { assertThat, assertThrows } from "../../Utils/AssertExtensions.js";
 import { User } from "../../Assets/Entities.js";
 import { delay } from "../../../src/Utility/PromiseUtil.js";
-import {
-    ConfigureTimeSeriesPolicyOperation
-} from "../../../src/Documents/Operations/TimeSeries/ConfigureTimeSeriesPolicyOperation.js";
-import {
-    ConfigureRawTimeSeriesPolicyOperation
-} from "../../../src/Documents/Operations/TimeSeries/ConfigureRawTimeSeriesPolicyOperation.js";
 import {
     ConfigureTimeSeriesValueNamesOperation,
     ConfigureTimeSeriesValueNamesParameters

@@ -1,9 +1,8 @@
-import { IDocumentStore, ObjectUtil } from "../../../src/index.js";
+import { IDocumentStore, ObjectUtil, DocumentStore } from "../../../src/index.js";
 import { disposeTestDocumentStore, testContext } from "../../Utils/TestUtil.js";
 import { Employee} from "../../Assets/Orders.js";
-import {assertThat, assertThrows} from "../../Utils/AssertExtensions.js";
-import DocumentStore from "../../../src/index.js";
-import {CreateSampleDataOperation} from "../../Utils/CreateSampleDataOperation.js";
+import { assertThat, assertThrows } from "../../Utils/AssertExtensions.js";
+import { CreateSampleDataOperation } from "../../Utils/CreateSampleDataOperation.js";
 
 describe("RDBC_751", function () {
     let regularStore: IDocumentStore;

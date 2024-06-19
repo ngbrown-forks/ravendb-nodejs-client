@@ -1,7 +1,7 @@
 import { AbstractCsharpCountersIndexCreationTask } from "../Counters/AbstractCsharpCountersIndexCreationTask.js";
 
 /**
- * @deprecated use AbstractCsharpCountersIndexCreationTask
+ * @deprecated use AbstractCsharpTimeSeriesIndexCreationTask
  */
 export abstract class AbstractTimeSeriesIndexCreationTask extends AbstractCsharpCountersIndexCreationTask {
     // empty

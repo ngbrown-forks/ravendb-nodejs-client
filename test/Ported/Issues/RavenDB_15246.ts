@@ -1,9 +1,11 @@
-import { IDocumentStore } from "../../../src/index.js";
+import {
+    IDocumentStore,
+    GetMultipleTimeSeriesCommand,
+    TimeSeriesRange
+} from "../../../src/index.js";
 import { disposeTestDocumentStore, testContext } from "../../Utils/TestUtil.js";
 import { User } from "../../Assets/Entities.js";
 import { assertThat } from "../../Utils/AssertExtensions.js";
-import { TimeSeriesRange } from "../../../src/Documents/Operations/TimeSeries/TimeSeriesRange.js";
-import { GetMultipleTimeSeriesCommand } from "../../../src/Documents/Operations/TimeSeries/GetMultipleTimeSeriesOperation.js";
 import { TypeUtil } from "../../../src/Utility/TypeUtil.js";
 
 describe("RavenDB_15426", function () {

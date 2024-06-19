@@ -1,9 +1,11 @@
 import {
-    AddEtlOperation, GetOngoingTaskInfoOperation,
+    AddEtlOperation,
+    GetOngoingTaskInfoOperation,
     IDocumentStore,
     OlapConnectionString,
     OlapEtlConfiguration,
-    PutConnectionStringOperation, Transformation,
+    PutConnectionStringOperation,
+    Transformation,
     OngoingTaskOlapEtl
 } from "../../../../../src/index.js";
 import { disposeTestDocumentStore, RavenTestContext, testContext } from "../../../../Utils/TestUtil.js";

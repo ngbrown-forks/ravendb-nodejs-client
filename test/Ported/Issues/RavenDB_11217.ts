@@ -1,4 +1,8 @@
-import { IDocumentStore, QueryStatistics, SessionOptions } from "../../../src/index.js";
+import {
+    IDocumentStore,
+    QueryStatistics,
+    SessionOptions
+} from "../../../src/index.js";
 import { disposeTestDocumentStore, testContext } from "../../Utils/TestUtil.js";
 import { Product, Supplier } from "../../Assets/Orders.js";
 import { assertThat, assertThrows } from "../../Utils/AssertExtensions.js";

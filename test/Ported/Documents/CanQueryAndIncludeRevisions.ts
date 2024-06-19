@@ -1,4 +1,7 @@
-import { AbstractJavaScriptIndexCreationTask, IDocumentStore } from "../../../src/index.js";
+import {
+    AbstractJavaScriptIndexCreationTask,
+    IDocumentStore
+} from "../../../src/index.js";
 import { disposeTestDocumentStore, RavenTestContext, testContext } from "../../Utils/TestUtil.js";
 import { assertThat } from "../../Utils/AssertExtensions.js";
 import { delay } from "../../../src/Utility/PromiseUtil.js";

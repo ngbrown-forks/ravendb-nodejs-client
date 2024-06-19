@@ -2,14 +2,14 @@ import {
     GetStatisticsOperation,
     IDocumentStore,
     DatabaseSmugglerExportOptions,
-    DatabaseSmugglerImportOptions
+    DatabaseSmugglerImportOptions,
+    CONSTANTS
 } from "../../src/index.js";
 import { disposeTestDocumentStore, TemporaryDirContext, testContext } from "../Utils/TestUtil.js";
 import { User } from "../Assets/Entities.js";
 import { UsersByName } from "./QueryTest.js";
 import { assertThat } from "../Utils/AssertExtensions.js";
 import fs from "node:fs";
-import { CONSTANTS } from "../../src/Constants.js";
 import path from "node:path";
 import { BackupUtils } from "../../src/Documents/Smuggler/BackupUtils.js";
 

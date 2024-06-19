@@ -2,7 +2,8 @@ import { testContext, disposeTestDocumentStore } from "../Utils/TestUtil.js";
 
 import {
     IDocumentStore,
-    AbstractJavaScriptIndexCreationTask, IndexDefinitionHelper,
+    AbstractJavaScriptIndexCreationTask,
+    IndexDefinitionHelper,
 } from "../../src/index.js";
 import { assertThat } from "../Utils/AssertExtensions.js";
 

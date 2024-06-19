@@ -1,9 +1,12 @@
 import { disposeTestDocumentStore, testContext } from "../../Utils/TestUtil.js";
-import { GetCountersOperation, IDocumentStore } from "../../../src/index.js";
+import {
+    GetCountersOperation,
+    IDocumentStore,
+    IAttachmentsBulkInsert
+} from "../../../src/index.js";
 import { User } from "../../Assets/Entities.js";
 import { assertThat, assertThrows } from "../../Utils/AssertExtensions.js";
 import { readToBuffer } from "../../../src/Utility/StreamUtil.js";
-import { IAttachmentsBulkInsert } from "../../../src/Documents/BulkInsertOperation.js";
 
 describe("BulkInsertAttachmentsTest", function () {
 

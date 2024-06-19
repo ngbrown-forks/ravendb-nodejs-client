@@ -1,12 +1,14 @@
-import { IDocumentStore } from "../../../src/Documents/IDocumentStore.js";
+import {
+    IDocumentStore,
+    StopIndexingOperation,
+    IDisposable,
+    RavenCommand,
+    ServerNode
+} from "../../../src/index.js";
 import { disposeTestDocumentStore, testContext } from "../../Utils/TestUtil.js";
-import { StopIndexingOperation } from "../../../src/Documents/Operations/Indexes/StopIndexingOperation.js";
 import { Person } from "../../Assets/Entities.js";
-import { IDisposable } from "../../../src/Types/Contracts.js";
 import { DatabaseCommands } from "../../Documents/Commands/DatabaseCommands.js";
 import { assertThat, assertThrows } from "../../Utils/AssertExtensions.js";
-import { RavenCommand } from "../../../src/Http/RavenCommand.js";
-import { ServerNode } from "../../../src/Http/ServerNode.js";
 import { HttpRequestParameters } from "../../../src/Primitives/Http.js";
 
 describe("RavenDB_7162", function () {

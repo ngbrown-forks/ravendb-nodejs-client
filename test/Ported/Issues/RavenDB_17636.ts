@@ -1,7 +1,8 @@
 import {
     AbstractJavaScriptIndexCreationTask,
-    DocumentStore,
-    Facet, FacetOptions, FacetSetup,
+    Facet,
+    FacetOptions,
+    FacetSetup,
     IDocumentStore,
     QueryStatistics
 } from "../../../src/index.js";

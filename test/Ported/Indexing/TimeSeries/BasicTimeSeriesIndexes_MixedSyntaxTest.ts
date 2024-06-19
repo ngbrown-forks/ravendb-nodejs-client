@@ -1,4 +1,9 @@
-import { GetTermsOperation, IDocumentStore, PutIndexesOperation, TimeSeriesIndexDefinition } from "../../../../src/index.js";
+import {
+    GetTermsOperation,
+    IDocumentStore,
+    PutIndexesOperation,
+    TimeSeriesIndexDefinition
+} from "../../../../src/index.js";
 import { disposeTestDocumentStore, testContext } from "../../../Utils/TestUtil.js";
 import { Company } from "../../../Assets/Orders.js";
 import { assertThat } from "../../../Utils/AssertExtensions.js";

@@ -1,4 +1,8 @@
-import { AbstractJavaScriptIndexCreationTask, IDocumentStore, PutCompareExchangeValueOperation } from "../../src/index.js";
+import {
+    AbstractJavaScriptIndexCreationTask,
+    IDocumentStore,
+    PutCompareExchangeValueOperation
+} from "../../src/index.js";
 import { disposeTestDocumentStore, testContext } from "../Utils/TestUtil.js";
 import { Address, User } from "../Assets/Entities.js";
 import { assertThat } from "../Utils/AssertExtensions.js";

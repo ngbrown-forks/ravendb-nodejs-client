@@ -1,10 +1,13 @@
 
 import {
     AddEtlOperation,
-    ElasticSearchConnectionString, GetOngoingTaskInfoOperation,
+    ElasticSearchConnectionString,
+    GetOngoingTaskInfoOperation,
     IDocumentStore,
-    PutConnectionStringOperation, Transformation,
-    OngoingTaskElasticSearchEtl, ElasticSearchEtlConfiguration
+    PutConnectionStringOperation,
+    Transformation,
+    OngoingTaskElasticSearchEtl,
+    ElasticSearchEtlConfiguration
 } from "../../../../../src/index.js";
 import { disposeTestDocumentStore, RavenTestContext, testContext } from "../../../../Utils/TestUtil.js";
 import { assertThat } from "../../../../Utils/AssertExtensions.js";

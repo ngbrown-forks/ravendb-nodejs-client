@@ -1,14 +1,14 @@
 import { Company, User } from "../../Assets/Entities.js";
-import { testContext, disposeTestDocumentStore, RavenTestContext } from "../../Utils/TestUtil.js";
+import { testContext, disposeTestDocumentStore } from "../../Utils/TestUtil.js";
 
 import DocumentStore, {
     IDocumentStore,
     RevisionsCollectionConfiguration,
     RevisionsConfiguration,
-    ConfigureRevisionsOperation
+    ConfigureRevisionsOperation,
+    ObjectUtil
 } from "../../../src/index.js";
 import assert from "node:assert"
-import { ObjectUtil } from "../../../src/Utility/ObjectUtil.js";
 
 // skipped for the time being
 // subscriptions are not working with server version 4.1

@@ -1,4 +1,7 @@
-import { IDocumentStore, PointField } from "../../src/index.js";
+import {
+    IDocumentStore,
+    PointField
+} from "../../src/index.js";
 import { disposeTestDocumentStore, testContext } from "../Utils/TestUtil.js";
 import { User } from "../Assets/Entities.js";
 import { assertThat } from "../Utils/AssertExtensions.js";

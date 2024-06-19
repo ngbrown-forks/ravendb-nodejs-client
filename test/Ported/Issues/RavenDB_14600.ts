@@ -1,5 +1,8 @@
 import { disposeTestDocumentStore, testContext } from "../../Utils/TestUtil.js";
-import { AbstractJavaScriptIndexCreationTask, IDocumentStore } from "../../../src/index.js";
+import {
+    AbstractJavaScriptIndexCreationTask,
+    IDocumentStore
+} from "../../../src/index.js";
 import { Employee, Order } from "../../Assets/Orders.js";
 import { assertThat } from "../../Utils/AssertExtensions.js";
 

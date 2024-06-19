@@ -1,4 +1,8 @@
-import {AbstractJavaScriptIndexCreationTask, IDocumentStore, IndexQuery } from "../../../src/index.js";
+import {
+    AbstractJavaScriptIndexCreationTask,
+    IDocumentStore,
+    IndexQuery
+} from "../../../src/index.js";
 import { disposeTestDocumentStore, testContext } from "../../Utils/TestUtil.js";
 import assert from "node:assert"
 

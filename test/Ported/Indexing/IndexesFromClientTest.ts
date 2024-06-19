@@ -25,9 +25,9 @@ import {
     AbstractJavaScriptIndexCreationTask,
     DeleteIndexOperation,
     QueryStatistics,
-    MoreLikeThisOptions
+    MoreLikeThisOptions,
+    IndexCreation
 } from "../../../src/index.js";
-import { IndexCreation } from "../../../src/Documents/Indexes/IndexCreation.js";
 import { delay } from "../../../src/Utility/PromiseUtil.js";
 
 describe("Indexes from client", function () {

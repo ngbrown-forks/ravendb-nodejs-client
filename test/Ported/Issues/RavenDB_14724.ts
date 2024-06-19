@@ -1,4 +1,8 @@
-import { ConfigureRevisionsOperation, IDocumentStore, RevisionsConfiguration } from "../../../src/index.js";
+import {
+    ConfigureRevisionsOperation,
+    IDocumentStore,
+    RevisionsConfiguration
+} from "../../../src/index.js";
 import { disposeTestDocumentStore, RavenTestContext, testContext } from "../../Utils/TestUtil.js";
 import { User } from "../../Assets/Entities.js";
 import { assertThat } from "../../Utils/AssertExtensions.js";
