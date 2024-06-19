@@ -10,7 +10,7 @@ import {
     GetShardedPeriodicBackupStatusOperation,
     DatabaseRecordBuilder
 } from "../../src/index.js";
-import { disposeTestDocumentStore, TemporaryDirContext, testContext } from "../Utils/TestUtil.js";
+import { disposeTestDocumentStore, RavenTestContext, TemporaryDirContext, testContext } from "../Utils/TestUtil.js";
 import path from "node:path";
 import fs from "node:fs";
 import { assertThat } from "../Utils/AssertExtensions.js";
@@ -20,7 +20,7 @@ import { throwError } from "../../src/Exceptions/index.js";
 import { delay } from "../../src/Utility/PromiseUtil.js";
 import { TimeUtil } from "../../src/Utility/TimeUtil.js";
 
-describe("BackupsTest", function () {
+(RavenTestContext.isPullRequest ? describe.skip : describe)("BackupsTest", function () {
 
     let store: IDocumentStore;
     let temporaryDirContext: TemporaryDirContext;

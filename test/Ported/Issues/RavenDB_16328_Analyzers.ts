@@ -6,10 +6,10 @@ import {
     PutServerWideAnalyzersOperation,
     AnalyzerDefinition
 } from "../../../src/index.js";
-import { disposeTestDocumentStore, testContext } from "../../Utils/TestUtil.js";
+import { disposeTestDocumentStore, RavenTestContext, testContext } from "../../Utils/TestUtil.js";
 import { assertThat, assertThrows } from "../../Utils/AssertExtensions.js";
 
-describe("RavenDB_16328_AnalyzersTest", function () {
+(RavenTestContext.isPullRequest ? describe.skip : describe)("RavenDB_16328_AnalyzersTest", function () {
 
     let store: IDocumentStore;
 

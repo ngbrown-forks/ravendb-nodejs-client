@@ -5,11 +5,11 @@ import {
     PutClientConfigurationOperation,
     SessionOptions
 } from "../../../src/index.js";
-import { disposeTestDocumentStore, testContext } from "../../Utils/TestUtil.js";
+import { disposeTestDocumentStore, RavenTestContext, testContext } from "../../Utils/TestUtil.js";
 import { Company } from "../../Assets/Entities.js";
 import { assertThat, assertThrows } from "../../Utils/AssertExtensions.js";
 
-describe("RavenDB_13456", function () {
+(RavenTestContext.isPullRequest ? describe.skip : describe)("RavenDB_13456", function () {
 
     let store: IDocumentStore;
 

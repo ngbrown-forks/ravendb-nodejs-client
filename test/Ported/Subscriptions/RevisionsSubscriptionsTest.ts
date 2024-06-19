@@ -1,5 +1,5 @@
 import { Company, User } from "../../Assets/Entities.js";
-import { testContext, disposeTestDocumentStore } from "../../Utils/TestUtil.js";
+import { testContext, disposeTestDocumentStore, RavenTestContext } from "../../Utils/TestUtil.js";
 
 import DocumentStore, {
     IDocumentStore,
@@ -13,7 +13,7 @@ import assert from "node:assert"
 // skipped for the time being
 // subscriptions are not working with server version 4.1
 // due to RavenDB-12127
-describe("RevisionsSubscriptionsTest", function () {
+(RavenTestContext.isPullRequest ? describe.skip : describe)("RevisionsSubscriptionsTest", function () {
     this.timeout(5 * 10 * 1000);
 
     let store: IDocumentStore;

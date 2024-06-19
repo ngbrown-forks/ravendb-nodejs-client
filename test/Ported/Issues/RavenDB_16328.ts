@@ -4,12 +4,12 @@ import {
     PutServerWideSortersOperation,
     DeleteServerWideSorterOperation
 } from "../../../src/index.js";
-import { disposeTestDocumentStore, testContext } from "../../Utils/TestUtil.js";
+import { disposeTestDocumentStore, RavenTestContext, testContext } from "../../Utils/TestUtil.js";
 import { Company } from "../../Assets/Entities.js";
 import { assertThat, assertThrows } from "../../Utils/AssertExtensions.js";
 import { sorterCode } from "./RavenDB_8355.js";
 
-describe("RavenDB_16328", function () {
+(RavenTestContext.isPullRequest ? describe.skip : describe)("RavenDB_16328", function () {
 
     let store: IDocumentStore;
 
