@@ -49,9 +49,12 @@ export class StreamOperation {
     }
 
     private _createRequestForIdPrefix(idPrefix: string, opts: StartingWithOptions): StreamCommand {
-        const format = this._session.conventions.useJsonlStreaming ? 'jsonl' : 'json';
+        const sb = new StringBuilder(`streams/docs?`);
 
-        const sb = new StringBuilder(`streams/docs?format=${format}&`);
+        if (this._session.conventions.useJsonlStreaming) {
+            sb.append("format=jsonl&");
+        }
+
         if (idPrefix) {
             sb.append("startsWith=")
                 .append(encodeURIComponent(idPrefix)).append("&");
