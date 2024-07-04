@@ -575,6 +575,7 @@ export { TimeSeriesTimeRange } from "./Documents/Operations/TimeSeries/TimeSerie
 export { TimeSeriesRangeResult } from "./Documents/Operations/TimeSeries/TimeSeriesRangeResult";
 export { TimeSeriesStatistics } from "./Documents/Operations/TimeSeries/TimeSeriesStatistics";
 export { AbstractTimeSeriesRange } from "./Documents/Operations/TimeSeries/AbstractTimeSeriesRange";
+export { TimeValue } from "./Primitives/TimeValue";
 
 // AUTH
 export * from "./Auth/AuthOptions";
