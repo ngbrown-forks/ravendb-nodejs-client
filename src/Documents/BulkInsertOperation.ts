@@ -31,6 +31,9 @@ import { BulkInsertOnProgressEventArgs } from "./Session/SessionEvents";
 import * as semaphore from "semaphore";
 import { acquireSemaphore } from "../Utility/SemaphoreUtil";
 import { Buffer } from "node:buffer";
+import { createGzip, Gzip } from "node:zlib";
+import { pipeline } from "readable-stream";
+import { promisify } from "node:util";
 
 class BulkInsertStream {
 
@@ -105,7 +108,7 @@ export class BulkInsertOperation {
     private _bulkInsertExecuteTask: Promise<any>;
     private _bulkInsertExecuteTaskErrored = false;
 
-    private _stream: RequestBodyStream;
+    private _stream: stream.Readable & { flush: (callback?: () => void) => void; };
 
     private _first: boolean = true;
     private _inProgressCommand: CommandType;
@@ -129,8 +132,8 @@ export class BulkInsertOperation {
     private readonly _streamLock: semaphore.Semaphore;
     private _heartbeatCheckInterval = 40_000;
 
-    //TODO:  private GZipStream _compressedStream;
-    private _requestBodyStream: RequestBodyStream; //TODO: raw reableable or wrapped with compressed
+    private _compressedStream: Gzip;
+    private _requestBodyStream: RequestBodyStream;
     private _requestBodyStreamFinished: boolean = false;
     private _currentWriter: BulkInsertStream;
     private _backgroundWriter: BulkInsertStream;
@@ -460,6 +463,12 @@ export class BulkInsertOperation {
                 this._isInitialWrite = false;
 
                 await this._requestBodyStream.flush();
+
+                if (this._compressedStream) {
+                    const flush = promisify(this._compressedStream.flush);
+                    await flush.call(this._compressedStream);
+                }
+
                 this._lastWriteToStream = new Date();
             }
         } finally {
@@ -535,28 +544,22 @@ export class BulkInsertOperation {
     }
 
     private async _ensureStream() {
-        //TODO: sync with c#
-        //TODO if (CompressionLevel != CompressionLevel.NoCompression)
-        //                 _streamExposerContent.Headers.ContentEncoding.Add("gzip");
-
         try {
             this._requestBodyStream = new RequestBodyStream();
-            this._stream = this._requestBodyStream; //TODO:
+            this._stream = this._requestBodyStream;
+
+            if (this.useCompression) {
+                this._compressedStream = createGzip();
+                pipeline(this._requestBodyStream, this._compressedStream);
+            }
+
             const bulkCommand =
-                new BulkInsertCommand(this._operationId, this._requestBodyStream, this._nodeTag, this._options.skipOverwriteIfUnchanged);
+                new BulkInsertCommand(this._operationId, this._compressedStream ?? this._requestBodyStream, this._nodeTag, this._options.skipOverwriteIfUnchanged);
             bulkCommand.useCompression = this._useCompression;
 
             this._bulkInsertExecuteTask = this._requestExecutor.execute(bulkCommand);
 
             this._currentWriter.push("[");
-
-            /* TODO
-              if (CompressionLevel != CompressionLevel.NoCompression)
-            {
-                _compressedStream = new GZipStream(_stream, CompressionLevel, leaveOpen: true);
-                _requestBodyStream = _compressedStream;
-            }
-             */
 
             this._bulkInsertExecuteTask
                 .catch(() => this._bulkInsertExecuteTaskErrored = true);
@@ -598,8 +601,7 @@ export class BulkInsertOperation {
                 try {
                     this._currentWriter.push("]");
                     await this._asyncWrite;
-                    this._requestBodyStream.write(this._currentWriter.toBuffer());
-                    //TODO: _compressedStream?.Dispose();
+                    this._requestBodyStream.push(this._currentWriter.toBuffer());
                     await this._stream.flush();
                 } finally {
                     context.dispose();
@@ -1017,7 +1019,7 @@ export class BulkInsertOperation {
 
                     await this._operation.flushIfNeeded();
 
-                    this._operation._currentWriter.push(bytes); //TODO: do we want to stream here?
+                    this._operation._currentWriter.push(bytes);
 
                     await this._operation.flushIfNeeded();
                 } catch (e) {
@@ -1078,8 +1080,12 @@ export class BulkInsertCommand extends RavenCommand<void> {
             + "/bulk_insert?id=" + this._id
             + "&skipOverwriteIfUnchanged=" + (this._skipOverwriteIfUnchanged ? "true" : "false");
 
-        const headers = this._headers().typeAppJson().build();
-        // TODO: useCompression ? new GzipCompressingEntity(_stream) : _stream);
+        const headersBuilder = this._headers().typeAppJson();
+        if (this.useCompression) {
+            headersBuilder.with("Content-Encoding", "gzip");
+        }
+
+        const headers = headersBuilder.build();
         return {
             method: "POST",
             uri,
