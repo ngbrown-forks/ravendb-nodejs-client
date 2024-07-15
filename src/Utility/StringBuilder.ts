@@ -1,4 +1,4 @@
-import { Stream } from "node:stream";
+import { Stream } from "readable-stream";
 
 export class StringBuilder {
     private s: any[] = [];
