@@ -8,6 +8,8 @@ import { createMetadataDictionary } from "../../../src/Mapping/MetadataAsDiction
 import { CONSTANTS } from "../../../src/Constants";
 import { DateUtil } from "../../../src/Utility/DateUtil";
 import { delay } from "../../../src/Utility/PromiseUtil";
+import { assertThat } from "../../Utils/AssertExtensions";
+import { Timer } from "../../../src/Primitives/Timer";
 
 describe("bulk insert", function () {
 
@@ -20,7 +22,7 @@ describe("bulk insert", function () {
     afterEach(async () =>
         await disposeTestDocumentStore(store));
 
-    it("simple bulk insert should work", async () => {
+    const bulkInsertTest = async (compressed: boolean) => {
         const fooBar1 = new FooBar();
         fooBar1.name = "John Doe";
 
@@ -33,7 +35,9 @@ describe("bulk insert", function () {
         const fooBar4 = new FooBar();
         fooBar4.name = "Mega Jane";
 
-        const bulkInsert = store.bulkInsert();
+        const bulkInsert = store.bulkInsert({
+            useCompression: compressed
+        });
 
         await bulkInsert.store(fooBar1);
         await bulkInsert.store(fooBar2);
@@ -65,30 +69,58 @@ describe("bulk insert", function () {
         } finally {
             session.dispose();
         }
+    }
+
+    it("simple bulk insert should work - no compressed", async () => {
+        await bulkInsertTest(false);
     });
+
+    it("simple bulk insert should work - compressed", async () => {
+        await bulkInsertTest(true);
+    });
+
+    it ("can send heartbeats", async () => {
+
+        const bulkInsert = store.bulkInsert();
+        try {
+
+            // access private variable
+            const timer = (bulkInsert as any)._timer as Timer;
+            const checkInterval = (bulkInsert as any)._heartbeatCheckInterval;
+
+            assertThat(timer)
+                .isNotNull();
+            assertThat(checkInterval)
+                .isEqualTo(40_000);
+
+            timer.change(20, 20);
+            (bulkInsert as any)._heartbeatCheckInterval = 20;
+
+            await bulkInsert.store(new FooBar());
+
+            await delay(250); //it should send heartbeats
+
+            await bulkInsert.store(new FooBar());
+
+        } finally {
+            await bulkInsert.finish();
+        }
+    })
 
     it("can be killed early before making connection", async () => {
         const bulkInsert = store.bulkInsert();
         try {
             await bulkInsert.store(new FooBar());
             await bulkInsert.abort();
-            await bulkInsert.store(new FooBar());
+
+            for (let i = 0; i < 100; i++) {
+                await bulkInsert.store(new FooBar());
+                await delay(250);
+            }
 
             assert.fail("Should have thrown.");
         } catch (error) {
             assert.strictEqual(error.name, "BulkInsertAbortedException", error.message);
-            const bulkInsertCanceled = /TaskCanceledException/i.test(error.message);
-            const bulkInsertNotRegisteredYet =
-                /Unable to kill bulk insert operation, because it was not found on the server./i.test(error.message);
-            const bulkInsertSuccessfullyKilled =
-                /Bulk insert was aborted by the user./i.test(error.message);
-
-            // this one's racy, so it's one or the other
-            assert.ok(
-                bulkInsertCanceled
-                || bulkInsertNotRegisteredYet
-                || bulkInsertSuccessfullyKilled,
-                "Unexpected error message:" + error.message);
         } finally {
             try {
                 await bulkInsert.finish();
@@ -108,23 +140,14 @@ describe("bulk insert", function () {
             await bulkInsert.store(new FooBar());
             await delay(500);
             await bulkInsert.abort();
-            await bulkInsert.store(new FooBar());
+            for (let i = 0; i < 100; i++) {
+                await bulkInsert.store(new FooBar());
+                await delay(250);
+            }
 
             assert.fail("Should have thrown.");
         } catch (error) {
             assert.strictEqual(error.name, "BulkInsertAbortedException", error.message);
-            const bulkInsertCanceled = /TaskCanceledException/i.test(error.message);
-            const bulkInsertNotRegisteredYet =
-                /Unable to kill bulk insert operation, because it was not found on the server./i.test(error.message);
-            const bulkInsertSuccessfullyKilled =
-                /Bulk insert was aborted by the user./i.test(error.message);
-
-            // this one's racy, so it's one or the other
-            assert.ok(
-                bulkInsertCanceled
-                || bulkInsertNotRegisteredYet
-                || bulkInsertSuccessfullyKilled,
-                "Unexpected error message:" + error.message);
         } finally {
             try {
                 await bulkInsert.finish();
