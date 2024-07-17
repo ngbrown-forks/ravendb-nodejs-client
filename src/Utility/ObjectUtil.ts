@@ -23,10 +23,12 @@ export class ObjectUtil {
      * @param o Object to clone
      */
     public static clone(o) {
+        // eslint-disable-next-line unicorn/prefer-structured-clone
         return JSON.parse(JSON.stringify(o));
     }
 
     public static deepJsonClone(o) {
+        // eslint-disable-next-line unicorn/prefer-structured-clone
         return JSON.parse(JSON.stringify(o));
     }
 
