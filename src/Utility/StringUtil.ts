@@ -6,7 +6,7 @@ import { CasingConvention } from "./ObjectUtil";
 import { StringBuilder } from "./StringBuilder";
 
 export class StringUtil {
-    private static readonly letterRe: RegExp = XRegExp("^\\p{L}$") as RegExp;
+    private static readonly letterRe: RegExp = XRegExp(String.raw`^\p{L}$`) as RegExp;
     private static readonly digitRe: RegExp = /\d/;
 
     public static leftPad(s: string, length: number, char: string) {
@@ -149,7 +149,7 @@ export class StringUtil {
     private static _escapeStringInternal(builder: StringBuilder, value: string) {
         let escaped = JSON.stringify(value);
 
-        escaped = escaped.replace(/'/g, "\\'");
+        escaped = escaped.replace(/'/g, String.raw`\'`);
 
         builder.append(escaped.substring(1, escaped.length - 1));
     }
