@@ -42,7 +42,7 @@ class PutSortersCommand extends RavenCommand<void> implements IRaftCommand {
             throwError("InvalidArgumentException", "SortersToAdd cannot be null");
         }
 
-        if (sortersToAdd.findIndex(x => !x) > -1) {
+        if (sortersToAdd.some(x => !x) ) {
             throwError("InvalidArgumentException", "Sorter cannot be null");
         }
 

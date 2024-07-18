@@ -22,7 +22,18 @@ export class ObjectUtil {
     static pascalCase = (input: string, locale?: string) => locale ? input[0].toLocaleLowerCase(locale) + input.slice(1) : input[0].toUpperCase() + input.slice(1);
     static pascal = ObjectUtil.pascalCase;
 
+
+    /**
+     * @deprecated Use deepJsonClone or deepLiteralClone for better performance
+     * @param o Object to clone
+     */
+    public static clone(o) {
+        // eslint-disable-next-line unicorn/prefer-structured-clone
+        return JSON.parse(JSON.stringify(o));
+    }
+
     public static deepJsonClone(o) {
+        // eslint-disable-next-line unicorn/prefer-structured-clone
         return JSON.parse(JSON.stringify(o));
     }
 

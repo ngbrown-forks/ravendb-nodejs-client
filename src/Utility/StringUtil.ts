@@ -142,7 +142,7 @@ export class StringUtil {
     private static _escapeStringInternal(builder: StringBuilder, value: string) {
         let escaped = JSON.stringify(value);
 
-        escaped = escaped.replace(/'/g, "\\'");
+        escaped = escaped.replace(/'/g, String.raw`\'`);
 
         builder.append(escaped.substring(1, escaped.length - 1));
     }

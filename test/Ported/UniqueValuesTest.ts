@@ -69,6 +69,38 @@ describe("UniqueValuesTest", function () {
         assert.ok(res2.successful);
     });
 
+    it("canGetMultipleCompareExchangeItemsByKeys", async () => {
+        const user1 = new User();
+        user1.name = "Name1";
+        const user2 = new User();
+        user2.name = "Name2";
+        const user3 = new User();
+        user3.name = "Name3";
+
+        const res1 = await store.operations
+            .send(new PutCompareExchangeValueOperation<User>("users/1", user1, 0));
+        const res2 = await store.operations
+            .send(new PutCompareExchangeValueOperation<User>("users/2", user2, 0));
+        const res3 = await store.operations
+            .send(new PutCompareExchangeValueOperation<User>("users/3", user3, 0));
+
+        assert.ok(res1.successful);
+        assert.ok(res2.successful);
+        assert.ok(res3.successful);
+
+        assert.strictEqual(res1.value.name, "Name1");
+        assert.strictEqual(res2.value.name, "Name2");
+        assert.strictEqual(res3.value.name, "Name3");
+
+        const values = await store.operations.send(new GetCompareExchangeValuesOperation<User>({
+            keys: ["users/1", "users/3"]
+        }));
+        
+        assert.strictEqual(Object.keys(values).length, 2);
+        assert.strictEqual(values["users/1"].value.name, "Name1");
+        assert.strictEqual(values["users/3"].value.name, "Name3");
+    });
+
     it("canListCompareExchange", async () => {
 
         const user1 = new User();
@@ -122,6 +154,35 @@ describe("UniqueValuesTest", function () {
 
         const readValue = await store.operations.send(new GetCompareExchangeValueOperation<string>("test"));
         assert.strictEqual(readValue.value, "Karmel");
+    });
+
+    it("tryingToDeleteNonExistingKeyShouldNotThrow", async () => {
+        const res1= await store.operations.send(
+            new PutCompareExchangeValueOperation<string>("key/1", "Name", 0));
+
+        assert.strictEqual(res1.value, "Name");
+        assert.ok(res1.successful);
+
+        const res2 = await store.operations.send(
+            new DeleteCompareExchangeValueOperation<string>("key/2", res1.index));
+
+        assert.ok(res2.successful);
+        assert.equal(res2.value, null);
+        assert.equal(res2.index, res1.index + 1);
+
+        const res3 = await store.operations.send(
+            new DeleteCompareExchangeValueOperation<string>("key/2", 0));
+
+        assert.ok(res3.successful);
+        assert.equal(res3.value, null);
+        assert.equal(res3.index, res2.index + 1);
+
+        const res4 = await store.operations.send(
+            new DeleteCompareExchangeValueOperation<string>("key/2", 999));
+
+        assert.ok(res4.successful);
+        assert.equal(res4.value, null);
+        assert.equal(res4.index, res3.index + 1);
     });
 
     it("returnCurrentValueWhenPuttingConcurrently", async () => {
