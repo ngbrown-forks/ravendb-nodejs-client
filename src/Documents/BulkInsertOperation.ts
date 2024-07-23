@@ -1,102 +1,39 @@
-import { GenerateEntityIdOnTheClient } from "../Identity/GenerateEntityIdOnTheClient.js";
+import { GenerateEntityIdOnTheClient } from "./Identity/GenerateEntityIdOnTheClient.js";
 import { Readable, Stream } from "node:stream";
-import { RavenCommand } from "../../Http/RavenCommand.js";
-import { HttpRequestParameters } from "../../Primitives/Http.js";
-import { IMetadataDictionary } from "../Session/IMetadataDictionary.js";
-import { createMetadataDictionary } from "../../Mapping/MetadataAsDictionary.js";
-import { CONSTANTS, HEADERS } from "../../Constants.js";
-import { getError, throwError } from "../../Exceptions/index.js";
-import { GetOperationStateCommand } from "../Operations/GetOperationStateOperation.js";
-import { StringUtil } from "../../Utility/StringUtil.js";
-import { JsonSerializer } from "../../Mapping/Json/Serializer.js";
-import { RequestExecutor } from "../../Http/RequestExecutor.js";
-import { IDocumentStore } from "../IDocumentStore.js";
-import { GetNextOperationIdCommand } from "../Commands/GetNextOperationIdCommand.js";
-import { DocumentInfo } from "../Session/DocumentInfo.js";
-import { EntityToJson } from "../Session/EntityToJson.js";
-import { KillOperationCommand } from "../Commands/KillOperationCommand.js";
-import { DocumentConventions } from "../Conventions/DocumentConventions.js";
-import { ServerNode } from "../../Http/ServerNode.js";
-import { MetadataObject } from "../Session/MetadataObject.js";
-import { CommandType } from "../Commands/CommandData.js";
-import { TypeUtil } from "../../Utility/TypeUtil.js";
-import { IDisposable } from "../../Types/Contracts.js";
-import { TypedTimeSeriesEntry } from "../Session/TimeSeries/TypedTimeSeriesEntry.js";
-import { ClassConstructor, EntityConstructor } from "../../Types/index.js";
-import { TimeSeriesOperations } from "../TimeSeries/TimeSeriesOperations.js";
-import { TimeSeriesValuesHelper } from "../Session/TimeSeries/TimeSeriesValuesHelper.js";
-import { Timer } from "../../Primitives/Timer.js";
+import { RavenCommand } from "../Http/RavenCommand.js";
+import { HttpRequestParameters } from "../Primitives/Http.js";
+import { IMetadataDictionary } from "./Session/IMetadataDictionary.js";
+import { createMetadataDictionary } from "../Mapping/MetadataAsDictionary.js";
+import { CONSTANTS, HEADERS } from "../Constants.js";
+import { getError, throwError } from "../Exceptions/index.js";
+import { GetOperationStateCommand } from "./Operations/GetOperationStateOperation.js";
+import { StringUtil } from "../Utility/StringUtil.js";
+import { JsonSerializer } from "../Mapping/Json/Serializer.js";
+import { RequestExecutor } from "../Http/RequestExecutor.js";
+import { IDocumentStore } from "./IDocumentStore.js";
+import { GetNextOperationIdCommand } from "./Commands/GetNextOperationIdCommand.js";
+import { DocumentInfo } from "./Session/DocumentInfo.js";
+import { EntityToJson } from "./Session/EntityToJson.js";
+import { KillOperationCommand } from "./Commands/KillOperationCommand.js";
+import { DocumentConventions } from "./Conventions/DocumentConventions.js";
+import { ServerNode } from "../Http/ServerNode.js";
+import { MetadataObject } from "./Session/MetadataObject.js";
+import { CommandType } from "./Commands/CommandData.js";
+import { TypeUtil } from "../Utility/TypeUtil.js";
+import { IDisposable } from "../Types/Contracts.js";
+import { TypedTimeSeriesEntry } from "./Session/TimeSeries/TypedTimeSeriesEntry.js";
+import { ClassConstructor, EntityConstructor } from "../Types/index.js";
+import { TimeSeriesOperations } from "./TimeSeries/TimeSeriesOperations.js";
+import { TimeSeriesValuesHelper } from "./Session/TimeSeries/TimeSeriesValuesHelper.js";
+import { Timer } from "../Primitives/Timer.js";
 import { EventEmitter } from "node:events";
-import { BulkInsertOnProgressEventArgs } from "../Session/SessionEvents.js";
-import { acquireSemaphore } from "../../Utility/SemaphoreUtil.js";
+import { BulkInsertOnProgressEventArgs } from "./Session/SessionEvents.js";
+import { acquireSemaphore } from "../Utility/SemaphoreUtil.js";
 import { Buffer } from "node:buffer";
-import { createGzip, Gzip } from "node:zlib";
-import { pipeline } from "readable-stream";
-import { promisify } from "node:util";
-import { Semaphore } from "../../Utility/Semaphore.js";
-import { BulkInsertOperationBase } from "./BulkInsertOperationBase.js";
-
-class BulkInsertStream {
-
-    private readonly _items: Array<string | Buffer> = [];
-    private totalLength = 0;
-
-    public push(data: string | Buffer) {
-        this._items.push(data);
-        this.totalLength += Buffer.isBuffer(data) ? data.length : Buffer.byteLength(data);
-    }
-
-    public toBuffer(): Buffer {
-        const result = Buffer.allocUnsafe(this.totalLength);
-        let idx = 0;
-        for (const inputElement of this._items) {
-            if (Buffer.isBuffer(inputElement)) {
-                inputElement.copy(result, idx);
-                idx += inputElement.length;
-            } else {
-                result.write(inputElement, idx);
-                idx += Buffer.byteLength(inputElement);
-            }
-        }
-
-        return result;
-    }
-
-    public get length() {
-        return this.totalLength;
-    }
-}
-
-class RequestBodyStream extends Readable {
-    constructor() {
-        super({
-            highWaterMark: 1024 * 1024
-        });
-    }
-
-    private _pending: Promise<void>;
-    private _resume: () => void;
-
-    _read(size: number) {
-       this._resume?.();
-    }
-
-    write(data: Buffer | string) {
-        const canConsumeMore = this.push(data);
-        if (!canConsumeMore) {
-            this._pending = new Promise(resolve => {
-                this._resume = () => {
-                    this._resume = null;
-                    resolve();
-                };
-            });
-        }
-    }
-
-    async flush(): Promise<void> {
-        await this._pending;
-    }
-}
+import { Semaphore } from "../Utility/Semaphore.js";
+import { BulkInsertOperationBase } from "./BulkInsert/BulkInsertOperationBase.js";
+import { BulkInsertOptions } from "./BulkInsert/BulkInsertOptions.js";
+import { BulkInsertWriter } from "./BulkInsert/BulkInsertWriter.js";
 
 export class BulkInsertOperation extends BulkInsertOperationBase<object> {
 
@@ -111,17 +48,16 @@ export class BulkInsertOperation extends BulkInsertOperationBase<object> {
             this._operation = bulkInsertOperation;
         }
 
-        //TOOD: make sure we have returns here + in other methods
-        public async increment(id: string, name: string);
-        public async increment(id: string, name: string, delta: number);
-        public async increment(id: string, name: string, delta: number = 1) {
+        public async increment(id: string, name: string): Promise<void>;
+        public async increment(id: string, name: string, delta: number): Promise<void>;
+        public async increment(id: string, name: string, delta: number = 1): Promise<void> {
             const check = await this._operation._concurrencyCheck();
 
             try {
                 await this._operation._executeBeforeStore();
 
                 if (this._operation._inProgressCommand === "TimeSeries") {
-                    BulkInsertOperation.throwAlreadyRunningTimeSeries();
+                    BulkInsertOperation._timeSeriesBulkInsertBaseClass.throwAlreadyRunningTimeSeries();
                 }
 
                 try {
@@ -130,7 +66,7 @@ export class BulkInsertOperation extends BulkInsertOperationBase<object> {
                     if (isFirst || !StringUtil.equalsIgnoreCase(this._id, id)) {
                         if (!isFirst) {
                             //we need to end the command for the previous document id
-                            this._operation._currentWriter.push("]}},");
+                            this._operation._writer.write("]}},");
                         } else if (!this._operation._first) {
                             this._operation._writeComma();
                         }
@@ -144,7 +80,7 @@ export class BulkInsertOperation extends BulkInsertOperationBase<object> {
                     }
 
                     if (this._countersInBatch >= CountersBulkInsertOperation.MAX_COUNTERS_IN_BATCH) {
-                        this._operation._currentWriter.push("]}},");
+                        this._operation._writer.write("]}},");
 
                         this._writePrefixForNewCommand();
                     }
@@ -157,11 +93,11 @@ export class BulkInsertOperation extends BulkInsertOperationBase<object> {
 
                     this._first = false;
 
-                    this._operation._currentWriter.push(`{"Type":"Increment","CounterName":"`);
+                    this._operation._writer.write(`{"Type":"Increment","CounterName":"`);
                     this._operation._writeString(name);
-                    this._operation._currentWriter.push(`","Delta":`);
-                    this._operation._currentWriter.push(delta.toString());
-                    this._operation._currentWriter.push("}");
+                    this._operation._writer.write(`","Delta":`);
+                    this._operation._writer.write(delta.toString());
+                    this._operation._writer.write("}");
 
                     await this._operation.flushIfNeeded();
 
@@ -178,7 +114,7 @@ export class BulkInsertOperation extends BulkInsertOperationBase<object> {
                 return;
             }
 
-            this._operation._currentWriter.push("]}}");
+            this._operation._writer.write("]}}");
             this._id = null;
         }
 
@@ -186,11 +122,11 @@ export class BulkInsertOperation extends BulkInsertOperationBase<object> {
             this._first = true;
             this._countersInBatch = 0;
 
-            this._operation._currentWriter.push(`{"Id":"`);
+            this._operation._writer.write(`{"Id":"`);
             this._operation._writeString(this._id);
-            this._operation._currentWriter.push(`","Type":"Counters","Counters":{"DocumentId":"`);
+            this._operation._writer.write(`","Type":"Counters","Counters":{"DocumentId":"`);
             this._operation._writeString(this._id);
-            this._operation._currentWriter.push(`","Operations":[`);
+            this._operation._writer.write(`","Operations":[`);
         }
     }
 
@@ -214,8 +150,6 @@ export class BulkInsertOperation extends BulkInsertOperationBase<object> {
         protected async _appendInternal(timestamp: Date, values: number[], tag: string): Promise<void> {
             const check = await this._operation._concurrencyCheck();
             try {
-                this._operation._lastWriteToStream = new Date();
-
                 await this._operation._executeBeforeStore();
 
                 try {
@@ -226,7 +160,7 @@ export class BulkInsertOperation extends BulkInsertOperationBase<object> {
 
                         this._writePrefixForNewCommand();
                     } else if (this._timeSeriesInBatch >= this._operation._timeSeriesBatchSize) {
-                        this._operation._currentWriter.push("]}},");
+                        this._operation._writer.write("]}},");
                         this._writePrefixForNewCommand();
                     }
 
@@ -238,11 +172,11 @@ export class BulkInsertOperation extends BulkInsertOperationBase<object> {
 
                     this._first = false;
 
-                    this._operation._currentWriter.push("[");
-                    this._operation._currentWriter.push(timestamp.getTime().toString());
+                    this._operation._writer.write("[");
+                    this._operation._writer.write(timestamp.getTime().toString());
                     this._operation._writeComma();
 
-                    this._operation._currentWriter.push(values.length.toString());
+                    this._operation._writer.write(values.length.toString());
                     this._operation._writeComma();
 
                     let firstValue = true;
@@ -253,16 +187,16 @@ export class BulkInsertOperation extends BulkInsertOperationBase<object> {
                         }
 
                         firstValue = false;
-                        this._operation._currentWriter.push(((value ?? 0).toString()));
+                        this._operation._writer.write(((value ?? 0).toString()));
                     }
 
                     if (tag) {
-                        this._operation._currentWriter.push(`,"`);
+                        this._operation._writer.write(`,"`);
                         this._operation._writeString(tag);
-                        this._operation._currentWriter.push(`"`);
+                        this._operation._writer.write(`"`);
                     }
 
-                    this._operation._currentWriter.push("]");
+                    this._operation._writer.write("]");
 
                     await this._operation.flushIfNeeded();
                 } catch (e) {
@@ -277,18 +211,22 @@ export class BulkInsertOperation extends BulkInsertOperationBase<object> {
             this._first = true;
             this._timeSeriesInBatch = 0;
 
-            this._operation._currentWriter.push(`{"Id":"`);
+            this._operation._writer.write(`{"Id":"`);
             this._operation._writeString(this._id);
-            this._operation._currentWriter.push(`","Type":"TimeSeriesBulkInsert","TimeSeries":{"Name":"`);
+            this._operation._writer.write(`","Type":"TimeSeriesBulkInsert","TimeSeries":{"Name":"`);
             this._operation._writeString(this._name);
-            this._operation._currentWriter.push(`","TimeFormat":"UnixTimeInMs","Appends":[`);
+            this._operation._writer.write(`","TimeFormat":"UnixTimeInMs","Appends":[`);
+        }
+
+        static throwAlreadyRunningTimeSeries() {
+            throwError("BulkInsertInvalidOperationException", "There is an already running time series operation, did you forget to close it?");
         }
 
         dispose(): void {
             this._operation._inProgressCommand = "None";
 
             if (!this._first) {
-                this._operation._currentWriter.push("]}}");
+                this._operation._writer.write("]}}");
             }
         }
     }
@@ -363,7 +301,6 @@ export class BulkInsertOperation extends BulkInsertOperationBase<object> {
             const check = await this._operation._concurrencyCheck();
 
             try {
-                this._operation._lastWriteToStream = new Date();
                 this._operation._endPreviousCommandIfNeeded();
 
                 await this._operation._executeBeforeStore();
@@ -373,23 +310,23 @@ export class BulkInsertOperation extends BulkInsertOperationBase<object> {
                         this._operation._writeComma();
                     }
 
-                    this._operation._currentWriter.push(`{"Id":"`);
+                    this._operation._writer.write(`{"Id":"`);
                     this._operation._writeString(id);
-                    this._operation._currentWriter.push(`","Type":"AttachmentPUT","Name":"`);
+                    this._operation._writer.write(`","Type":"AttachmentPUT","Name":"`);
                     this._operation._writeString(name);
 
                     if (contentType) {
-                        this._operation._currentWriter.push(`","ContentType":"`);
+                        this._operation._writer.write(`","ContentType":"`);
                         this._operation._writeString(contentType);
                     }
 
-                    this._operation._currentWriter.push(`","ContentLength":`);
-                    this._operation._currentWriter.push(bytes.length.toString());
-                    this._operation._currentWriter.push("}");
+                    this._operation._writer.write(`","ContentLength":`);
+                    this._operation._writer.write(bytes.length.toString());
+                    this._operation._writer.write("}");
 
                     await this._operation.flushIfNeeded();
 
-                    this._operation._currentWriter.push(bytes);
+                    this._operation._writer.write(bytes);
 
                     await this._operation.flushIfNeeded();
                 } catch (e) {
@@ -408,60 +345,51 @@ export class BulkInsertOperation extends BulkInsertOperationBase<object> {
     private readonly _generateEntityIdOnTheClient: GenerateEntityIdOnTheClient;
 
     private readonly _requestExecutor: RequestExecutor;
-    private _bulkInsertExecuteTaskErrored = false;
 
-    private _stream: Readable & { flush: (callback?: () => void) => void; };
-
-    private _first: boolean = true;
     private _inProgressCommand: CommandType;
     private readonly _countersOperation = new BulkInsertOperation._countersBulkInsertOperationClass(this);
     private readonly _attachmentsOperation = new BulkInsertOperation._attachmentsBulkInsertOperationClass(this);
     private _nodeTag: string;
 
     private readonly _timeSeriesBatchSize: number;
-
     private _concurrentCheck: number = 0;
-    private _isInitialWrite: boolean = true;
-
+    private _first: boolean = true;
     private _useCompression: boolean = false;
-
     private _unsubscribeChanges: IDisposable;
+
     private _onProgressInitialized = false;
 
     private _timer: Timer;
-    private _lastWriteToStream: Date;
+
     private readonly _streamLock: Semaphore;
     private _heartbeatCheckInterval = 40_000;
 
-    private _compressedStream: Gzip;
-    private _requestBodyStream: RequestBodyStream;
-    private _requestBodyStreamFinished: boolean = false;
-    private _currentWriter: BulkInsertStream;
-    private _backgroundWriter: BulkInsertStream;
-    private _asyncWrite: Promise<void> = Promise.resolve();
-    private _asyncWriteDone: boolean = true;
-    private static readonly _maxSizeInBuffer = 1024 * 1024;
+    private _writer: BulkInsertWriter;
+
+    private readonly _conventions: DocumentConventions;
+    private readonly _store: IDocumentStore;
 
     public constructor(database: string, store: IDocumentStore, options?: BulkInsertOptions) {
         super();
+        if (StringUtil.isNullOrEmpty(database)) {
+            BulkInsertOperation._throwNoDatabase();
+        }
+
         this._useCompression = options ? options.useCompression : false;
         this._options = options ?? {};
         this._database = database;
         this._conventions = store.conventions;
         this._store = store;
-        if (StringUtil.isNullOrEmpty(database)) {
-            BulkInsertOperation._throwNoDatabase();
-        }
+
         this._requestExecutor = store.getRequestExecutor(database);
-        this._currentWriter = new BulkInsertStream();
-        this._backgroundWriter = new BulkInsertStream();
+        this._writer = new BulkInsertWriter();
+        this._writer.initialize();
         this._timeSeriesBatchSize = this._conventions.bulkInsert.timeSeriesBatchSize;
 
         this._generateEntityIdOnTheClient = new GenerateEntityIdOnTheClient(this._requestExecutor.conventions,
             entity => this._requestExecutor.conventions.generateDocumentId(database, entity));
 
         this._streamLock = new Semaphore(1);
-        this._lastWriteToStream = new Date();
 
         const timerState: TimerState = {
             parent: this,
@@ -509,7 +437,7 @@ export class BulkInsertOperation extends BulkInsertOperationBase<object> {
 
             this._first = false;
             this._inProgressCommand = "None";
-            this._currentWriter.push("{\"Type\":\"HeartBeat\"}");
+            this._writer.write("{\"Type\":\"HeartBeat\"}");
 
             await this.flushIfNeeded(true);
         } catch {
@@ -529,10 +457,16 @@ export class BulkInsertOperation extends BulkInsertOperationBase<object> {
                 return false;
             }
 
+            // version 6 only from 6.0.2
+            if (major === 6 && minor > 0) {
+                return true;
+            }
+
             if (major === 6 && build < 2) {
                 return false;
             }
 
+            // 5.4.108 or higher
             return major > 5 || (major == 5 && minor >= 4 && build >= 110);
         }
 
@@ -556,22 +490,6 @@ export class BulkInsertOperation extends BulkInsertOperationBase<object> {
 
     set useCompression(value: boolean) {
         this._useCompression = value;
-    }
-
-    private async _throwBulkInsertAborted(e: Error, flushEx: Error = null) {
-        let errorFromServer: Error;
-        try {
-            errorFromServer = await this._getExceptionFromOperation();
-        } catch {
-            // server is probably down, will propagate the original exception
-        }
-        //TODO: use flushEx variable
-
-        if (errorFromServer) {
-            throw errorFromServer;
-        }
-
-        throwError("BulkInsertAbortedException", "Failed to execute bulk insert", e);
     }
 
     private static _throwNoDatabase(): void {
@@ -700,10 +618,10 @@ export class BulkInsertOperation extends BulkInsertOperationBase<object> {
 
             json = this._conventions.transformObjectKeysToRemoteFieldNameConvention(json);
 
-            this._currentWriter.push(`{"Id":"`);
+            this._writer.write(`{"Id":"`);
             this._writeString(id);
             const jsonString = JsonSerializer.getDefault().serialize(json);
-            this._currentWriter.push(`","Type":"PUT","Document":${jsonString}}`);
+            this._writer.write(`","Type":"PUT","Document":${jsonString}}`);
             await this.flushIfNeeded();
         } catch (e) {
             this._handleErrors(id, e);
@@ -739,52 +657,11 @@ export class BulkInsertOperation extends BulkInsertOperationBase<object> {
         }
     }
 
-    private async flushIfNeeded(force = false): Promise<void> {
-        if (this._currentWriter.length > BulkInsertOperation._maxSizeInBuffer || this._asyncWriteDone) {
-            await this._asyncWrite;
-
-            const tmp = this._currentWriter;
-            this._currentWriter = this._backgroundWriter;
-            this._backgroundWriter = tmp;
-
-            this._currentWriter = new BulkInsertStream();
-
-            const buffer = this._backgroundWriter.toBuffer();
-            force = true; // original version: force || this.isHeartbeatIntervalExceeded() || ; in node.js we need to force flush to use backpressure in steams
-            this._asyncWriteDone = false;
-            this._asyncWrite = this.writeToRequestBodyStream(buffer, force);
-        }
-    }
-
-    private isHeartbeatIntervalExceeded(): boolean {
-        return Date.now() - this._lastWriteToStream.getTime() >= this._heartbeatCheckInterval;
-    }
-
-    private async writeToRequestBodyStream(buffer: Buffer, force = false): Promise<void> {
-        try {
-            this._requestBodyStream.write(buffer);
-            if (this._isInitialWrite || force) {
-                this._isInitialWrite = false;
-
-                await this._requestBodyStream.flush();
-
-                if (this._compressedStream) {
-                    const flush = promisify(this._compressedStream.flush);
-                    await flush.call(this._compressedStream);
-                }
-
-                this._lastWriteToStream = new Date();
-            }
-        } finally {
-            this._asyncWriteDone = true;
-        }
-    }
-
     private _endPreviousCommandIfNeeded() {
         if (this._inProgressCommand === "Counters") {
             this._countersOperation.endPreviousCommandIfNeeded();
         } else if (this._inProgressCommand === "TimeSeries") {
-            BulkInsertOperation.throwAlreadyRunningTimeSeries();
+            BulkInsertOperation._timeSeriesBulkInsertBaseClass.throwAlreadyRunningTimeSeries();
         }
     }
 
@@ -793,16 +670,16 @@ export class BulkInsertOperation extends BulkInsertOperationBase<object> {
             const c = input[i];
             if (`"` === c) {
                 if (i === 0 || input[i - 1] !== `\\`) {
-                    this._currentWriter.push("\\");
+                    this._writer.write("\\");
                 }
             }
 
-            this._currentWriter.push(c);
+            this._writer.write(c);
         }
     }
 
     private _writeComma() {
-        this._currentWriter.push(",");
+        this._writer.write(",");
     }
 
     private static _verifyValidId(id: string): void {
@@ -833,29 +710,15 @@ export class BulkInsertOperation extends BulkInsertOperationBase<object> {
     }
 
     protected async _ensureStream() {
-        try {
-            this._requestBodyStream = new RequestBodyStream();
-            this._stream = this._requestBodyStream;
+        await this._writer.ensureStream(this.useCompression);
 
-            if (this.useCompression) {
-                this._compressedStream = createGzip();
-                pipeline(this._requestBodyStream, this._compressedStream);
-            }
+        const bulkCommand =
+            new BulkInsertCommand(this._operationId, this._writer.compressedStream ?? this._writer.requestBodyStream, this._nodeTag, this._options.skipOverwriteIfUnchanged);
+        bulkCommand.useCompression = this._useCompression;
 
-            const bulkCommand =
-                new BulkInsertCommand(this._operationId, this._compressedStream ?? this._requestBodyStream, this._nodeTag, this._options.skipOverwriteIfUnchanged);
-            bulkCommand.useCompression = this._useCompression;
-
-            this._bulkInsertExecuteTask = this._requestExecutor.execute(bulkCommand);
-
-            this._currentWriter.push("[");
-
-            this._bulkInsertExecuteTask
-                .catch(() => this._bulkInsertExecuteTaskErrored = true);
-
-        } catch (e) {
-            throwError("RavenException", "Unable to open bulk insert stream.", e);
-        }
+        this._bulkInsertExecuteTask = this._requestExecutor.execute(bulkCommand);
+        this._bulkInsertExecuteTask
+            .catch(() => this._bulkInsertExecuteTaskErrored = true);
     }
 
     public async abort(): Promise<void> {
@@ -872,7 +735,7 @@ export class BulkInsertOperation extends BulkInsertOperationBase<object> {
     }
 
     public async finish(): Promise<void> {
-        if (this._requestBodyStreamFinished) {
+        if (this._writer.requestBodyStreamFinished) {
             return;
         }
 
@@ -882,25 +745,17 @@ export class BulkInsertOperation extends BulkInsertOperationBase<object> {
 
         let flushEx: Error;
 
-        if (this._stream) {
+        try {
+            const context = acquireSemaphore(this._streamLock);
+            await context.promise;
+
             try {
-                const context = acquireSemaphore(this._streamLock);
-                await context.promise;
-
-                try {
-                    this._currentWriter.push("]");
-                    await this._asyncWrite;
-                    this._requestBodyStream.push(this._currentWriter.toBuffer());
-                    await this._stream.flush();
-                } finally {
-                    context.dispose();
-                }
-            } catch (e) {
-                flushEx = e;
+                await this._writer.dispose();
+            } finally {
+                context.dispose();
             }
-
-            this._requestBodyStream.push(null);
-            this._requestBodyStreamFinished = true;
+        } catch (e) {
+            flushEx = e;
         }
 
         if (this._operationId === -1) {
@@ -921,9 +776,6 @@ export class BulkInsertOperation extends BulkInsertOperationBase<object> {
         }
     }
 
-    private readonly _conventions: DocumentConventions;
-    private readonly _store: IDocumentStore;
-
     private async _getId(entity: any) {
         let idRef: string;
         if (this._generateEntityIdOnTheClient.tryGetIdFromInstance(entity, id => idRef = id)) {
@@ -942,6 +794,14 @@ export class BulkInsertOperation extends BulkInsertOperationBase<object> {
         }
 
         return new BulkInsertOperation._attachmentsBulkInsertClass(this, id);
+    }
+
+    public countersFor(id: string): ICountersBulkInsert {
+        if (StringUtil.isNullOrEmpty(id)) {
+            throwError("InvalidArgumentException", "Document id cannot be null or empty");
+        }
+
+        return new BulkInsertOperation._countersBulkInsertClass(this, id);
     }
 
     public timeSeriesFor(id: string, name): ITimeSeriesBulkInsert;
@@ -968,16 +828,8 @@ export class BulkInsertOperation extends BulkInsertOperationBase<object> {
         BulkInsertOperation._validateTimeSeriesName(tsName);
 
         return new BulkInsertOperation._typedTimeSeriesBulkInsertClass(this, clazz, id, tsName);
-
     }
 
-    public countersFor(id: string): ICountersBulkInsert {
-        if (StringUtil.isNullOrEmpty(id)) {
-            throwError("InvalidArgumentException", "Document id cannot be null or empty");
-        }
-
-        return new BulkInsertOperation._countersBulkInsertClass(this, id);
-    }
 
     private _timeSeriesFor(id: string, name: string): ITimeSeriesBulkInsert {
         if (StringUtil.isNullOrEmpty(id)) {
@@ -999,8 +851,14 @@ export class BulkInsertOperation extends BulkInsertOperationBase<object> {
         }
     }
 
-    static throwAlreadyRunningTimeSeries() {
-        throwError("BulkInsertInvalidOperationException", "There is an already running time series operation, did you forget to close it?");
+    private async flushIfNeeded(force: boolean = false) {
+        force = force || this.isHeartbeatIntervalExceeded();
+
+        return this._writer.flushIfNeeded(force);
+    }
+
+    private isHeartbeatIntervalExceeded(): boolean {
+        return Date.now() - this._writer.lastFlushToStream.getTime() >= this._heartbeatCheckInterval;
     }
 
     private static readonly _countersBulkInsertClass = class CountersBulkInsert implements ICountersBulkInsert {
@@ -1088,11 +946,6 @@ export class BulkInsertCommand extends RavenCommand<void> {
     public async setResponseAsync(bodyStream: Stream, fromCache: boolean): Promise<string> {
         return throwError("NotImplementedException", "Not implemented");
     }
-}
-
-export interface BulkInsertOptions {
-    useCompression?: boolean;
-    skipOverwriteIfUnchanged?: boolean;
 }
 
 export interface TimerState {

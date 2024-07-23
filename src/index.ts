@@ -96,7 +96,8 @@ export * from "./ServerWide/Operations/ModifyConflictSolverOperation.js";
 export * from "./Documents/Operations/Etl/ConnectionString.js";
 
 // OPERATIONS AND COMMANDS
-export { BulkInsertOperation, IAttachmentsBulkInsert, ICountersBulkInsert, ITimeSeriesBulkInsert, ITypedTimeSeriesBulkInsert, BulkInsertOptions } from "./Documents/BulkInsertOperation.js";
+export { BulkInsertOperation, IAttachmentsBulkInsert, ICountersBulkInsert, ITimeSeriesBulkInsert, ITypedTimeSeriesBulkInsert } from "./Documents/BulkInsertOperation.js";
+export * from "./Documents/BulkInsert/BulkInsertOptions.js";
 export { BulkInsertProgress } from "./Documents/Operations/BulkInsertProgress.js";
 export { CollectionDetails } from "./Documents/Operations/CollectionDetails.js";
 export * from "./Documents/Operations/Backups/BackupConfiguration.js";

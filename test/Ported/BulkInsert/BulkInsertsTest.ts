@@ -7,8 +7,8 @@ import DocumentStore, {
 import { createMetadataDictionary } from "../../../src/Mapping/MetadataAsDictionary.js";
 import { DateUtil } from "../../../src/Utility/DateUtil.js";
 import { delay } from "../../../src/Utility/PromiseUtil.js";
-import { assertThat } from "../../Utils/AssertExtensions";
-import { Timer } from "../../../src/Primitives/Timer";
+import { assertThat } from "../../Utils/AssertExtensions.js";
+import { Timer } from "../../../src/Primitives/Timer.js";
 
 describe("bulk insert", function () {
 

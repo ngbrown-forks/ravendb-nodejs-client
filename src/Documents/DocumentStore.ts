@@ -11,7 +11,7 @@ import { IDocumentSession } from "./Session/IDocumentSession.js";
 import { SessionOptions } from "./Session/SessionOptions.js";
 import { DocumentSession } from "./Session/DocumentSession.js";
 import { IAuthOptions } from "../Auth/AuthOptions.js";
-import { BulkInsertOperation, BulkInsertOptions } from "./BulkInsertOperation.js";
+import { BulkInsertOperation } from "./BulkInsertOperation.js";
 import { IDatabaseChanges } from "./Changes/IDatabaseChanges.js";
 import { DatabaseChanges } from "./Changes/DatabaseChanges.js";
 import { DatabaseSmuggler } from "./Smuggler/DatabaseSmuggler.js";
@@ -20,6 +20,7 @@ import { IDisposable } from "../Types/Contracts.js";
 import { MultiDatabaseHiLoIdGenerator } from "./Identity/MultiDatabaseHiLoIdGenerator.js";
 import { TypeUtil } from "../Utility/TypeUtil.js";
 import { wrapWithTimeout } from "../Utility/PromiseUtil.js";
+import { BulkInsertOptions } from "./BulkInsert/BulkInsertOptions.js";
 
 const log = getLogger({ module: "DocumentStore" });
 

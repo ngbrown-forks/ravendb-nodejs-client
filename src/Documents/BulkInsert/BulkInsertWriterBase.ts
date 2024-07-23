@@ -1,78 +1,58 @@
 import { IDisposable } from "../../Types/Contracts.js";
 import { Buffer } from "node:buffer";
-import { createGzip } from "node:zlib";
-import { throwError } from "../../Exceptions/index.js";
-import { BulkInsertCommand } from "../BulkInsertOperation.js";
-
-
+import { pipeline, Readable } from "node:stream";
+import { createGzip, Gzip } from "node:zlib";
+import { promisify } from "node:util";
+import { TypeUtil } from "../../Utility/TypeUtil.js";
 
 export class BulkInsertWriterBase implements IDisposable {
     private readonly _maxSizeInBuffer = 1024 * 1024;
 
     private _asyncWrite: Promise<void> = Promise.resolve();
     private _asyncWriteDone: boolean = true;
-    private _currentWriter: BulkInsertStream;
+    protected _currentWriter: BulkInsertStream;
     private _backgroundWriter: BulkInsertStream;
     private _isInitialWrite: boolean = true;
 
-    protected lastFlushToStream: Date;
+    public lastFlushToStream: Date;
 
-    //TODO: internal readonly BulkInsertOperation.BulkInsertStreamExposerContent StreamExposer;
+    public requestBodyStream: RequestBodyStream;
+    public requestBodyStreamFinished: boolean = false;
+    public compressedStream: Gzip;
 
     protected constructor() {
-        /* TODO
-        StreamExposer = new BulkInsertOperation.BulkInsertStreamExposerContent();
-
-         */
+        this.requestBodyStream = new RequestBodyStream();
 
         this._currentWriter = new BulkInsertStream();
         this._backgroundWriter = new BulkInsertStream();
 
-        this.updateFlushTime();
+        this._updateFlushTime();
     }
 
-    dispose() { //TODO: remember to call this method
-        /* TODO
-         try
-            {
-                if (StreamExposer.IsDone)
-                    return;
+    async dispose(): Promise<void> {
+        if (this.requestBodyStreamFinished) {
+            return;
+        }
 
-                try
-                {
-                    if (_requestBodyStream != null)
-                    {
-                        _currentWriteStream.WriteByte((byte)']');
-                        _currentWriteStream.Flush();
-                        await _asyncWrite.ConfigureAwait(false);
+        try {
+            if (this.requestBodyStream) {
+                this._currentWriter.push("]");
+                await this._asyncWrite;
 
-                        await WriteToStreamAsync(_currentWriteStream, _requestBodyStream, _memoryBuffer).ConfigureAwait(false);
-                        await _requestBodyStream.FlushAsync(_token).ConfigureAwait(false);
-                    }
-                }
-                finally
-                {
-                    StreamExposer.Done();
-                }
+                await this.writeToStream(this._currentWriter.toBuffer());
+                this.requestBodyStream.push(null);
+                await this.requestBodyStream.flush();
             }
-            finally
-            {
-                using (StreamExposer)
-                using (returnMemoryBuffer)
-                using (returnBackgroundMemoryBuffer)
-                {
-
-                }
-            }
-        });
-         */
+        } finally {
+            this.requestBodyStreamFinished = true;
+        }
     }
 
     public initialize(): void {
         this.onCurrentWriteStreamSet(this._currentWriter);
     }
 
-    private async flushIfNeeded(force = false): Promise<void> { //TODO: review this method
+    public async flushIfNeeded(force = false): Promise<void> {
         if (this._currentWriter.length > this._maxSizeInBuffer || this._asyncWriteDone) {
             await this._asyncWrite;
 
@@ -89,7 +69,7 @@ export class BulkInsertWriterBase implements IDisposable {
         }
     }
 
-    private updateFlashTime(): void {
+    private _updateFlushTime(): void {
         this.lastFlushToStream = new Date();
     }
 
@@ -97,72 +77,31 @@ export class BulkInsertWriterBase implements IDisposable {
         // empty by design
     }
 
-    /* TODO
-     protected Task WriteToStreamAsync(Stream src, Stream dst)
-    {
-        return WriteToStreamAsync(src, dst, _memoryBuffer);
-    }
-
-    protected Task WriteToRequestStreamAsync(Stream src)
-    {
-        return WriteToStreamAsync(src, _requestBodyStream, _memoryBuffer);
-    }
-
-    private async Task WriteToStreamAsync(Stream src, Stream dst, JsonOperationContext.MemoryBuffer buffer, bool forceDstFlush = false)
-    {
-        src.Seek(0, SeekOrigin.Begin);
-
-        while (true)
-        {
-            int bytesRead = await src.ReadAsync(buffer.Memory.Memory, _token).ConfigureAwait(false);
-
-            if (bytesRead == 0)
-                break;
-
-            await dst.WriteAsync(buffer.Memory.Memory.Slice(0, bytesRead), _token).ConfigureAwait(false);
-
-            if (forceDstFlush)
-            {
-                UpdateFlushTime();
-                await dst.FlushAsync(_token).ConfigureAwait(false);
-            }
-        }
-    }
-     */
-
-    protected async _ensureStream() { //TODO review this method
+    private async writeToStream(buffer: Buffer, forceDstFlush: boolean = false): Promise<void> {
         try {
-            this._requestBodyStream = new RequestBodyStream();
-            this._stream = this._requestBodyStream;
+            this.requestBodyStream.write(buffer);
 
-            if (this.useCompression) {
-                this._compressedStream = createGzip();
-                pipeline(this._requestBodyStream, this._compressedStream);
+            if (forceDstFlush) {
+                this._updateFlushTime();
+                await this.requestBodyStream.flush();
             }
-
-            const bulkCommand =
-                new BulkInsertCommand(this._operationId, this._compressedStream ?? this._requestBodyStream, this._nodeTag, this._options.skipOverwriteIfUnchanged);
-            bulkCommand.useCompression = this._useCompression;
-
-            this._bulkInsertExecuteTask = this._requestExecutor.execute(bulkCommand);
-
-            this._currentWriter.push("[");
-
-            this._bulkInsertExecuteTask
-                .catch(() => this._bulkInsertExecuteTaskErrored = true);
-
-        } catch (e) {
-            throwError("RavenException", "Unable to open bulk insert stream.", e);
+            if (this.compressedStream) {
+                const flush = promisify(this.compressedStream.flush);
+                await flush.call(this.compressedStream);
+            }
+        } finally {
+            this._asyncWriteDone = true;
         }
     }
 
+    public async ensureStream(compression: boolean) {
+        if (compression) {
+            this.compressedStream = createGzip();
+            pipeline(this.requestBodyStream, this.compressedStream, TypeUtil.NOOP);
+        }
 
-    /* TODO
-       public void DisposeRequestStream()
-    {
-        _requestBodyStream?.Dispose();
+        this._currentWriter.push("[");
     }
-     */
 }
 
 export class BulkInsertStream {
@@ -193,5 +132,36 @@ export class BulkInsertStream {
 
     public get length() {
         return this.totalLength;
+    }
+}
+
+export class RequestBodyStream extends Readable {
+    constructor() {
+        super({
+            highWaterMark: 1024 * 1024
+        });
+    }
+
+    private _pending: Promise<void>;
+    private _resume: () => void;
+
+    _read(size: number) {
+        this._resume?.();
+    }
+
+    write(data: Buffer | string) {
+        const canConsumeMore = this.push(data);
+        if (!canConsumeMore) {
+            this._pending = new Promise(resolve => {
+                this._resume = () => {
+                    this._resume = null;
+                    resolve();
+                };
+            });
+        }
+    }
+
+    async flush(): Promise<void> {
+        await this._pending;
     }
 }
