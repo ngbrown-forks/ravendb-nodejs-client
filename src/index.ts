@@ -96,7 +96,8 @@ export * from "./ServerWide/Operations/ModifyConflictSolverOperation.js";
 export * from "./Documents/Operations/Etl/ConnectionString.js";
 
 // OPERATIONS AND COMMANDS
-export { BulkInsertOperation, IAttachmentsBulkInsert, ICountersBulkInsert, ITimeSeriesBulkInsert, ITypedTimeSeriesBulkInsert, BulkInsertOptions } from "./Documents/BulkInsertOperation.js";
+export { BulkInsertOperation, IAttachmentsBulkInsert, ICountersBulkInsert, ITimeSeriesBulkInsert, ITypedTimeSeriesBulkInsert } from "./Documents/BulkInsertOperation.js";
+export * from "./Documents/BulkInsert/BulkInsertOptions.js";
 export { BulkInsertProgress } from "./Documents/Operations/BulkInsertProgress.js";
 export { CollectionDetails } from "./Documents/Operations/CollectionDetails.js";
 export * from "./Documents/Operations/Backups/BackupConfiguration.js";
@@ -593,7 +594,7 @@ export { TimeSeriesCollectionConfiguration } from "./Documents/Operations/TimeSe
 export { TimeSeriesConfiguration } from "./Documents/Operations/TimeSeries/TimeSeriesConfiguration.js";
 export { TimeSeriesDetails } from "./Documents/Operations/TimeSeries/TimeSeriesDetails.js";
 export { TimeSeriesItemDetail } from "./Documents/Operations/TimeSeries/TimeSeriesItemDetail.js";
-export { TimeSeriesOperation, AppendOperation, DeleteOperation, IncrementOperation } from "./Documents/Operations/TimeSeries/TimeSeriesOperation.js";
+export * from "./Documents/Operations/TimeSeries/TimeSeriesOperation.js";
 export { TimeSeriesPolicy } from "./Documents/Operations/TimeSeries/TimeSeriesPolicy.js";
 export { TimeSeriesRange } from "./Documents/Operations/TimeSeries/TimeSeriesRange.js";
 export { TimeSeriesCountRange } from "./Documents/Operations/TimeSeries/TimeSeriesCountRange.js";
@@ -602,7 +603,7 @@ export { TimeSeriesTimeRange } from "./Documents/Operations/TimeSeries/TimeSerie
 export { TimeSeriesRangeResult } from "./Documents/Operations/TimeSeries/TimeSeriesRangeResult.js";
 export { TimeSeriesStatistics } from "./Documents/Operations/TimeSeries/TimeSeriesStatistics.js";
 export { AbstractTimeSeriesRange } from "./Documents/Operations/TimeSeries/AbstractTimeSeriesRange.js";
-
+export { TimeValue } from "./Primitives/TimeValue.js";
 // AUTH
 export * from "./Auth/AuthOptions.js";
 

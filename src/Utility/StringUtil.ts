@@ -3,7 +3,7 @@ import { throwError } from "../Exceptions/index.js";
 import { StringBuilder } from "./StringBuilder.js";
 
 export class StringUtil {
-    private static readonly letterRe: RegExp = new RegExp(/^\p{L}/,'u');
+    private static readonly letterRe: RegExp = /^\p{L}/u;
     private static readonly digitRe: RegExp = /\d/;
 
     public static leftPad(s: string, length: number, char: string) {
@@ -142,7 +142,7 @@ export class StringUtil {
     private static _escapeStringInternal(builder: StringBuilder, value: string) {
         let escaped = JSON.stringify(value);
 
-        escaped = escaped.replace(/'/g, "\\'");
+        escaped = escaped.replace(/'/g, String.raw`\'`);
 
         builder.append(escaped.substring(1, escaped.length - 1));
     }

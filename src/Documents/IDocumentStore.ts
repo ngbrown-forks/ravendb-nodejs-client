@@ -18,7 +18,7 @@ import { OperationExecutor } from "./Operations/OperationExecutor.js";
 import { RequestExecutor } from "../Http/RequestExecutor.js";
 import { DocumentConventions } from "./Conventions/DocumentConventions.js";
 import { InMemoryDocumentSessionOperations } from "./Session/InMemoryDocumentSessionOperations.js";
-import { BulkInsertOperation, BulkInsertOptions } from "./BulkInsertOperation.js";
+import { BulkInsertOperation } from "./BulkInsertOperation.js";
 import { IDatabaseChanges } from "./Changes/IDatabaseChanges.js";
 import { DocumentSubscriptions } from "./Subscriptions/DocumentSubscriptions.js";
 import { SessionOptions } from "./Session/SessionOptions.js";
@@ -26,6 +26,7 @@ import { DatabaseSmuggler } from "./Smuggler/DatabaseSmuggler.js";
 import { IAbstractIndexCreationTask } from "./Indexes/IAbstractIndexCreationTask.js";
 import { TimeSeriesOperations } from "./TimeSeries/TimeSeriesOperations.js";
 import { IHiLoIdGenerator } from "./Identity/IHiLoIdGenerator.js";
+import { BulkInsertOptions } from "./BulkInsert/BulkInsertOptions.js";
 
 export interface SessionEventsProxy {
     addSessionListener(eventName: "failedRequest", eventHandler: (eventArgs: FailedRequestEventArgs) => void): this;

@@ -25,7 +25,7 @@ import { DocumentConventions } from "./Conventions/DocumentConventions.js";
 import { RequestExecutor } from "../Http/RequestExecutor.js";
 import { IndexCreation } from "./Indexes/IndexCreation.js";
 import { PutIndexesOperation } from "./Operations/Indexes/PutIndexesOperation.js";
-import { BulkInsertOperation, BulkInsertOptions } from "./BulkInsertOperation.js";
+import { BulkInsertOperation } from "./BulkInsertOperation.js";
 import { IDatabaseChanges } from "./Changes/IDatabaseChanges.js";
 import { DocumentSubscriptions } from "./Subscriptions/DocumentSubscriptions.js";
 import { DocumentStore } from "./DocumentStore.js";
@@ -38,6 +38,7 @@ import { TimeSeriesOperations } from "./TimeSeries/TimeSeriesOperations.js";
 import { IAbstractIndexCreationTask } from "./Indexes/IAbstractIndexCreationTask.js";
 import { StringUtil } from "../Utility/StringUtil.js";
 import { IHiLoIdGenerator } from "./Identity/IHiLoIdGenerator.js";
+import { BulkInsertOptions } from "./BulkInsert/BulkInsertOptions.js";
 
 export abstract class DocumentStoreBase
     extends EventEmitter
