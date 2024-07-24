@@ -40,7 +40,6 @@ export class BulkInsertWriterBase implements IDisposable {
                 await this._asyncWrite;
 
                 await this.writeToStream(this._currentWriter.toBuffer());
-                this.requestBodyStream.push(null);
                 await this.requestBodyStream.flush();
             }
         } finally {

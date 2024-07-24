@@ -121,7 +121,6 @@ export class DocumentStore extends DocumentStoreBase {
             .then(async () => {
                 if (this._multiDbHiLo) {
                     try {
-                        await Promise.resolve();
                         return await this._multiDbHiLo.returnUnusedRange();
                     } catch (err) {
                         return await this._log.warn("Error returning unused ID range.", err);

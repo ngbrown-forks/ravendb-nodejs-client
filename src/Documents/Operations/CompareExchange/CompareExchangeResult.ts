@@ -33,7 +33,6 @@ export class CompareExchangeResult<T> {
         const raw = response.Value;
         const result = CompareExchangeValueResultParser.deserializeObject(raw, conventions, clazz);
 
-        const val = response.Value.Object || null;
         const exchangeResult = new CompareExchangeResult<T>();
         exchangeResult.index = response.Index;
         exchangeResult.successful = response.Successful;
