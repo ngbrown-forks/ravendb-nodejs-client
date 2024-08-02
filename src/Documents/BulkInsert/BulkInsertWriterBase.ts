@@ -1,7 +1,7 @@
 import { IDisposable } from "../../Types/Contracts.js";
 import { Buffer } from "node:buffer";
 import { pipeline, Readable } from "node:stream";
-import { createGzip, Gzip } from "node:zlib";
+import type { Gzip } from "node:zlib";
 import { promisify } from "node:util";
 import { TypeUtil } from "../../Utility/TypeUtil.js";
 
@@ -95,6 +95,7 @@ export class BulkInsertWriterBase implements IDisposable {
 
     public async ensureStream(compression: boolean) {
         if (compression) {
+            const { createGzip } = await import("node:zlib");
             this.compressedStream = createGzip();
             pipeline(this.requestBodyStream, this.compressedStream, TypeUtil.NOOP);
         }
