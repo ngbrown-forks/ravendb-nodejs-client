@@ -560,7 +560,7 @@ export class BulkInsertOperation extends BulkInsertOperationBase<object> {
         id: string,
         metadata?: IMetadataDictionary): boolean {
 
-        if (this.isFlashNeeded() || this._first) {
+        if (this.isFlushNeeded() || this._first) {
             return false;
         }
 
@@ -878,7 +878,7 @@ export class BulkInsertOperation extends BulkInsertOperationBase<object> {
         }
     }
 
-    private isFlashNeeded(): boolean {
+    private isFlushNeeded(): boolean {
         return this._writer.isFlushNeeded();
     }
 
