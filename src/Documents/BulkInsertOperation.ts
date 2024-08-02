@@ -553,6 +553,28 @@ export class BulkInsertOperation extends BulkInsertOperationBase<object> {
         return { id, metadata, getId };
     }
 
+    public tryStoreSync(entity: object, id: string): boolean;
+    public tryStoreSync(entity: object, id: string, metadata: IMetadataDictionary): boolean;
+    public tryStoreSync(
+        entity: object,
+        id: string,
+        metadata?: IMetadataDictionary): boolean {
+
+        if (this.isFlashNeeded() || this._first) {
+            return false;
+        }
+
+        BulkInsertOperation._verifyValidId(id);
+
+        metadata = this.handleMetadata(metadata, entity);
+
+        this._endPreviousCommandIfNeeded();
+
+        this._writeToStream(entity, id, metadata, "PUT");
+
+        return true;
+    }
+
     public async store(entity: object): Promise<void>;
     public async store(entity: object, id: string): Promise<void>;
     public async store(entity: object, metadata: IMetadataDictionary): Promise<void>;
@@ -563,69 +585,74 @@ export class BulkInsertOperation extends BulkInsertOperationBase<object> {
         optionalMetadata?: IMetadataDictionary): Promise<void> {
 
         const check = await this._concurrencyCheck();
+        let id: string;
         try {
 
             const opts = BulkInsertOperation._typeCheckStoreArgs(idOrMetadata, optionalMetadata);
             let metadata = opts.metadata;
 
-            const id = opts.getId ? await this._getId(entity) : opts.id;
+            id = opts.getId ? await this._getId(entity) : opts.id;
             BulkInsertOperation._verifyValidId(id);
 
             await this._executeBeforeStore();
-
-            if (!metadata) {
-                metadata = createMetadataDictionary({
-                    raw: {}
-                });
-            }
-
-            if (!(("@collection" as keyof MetadataObject) in metadata)) {
-                const collection = this._requestExecutor.conventions.getCollectionNameForEntity(entity);
-                if (collection) {
-                    metadata["@collection"] = collection;
-                }
-            }
-
-            if (!("Raven-Node-Type" as keyof MetadataObject in metadata)) {
-                const descriptor = this._conventions.getTypeDescriptorByEntity(entity);
-                const jsType = this._requestExecutor.conventions.getJsTypeName(descriptor);
-                if (jsType) {
-                    metadata["Raven-Node-Type"] = jsType;
-                }
-            }
+            metadata = this.handleMetadata(metadata, entity);
 
             this._endPreviousCommandIfNeeded();
 
-            await this._writeToStream(entity, id, metadata, "PUT");
+            this._writeToStream(entity, id, metadata, "PUT");
+            await this.flushIfNeeded();
+        } catch (e) {
+            this._handleErrors(id, e);
         } finally {
             check.dispose();
         }
     }
 
-    private async _writeToStream(entity: object, id: string, metadata: IMetadataDictionary, type: CommandType) {
-        try {
-            if (this._first) {
-                this._first = false;
-            } else {
-                this._writeComma();
-            }
-
-            this._inProgressCommand = "None";
-
-            const documentInfo = new DocumentInfo();
-            documentInfo.metadataInstance = metadata;
-            let json = EntityToJson.convertEntityToJson(entity, this._conventions, documentInfo, true);
-
-            json = this._conventions.transformObjectKeysToRemoteFieldNameConvention(json);
-
-            this._writer.write(`{"Id":"`);
-            this._writeString(id);
-            const jsonString = JsonSerializer.getDefault().serialize(json);
-            this._writer.write(`","Type":"PUT","Document":${jsonString}}`);
-            await this.flushIfNeeded();
-        } catch (e) {
-            this._handleErrors(id, e);
+    private handleMetadata(metadata: IMetadataDictionary, entity: object) {
+        if (!metadata) {
+            metadata = createMetadataDictionary({
+                raw: {}
+            });
         }
+
+        if (!(("@collection" as keyof MetadataObject) in metadata)) {
+            const collection = this._requestExecutor.conventions.getCollectionNameForEntity(entity);
+            if (collection) {
+                metadata["@collection"] = collection;
+            }
+        }
+
+        if (!("Raven-Node-Type" as keyof MetadataObject in metadata)) {
+            const descriptor = this._conventions.getTypeDescriptorByEntity(entity);
+            const jsType = this._requestExecutor.conventions.getJsTypeName(descriptor);
+            if (jsType) {
+                metadata["Raven-Node-Type"] = jsType;
+            }
+        }
+        return metadata;
+    }
+
+    // in node.js we handle errors outside of this method
+    private _writeToStream(entity: object, id: string, metadata: IMetadataDictionary, type: CommandType) {
+        if (this._first) {
+            this._first = false;
+        } else {
+            this._writeComma();
+        }
+
+        this._inProgressCommand = "None";
+
+        const documentInfo = new DocumentInfo();
+        documentInfo.metadataInstance = metadata;
+        let json = EntityToJson.convertEntityToJson(entity, this._conventions, documentInfo, true);
+
+        json = this._conventions.transformObjectKeysToRemoteFieldNameConvention(json);
+
+        this._writer.write(`{"Id":"`);
+        this._writeString(id);
+        const jsonString = JsonSerializer.getDefault().serialize(json);
+        this._writer.write(`","Type":"PUT","Document":${jsonString}}`);
+
     }
 
     private _handleErrors(documentId: string, e: Error) {
@@ -849,6 +876,10 @@ export class BulkInsertOperation extends BulkInsertOperationBase<object> {
         if (StringUtil.startsWithIgnoreCase(name, HEADERS.INCREMENTAL_TIME_SERIES_PREFIX) && !name.includes("@")) {
             throwError("InvalidArgumentException", "Time Series name cannot start with " + HEADERS.INCREMENTAL_TIME_SERIES_PREFIX + " prefix");
         }
+    }
+
+    private isFlashNeeded(): boolean {
+        return this._writer.isFlushNeeded();
     }
 
     private async flushIfNeeded(force: boolean = false) {
