@@ -1918,11 +1918,14 @@ export class RequestExecutor implements IDisposable {
 
 
     private _setDefaultRequestOptions(): void {
+        // add property only if compression enabled - having fixed properly makes custom fetch (like in next.js) fail
+        const compressOpts = !this._conventions.hasExplicitlySetCompressionUsage || this._conventions.useCompression ? {
+            compress: true
+        } : {};
+
         this._defaultRequestOptions = Object.assign(
             DEFAULT_REQUEST_OPTIONS,
-            {
-                compress: !(this._conventions.hasExplicitlySetCompressionUsage && !this._conventions.useCompression)
-            },
+            compressOpts,
             this._customHttpRequestOptions);
     }
 
