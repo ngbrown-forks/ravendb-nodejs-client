@@ -599,10 +599,12 @@ export class BulkInsertOperation extends BulkInsertOperationBase<object> {
 
             this._endPreviousCommandIfNeeded();
 
-            this._writeToStream(entity, id, metadata, "PUT");
-            await this.flushIfNeeded();
-        } catch (e) {
-            this._handleErrors(id, e);
+            try {
+                this._writeToStream(entity, id, metadata, "PUT");
+                await this.flushIfNeeded();
+            } catch (e) {   
+                this._handleErrors(id, e);
+            }
         } finally {
             check.dispose();
         }
@@ -652,7 +654,6 @@ export class BulkInsertOperation extends BulkInsertOperationBase<object> {
         this._writeString(id);
         const jsonString = JsonSerializer.getDefault().serialize(json);
         this._writer.write(`","Type":"PUT","Document":${jsonString}}`);
-
     }
 
     private _handleErrors(documentId: string, e: Error) {
