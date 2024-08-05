@@ -554,7 +554,8 @@ export class BulkInsertOperation extends BulkInsertOperationBase<object> {
     }
 
     /**
-     * Synchronous version of store. In stores entity unless buffer is full (then false is returned).
+     * Synchronous version of store. It stores the entity unless the buffer is full
+     * (then false is returned, and you are expected to call await store() ).
      *
      * Usage pattern:
      *
