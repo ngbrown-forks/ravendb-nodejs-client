@@ -7,7 +7,6 @@ import {
     ObjectLiteralDescriptor,
     ClassConstructor, EntityConstructor, Field
 } from "../../Types/index.js";
-import Pluralize from "pluralize";
 import { ClientConfiguration } from "../Operations/Configuration/ClientConfiguration.js";
 import { ReadBalanceBehavior } from "../../Http/ReadBalanceBehavior.js";
 import { throwError } from "../../Exceptions/index.js";
@@ -19,8 +18,7 @@ import { LoadBalanceBehavior } from "../../Http/LoadBalanceBehavior.js";
 import { BulkInsertConventions } from "./BulkInsertConventions.js";
 import { InMemoryDocumentSessionOperations } from "../Session/InMemoryDocumentSessionOperations.js";
 import { ShardingConventions } from "./ShardingConventions.js";
-
-const { plural } = Pluralize;
+import { plural } from "../../ext/pluralize/pluralize.js";
 
 export type IdConvention = (databaseName: string, entity: object) => Promise<string>;
 export type IValueForQueryConverter<T> =

@@ -5,7 +5,11 @@ export class StreamValues extends StreamBase {
         return new StreamValues(options);
     }
 
-    constructor(options) {
+    static streamValues = StreamValues.make;
+
+    _counter: any;
+
+    constructor(options = undefined) {
         super(options);
         this._counter = 0;
         this._level = 0;
@@ -20,5 +24,3 @@ export class StreamValues extends StreamBase {
         this._assembler.current = this._assembler.key = null;
     }
 }
-StreamValues.streamValues = StreamValues.make;
-StreamValues.make.Constructor = StreamValues;

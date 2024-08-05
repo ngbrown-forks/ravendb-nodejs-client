@@ -553,6 +553,20 @@ export class BulkInsertOperation extends BulkInsertOperationBase<object> {
         return { id, metadata, getId };
     }
 
+    /**
+     * Synchronous version of store. It stores the entity unless the buffer is full
+     * (then false is returned, and you are expected to call await store() ).
+     *
+     * Usage pattern:
+     *
+     * ```
+     * if (!tryStoreSync(entity, id)) {
+     *     await store(entity, id);
+     * }
+     * ```
+     * @param entity Entity
+     * @param id Document ID
+     */
     public tryStoreSync(entity: object, id: string): boolean;
     public tryStoreSync(entity: object, id: string, metadata: IMetadataDictionary): boolean;
     public tryStoreSync(

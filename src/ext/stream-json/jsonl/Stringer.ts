@@ -2,6 +2,8 @@
 import { Transform } from "node:stream";
 
 export class JsonlStringer extends Transform {
+    _replacer: any;
+
     static make(options) {
         return new JsonlStringer(options);
     }

@@ -1,7 +1,7 @@
 /* eslint-disable no-useless-escape */
 import { Utf8Stream } from "./utils/Utf8Stream.js";
 
-const patterns = {
+const patterns: any = {
     value1: /^(?:[\"\{\[\]\-\d]|true\b|false\b|null\b|\s{1,256})/,
     string: /^(?:[^\"\\]{1,256}|\\[bfnrt\"\\\/]|\\u[\da-fA-F]{4}|\")/,
     key1: /^(?:[\"\}]|\s{1,256})/,
@@ -50,7 +50,23 @@ export class Parser extends Utf8Stream {
         return new Parser(options);
     }
 
-    constructor(options) {
+    static parser = Parser.make;
+
+    _packKeys: boolean;
+    _packStrings: boolean;
+    _packNumbers: boolean;
+    _streamKeys: boolean;
+    _streamStrings: boolean;
+    _streamNumbers: boolean;
+    _jsonStreaming: boolean;
+    _done: boolean;
+    _expect: any;
+    _stack: any;
+    _parent: any;
+    _open_number: any;
+    _accumulator: any;
+
+    constructor(options = undefined) {
         super(Object.assign({}, options, {readableObjectMode: true}));
 
         this._packKeys = this._packStrings = this._packNumbers = this._streamKeys = this._streamStrings = this._streamNumbers = true;
@@ -538,6 +554,4 @@ export class Parser extends Utf8Stream {
         callback(null);
     }
 }
-Parser.parser = Parser.make;
-Parser.make.Constructor = Parser;
 

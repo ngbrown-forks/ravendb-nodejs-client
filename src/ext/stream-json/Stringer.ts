@@ -46,6 +46,14 @@ export class Stringer extends Transform {
         return new Stringer(options);
     }
 
+    static stringer = Stringer.make;
+
+    _values: any;
+    _prev: any;
+    _depth: number;
+    _prev_transform: any;
+    _makeArray: any;
+
     constructor(options) {
         super(Object.assign({}, options, {writableObjectMode: true, readableObjectMode: false}));
 
@@ -147,5 +155,3 @@ export class Stringer extends Transform {
         callback(null);
     }
 }
-Stringer.stringer = Stringer.make;
-Stringer.make.Constructor = Stringer;

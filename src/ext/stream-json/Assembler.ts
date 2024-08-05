@@ -16,6 +16,13 @@ export class Assembler extends EventEmitter {
         return new Assembler(options).connectTo(stream);
     }
 
+    stack: any;
+    current: any;
+    done: any;
+    key: any;
+    reviver: any;
+
+
     constructor(options) {
         super();
         this.stack = [];
@@ -142,9 +149,9 @@ export class Assembler extends EventEmitter {
             }
         }
     }
-}
 
-Assembler.prototype.stringValue = Assembler.prototype._saveValue;
-Assembler.prototype.startObject = startObject(Object);
-Assembler.prototype.startArray = startObject(Array);
-Assembler.prototype.endArray = Assembler.prototype.endObject;
+    stringValue = this._saveValue;
+    startObject = startObject(Object);
+    startArray = startObject(Array);
+    endArray = this.endObject;
+}

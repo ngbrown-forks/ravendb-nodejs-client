@@ -2,6 +2,9 @@ import { Transform } from "node:stream";
 import { StringDecoder } from "node:string_decoder";
 
 export class Utf8Stream extends Transform {
+    _buffer: any;
+    _stringDecoder: any;
+
     constructor(options) {
         super(Object.assign({}, options, {writableObjectMode: false}));
         this._buffer = '';

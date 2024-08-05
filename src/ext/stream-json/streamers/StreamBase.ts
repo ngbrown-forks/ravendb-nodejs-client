@@ -3,6 +3,7 @@ import { Transform } from "node:stream";
 import { Assembler } from "../Assembler.js";
 
 class Counter {
+    private depth: number;
     constructor(initialDepth) {
         this.depth = initialDepth;
     }
@@ -21,6 +22,13 @@ class Counter {
 }
 
 export class StreamBase extends Transform {
+    objectFilter: any;
+    includeUndecided: any;
+    _assembler: any;
+    _wait: any;
+    _level: any;
+    _saved_assembler: any;
+
     constructor(options) {
         super(Object.assign({}, options, {writableObjectMode: true, readableObjectMode: true}));
         if (options) {
@@ -38,7 +46,7 @@ export class StreamBase extends Transform {
         if (this._assembler[chunk.name]) {
             this._assembler[chunk.name](chunk.value);
             if (this._assembler.depth === this._level) {
-                this._push();
+                (this as any)._push();
             }
         }
         callback(null);
@@ -50,7 +58,7 @@ export class StreamBase extends Transform {
             const result = this.objectFilter(this._assembler);
             if (result) {
                 if (this._assembler.depth === this._level) {
-                    this._push();
+                    (this as any)._push();
                     this._transform = this._filter;
                 }
                 this._transform = this._accept;
@@ -68,7 +76,7 @@ export class StreamBase extends Transform {
                 return callback(null);
             }
             if (this._assembler.depth === this._level) {
-                this._push(!this.includeUndecided);
+                (this as any)._push(!this.includeUndecided);
             }
         }
         callback(null);
@@ -78,7 +86,7 @@ export class StreamBase extends Transform {
         if (this._assembler[chunk.name]) {
             this._assembler[chunk.name](chunk.value);
             if (this._assembler.depth === this._level) {
-                this._push();
+                (this as any)._push();
                 this._transform = this._filter;
             }
         }

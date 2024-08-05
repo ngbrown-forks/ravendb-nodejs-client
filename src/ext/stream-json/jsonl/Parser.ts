@@ -14,7 +14,12 @@ export class JsonlParser extends Utf8Stream {
         return errorIndicator;
     }
 
-    constructor(options) {
+    _rest: any;
+    _counter: any;
+    _reviver: any;
+    _errorIndicator: any;
+
+    constructor(options?) {
         super(Object.assign({}, options, {readableObjectMode: true}));
         this._rest = '';
         this._counter = 0;
