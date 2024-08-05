@@ -18,7 +18,7 @@ export interface MetadataParameters {
     parentInfo?: MetadataAsDictionaryParentInfo;
 }
 
-class MetadataInternal {
+export class MetadataInternal {
 
     constructor(obj) {
         if (obj) {

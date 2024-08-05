@@ -29,9 +29,6 @@ export class EntityToJson {
     }
 
     public convertEntityToJson(entity: object, documentInfo: DocumentInfo): object {
-        const { conventions } = this._session;
-        const entityMapper = conventions.objectMapper;
-
         if (documentInfo) {
             this._session.onBeforeConversionToDocumentInvoke(documentInfo.id, entity);
         }
@@ -64,8 +61,8 @@ export class EntityToJson {
 
         EntityToJson._writeMetadata(jsonNode, typeInfo, documentInfo);
 
-        const type: DocumentType = TypeUtil.findType(entity, conventions.knownEntityTypes);
         if (removeIdentityProperty) {
+            const type: DocumentType = TypeUtil.findType(entity, conventions.knownEntityTypes);
             EntityToJson._tryRemoveIdentityProperty(jsonNode, type, conventions);
         }
 
@@ -101,18 +98,22 @@ export class EntityToJson {
         return jsonNode;
     }
 
+    static nestedTypes = CONSTANTS.Documents.Metadata.NESTED_OBJECT_TYPES;
+    static ravenJsType = CONSTANTS.Documents.Metadata.RAVEN_JS_TYPE;
+
     private static _writeMetadata(jsonNode: object, typeInfo: TypeInfo, documentInfo: DocumentInfo): void {
         if (!documentInfo) {
             return;
         }
 
+
         if (documentInfo.metadata) {
-            documentInfo.metadata[CONSTANTS.Documents.Metadata.NESTED_OBJECT_TYPES] = typeInfo.nestedTypes;
-            documentInfo.metadata[CONSTANTS.Documents.Metadata.RAVEN_JS_TYPE] ??= typeInfo.typeName;
+            documentInfo.metadata[EntityToJson.nestedTypes] = typeInfo.nestedTypes;
+            documentInfo.metadata[EntityToJson.ravenJsType] ??= typeInfo.typeName;
         }
 
         function differentNestedTypes(): boolean {
-            const existing = documentInfo.metadataInstance[CONSTANTS.Documents.Metadata.NESTED_OBJECT_TYPES];
+            const existing = documentInfo.metadataInstance[EntityToJson.nestedTypes];
             if (!existing) {
                 return true;
             }
@@ -129,12 +130,9 @@ export class EntityToJson {
 
         if (documentInfo.metadataInstance) {
             if (differentNestedTypes()) {
-                documentInfo.metadataInstance[CONSTANTS.Documents.Metadata.NESTED_OBJECT_TYPES] = typeInfo.nestedTypes;
+                documentInfo.metadataInstance[EntityToJson.nestedTypes] = typeInfo.nestedTypes;
             }
-            const nodeType = documentInfo.metadataInstance[CONSTANTS.Documents.Metadata.RAVEN_JS_TYPE] || typeInfo.typeName;
-            if (documentInfo.metadataInstance[CONSTANTS.Documents.Metadata.RAVEN_JS_TYPE] !== nodeType) {
-                documentInfo.metadataInstance[CONSTANTS.Documents.Metadata.RAVEN_JS_TYPE] = nodeType;
-            }
+            documentInfo.metadataInstance[EntityToJson.ravenJsType] ??= typeInfo.typeName;
         }
 
         let setMetadata: boolean = false;

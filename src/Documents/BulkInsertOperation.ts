@@ -3,7 +3,7 @@ import { Readable, Stream } from "node:stream";
 import { RavenCommand } from "../Http/RavenCommand.js";
 import { HttpRequestParameters } from "../Primitives/Http.js";
 import { IMetadataDictionary } from "./Session/IMetadataDictionary.js";
-import { createMetadataDictionary } from "../Mapping/MetadataAsDictionary.js";
+import { MetadataInternal } from "../Mapping/MetadataAsDictionary.js";
 import { CONSTANTS, HEADERS } from "../Constants.js";
 import { getError, throwError } from "../Exceptions/index.js";
 import { GetOperationStateCommand } from "./Operations/GetOperationStateOperation.js";
@@ -612,9 +612,7 @@ export class BulkInsertOperation extends BulkInsertOperationBase<object> {
 
     private handleMetadata(metadata: IMetadataDictionary, entity: object) {
         if (!metadata) {
-            metadata = createMetadataDictionary({
-                raw: {}
-            });
+            metadata = new MetadataInternal({});
         }
 
         if (!(("@collection" as keyof MetadataObject) in metadata)) {

@@ -13,7 +13,6 @@ export default defineConfig(options => {
 	}
 
 	const productionOptions = {
-		minify: true,
 		esbuildOptions(options, _context) {
 			options.mangleProps = /_$/
 		},
