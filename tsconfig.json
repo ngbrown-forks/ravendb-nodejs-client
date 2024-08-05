@@ -3,6 +3,7 @@
   "compilerOptions": {
     "target": "ES2022",
     "module": "Node16",
+    "inlineSources": true,
     "moduleResolution": "Node16",
     "esModuleInterop": false,
     "allowSyntheticDefaultImports": true,
@@ -10,9 +11,7 @@
     "outDir": "dist",
     "declaration": true,
     "experimentalDecorators": true,
-    "removeComments": true,
     "sourceMap": true,
-    "noEmit": true,
     "pretty": true,
     "lib": [ "ES2022" ],
     "typeRoots": [

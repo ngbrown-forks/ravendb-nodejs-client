@@ -1,6 +1,6 @@
-import { wrapWithTimeout } from "./PromiseUtil.js";
 import { assertThat, assertThrows } from "../../test/Utils/AssertExtensions.js";
-import { getError } from "../Exceptions/index.js";
+import { wrapWithTimeout } from "../../src/Utility/PromiseUtil.js";
+import { getError } from "../../src/Exceptions/index.js";
 
 
 describe("PromiseUtil", function () {

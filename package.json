@@ -3,23 +3,29 @@
   "version": "6.0.0",
   "description": "RavenDB client for Node.js",
   "files": [
-    "dist",
-    "src"
+    "dist"
   ],
   "type": "module",
   "homepage": "https://ravendb.net",
-  "main": "./dist/cjs/ravendb.cjs",
-  "types": "dist/ravendb.d.ts",
+  "main": "./dist/commonjs/index.js",
+  "types": "./dist/commonjs/index.d.ts",
+  "module": "./dist/esm/index.js",
   "exports": {
     "./package.json": "./package.json",
     ".": {
-      "import": "./dist/ravendb.js",
-      "require": "./dist/cjs/ravendb.cjs"
+      "import": {
+        "types": "./dist/esm/index.d.ts",
+        "default": "./dist/esm/index.js"
+      },
+      "require": {
+        "types": "./dist/commonjs/index.d.ts",
+        "default": "./dist/commonjs/index.js"
+      }
     }
   },
   "scripts": {
     "test": "mocha \"test/**/*.ts\"",
-    "build": "tsup",
+    "prepare": "tshy",
     "watch": "tsc --watch",
     "lint": "eslint {src,test}/**/*.ts",
     "check-exports": "node ./scripts/reportMissingTopLevelExports.js",
@@ -69,7 +75,7 @@
     "sinon": "^18.0.0",
     "source-map-support": "^0.5.21",
     "ts-node": "^10.9.2",
-    "tsup": "^8.2.2",
+    "tshy": "^3.0.2",
     "typescript": "^5.5.4",
     "typescript-eslint": "^7.17.0",
     "unzipper": "^0.12.2"
@@ -86,5 +92,11 @@
   },
   "optionalDependencies": {
     "@rollup/rollup-linux-x64-gnu": "^4.17.2"
+  },
+  "tshy": {
+    "exports": {
+      "./package.json": "./package.json",
+      ".": "./src/index.ts"
+    }
   }
 }
