@@ -783,6 +783,8 @@ export * from "./ServerWide/Sharding/ShardingConfiguration.js";
 export { TypesAwareObjectMapper, ITypesAwareObjectMapper, TypeInfo } from "./Mapping/ObjectMapper.js";
 export { camelCaseReviver, pascalCaseReviver, camelCaseReplacer, pascalCaseReplacer } from "./Mapping/Json/index.js";
 
+
+export * from "./Utility/DateUtil.js";
 // CONSTANTS
 export { CONSTANTS } from "./Constants.js";
 
