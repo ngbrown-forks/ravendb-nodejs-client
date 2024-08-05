@@ -77,7 +77,7 @@ jobs:
       run: npm run test
 
     - name: Build
-      run: npm run pack
+      run: npm pack
 
     - name: Check imports CommonJS
       run: node scripts/checkImports.cjs
