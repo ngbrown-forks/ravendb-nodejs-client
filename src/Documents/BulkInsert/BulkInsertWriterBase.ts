@@ -51,8 +51,12 @@ export class BulkInsertWriterBase implements IDisposable {
         this.onCurrentWriteStreamSet(this._currentWriter);
     }
 
+    public isFlushNeeded() {
+        return this._currentWriter.length > this._maxSizeInBuffer || this._asyncWriteDone;
+    }
+
     public async flushIfNeeded(force = false): Promise<void> {
-        if (this._currentWriter.length > this._maxSizeInBuffer || this._asyncWriteDone) {
+        if (this.isFlushNeeded()) {
             await this._asyncWrite;
 
             const tmp = this._currentWriter;

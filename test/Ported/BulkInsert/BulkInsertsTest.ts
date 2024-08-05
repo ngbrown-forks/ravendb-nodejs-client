@@ -2,7 +2,11 @@ import assert from "node:assert"
 import { testContext, disposeTestDocumentStore } from "../../Utils/TestUtil.js";
 
 import DocumentStore, {
-    IDocumentStore, BulkInsertOperation, IMetadataDictionary, CONSTANTS, ObjectUtil
+    IDocumentStore,
+    BulkInsertOperation,
+    IMetadataDictionary,
+    CONSTANTS,
+    ObjectUtil,
 } from "../../../src/index.js";
 import { createMetadataDictionary } from "../../../src/Mapping/MetadataAsDictionary.js";
 import { DateUtil } from "../../../src/Utility/DateUtil.js";
@@ -82,6 +86,20 @@ describe("bulk insert", function () {
     it("simple bulk insert should work - compressed", async () => {
         await bulkInsertTest(true);
     });
+
+    it("tryStoreSync", async () => {
+        const bulkInsert = store.bulkInsert();
+        for (let i = 0; i < 20_000; i++) {
+            const x = new FooBar();
+            const id = "foobar/" + i;
+
+            if (!bulkInsert.tryStoreSync(x, id)) {
+                await bulkInsert.store(x, id);
+            }
+        }
+
+        await bulkInsert.finish();
+    })
 
     it ("can send heartbeats", async () => {
 
