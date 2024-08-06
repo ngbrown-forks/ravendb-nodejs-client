@@ -82,6 +82,7 @@
     "unzipper": "^0.12.2"
   },
   "dependencies": {
+    "@swc/core": "^1.7.6",
     "@types/node": "^20.14.11",
     "@types/ws": "^8.5.11",
     "date-fns": "^3.6.0",
