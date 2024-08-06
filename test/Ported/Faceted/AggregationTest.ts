@@ -65,8 +65,10 @@ describe("AggregationTest", function () {
         store = await testContext.getDocumentStore();
     });
 
-    afterEach(async () =>
-        await disposeTestDocumentStore(store));
+    afterEach(async () => {
+        testContext.customizeStore = null;
+        await disposeTestDocumentStore(store);
+    });
 
     describe("with Orders/All index", () => {
 

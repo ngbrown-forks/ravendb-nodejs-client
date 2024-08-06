@@ -18,8 +18,10 @@ describe("RDBC-259", function () {
         store = await testContext.getDocumentStore();
     });
 
-    afterEach(async () => 
-        await disposeTestDocumentStore(store));
+    afterEach(async () => {
+        testContext.customizeStore = null;
+        await disposeTestDocumentStore(store);
+    });
 
     describe("if you take part (a subobject) of the object A and put into B", function () {
 

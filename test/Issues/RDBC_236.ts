@@ -239,12 +239,10 @@ describe("[RDBC-236] Dates storage", function () {
             store = await testContext.getDocumentStore();
         });
 
-        afterEach(function () {
+        afterEach(async function () {
             testContext.customizeStore = null;
+            await disposeTestDocumentStore(store)
         });
-
-        afterEach(async () =>
-            await disposeTestDocumentStore(store));
 
         it("can store & load date", async () => {
             const hoursLocal = 13;
@@ -291,12 +289,10 @@ describe("[RDBC-236] Dates storage", function () {
             store = await testContext.getDocumentStore();
         });
 
-        afterEach(function () {
+        afterEach(async () => {
             testContext.customizeStore = null;
+            await disposeTestDocumentStore(store);
         });
-
-        afterEach(async () =>
-            await disposeTestDocumentStore(store));
 
         it("can properly store & load date", async () => {
             const hoursLocal = 13;
@@ -346,12 +342,10 @@ describe("[RDBC-236] Dates storage", function () {
             store = await testContext.getDocumentStore();
         });
 
-        afterEach(function () {
+        afterEach(async function () {
             testContext.customizeStore = null;
+            await disposeTestDocumentStore(store)
         });
-
-        afterEach(async () =>
-            await disposeTestDocumentStore(store));
 
         it("can store & load date", async () => {
             const hoursLocal = 13;

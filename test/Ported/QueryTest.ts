@@ -24,8 +24,10 @@ describe("QueryTest", function () {
         store = await testContext.getDocumentStore();
     });
 
-    afterEach(async () =>
-        await disposeTestDocumentStore(store));
+    afterEach(async () => {
+        testContext.customizeStore = null;
+        await disposeTestDocumentStore(store);
+    });
 
     it("query_CreateClausesForQueryDynamicallyWithOnBeforeQueryEvent", async function () {
         const id1 = "users/1";

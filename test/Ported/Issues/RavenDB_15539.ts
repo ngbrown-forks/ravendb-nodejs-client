@@ -13,12 +13,10 @@ describe("RavenDB_15539", function () {
         store = await testContext.getDocumentStore();
     });
 
-    afterEach(function () {
+    afterEach(async () => {
         testContext.customizeStore = null;
+        await disposeTestDocumentStore(store);
     });
-
-    afterEach(async () =>
-        await disposeTestDocumentStore(store));
 
     it("canIgnoreChanges", async () => {
         {

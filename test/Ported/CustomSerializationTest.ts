@@ -57,9 +57,8 @@ describe("CustomSerializationTest", function () {
     });
 
     afterEach(async () => {
-        await disposeTestDocumentStore(store);
-
         testContext.customizeStore = null;
+        await disposeTestDocumentStore(store);
     });
 
     it("can use custom serialization", async () => {

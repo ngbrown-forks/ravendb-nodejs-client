@@ -23,12 +23,10 @@ describe("BulkInsertAttachmentsTest", function () {
         store = await testContext.getDocumentStore();
     });
 
-    afterEach(async () =>
-        await disposeTestDocumentStore(store));
-
-
-
-    afterEach(() => testContext.customizeStore = null);
+    afterEach(async () => {
+        testContext.customizeStore = null;
+        await disposeTestDocumentStore(store);
+    });
 
     it("storeManyAttachments1", async () => {
         await storeManyAttachments(1, 32 * 1024);

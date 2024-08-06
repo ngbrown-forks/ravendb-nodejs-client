@@ -17,8 +17,10 @@ describe("NoTrackingTest", function () {
         store = await testContext.getDocumentStore();
     });
 
-    afterEach(async () =>
-        await disposeTestDocumentStore(store));
+    afterEach(async () => {
+        testContext.customizeStore = null;
+        await disposeTestDocumentStore(store);
+    });
 
     it("canLoadEntitiesWithNoTracking", async () => {
 

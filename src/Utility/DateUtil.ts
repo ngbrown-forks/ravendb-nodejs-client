@@ -35,7 +35,7 @@ export class DateUtil {
         }
 
         dateString = DateUtil.alignPrecision(dateString);
-        let parsed;
+        let parsed: Date;
         if (this.opts.useUtcDates || this.opts.withTimezone || dateString.endsWith("Z")) {
             parsed = parse(dateString, DateUtil.DEFAULT_DATE_TZ_FORMAT, new Date());
         } else {

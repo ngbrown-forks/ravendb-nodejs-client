@@ -10,13 +10,13 @@ describe("RDBC-404", function () {
 
     beforeEach(async function () {
         testContext.customizeStore = async (store) => {
-
             store.conventions.findCollectionNameForObjectLiteral = x => "test";
         };
         store = await testContext.getDocumentStore();
     });
 
     afterEach(async () => {
+        testContext.customizeStore = null;
         await disposeTestDocumentStore(store);
     });
 

@@ -19,12 +19,10 @@ describe("RavenDB_16035Test", function () {
         store = await testContext.getDocumentStore();
     });
 
-    afterEach(function () {
+    afterEach(async () => {
         testContext.customizeStore = null;
+        await disposeTestDocumentStore(store);
     });
-
-    afterEach(async () =>
-        await disposeTestDocumentStore(store));
 
     it("canMixLazyAndAggressiveCaching", async () => {
         {
