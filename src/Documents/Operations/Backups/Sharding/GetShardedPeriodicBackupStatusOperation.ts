@@ -58,7 +58,7 @@ class GetShardedPeriodicBackupStatusCommand extends RavenCommand<GetShardedPerio
 
         this.result = {
             ...results,
-            statuses: reviveStatuses(results.statuses, this._conventions)
+            statuses: reviveStatuses(results.statuses)
         }
 
         if (!this.result.isSharded) {
@@ -72,14 +72,14 @@ export interface GetShardedPeriodicBackupStatusOperationResult extends AbstractG
     statuses: Record<number, PeriodicBackupStatus>;
 }
 
-function reviveStatuses(statuses: Record<number, ServerResponse<PeriodicBackupStatus>>, conventions: DocumentConventions): Record<number, PeriodicBackupStatus> {
+function reviveStatuses(statuses: Record<number, ServerResponse<PeriodicBackupStatus>>): Record<number, PeriodicBackupStatus> {
     if (!statuses) {
         return null;
     }
     const result = {} as Record<string, PeriodicBackupStatus>;
 
     Object.entries(statuses).map(entry => {
-        result[entry[0]] = revivePeriodicBackupStatus(entry[1], conventions);
+        result[entry[0]] = revivePeriodicBackupStatus(entry[1]);
     });
 
     return result;

@@ -5,6 +5,7 @@ import { QueryCommand } from "./QueryCommand.js";
 import { RavenCommandResponsePipeline } from "../../Http/RavenCommandResponsePipeline.js";
 import { ServerCasing, ServerResponse } from "../../Types/index.js";
 import { ObjectUtil } from "../../Utility/ObjectUtil.js";
+import { DateUtil } from "../../Utility/DateUtil.js";
 
 export class FacetQueryCommand extends QueryCommand {
 
@@ -50,8 +51,8 @@ export class FacetQueryCommand extends QueryCommand {
 
         return {
             ...restMapped,
-            indexTimestamp: conventions.dateUtil.parse(IndexTimestamp),
-            lastQueryTime: conventions.dateUtil.parse(LastQueryTime),
+            indexTimestamp: DateUtil.utc.parse(IndexTimestamp),
+            lastQueryTime: DateUtil.utc.parse(LastQueryTime),
             results: Results.map(x => ObjectUtil.transformObjectKeys(x, { defaultTransform: ObjectUtil.camel })),
             includes: ObjectUtil.mapIncludesToLocalObject(json.Includes, conventions)
         };

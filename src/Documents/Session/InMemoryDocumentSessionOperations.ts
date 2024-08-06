@@ -391,7 +391,7 @@ export abstract class InMemoryDocumentSessionOperations
 
         const documentInfo = this._getDocumentInfo(instance);
         const lastModified = documentInfo.metadata["@last-modified"];
-        return DateUtil.default.parse(lastModified);
+        return DateUtil.utc.parse(lastModified);
     }
 
     /**
@@ -950,7 +950,7 @@ export abstract class InMemoryDocumentSessionOperations
                 }
 
                 for (const range of perNameTs) {
-                    const newRange = InMemoryDocumentSessionOperations._parseTimeSeriesRangeResult(range, id, name, this.conventions);
+                    const newRange = InMemoryDocumentSessionOperations._parseTimeSeriesRangeResult(range, id, name);
                     InMemoryDocumentSessionOperations._addToCache(cache, newRange, name);
                 }
             }
@@ -1197,9 +1197,8 @@ export abstract class InMemoryDocumentSessionOperations
 
     private static _parseTimeSeriesRangeResult(json: ServerResponse<TimeSeriesRangeResult>,
                                                id: string,
-                                               databaseName: string,
-                                               conventions: DocumentConventions): TimeSeriesRangeResult {
-        return reviveTimeSeriesRangeResult(json, conventions);
+                                               databaseName: string): TimeSeriesRangeResult {
+        return reviveTimeSeriesRangeResult(json);
     }
 
     private static _mergeRanges(fromRangeIndex: number,

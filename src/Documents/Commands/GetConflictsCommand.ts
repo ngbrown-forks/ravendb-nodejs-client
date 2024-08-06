@@ -5,6 +5,7 @@ import { ServerNode } from "../../Http/ServerNode.js";
 import { Stream } from "node:stream";
 import { DocumentConventions } from "../Conventions/DocumentConventions.js";
 import { ServerResponse } from "../../Types/index.js";
+import { DateUtil } from "../../Utility/DateUtil.js";
 
 export class GetConflictsCommand extends RavenCommand<GetConflictsResult> {
 
@@ -37,7 +38,6 @@ export class GetConflictsCommand extends RavenCommand<GetConflictsResult> {
 
         let body: string = null;
         const payload = await this._defaultPipeline<ServerResponse<GetConflictsResult>>(_ => body = _).process(bodyStream);
-        const dateUtil = this._conventions.dateUtil;
 
         const { results, ...otherProps } = payload;
 
@@ -45,7 +45,7 @@ export class GetConflictsCommand extends RavenCommand<GetConflictsResult> {
             ...otherProps,
             results: results.map(r => ({
                 ...r,
-                lastModified: dateUtil.parse(r.lastModified)
+                lastModified: DateUtil.utc.parse(r.lastModified)
             }))
         };
 

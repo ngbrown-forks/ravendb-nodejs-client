@@ -25,6 +25,7 @@ import { TypeUtil } from "../../Utility/TypeUtil.js";
 import { TimeSeriesChange } from "./TimeSeriesChange.js";
 import { AggressiveCacheChange } from "./AggressiveCacheChange.js";
 import { Semaphore } from "../../Utility/Semaphore.js";
+import { DateUtil } from "../../Utility/DateUtil.js";
 
 export class DatabaseChanges implements IDatabaseChanges {
 
@@ -454,13 +455,11 @@ export class DatabaseChanges implements IDatabaseChanges {
                         const value = message.Value;
                         let transformedValue = ObjectUtil.transformObjectKeys(value, { defaultTransform: ObjectUtil.camel });
                         if (type === "TimeSeriesChange") {
-                            const dateUtil = this._conventions.dateUtil;
-
                             const timeSeriesValue = transformedValue as ServerResponse<TimeSeriesChange>;
 
                             const overrides: Partial<TimeSeriesChange> = {
-                                from: dateUtil.parse(timeSeriesValue.from),
-                                to: dateUtil.parse(timeSeriesValue.to)
+                                from: DateUtil.utc.parse(timeSeriesValue.from),
+                                to: DateUtil.utc.parse(timeSeriesValue.to)
                             };
 
                             transformedValue = Object.assign(transformedValue, overrides);

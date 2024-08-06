@@ -171,9 +171,9 @@ export class GetTimeSeriesCommand extends RavenCommand<TimeSeriesRangeResult> {
             .collectBody(b => body = b)
             .process(bodyStream);
 
-        const transformedResults = GetTimeSeriesCommand.mapToLocalObject(results, this._conventions);
+        const transformedResults = GetTimeSeriesCommand.mapToLocalObject(results);
 
-        this.result = reviveTimeSeriesRangeResult(transformedResults, this._conventions);
+        this.result = reviveTimeSeriesRangeResult(transformedResults);
 
         return body;
     }
@@ -182,7 +182,7 @@ export class GetTimeSeriesCommand extends RavenCommand<TimeSeriesRangeResult> {
         return true;
     }
 
-    static mapToLocalObject(json: any, conventions: DocumentConventions): ServerResponse<TimeSeriesRangeResult> {
+    static mapToLocalObject(json: any): ServerResponse<TimeSeriesRangeResult> {
         const result: ServerResponse<TimeSeriesRangeResult> = {
             to: json.To,
             from: json.From,
@@ -201,14 +201,14 @@ export class GetTimeSeriesCommand extends RavenCommand<TimeSeriesRangeResult> {
     }
 }
 
-export function reviveTimeSeriesRangeResult(json: ServerResponse<TimeSeriesRangeResult>, conventions: DocumentConventions): TimeSeriesRangeResult {
+export function reviveTimeSeriesRangeResult(json: ServerResponse<TimeSeriesRangeResult>): TimeSeriesRangeResult {
     const result = new TimeSeriesRangeResult();
 
     const { to, from, entries, ...restProps } = json;
 
     const entryMapper = (rawEntry: ServerResponse<TimeSeriesEntry>) => {
         const result = new TimeSeriesEntry();
-        result.timestamp = conventions.dateUtil.parse(rawEntry.timestamp);
+        result.timestamp = DateUtil.utc.parse(rawEntry.timestamp);
         result.isRollup = rawEntry.isRollup;
         result.tag = rawEntry.tag;
         result.values = rawEntry.values;
@@ -219,8 +219,8 @@ export function reviveTimeSeriesRangeResult(json: ServerResponse<TimeSeriesRange
 
     const overrides: Partial<TimeSeriesRangeResult> = {
         ...restProps,
-        to: conventions.dateUtil.parse(to),
-        from: conventions.dateUtil.parse(from),
+        to: DateUtil.utc.parse(to),
+        from: DateUtil.utc.parse(from),
         entries: entries.map(entryMapper),
     }
 

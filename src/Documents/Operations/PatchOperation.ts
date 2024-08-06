@@ -12,6 +12,7 @@ import { PatchResult } from "./PatchResult.js";
 import { Stream } from "node:stream";
 import { ObjectUtil } from "../../Utility/ObjectUtil.js";
 import { ServerCasing, ServerResponse } from "../../Types/index.js";
+import { DateUtil } from "../../Utility/DateUtil.js";
 
 export interface Payload {
     patch: PatchRequest;
@@ -191,7 +192,7 @@ export class PatchCommand extends RavenCommand<PatchResult> {
             changeVector: json.ChangeVector,
             collection: json.Collection,
             debug: json.Debug,
-            lastModified: conventions.dateUtil.parse(json.LastModified),
+            lastModified: DateUtil.utc.parse(json.LastModified),
             status: json.Status,
             modifiedDocument: ObjectUtil.transformDocumentKeys(json.ModifiedDocument, conventions),
             originalDocument: ObjectUtil.transformDocumentKeys(json.OriginalDocument, conventions)

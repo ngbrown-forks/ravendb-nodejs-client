@@ -17,7 +17,7 @@ export class RevisionIncludesToken extends QueryToken {
 
     public static createForDate(dateTime: Date) {
         return new RevisionIncludesToken({
-            date: DateUtil.default.stringify(dateTime),
+            date: DateUtil.utc.stringify(dateTime),
         });
     }
 

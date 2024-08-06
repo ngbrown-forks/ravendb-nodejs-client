@@ -7,6 +7,7 @@ import { DocumentConventions } from "../../../Documents/Conventions/DocumentConv
 import { RavenCommand } from "../../../Http/RavenCommand.js";
 import { ServerNode } from "../../../Http/ServerNode.js";
 import { ServerResponse } from "../../../Types/index.js";
+import { DateUtil } from "../../../Utility/DateUtil.js";
 
 export class GetCertificateMetadataOperation implements IServerOperation<CertificateMetadata> {
     private readonly _thumbprint: string;
@@ -62,15 +63,13 @@ class GetCertificateMetadataCommand extends RavenCommand<CertificateMetadata> {
         let body: string = null;
         const response = await this._defaultPipeline<ServerResponse<{ results: CertificateMetadata[] }>>(_ => body = _).process(bodyStream);
 
-        const dateUtil = this._conventions.dateUtil;
-
         const resultsMapped: CertificateMetadata[] = response.results.map(cert => {
             const { notAfter, notBefore } = cert;
 
             return {
                 ...cert,
-                notAfter: dateUtil.parse(notAfter),
-                notBefore: dateUtil.parse(notBefore)
+                notAfter: DateUtil.utc.parse(notAfter),
+                notBefore: DateUtil.utc.parse(notBefore)
             }
         })
 

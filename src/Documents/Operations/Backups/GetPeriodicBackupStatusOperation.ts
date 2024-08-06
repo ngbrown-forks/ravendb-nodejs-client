@@ -15,6 +15,7 @@ import {
     UploadToFtp, UploadToGlacier,
     UploadToS3
 } from "./BackupStatus.js";
+import { DateUtil } from "../../../Utility/DateUtil.js";
 
 export class GetPeriodicBackupStatusOperation implements IMaintenanceOperation<GetPeriodicBackupStatusOperationResult> {
     private readonly _taskId: number;
@@ -68,7 +69,7 @@ class GetPeriodicBackupStatusCommand extends RavenCommand<GetPeriodicBackupStatu
 
         this.result = {
             ...results,
-            status: revivePeriodicBackupStatus(results.status, this._conventions)
+            status: revivePeriodicBackupStatus(results.status)
         }
 
         if (this.result.isSharded) {
@@ -78,35 +79,35 @@ class GetPeriodicBackupStatusCommand extends RavenCommand<GetPeriodicBackupStatu
     }
 }
 
-export function revivePeriodicBackupStatus(status: ServerResponse<PeriodicBackupStatus>, conventions: DocumentConventions): PeriodicBackupStatus {
+export function revivePeriodicBackupStatus(status: ServerResponse<PeriodicBackupStatus>): PeriodicBackupStatus {
     return {
         ...status,
-        lastFullBackup: conventions.dateUtil.parse(status.lastFullBackup),
-        delayUntil: conventions.dateUtil.parse(status.delayUntil),
-        originalBackupTime: conventions.dateUtil.parse(status.originalBackupTime),
-        lastIncrementalBackup: conventions.dateUtil.parse(status.lastIncrementalBackup),
-        lastFullBackupInternal: conventions.dateUtil.parse(status.lastFullBackupInternal),
-        lastIncrementalBackupInternal: conventions.dateUtil.parse(status.lastIncrementalBackupInternal),
-        localBackup: reviveUploadStatus<LocalBackup>(status.localBackup, conventions),
+        lastFullBackup: DateUtil.utc.parse(status.lastFullBackup),
+        delayUntil: DateUtil.utc.parse(status.delayUntil),
+        originalBackupTime: DateUtil.utc.parse(status.originalBackupTime),
+        lastIncrementalBackup: DateUtil.utc.parse(status.lastIncrementalBackup),
+        lastFullBackupInternal: DateUtil.utc.parse(status.lastFullBackupInternal),
+        lastIncrementalBackupInternal: DateUtil.utc.parse(status.lastIncrementalBackupInternal),
+        localBackup: reviveUploadStatus<LocalBackup>(status.localBackup),
         error: status.error ? {
             ...status.error,
-            at: conventions.dateUtil.parse(status.error.at)
+            at: DateUtil.utc.parse(status.error.at)
         } : null,
-        uploadToS3: reviveUploadStatus<UploadToS3>(status.uploadToS3, conventions),
-        uploadToFtp: reviveUploadStatus<UploadToFtp>(status.uploadToFtp, conventions),
-        updateToGoogleCloud: reviveUploadStatus<UpdateToGoogleCloud>(status.updateToGoogleCloud, conventions),
-        uploadToAzure: reviveUploadStatus<UploadToAzure>(status.uploadToAzure, conventions),
-        uploadToGlacier: reviveUploadStatus<UploadToGlacier>(status.uploadToGlacier, conventions)
+        uploadToS3: reviveUploadStatus<UploadToS3>(status.uploadToS3),
+        uploadToFtp: reviveUploadStatus<UploadToFtp>(status.uploadToFtp),
+        updateToGoogleCloud: reviveUploadStatus<UpdateToGoogleCloud>(status.updateToGoogleCloud),
+        uploadToAzure: reviveUploadStatus<UploadToAzure>(status.uploadToAzure),
+        uploadToGlacier: reviveUploadStatus<UploadToGlacier>(status.uploadToGlacier)
     }
 }
 
-function reviveUploadStatus<T extends BackupStatus>(status: ServerResponse<T>, conventions: DocumentConventions): T {
+function reviveUploadStatus<T extends BackupStatus>(status: ServerResponse<T>): T {
     if (!status) {
         return null;
     }
     return {
         ...status,
-        lastFullBackup: conventions.dateUtil.parse(status.lastFullBackup),
-        lastIncrementalBackup: conventions.dateUtil.parse(status.lastIncrementalBackup),
+        lastFullBackup: DateUtil.utc.parse(status.lastFullBackup),
+        lastIncrementalBackup: DateUtil.utc.parse(status.lastIncrementalBackup),
     } as T;
 }

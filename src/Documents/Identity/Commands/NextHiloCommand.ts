@@ -51,7 +51,7 @@ export class NextHiloCommand extends RavenCommand<HiLoResult> {
 
     public createRequest(node: ServerNode): HttpRequestParameters {
         const lastRangeAt: string = this._lastRangeAt
-            ? DateUtil.default.stringify(this._lastRangeAt)
+            ? DateUtil.utc.stringify(this._lastRangeAt)
             : "";
 
         let uri = `${node.url}/databases/${node.database}/hilo/next?`;

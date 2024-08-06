@@ -8,6 +8,7 @@ import { RavenCommand } from "../../../Http/RavenCommand.js";
 import { ServerNode } from "../../../Http/ServerNode.js";
 import { DocumentConventions } from "../../Conventions/DocumentConventions.js";
 import { ServerResponse } from "../../../Types/index.js";
+import { DateUtil } from "../../../Utility/DateUtil.js";
 
 export class GetTimeSeriesStatisticsOperation implements IOperation<TimeSeriesStatistics> {
     private readonly _documentId: string;
@@ -64,16 +65,14 @@ class GetTimeSeriesStatisticsCommand extends RavenCommand<TimeSeriesStatistics> 
 
         const { timeSeries, ...restProps } = results;
 
-        const dateUtil = this._conventions.dateUtil;
-
         this.result = {
             ...restProps,
             timeSeries: timeSeries.map(t => {
                 const { startDate, endDate } = t;
                 return {
                     ...t,
-                    startDate: dateUtil.parse(startDate),
-                    endDate: dateUtil.parse(endDate)
+                    startDate: DateUtil.utc.parse(startDate),
+                    endDate: DateUtil.utc.parse(endDate)
                 }
             })
         }

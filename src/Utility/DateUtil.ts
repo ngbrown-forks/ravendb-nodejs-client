@@ -1,5 +1,5 @@
 import { throwError } from "../Exceptions/index.js";
-import { format, parse } from "date-fns";
+import { format, parse, parseISO } from "date-fns";
 
 export interface DateUtilOpts {
     withTimezone?: boolean;
@@ -36,8 +36,13 @@ export class DateUtil {
 
         dateString = DateUtil.alignPrecision(dateString);
         let parsed: Date;
-        if (this.opts.useUtcDates || this.opts.withTimezone || dateString.endsWith("Z")) {
+        if (this.opts.withTimezone) {
             parsed = parse(dateString, DateUtil.DEFAULT_DATE_TZ_FORMAT, new Date());
+        } else if (this.opts.useUtcDates || dateString.endsWith("Z")) {
+            if (!dateString.endsWith("Z")) {
+                dateString += "Z";
+            }
+            parsed = parseISO(dateString);
         } else {
             parsed = parse(dateString, DateUtil.DEFAULT_DATE_FORMAT, new Date());
         }
