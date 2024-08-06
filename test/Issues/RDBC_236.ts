@@ -8,14 +8,132 @@ import {
 } from "../../src/index.js";
 import { DateUtil } from "../../src/Utility/DateUtil.js";
 import { StringUtil } from "../../src/Utility/StringUtil.js";
+import { assertThat } from "../Utils/AssertExtensions.js";
+
+
+const momentDefaultDateFormat = "YYYY-MM-DDTHH:mm:ss.SSS0000";
+const momentDefaultDateTzFormat = "YYYY-MM-DDTHH:mm:ss.SSS0000Z";
 
 // getTimezoneOffset() returns reversed offset, hence the "-"
 const LOCAL_TIMEZONE_OFFSET = -(new Date(2018, 7, 1).getTimezoneOffset()); 
 const LOCAL_TIMEZONE_OFFSET_HOURS = LOCAL_TIMEZONE_OFFSET / 60;
 const LOCAL_TIMEZONE_STRING =
-    `${LOCAL_TIMEZONE_OFFSET >= 0 ? "+" : "-"}${StringUtil.leftPad(LOCAL_TIMEZONE_OFFSET_HOURS.toString(), 2, "0")}:00`;
+    `${LOCAL_TIMEZONE_OFFSET >= 0 ? "+" : "-"}${StringUtil.leftPad(Math.abs(LOCAL_TIMEZONE_OFFSET_HOURS).toString(), 2, "0")}:00`;
+
+const sampleDate = 1722862715782;
 
 describe("DateUtil", function () {
+
+    describe("stringify", () => {
+        it ("utc no-timezone", function () {
+            const dateUtils = new DateUtil({
+                withTimezone: false,
+                useUtcDates: true
+            });
+
+            assertThat(dateUtils.stringify(new Date(sampleDate)))
+                .isEqualTo("2024-08-05T12:58:35.7820000Z");
+        });
+
+        it ("utc timezone", function () {
+            const dateUtils = new DateUtil({
+                withTimezone: true,
+                useUtcDates: true
+            });
+
+            assertThat(dateUtils.stringify(new Date(sampleDate)))
+                .isEqualTo("2024-08-05T12:58:35.7820000+00:00");
+        });
+
+        it ("no-utc no-timezone", function () {
+            const dateUtils = new DateUtil({
+                withTimezone: false,
+                useUtcDates: false
+            });
+
+            assertThat(dateUtils.stringify(new Date(sampleDate)))
+                .isEqualTo(`2024-08-05T${(12 + LOCAL_TIMEZONE_OFFSET_HOURS).toString().padStart(2, "0")}:58:35.7820000`);
+        });
+
+        it ("no-utc timezone", function () {
+            const dateUtils = new DateUtil({
+                withTimezone: true,
+                useUtcDates: false
+            });
+
+            assertThat(dateUtils.stringify(new Date(sampleDate)))
+                .isEqualTo(`2024-08-05T${(12 + LOCAL_TIMEZONE_OFFSET_HOURS).toString().padStart(2, "0")}:58:35.7820000` + LOCAL_TIMEZONE_STRING);
+        });
+
+    });
+
+    describe("parse", () => {
+        it ("utc no-timezone", function () {
+            const dateUtils = new DateUtil({
+                withTimezone: false,
+                useUtcDates: true
+            });
+
+            assertThat(dateUtils.parse("2024-08-05T12:58:35.7820000Z").getTime())
+                .isEqualTo(sampleDate);
+        });
+
+        it ("utc timezone", function () {
+            const dateUtils = new DateUtil({
+                withTimezone: true,
+                useUtcDates: true
+            });
+
+            assertThat(dateUtils.parse("2024-08-05T12:58:35.7820000+00:00").getTime())
+                .isEqualTo(sampleDate);
+        });
+
+        it ("no-utc no-timezone", function () {
+            const dateUtils = new DateUtil({
+                withTimezone: false,
+                useUtcDates: false
+            });
+
+            assertThat(dateUtils.parse(`2024-08-05T${(12 + LOCAL_TIMEZONE_OFFSET_HOURS).toString().padStart(2, "0")}:58:35.7820000`).getTime())
+                .isEqualTo(sampleDate);
+        });
+
+        it ("no-utc timezone", function () {
+            const dateUtils = new DateUtil({
+                withTimezone: true,
+                useUtcDates: false
+            });
+
+            assertThat(dateUtils.parse("2024-08-05T14:58:35.7820000+02:00").getTime())
+                .isEqualTo(sampleDate);
+            assertThat(dateUtils.parse("1970-01-01T01:00:00.0000000+01:00").getTime())
+                .isEqualTo(0);
+        });
+
+        it("can discard trailing microseconds", () => {
+
+            const dateUtils = new DateUtil({
+            });
+
+            dateUtils.parse("2024-08-06T07:23:29.3218801");
+            dateUtils.parse("2024-08-06T07:23:29.3218801Z");
+
+            dateUtils.parse("2024-08-06T07:23:29.321880");
+            dateUtils.parse("2024-08-06T07:23:29.321880Z");
+
+            dateUtils.parse("2024-08-06T07:23:29.32188");
+            dateUtils.parse("2024-08-06T07:23:29.32188Z");
+
+            dateUtils.parse("2024-08-06T07:23:29.32188");
+            dateUtils.parse("2024-08-06T07:23:29.32188Z");
+
+            dateUtils.parse("2024-08-06T07:23:29.3218");
+            dateUtils.parse("2024-08-06T07:23:29.3218Z");
+
+            dateUtils.parse("2024-08-06T07:23:29.321");
+            dateUtils.parse("2024-08-06T07:23:29.321Z");
+        })
+    });
 
     describe("without timezones", function () {
 
@@ -41,7 +159,7 @@ describe("DateUtil", function () {
             const stringified = dateUtil.stringify(date);
 
             const expected = new Date(2018, 9, 15, date.getHours() - LOCAL_TIMEZONE_OFFSET_HOURS, 0, 0, 0);
-            const expectedStringified = moment(expected).format(DateUtil.DEFAULT_DATE_FORMAT) + "Z";
+            const expectedStringified = moment(expected).format(momentDefaultDateFormat) + "Z";
             assert.strictEqual(stringified, expectedStringified);
 
             const parsed = dateUtil.parse(stringified);
@@ -68,7 +186,7 @@ describe("DateUtil", function () {
             const expectedHours = date.getHours();
             const expected = new Date(2018, 9, 15, expectedHours, 0, 0, 0);
             const expectedStringified = 
-                moment(expected).format(DateUtil.DEFAULT_DATE_FORMAT) + LOCAL_TIMEZONE_STRING;
+                moment(expected).format(momentDefaultDateFormat) + LOCAL_TIMEZONE_STRING;
             const stringified = dateUtil.stringify(date);
             assert.strictEqual(stringified, expectedStringified);
 
@@ -94,7 +212,7 @@ describe("DateUtil", function () {
             const utcTimezoneString = "+00:00";
             const expected = new Date(2018, 9, 15, expectedHours, 0, 0, 0);
             const expectedStringified = 
-                moment(expected).format(DateUtil.DEFAULT_DATE_FORMAT) + utcTimezoneString;
+                moment(expected).format(momentDefaultDateFormat) + utcTimezoneString;
             const stringified = dateUtil.stringify(date);
             assert.strictEqual(stringified, expectedStringified);
 

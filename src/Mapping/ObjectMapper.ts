@@ -28,13 +28,11 @@ export interface ITypesAwareObjectMapper {
 
 export class TypesAwareObjectMapper implements ITypesAwareObjectMapper {
 
-    private _dateFormat: string;
     private _throwMappingErrors: boolean = false;
     private _conventions: DocumentConventions;
 
     public constructor(opts?: TypesAwareJsonObjectMapperOptions) {
         if (opts) {
-            this._dateFormat = opts.dateFormat;
 
             if (!opts.documentConventions) {
                 throwError("InvalidArgumentException", "Document conventions cannot be empty.");
@@ -452,7 +450,6 @@ export class TypesAwareObjectMapper implements ITypesAwareObjectMapper {
 }
 
 export interface TypesAwareJsonObjectMapperOptions {
-    dateFormat?: string;
     documentConventions?: DocumentConventions;
 }
 

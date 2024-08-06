@@ -19,7 +19,6 @@ describe("ObjectMapper", function () {
     beforeEach(() => {
         conventions = DocumentConventions.defaultConventions;
         mapper = new TypesAwareObjectMapper({
-            dateFormat: DateUtil.DEFAULT_DATE_FORMAT,
             documentConventions: conventions
         });
     });
