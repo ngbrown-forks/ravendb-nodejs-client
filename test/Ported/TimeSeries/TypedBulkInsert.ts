@@ -1,10 +1,10 @@
 import { IDocumentStore, TypedTimeSeriesEntry } from "../../../src/index.js";
 import { disposeTestDocumentStore, testContext } from "../../Utils/TestUtil.js";
-import moment from "moment";
 import { User } from "../../Assets/Entities.js";
 import { assertThat } from "../../Utils/AssertExtensions.js";
 import { HeartRateMeasure } from "../FilteredReplicationTest.js";
 import { StockPrice } from "./TimeSeriesTypedSession.js";
+import { addMinutes } from "date-fns";
 
 describe("TypedBulkInsert", function () {
 
@@ -34,7 +34,7 @@ describe("TypedBulkInsert", function () {
 
             try {
                 const measure = new TypedTimeSeriesEntry<HeartRateMeasure>();
-                measure.timestamp = baseLine.toDate();
+                measure.timestamp = baseLine;
                 const measure2 = new HeartRateMeasure();
                 measure2.heartRate = 59;
                 measure.value = measure2;
@@ -57,7 +57,7 @@ describe("TypedBulkInsert", function () {
             assertThat(val.tag)
                 .isEqualTo("watches/fitbit");
             assertThat(val.timestamp.getTime())
-                .isEqualTo(baseLine.toDate().getTime());
+                .isEqualTo(baseLine.getTime());
         }
     });
 
@@ -74,16 +74,16 @@ describe("TypedBulkInsert", function () {
             await bulkInsert.store(user, documentId);
 
             const measure = new TypedTimeSeriesEntry<HeartRateMeasure>();
-            measure.timestamp = baseLine.clone().add(1, "minutes").toDate();
+            measure.timestamp = addMinutes(baseLine, 1);
             measure.value = new HeartRateMeasure();
             measure.value.heartRate = 59;
             measure.tag = "watches/fitbit";
 
             const timeSeriesBulkInsert = bulkInsert.timeSeriesFor(HeartRateMeasure, documentId, "heartrate");
             try {
-                await timeSeriesBulkInsert.append(baseLine.clone().add(1, "minutes").toDate(), HeartRateMeasure.create(59), "watches/fitbit");
-                await timeSeriesBulkInsert.append(baseLine.clone().add(2, "minutes").toDate(), HeartRateMeasure.create(60), "watches/fitbit");
-                await timeSeriesBulkInsert.append(baseLine.clone().add(2, "minutes").toDate(), HeartRateMeasure.create(61), "watches/fitbit");
+                await timeSeriesBulkInsert.append(addMinutes(baseLine, 1), HeartRateMeasure.create(59), "watches/fitbit");
+                await timeSeriesBulkInsert.append(addMinutes(baseLine, 2), HeartRateMeasure.create(60), "watches/fitbit");
+                await timeSeriesBulkInsert.append(addMinutes(baseLine, 2), HeartRateMeasure.create(61), "watches/fitbit");
             } finally {
                 timeSeriesBulkInsert.dispose();
             }
@@ -115,7 +115,7 @@ describe("TypedBulkInsert", function () {
             const timeSeriesBulkInsert = bulkInsert.timeSeriesFor(StockPrice, documentId);
             try {
                 const measure = new TypedTimeSeriesEntry<StockPrice>();
-                measure.timestamp = baseLine.toDate();
+                measure.timestamp = baseLine;
 
                 const stockPrice = new StockPrice();
                 stockPrice.close = 1;
@@ -152,7 +152,7 @@ describe("TypedBulkInsert", function () {
             assertThat(val.tag)
                 .isEqualTo("tag");
             assertThat(val.timestamp.getTime())
-                .isEqualTo(baseLine.toDate().getTime());
+                .isEqualTo(baseLine.getTime());
         }
 
         {
@@ -181,9 +181,9 @@ describe("TypedBulkInsert", function () {
 
             const timeSeriesBulkInsert = bulkInsert.timeSeriesFor(HeartRateMeasure, documentId, "heartrate");
             try {
-                await timeSeriesBulkInsert.append(baseLine.clone().add(1, "minutes").toDate(), HeartRateMeasure.create(59), "watches/fitbit");
-                await timeSeriesBulkInsert.append(baseLine.clone().add(2, "minutes").toDate(), HeartRateMeasure.create(69), "watches/fitbit");
-                await timeSeriesBulkInsert.append(baseLine.clone().add(3, "minutes").toDate(), HeartRateMeasure.create(79), "watches/fitbit");
+                await timeSeriesBulkInsert.append(addMinutes(baseLine, 1), HeartRateMeasure.create(59), "watches/fitbit");
+                await timeSeriesBulkInsert.append(addMinutes(baseLine, 2), HeartRateMeasure.create(69), "watches/fitbit");
+                await timeSeriesBulkInsert.append(addMinutes(baseLine, 3), HeartRateMeasure.create(79), "watches/fitbit");
             } finally {
                 timeSeriesBulkInsert.dispose();
             }
@@ -197,7 +197,7 @@ describe("TypedBulkInsert", function () {
             user.name = "Oren";
             await session.store(user, documentId);
             session.timeSeriesFor(documentId, "heartrate")
-                .deleteAt(baseLine.clone().add(2, "minutes").toDate());
+                .deleteAt(addMinutes(baseLine, 2));
 
             await session.saveChanges();
         }
@@ -212,14 +212,14 @@ describe("TypedBulkInsert", function () {
             assertThat(vals[0].tag)
                 .isEqualTo("watches/fitbit");
             assertThat(vals[0].timestamp.getTime())
-                .isEqualTo(baseLine.clone().add(1, "minutes").toDate().getTime());
+                .isEqualTo(addMinutes(baseLine, 1).getTime());
 
             assertThat(vals[1].values[0])
                 .isEqualTo(79);
             assertThat(vals[1].tag)
                 .isEqualTo("watches/fitbit");
             assertThat(vals[1].timestamp.getTime())
-                .isEqualTo(baseLine.clone().add(3, "minutes").toDate().getTime());
+                .isEqualTo(addMinutes(baseLine, 3).getTime());
         }
     });
 
@@ -237,8 +237,8 @@ describe("TypedBulkInsert", function () {
 
             const timeSeriesBulkInsert = bulkInsert.timeSeriesFor(HeartRateMeasure, documentId, "heartrate");
             try {
-                await timeSeriesBulkInsert.append(baseLine.clone().add(1, "minutes").toDate(), HeartRateMeasure.create(59), "watches/fitbit");
-                await timeSeriesBulkInsert.append(baseLine.clone().add(2, "minutes").toDate(), HeartRateMeasure.create(70), "watches/apple");
+                await timeSeriesBulkInsert.append(addMinutes(baseLine, 1), HeartRateMeasure.create(59), "watches/fitbit");
+                await timeSeriesBulkInsert.append(addMinutes(baseLine, 2), HeartRateMeasure.create(70), "watches/apple");
             } finally {
                 timeSeriesBulkInsert.dispose();
             }
@@ -257,14 +257,14 @@ describe("TypedBulkInsert", function () {
             assertThat(vals[0].tag)
                 .isEqualTo("watches/fitbit");
             assertThat(vals[0].timestamp.getTime())
-                .isEqualTo(baseLine.clone().add(1, "minutes").toDate().getTime());
+                .isEqualTo(addMinutes(baseLine, 1).getTime());
 
             assertThat(vals[1].value)
                 .isEqualTo(70);
             assertThat(vals[1].tag)
                 .isEqualTo("watches/apple");
             assertThat(vals[1].timestamp.getTime())
-                .isEqualTo(baseLine.clone().add(2, "minutes").toDate().getTime());
+                .isEqualTo(addMinutes(baseLine, 2).getTime());
         }
     });
 
@@ -283,7 +283,7 @@ describe("TypedBulkInsert", function () {
 
                 const ts = bulkInsert.timeSeriesFor(HeartRateMeasure, documentId);
                 try {
-                    await ts.append(baseLine.clone().add(1, "minutes").toDate(), HeartRateMeasure.create(59), "watches/fitbit");
+                    await ts.append(addMinutes(baseLine, 1), HeartRateMeasure.create(59), "watches/fitbit");
                 } finally {
                     ts.dispose();
                 }
@@ -297,8 +297,8 @@ describe("TypedBulkInsert", function () {
             try {
                 const timeSeriesBulkInsert = bulkInsert.timeSeriesFor(HeartRateMeasure, documentId);
                 try {
-                    await timeSeriesBulkInsert.append(baseLine.clone().add(2, "minutes").toDate(), HeartRateMeasure.create(61), "watches/fitbit");
-                    await timeSeriesBulkInsert.append(baseLine.clone().add(3, "minutes").toDate(), HeartRateMeasure.create(62), "watches/apple-watch");
+                    await timeSeriesBulkInsert.append(addMinutes(baseLine, 2), HeartRateMeasure.create(61), "watches/fitbit");
+                    await timeSeriesBulkInsert.append(addMinutes(baseLine, 3), HeartRateMeasure.create(62), "watches/apple-watch");
                 } finally {
                     timeSeriesBulkInsert.dispose();
                 }
@@ -319,21 +319,21 @@ describe("TypedBulkInsert", function () {
             assertThat(vals[0].tag)
                 .isEqualTo("watches/fitbit");
             assertThat(vals[0].timestamp.getTime())
-                .isEqualTo(baseLine.clone().add(1, "minutes").toDate().getTime());
+                .isEqualTo(addMinutes(baseLine, 1).getTime());
 
             assertThat(vals[1].value.heartRate)
                 .isEqualTo(61);
             assertThat(vals[1].tag)
                 .isEqualTo("watches/fitbit");
             assertThat(vals[1].timestamp.getTime())
-                .isEqualTo(baseLine.clone().add(2, "minutes").toDate().getTime());
+                .isEqualTo(addMinutes(baseLine, 2).getTime());
 
             assertThat(vals[2].value.heartRate)
                 .isEqualTo(62);
             assertThat(vals[2].tag)
                 .isEqualTo("watches/apple-watch");
             assertThat(vals[2].timestamp.getTime())
-                .isEqualTo(baseLine.clone().add(3, "minutes").toDate().getTime());
+                .isEqualTo(addMinutes(baseLine, 3).getTime());
         }
     });
 
@@ -441,7 +441,7 @@ describe("TypedBulkInsert", function () {
                 {
                     const timeSeriesBulkInsert = bulkInsert.timeSeriesFor(HeartRateMeasure, documentId1, "heartrate");
                     try {
-                        await timeSeriesBulkInsert.append(baseLine.clone().add(1, "minutes").toDate(), HeartRateMeasure.create(59), "watches/fitbit");
+                        await timeSeriesBulkInsert.append(addMinutes(baseLine, 1), HeartRateMeasure.create(59), "watches/fitbit");
                     } finally {
                         timeSeriesBulkInsert.dispose();
                     }
@@ -454,7 +454,7 @@ describe("TypedBulkInsert", function () {
                 {
                     const timeSeriesBulkInsert = bulkInsert.timeSeriesFor(HeartRateMeasure, documentId2, "heartrate");
                     try {
-                        await timeSeriesBulkInsert.append(baseLine.clone().add(1, "minutes").toDate(), HeartRateMeasure.create(59), "watches/fitbit");
+                        await timeSeriesBulkInsert.append(addMinutes(baseLine, 1), HeartRateMeasure.create(59), "watches/fitbit");
                     } finally {
                         timeSeriesBulkInsert.dispose();
                     }
@@ -473,7 +473,7 @@ describe("TypedBulkInsert", function () {
                     const timeSeriesBulkInsert = bulkInsert.timeSeriesFor(HeartRateMeasure, documentId1, "heartrate");
                     try {
                         const measure = new TypedTimeSeriesEntry<HeartRateMeasure>();
-                        measure.timestamp = baseLine.clone().add(2, "minutes").toDate();
+                        measure.timestamp = addMinutes(baseLine, 2);
                         measure.tag = "watches/fitbit";
                         measure.value = HeartRateMeasure.create(61);
 
@@ -487,7 +487,7 @@ describe("TypedBulkInsert", function () {
                     const timeSeriesBulkInsert = bulkInsert.timeSeriesFor(HeartRateMeasure, documentId2, "heartrate");
                     try {
                         const measure = new TypedTimeSeriesEntry<HeartRateMeasure>();
-                        measure.timestamp = baseLine.clone().add(2, "minutes").toDate();
+                        measure.timestamp = addMinutes(baseLine, 2);
                         measure.tag = "watches/fitbit";
                         measure.value = HeartRateMeasure.create(61);
 
@@ -501,7 +501,7 @@ describe("TypedBulkInsert", function () {
                     const timeSeriesBulkInsert = bulkInsert.timeSeriesFor(HeartRateMeasure, documentId1, "heartrate");
                     try {
                         const measure = new TypedTimeSeriesEntry<HeartRateMeasure>();
-                        measure.timestamp = baseLine.clone().add(3, "minutes").toDate();
+                        measure.timestamp = addMinutes(baseLine, 3);
                         measure.tag = "watches/apple-watch";
                         measure.value = HeartRateMeasure.create(62);
 
@@ -515,7 +515,7 @@ describe("TypedBulkInsert", function () {
                     const timeSeriesBulkInsert = bulkInsert.timeSeriesFor(HeartRateMeasure, documentId2, "heartrate");
                     try {
                         const measure = new TypedTimeSeriesEntry<HeartRateMeasure>();
-                        measure.timestamp = baseLine.clone().add(3, "minutes").toDate();
+                        measure.timestamp = addMinutes(baseLine, 3);
                         measure.tag = "watches/apple-watch";
                         measure.value = HeartRateMeasure.create(62);
 
@@ -544,7 +544,7 @@ describe("TypedBulkInsert", function () {
     });
 });
 
-async function validateValues(baseline: moment.Moment, vals: TypedTimeSeriesEntry<HeartRateMeasure>[]) {
+async function validateValues(baseline: Date, vals: TypedTimeSeriesEntry<HeartRateMeasure>[]) {
     assertThat(vals)
         .hasSize(3);
 
@@ -553,19 +553,19 @@ async function validateValues(baseline: moment.Moment, vals: TypedTimeSeriesEntr
     assertThat(vals[0].tag)
         .isEqualTo("watches/fitbit");
     assertThat(vals[0].timestamp.getTime())
-        .isEqualTo(baseline.clone().add(1, "minutes").toDate().getTime());
+        .isEqualTo(addMinutes(baseline, 1).getTime());
 
     assertThat(vals[1].value.heartRate)
         .isEqualTo(61);
     assertThat(vals[1].tag)
         .isEqualTo("watches/fitbit");
     assertThat(vals[1].timestamp.getTime())
-        .isEqualTo(baseline.clone().add(2, "minutes").toDate().getTime());
+        .isEqualTo(addMinutes(baseline, 2).getTime());
 
     assertThat(vals[2].value.heartRate)
         .isEqualTo(62);
     assertThat(vals[2].tag)
         .isEqualTo("watches/apple-watch");
     assertThat(vals[2].timestamp.getTime())
-        .isEqualTo(baseline.clone().add(3, "minutes").toDate().getTime());
+        .isEqualTo(addMinutes(baseline, 3).getTime());
 }

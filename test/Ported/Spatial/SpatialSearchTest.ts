@@ -1,5 +1,4 @@
-import moment from "moment";
-import assert from "node:assert"
+import assert from "node:assert";
 import { testContext, disposeTestDocumentStore } from "../../Utils/TestUtil.js";
 
 import {
@@ -8,6 +7,7 @@ import {
     QueryStatistics,
     SpatialField
 } from "../../../src/index.js";
+import { addDays, addYears } from "date-fns";
 
 describe("SpatialSearchTest", function () {
 
@@ -26,10 +26,10 @@ describe("SpatialSearchTest", function () {
         {
             const session = store.openSession();
             await session.store(new Event("a/1", 38.9579000, -77.3572000, new Date(), 5000));
-            await session.store(new Event("a/2", 38.9690000, -77.3862000, moment().add(1, "days").toDate(), 5000));
-            await session.store(new Event("b/2", 38.9690000, -77.3862000, moment().add(2, "days").toDate(), 2000));
-            await session.store(new Event("c/3", 38.9510000, -77.4107000, moment().add(3, "years").toDate(), 1500));
-            await session.store(new Event("d/1", 37.9510000, -77.4107000, moment().add(3, "years").toDate(), 1500));
+            await session.store(new Event("a/2", 38.9690000, -77.3862000, addDays(new Date(), 1), 5000));
+            await session.store(new Event("b/2", 38.9690000, -77.3862000, addDays(new Date(), 2), 2000));
+            await session.store(new Event("c/3", 38.9510000, -77.4107000, addYears(new Date(), 3), 1500));
+            await session.store(new Event("d/1", 37.9510000, -77.4107000, addYears(new Date(), 3), 1500));
             await session.saveChanges();
         }
 
@@ -86,10 +86,10 @@ describe("SpatialSearchTest", function () {
         {
             const session = store.openSession();
             await session.store(new Event("a/1", 38.9579000, -77.3572000, new Date(), 5000));
-            await session.store(new Event("a/2", 38.9690000, -77.3862000, moment().add(1, "days").toDate(), 5000));
-            await session.store(new Event("b/2", 38.9690000, -77.3862000, moment().add(2, "days").toDate(), 2000));
-            await session.store(new Event("c/3", 38.9510000, -77.4107000, moment().add(3, "years").toDate(), 1500));
-            await session.store(new Event("d/1", 37.9510000, -77.4107000, moment().add(3, "years").toDate(), 1500));
+            await session.store(new Event("a/2", 38.9690000, -77.3862000, addDays(new Date(), 1), 5000));
+            await session.store(new Event("b/2", 38.9690000, -77.3862000, addDays(new Date(), 2), 2000));
+            await session.store(new Event("c/3", 38.9510000, -77.4107000, addYears(new Date(), 3), 1500));
+            await session.store(new Event("d/1", 37.9510000, -77.4107000, addYears(new Date(), 3), 1500));
             await session.saveChanges();
         }
 

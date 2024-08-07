@@ -1,13 +1,13 @@
 import {
-    AbstractCsharpTimeSeriesIndexCreationTask,
+    AbstractCsharpTimeSeriesIndexCreationTask, DateUtil,
     IDocumentStore,
     StreamResult
 } from "../../../src/index.js";
 import { disposeTestDocumentStore, testContext } from "../../Utils/TestUtil.js";
-import moment from "moment";
 import { Company } from "../../Assets/Orders.js";
 import { finishedAsync } from "../../../src/Utility/StreamUtil.js";
 import { assertThat } from "../../Utils/AssertExtensions.js";
+import { addMinutes } from "date-fns";
 
 describe("TimeSeriesIndexStreamTest", function () {
 
@@ -22,7 +22,6 @@ describe("TimeSeriesIndexStreamTest", function () {
 
     it("basicMapIndex", async () => {
         const now1 = testContext.utcToday();
-        const now2 = now1.clone().add(1, "second");
 
         {
             const session = store.openSession();
@@ -32,7 +31,7 @@ describe("TimeSeriesIndexStreamTest", function () {
             const ts = session.timeSeriesFor(company, "HeartRate");
 
             for (let i = 0; i < 10; i++) {
-                ts.append(now1.clone().add(i, "minutes").toDate(), i, "tag");
+                ts.append(addMinutes(now1, i), i, "tag");
             }
 
             await session.saveChanges();
@@ -53,8 +52,8 @@ describe("TimeSeriesIndexStreamTest", function () {
                 const results = item.document;
                 assertThat(item.document instanceof IndexResult)
                     .isTrue();
-                assertThat(moment(results.timestamp).toDate().getTime())
-                    .isEqualTo(now1.clone().add(i, "minutes").toDate().getTime());
+                assertThat(DateUtil.utc.parse(results.timestamp).getTime())
+                    .isEqualTo(addMinutes(now1, i).getTime());
                 assertThat(results.heartBeat)
                     .isEqualTo(i);
                 assertThat(results.user)

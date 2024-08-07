@@ -4,9 +4,9 @@ import {
     InMemoryDocumentSessionOperations
 } from "../../../src/index.js";
 import { disposeTestDocumentStore, testContext } from "../../Utils/TestUtil.js";
-import moment from "moment";
 import { User } from "../../Assets/Entities.js";
 import { assertThat } from "../../Utils/AssertExtensions.js";
+import { addMinutes } from "date-fns";
 
 describe("TimeSeriesSessionTest", function () {
 
@@ -29,7 +29,7 @@ describe("TimeSeriesSessionTest", function () {
             await session.store(user, "users/ayende");
 
             session.timeSeriesFor("users/ayende", "Heartrate")
-                .append(baseLine.clone().add(1, "minutes").toDate(), 59, "watches/fitbit");
+                .append(addMinutes(baseLine, 1), 59, "watches/fitbit");
 
             await session.saveChanges();
         }
@@ -46,7 +46,7 @@ describe("TimeSeriesSessionTest", function () {
             assertThat(val.tag)
                 .isEqualTo("watches/fitbit");
             assertThat(val.timestamp.getTime())
-                .isEqualTo(baseLine.clone().add(1, "minute").toDate().getTime());
+                .isEqualTo(addMinutes(baseLine, 1).getTime());
         }
     });
 
@@ -60,9 +60,9 @@ describe("TimeSeriesSessionTest", function () {
             await session.store(user, "users/ayende");
 
             const tsf = session.timeSeriesFor("users/ayende", "Heartrate");
-            tsf.append(baseLine.clone().add(1, "minutes").toDate(), 59, "watches/fitbit");
-            tsf.append(baseLine.clone().add(2, "minutes").toDate(), 60, "watches/fitbit");
-            tsf.append(baseLine.clone().add(3, "minutes").toDate(), 61, "watches/fitbit");
+            tsf.append(addMinutes(baseLine, 1), 59, "watches/fitbit");
+            tsf.append(addMinutes(baseLine, 2), 60, "watches/fitbit");
+            tsf.append(addMinutes(baseLine, 3), 61, "watches/fitbit");
 
             await session.saveChanges();
         }
@@ -89,9 +89,9 @@ describe("TimeSeriesSessionTest", function () {
             await session.store(user, "users/ayende");
 
             const tsf = session.timeSeriesFor("users/ayende", "Heartrate");
-            tsf.append(baseLine.clone().add(1, "minutes").toDate(), 59, "watches/fitbit");
-            tsf.append(baseLine.clone().add(2, "minutes").toDate(), 60, "watches/fitbit");
-            tsf.append(baseLine.clone().add(3, "minutes").toDate(), 61, "watches/fitbit");
+            tsf.append(addMinutes(baseLine, 1), 59, "watches/fitbit");
+            tsf.append(addMinutes(baseLine, 2), 60, "watches/fitbit");
+            tsf.append(addMinutes(baseLine, 3), 61, "watches/fitbit");
 
             await session.saveChanges();
         }
@@ -106,9 +106,9 @@ describe("TimeSeriesSessionTest", function () {
         assertThat(res.timeSeries[0].numberOfEntries)
             .isEqualTo(3);
         assertThat(res.timeSeries[0].startDate.getTime())
-            .isEqualTo(baseLine.clone().add(1, "minutes").toDate().getTime());
+            .isEqualTo(addMinutes(baseLine, 1).getTime());
         assertThat(res.timeSeries[0].endDate.getTime())
-            .isEqualTo(baseLine.clone().add(3, "minutes").toDate().getTime());
+            .isEqualTo(addMinutes(baseLine, 3).getTime());
 
     });
 
@@ -122,7 +122,7 @@ describe("TimeSeriesSessionTest", function () {
             await session.store(user, "users/ayende");
 
             session.timeSeriesFor("users/ayende", "Heartrate")
-                .append(baseLine.clone().add(1, "minutes").toDate(), 59, "watches/fitbit");
+                .append(addMinutes(baseLine, 1), 59, "watches/fitbit");
 
             await session.saveChanges();
         }
@@ -130,7 +130,7 @@ describe("TimeSeriesSessionTest", function () {
         {
             const session = store.openSession();
             session.timeSeriesFor("users/ayende", "HeartRate")
-                .append(baseLine.clone().add(2, "minutes").toDate(), 60, "watches/fitbit");
+                .append(addMinutes(baseLine, 2), 60, "watches/fitbit");
 
             await session.saveChanges();
         }
@@ -146,7 +146,7 @@ describe("TimeSeriesSessionTest", function () {
             assertThat(val[0].values[0])
                 .isEqualTo(59);
             assertThat(val[0].timestamp.getTime())
-                .isEqualTo(baseLine.clone().add(1, "minutes").toDate().getTime());
+                .isEqualTo(addMinutes(baseLine, 1).getTime());
 
             assertThat(val[1].values)
                 .hasSize(1);
@@ -155,7 +155,7 @@ describe("TimeSeriesSessionTest", function () {
             assertThat(val[1].tag)
                 .isEqualTo("watches/fitbit");
             assertThat(val[1].timestamp.getTime())
-                .isEqualTo(baseLine.clone().add(2, "minutes").toDate().getTime());
+                .isEqualTo(addMinutes(baseLine, 2).getTime());
 
             assertThat(session.advanced.getTimeSeriesFor(user))
                 .hasSize(1);
@@ -173,7 +173,7 @@ describe("TimeSeriesSessionTest", function () {
         {
             const session = store.openSession();
             session.timeSeriesFor("users/ayende", "HeArtRate")
-                .append(baseLine.clone().add(3, "minutes").toDate(), 61, "watches/fitbit");
+                .append(addMinutes(baseLine, 3), 61, "watches/fitbit");
             await session.saveChanges();
         }
 
@@ -194,7 +194,7 @@ describe("TimeSeriesSessionTest", function () {
             assertThat(val.tag)
                 .isEqualTo("watches/fitbit");
             assertThat(val.timestamp.getTime())
-                .isEqualTo(baseLine.clone().add(3, "minutes").toDate().getTime());
+                .isEqualTo(addMinutes(baseLine, 3).getTime());
             assertThat(session.advanced.getTimeSeriesFor(user))
                 .contains("HeArtRate");
         }
@@ -210,9 +210,9 @@ describe("TimeSeriesSessionTest", function () {
             await session.store(user, "users/ayende");
 
             const tsf = session.timeSeriesFor("users/ayende", "Heartrate");
-            tsf.append(baseLine.clone().add(1, "minutes").toDate(), 59, "watches/fitbit");
-            tsf.append(baseLine.clone().add(2, "minutes").toDate(), 69, "watches/fitbit");
-            tsf.append(baseLine.clone().add(3, "minutes").toDate(), 79, "watches/fitbit");
+            tsf.append(addMinutes(baseLine, 1), 59, "watches/fitbit");
+            tsf.append(addMinutes(baseLine, 2), 69, "watches/fitbit");
+            tsf.append(addMinutes(baseLine, 3), 79, "watches/fitbit");
 
             await session.saveChanges();
         }
@@ -223,7 +223,7 @@ describe("TimeSeriesSessionTest", function () {
             user.name = "Oren";
             await session.store(user, "users/ayende");
             session.timeSeriesFor("users/ayende", "Heartrate")
-                .deleteAt(baseLine.clone().add(2, "minutes").toDate());
+                .deleteAt(addMinutes(baseLine, 2));
 
             await session.saveChanges();
         }
@@ -242,7 +242,7 @@ describe("TimeSeriesSessionTest", function () {
             assertThat(vals[0].tag)
                 .isEqualTo("watches/fitbit");
             assertThat(vals[0].timestamp.getTime())
-                .isEqualTo(baseLine.clone().add(1, "minutes").toDate().getTime());
+                .isEqualTo(addMinutes(baseLine, 1).getTime());
 
             assertThat(vals[1].values)
                 .hasSize(1);
@@ -251,7 +251,7 @@ describe("TimeSeriesSessionTest", function () {
             assertThat(vals[1].tag)
                 .isEqualTo("watches/fitbit");
             assertThat(vals[1].timestamp.getTime())
-                .isEqualTo(baseLine.clone().add(3, "minutes").toDate().getTime());
+                .isEqualTo(addMinutes(baseLine, 3).getTime());
         }
     });
 
@@ -265,8 +265,8 @@ describe("TimeSeriesSessionTest", function () {
             await session.store(user, "users/ayende");
 
             const tsf = session.timeSeriesFor("users/ayende", "Heartrate");
-            tsf.append(baseLine.clone().add(1, "minutes").toDate(), 59, "watches/fitbit");
-            tsf.append(baseLine.clone().add(2, "minutes").toDate(), 70, "watches/apple");
+            tsf.append(addMinutes(baseLine, 1), 59, "watches/fitbit");
+            tsf.append(addMinutes(baseLine, 2), 70, "watches/apple");
 
             await session.saveChanges();
         }
@@ -284,7 +284,7 @@ describe("TimeSeriesSessionTest", function () {
             assertThat(vals[0].tag)
                 .isEqualTo("watches/fitbit");
             assertThat(vals[0].timestamp.getTime())
-                .isEqualTo(baseLine.clone().add(1, "minutes").toDate().getTime());
+                .isEqualTo(addMinutes(baseLine, 1).getTime());
 
             assertThat(vals[1].values)
                 .hasSize(1);
@@ -293,7 +293,7 @@ describe("TimeSeriesSessionTest", function () {
             assertThat(vals[1].tag)
                 .isEqualTo("watches/apple");
             assertThat(vals[1].timestamp.getTime())
-                .isEqualTo(baseLine.clone().add(2, "minutes").toDate().getTime());
+                .isEqualTo(addMinutes(baseLine, 2).getTime());
         }
     });
 
@@ -307,9 +307,9 @@ describe("TimeSeriesSessionTest", function () {
             await session.store(user, "users/ayende");
 
             const tsf = session.timeSeriesFor("users/ayende", "Heartrate");
-            tsf.append(baseLine.clone().add(1, "minutes").toDate(), 59, "watches/fitbit");
-            tsf.append(baseLine.clone().add(2, "minutes").toDate(), [ 70, 120, 80], "watches/apple");
-            tsf.append(baseLine.clone().add(3, "minutes").toDate(), 69, "watches/fitbit");
+            tsf.append(addMinutes(baseLine, 1), 59, "watches/fitbit");
+            tsf.append(addMinutes(baseLine, 2), [ 70, 120, 80], "watches/apple");
+            tsf.append(addMinutes(baseLine, 3), 69, "watches/fitbit");
 
             await session.saveChanges();
         }
@@ -327,7 +327,7 @@ describe("TimeSeriesSessionTest", function () {
             assertThat(vals[0].tag)
                 .isEqualTo("watches/fitbit");
             assertThat(vals[0].timestamp.getTime())
-                .isEqualTo(baseLine.clone().add(1, "minute").toDate().getTime());
+                .isEqualTo(addMinutes(baseLine, 1).getTime());
 
             assertThat(vals[1].values)
                 .hasSize(3);
@@ -340,7 +340,7 @@ describe("TimeSeriesSessionTest", function () {
             assertThat(vals[1].tag)
                 .isEqualTo("watches/apple");
             assertThat(vals[1].timestamp.getTime())
-                .isEqualTo(baseLine.clone().add(2, "minutes").toDate().getTime());
+                .isEqualTo(addMinutes(baseLine, 2).getTime());
 
             assertThat(vals[2].values)
                 .hasSize(1);
@@ -349,7 +349,7 @@ describe("TimeSeriesSessionTest", function () {
             assertThat(vals[2].tag)
                 .isEqualTo("watches/fitbit");
             assertThat(vals[2].timestamp.getTime())
-                .isEqualTo(baseLine.clone().add(3, "minutes").toDate().getTime());
+                .isEqualTo(addMinutes(baseLine, 3).getTime());
         }
     });
 
@@ -363,9 +363,9 @@ describe("TimeSeriesSessionTest", function () {
             await session.store(user, "users/ayende");
 
             const tsf = session.timeSeriesFor("users/ayende", "Heartrate");
-            tsf.append(baseLine.clone().add(1, "minutes").toDate(), [ 70, 120, 80 ], "watches/apple");
-            tsf.append(baseLine.clone().add(2, "minutes").toDate(), 59, "watches/fitbit");
-            tsf.append(baseLine.clone().add(3, "minutes").toDate(), 69, "watches/fitbit");
+            tsf.append(addMinutes(baseLine, 1), [ 70, 120, 80 ], "watches/apple");
+            tsf.append(addMinutes(baseLine, 2), 59, "watches/fitbit");
+            tsf.append(addMinutes(baseLine, 3), 69, "watches/fitbit");
 
             await session.saveChanges();
         }
@@ -388,7 +388,7 @@ describe("TimeSeriesSessionTest", function () {
             assertThat(vals[0].tag)
                 .isEqualTo("watches/apple");
             assertThat(vals[0].timestamp.getTime())
-                .isEqualTo(baseLine.clone().add(1, "minutes").toDate().getTime());
+                .isEqualTo(addMinutes(baseLine, 1).getTime());
 
             assertThat(vals[1].values)
                 .hasSize(1);
@@ -397,7 +397,7 @@ describe("TimeSeriesSessionTest", function () {
             assertThat(vals[1].tag)
                 .isEqualTo("watches/fitbit");
             assertThat(vals[1].timestamp.getTime())
-                .isEqualTo(baseLine.clone().add(2, "minutes").toDate().getTime());
+                .isEqualTo(addMinutes(baseLine, 2).getTime());
 
             assertThat(vals[2].values)
                 .hasSize(1);
@@ -406,7 +406,7 @@ describe("TimeSeriesSessionTest", function () {
             assertThat(vals[2].tag)
                 .isEqualTo("watches/fitbit");
             assertThat(vals[2].timestamp.getTime())
-                .isEqualTo(baseLine.clone().add(3, "minutes").toDate().getTime());
+                .isEqualTo(addMinutes(baseLine, 3).getTime());
         }
     });
 
@@ -420,7 +420,7 @@ describe("TimeSeriesSessionTest", function () {
             await session.store(user, "users/ayende");
 
             const tsf = session.timeSeriesFor("users/ayende", "Heartrate");
-            tsf.append(baseLine.clone().add(1, "minute").toDate(), [ 59 ], "watches/fitbit");
+            tsf.append(addMinutes(baseLine, 1), [ 59 ], "watches/fitbit");
 
             await session.saveChanges();
         }
@@ -428,8 +428,8 @@ describe("TimeSeriesSessionTest", function () {
         {
             const session = store.openSession();
             const tsf = session.timeSeriesFor("users/ayende", "Heartrate");
-            tsf.append(baseLine.clone().add(2, "minutes").toDate(), 61, "watches/fitbit");
-            tsf.append(baseLine.clone().add(3, "minutes").toDate(), 62, "watches/apple-watch");
+            tsf.append(addMinutes(baseLine, 2), 61, "watches/fitbit");
+            tsf.append(addMinutes(baseLine, 3), 62, "watches/apple-watch");
 
             await session.saveChanges();
         }
@@ -446,7 +446,7 @@ describe("TimeSeriesSessionTest", function () {
             assertThat(vals[0].tag)
                 .isEqualTo("watches/fitbit");
             assertThat(vals[0].timestamp.getTime())
-                .isEqualTo(baseLine.clone().add(1, "minutes").toDate().getTime());
+                .isEqualTo(addMinutes(baseLine, 1).getTime());
 
             assertThat(vals[1].values)
                 .hasSize(1);
@@ -455,7 +455,7 @@ describe("TimeSeriesSessionTest", function () {
             assertThat(vals[1].tag)
                 .isEqualTo("watches/fitbit");
             assertThat(vals[1].timestamp.getTime())
-                .isEqualTo(baseLine.clone().add(2, "minutes").toDate().getTime());
+                .isEqualTo(addMinutes(baseLine, 2).getTime());
 
             assertThat(vals[2].values)
                 .hasSize(1);
@@ -464,7 +464,7 @@ describe("TimeSeriesSessionTest", function () {
             assertThat(vals[2].tag)
                 .isEqualTo("watches/apple-watch");
             assertThat(vals[2].timestamp.getTime())
-                .isEqualTo(baseLine.clone().add(3, "minutes").toDate().getTime());
+                .isEqualTo(addMinutes(baseLine, 3).getTime());
         }
     });
 
@@ -485,7 +485,7 @@ describe("TimeSeriesSessionTest", function () {
             const session = store.openSession();
             const tsf = session.timeSeriesFor("users/ayende", "Heartrate");
             for (let j = 0; j < 1000; j++) {
-                tsf.append(baseLine.clone().add(offset++, "minutes").toDate(), [ offset ], "watches/fitbit");
+                tsf.append(addMinutes(baseLine, offset++), [ offset ], "watches/fitbit");
             }
 
             await session.saveChanges();
@@ -500,7 +500,7 @@ describe("TimeSeriesSessionTest", function () {
 
             for (let i = 0; i < 10_000; i++) {
                 assertThat(vals[i].timestamp.getTime())
-                    .isEqualTo(baseLine.clone().add(i, "minutes").toDate().getTime());
+                    .isEqualTo(addMinutes(baseLine, i).getTime());
                 assertThat(vals[i].values[0])
                     .isEqualTo(1 + i);
             }
@@ -527,7 +527,7 @@ describe("TimeSeriesSessionTest", function () {
             const tsf = session.timeSeriesFor("users/ayende", "Heartrate");
 
             for (let j = 0; j < retries; j++) {
-                tsf.append(baseLine.clone().add(offset, "minutes").toDate(), [ offset ], "watches/fitbit");
+                tsf.append(addMinutes(baseLine, offset), [ offset ], "watches/fitbit");
                 offset += 5;
             }
 
@@ -545,7 +545,7 @@ describe("TimeSeriesSessionTest", function () {
                 .hasSize(retries);
 
             for (let j = 0; j < retries; j++) {
-                tsf.append(baseLine.clone().add(offset, "minutes").toDate(), [ offset ], "watches/fitbit");
+                tsf.append(addMinutes(baseLine, offset), [ offset ], "watches/fitbit");
 
                 offset += 5;
             }
@@ -565,7 +565,7 @@ describe("TimeSeriesSessionTest", function () {
 
             for (let i = 0; i < retries; i++) {
                 assertThat(vals[i].timestamp.getTime())
-                    .isEqualTo(baseLine.clone().add(offset, "minutes").toDate().getTime());
+                    .isEqualTo(addMinutes(baseLine, offset).getTime());
                 assertThat(vals[i].values[0])
                     .isEqualTo(offset);
 
@@ -573,7 +573,7 @@ describe("TimeSeriesSessionTest", function () {
                 i++;
 
                 assertThat(vals[i].timestamp.getTime())
-                    .isEqualTo(baseLine.clone().add(offset, "minutes").toDate().getTime());
+                    .isEqualTo(addMinutes(baseLine, offset).getTime());
                 assertThat(vals[i].values[0])
                     .isEqualTo(offset);
 
@@ -592,8 +592,8 @@ describe("TimeSeriesSessionTest", function () {
             await session.store(user, "users/ayende");
 
             const tsf = session.timeSeriesFor("users/ayende", "Heartrate");
-            tsf.append(baseLine.toDate(), 58, "watches/fitbit");
-            tsf.append(baseLine.clone().add(10, "minutes").toDate(), 60, "watches/fitbit");
+            tsf.append(baseLine, 58, "watches/fitbit");
+            tsf.append(addMinutes(baseLine, 10), 60, "watches/fitbit");
 
             await session.saveChanges();
         }
@@ -601,13 +601,13 @@ describe("TimeSeriesSessionTest", function () {
         {
             const session = store.openSession();
             let vals = await session.timeSeriesFor("users/ayende", "Heartrate")
-                .get(baseLine.clone().add(-10, "minutes").toDate(), baseLine.clone().add(-5, "minutes").toDate());
+                .get(addMinutes(baseLine, -10), addMinutes(baseLine, -5));
 
             assertThat(vals)
                 .hasSize(0);
 
             vals = await session.timeSeriesFor("users/ayende", "Heartrate")
-                .get(baseLine.clone().add(5, "minutes").toDate(), baseLine.clone().add(9, "minutes").toDate());
+                .get(addMinutes(baseLine, 5), addMinutes(baseLine, 9));
 
             assertThat(vals)
                 .hasSize(0);
@@ -645,7 +645,7 @@ describe("TimeSeriesSessionTest", function () {
         {
             const session = store.openSession();
             session.timeSeriesFor("users/ayende", "Heartrate")
-                .append(moment().add(1, "minutes").toDate(), 58, "fitbit");
+                .append(addMinutes(new Date(), 1), 58, "fitbit");
             await session.saveChanges();
         }
 
@@ -666,7 +666,7 @@ describe("TimeSeriesSessionTest", function () {
         {
             const session = store.openSession();
             session.timeSeriesFor("users/ayende", "heartrate") // putting ts name as lower cased
-                .append(baseLine.clone().add(1, "minutes").toDate(), 58, "fitbit");
+                .append(addMinutes(baseLine, 1), 58, "fitbit");
 
             await session.saveChanges();
         }
@@ -704,7 +704,7 @@ describe("TimeSeriesSessionTest", function () {
             const tsf = session.timeSeriesFor("users/ayende", "Heartrate");
 
             for (let j = 0; j < 1000; j++) {
-                tsf.append(baseLine.clone().add(offset++, "minutes").toDate(), offset, "watches/fitbit");
+                tsf.append(addMinutes(baseLine, offset++), offset, "watches/fitbit");
             }
 
             await session.saveChanges();
@@ -717,7 +717,7 @@ describe("TimeSeriesSessionTest", function () {
             const tsf = session.timeSeriesFor("users/ayende", "Pulse");
 
             for (let j = 0; j < 1000; j++) {
-                tsf.append(baseLine.clone().add(offset++, "minutes").toDate(), offset, "watches/fitbit");
+                tsf.append(addMinutes(baseLine, offset++), offset, "watches/fitbit");
             }
 
             await session.saveChanges();
@@ -733,7 +733,7 @@ describe("TimeSeriesSessionTest", function () {
 
             for (let i = 0; i < 100_000; i++) {
                 assertThat(vals[i].timestamp.getTime())
-                    .isEqualTo(baseLine.clone().add(i, "minutes").toDate().getTime());
+                    .isEqualTo(addMinutes(baseLine, i).getTime());
                 assertThat(vals[i].values[0])
                     .isEqualTo(1 + i);
             }
@@ -748,7 +748,7 @@ describe("TimeSeriesSessionTest", function () {
 
             for (let i = 0; i < 100_000; i++) {
                 assertThat(vals[i].timestamp.getTime())
-                    .isEqualTo(baseLine.clone().add(i, "minutes").toDate().getTime());
+                    .isEqualTo(addMinutes(baseLine, i).getTime());
                 assertThat(vals[i].value)
                     .isEqualTo(1 + i);
             }
@@ -780,11 +780,11 @@ describe("TimeSeriesSessionTest", function () {
 
 
             const timeSeriesFor = session.timeSeriesFor(id, "Heartrate");
-            timeSeriesFor.append(baseLine.clone().add(1, "minutes").toDate(), 59, "watches/fitbit");
-            timeSeriesFor.append(baseLine.clone().add(2, "minutes").toDate(), 59, "watches/fitbit");
+            timeSeriesFor.append(addMinutes(baseLine, 1), 59, "watches/fitbit");
+            timeSeriesFor.append(addMinutes(baseLine, 2), 59, "watches/fitbit");
 
             session.timeSeriesFor(id, "Heartrate2")
-                .append(baseLine.clone().add(1, "minutes").toDate(), 59, "watches/apple");
+                .append(addMinutes(baseLine, 1), 59, "watches/apple");
 
             await session.saveChanges();
         }
@@ -822,7 +822,7 @@ describe("TimeSeriesSessionTest", function () {
             const tsf = session.timeSeriesFor("users/ayende", "Heartrate");
 
             for (let i = 0; i < 100; i++) {
-                tsf.append(baseLine.clone().add(i, "minutes").toDate(), 100 + i, "watches/fitbit");
+                tsf.append(addMinutes(baseLine, i), 100 + i, "watches/fitbit");
             }
 
             await session.saveChanges();
@@ -838,7 +838,7 @@ describe("TimeSeriesSessionTest", function () {
 
             for (let i = 0; i < vals.length; i++) {
                 assertThat(vals[i].timestamp.getTime())
-                    .isEqualTo(baseLine.clone().add(5 + i, "minutes").toDate().getTime());
+                    .isEqualTo(addMinutes(baseLine, 5 + i).getTime());
                 assertThat(vals[i].value)
                     .isEqualTo(105 + i);
             }
@@ -860,13 +860,13 @@ describe("TimeSeriesSessionTest", function () {
             let tsf = session.timeSeriesFor(documentId, "Heartrate");
 
             for (let i = 0; i < 60; i++) {
-                tsf.append(baseLine.clone().add(i, "minutes").toDate(), 100 + i, "watches/fitbit");
+                tsf.append(addMinutes(baseLine, i), 100 + i, "watches/fitbit");
             }
 
             tsf = session.timeSeriesFor(documentId, "BloodPressure");
 
             for (let i = 0; i < 10; i++) {
-                tsf.append(baseLine.clone().add(i, "minutes").toDate(), [ 120 - i , 80 + i ], "watches/apple");
+                tsf.append(addMinutes(baseLine, i), [ 120 - i , 80 + i ], "watches/apple");
             }
 
             await session.saveChanges();
@@ -877,11 +877,11 @@ describe("TimeSeriesSessionTest", function () {
             const user = await session.load<User>(documentId, User);
             let tsf = session.timeSeriesFor(user, "Heartrate");
 
-            let vals = await tsf.get(baseLine.toDate(), baseLine.clone().add(10, "minutes").toDate());
+            let vals = await tsf.get(baseLine, addMinutes(baseLine, 10));
             assertThat(vals)
                 .hasSize(11);
 
-            vals = await tsf.get(baseLine.clone().add(20, "minutes").toDate(), baseLine.clone().add(50, "minutes").toDate());
+            vals = await tsf.get(addMinutes(baseLine, 20), addMinutes(baseLine, 50));
 
             assertThat(vals)
                 .hasSize(31);
@@ -907,15 +907,15 @@ describe("TimeSeriesSessionTest", function () {
                 .hasSize(2);
 
             assertThat(ranges[0].from.getTime())
-                .isEqualTo(baseLine.toDate().getTime());
+                .isEqualTo(baseLine.getTime());
             assertThat(ranges[0].to.getTime())
-                .isEqualTo(baseLine.clone().add(10, "minutes").toDate().getTime());
+                .isEqualTo(addMinutes(baseLine, 10).getTime());
             assertThat(ranges[0].entries)
                 .hasSize(11);
             assertThat(ranges[1].from.getTime())
-                .isEqualTo(baseLine.clone().add(20, "minutes").toDate().getTime());
+                .isEqualTo(addMinutes(baseLine, 20).getTime());
             assertThat(ranges[1].to.getTime())
-                .isEqualTo(baseLine.clone().add(50, "minutes").toDate().getTime());
+                .isEqualTo(addMinutes(baseLine, 50).getTime());
 
             assertThat(ranges[1].entries)
                 .hasSize(31);
@@ -992,9 +992,9 @@ describe("TimeSeriesSessionTest", function () {
             const tsf3 = session.timeSeriesFor(docId, "BodyTemperature");
 
             for (let j = 0; j < 100; j++) {
-                tsf.append(baseLine.clone().add(j, "minutes").toDate(), j);
-                tsf2.append(baseLine.clone().add(j, "minutes").toDate(), j);
-                tsf3.append(baseLine.clone().add(j, "minutes").toDate(), j);
+                tsf.append(addMinutes(baseLine, j), j);
+                tsf2.append(addMinutes(baseLine, j), j);
+                tsf3.append(addMinutes(baseLine, j), j);
             }
 
             await session.saveChanges();
@@ -1029,7 +1029,7 @@ describe("TimeSeriesSessionTest", function () {
                 .hasSize(100);
 
             // null to
-            tsf.delete(baseLine.clone().add(50, "minutes").toDate(), null);
+            tsf.delete(addMinutes(baseLine, 50), null);
             await session.saveChanges();
         }
 
@@ -1051,7 +1051,7 @@ describe("TimeSeriesSessionTest", function () {
                 .hasSize(100);
 
             // null from
-            tsf.delete(null, baseLine.clone().add(19, "minutes").toDate());
+            tsf.delete(null, addMinutes(baseLine, 19));
 
             await session.saveChanges();
         }

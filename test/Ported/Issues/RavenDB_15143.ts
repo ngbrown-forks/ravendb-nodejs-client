@@ -2,7 +2,7 @@ import { IDocumentStore, SessionOptions } from "../../../src/index.js";
 import { disposeTestDocumentStore, testContext } from "../../Utils/TestUtil.js";
 import { assertThat } from "../../Utils/AssertExtensions.js";
 import { DateUtil } from "../../../src/Utility/DateUtil.js";
-import moment from "moment";
+import { addMinutes } from "date-fns";
 
 describe("RavenDB_15143", function () {
 
@@ -45,7 +45,7 @@ describe("RavenDB_15143", function () {
             lockerObject.clientId = "a";
             locker = session.advanced.clusterTransaction.createCompareExchangeValue("cmd/239-A", lockerObject);
 
-            locker.metadata["@expires"] = DateUtil.utc.stringify(moment().add(2, "minutes").toDate());
+            locker.metadata["@expires"] = DateUtil.utc.stringify(addMinutes(new Date(), 2));
             await session.saveChanges();
         }
 

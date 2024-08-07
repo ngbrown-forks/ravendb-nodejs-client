@@ -1,5 +1,4 @@
 import assert from "node:assert"
-import moment from "moment";
 import { testContext, disposeTestDocumentStore } from "../Utils/TestUtil.js";
 
 import {
@@ -9,10 +8,7 @@ import {
 import { DateUtil } from "../../src/Utility/DateUtil.js";
 import { StringUtil } from "../../src/Utility/StringUtil.js";
 import { assertThat } from "../Utils/AssertExtensions.js";
-
-
-const momentDefaultDateFormat = "YYYY-MM-DDTHH:mm:ss.SSS0000";
-const momentDefaultDateTzFormat = "YYYY-MM-DDTHH:mm:ss.SSS0000Z";
+import { format } from "date-fns";
 
 // getTimezoneOffset() returns reversed offset, hence the "-"
 const LOCAL_TIMEZONE_OFFSET = -(new Date(2018, 7, 1).getTimezoneOffset()); 
@@ -141,7 +137,7 @@ describe("DateUtil", function () {
             const dateUtil = new DateUtil({
                 withTimezone: false
             });
-            const date = moment("2018-10-15T09:46:28.306").toDate();
+            const date = DateUtil.default.parse("2018-10-15T09:46:28.306");
             const stringified = dateUtil.stringify(date);
             assert.strictEqual(stringified, "2018-10-15T09:46:28.3060000");
 
@@ -155,11 +151,11 @@ describe("DateUtil", function () {
                 withTimezone: false,
                 useUtcDates: true
             });
-            const date = moment("2018-10-15T12:00:00.000").toDate();
+            const date = DateUtil.default.parse("2018-10-15T12:00:00.000");
             const stringified = dateUtil.stringify(date);
 
             const expected = new Date(2018, 9, 15, date.getHours() - LOCAL_TIMEZONE_OFFSET_HOURS, 0, 0, 0);
-            const expectedStringified = moment(expected).format(momentDefaultDateFormat) + "Z";
+            const expectedStringified = format(expected, DateUtil.DEFAULT_DATE_FORMAT) + "Z";
             assert.strictEqual(stringified, expectedStringified);
 
             const parsed = dateUtil.parse(stringified);
@@ -178,15 +174,14 @@ describe("DateUtil", function () {
 
             const hour6 = 12;
             const timezoneOffsetHours = 6;
-            const date = moment.parseZone(`2018-10-15T${hour6}:00:00.0000000+06:00`).toDate();
+            const date = DateUtil.tz.parse(`2018-10-15T${hour6}:00:00.0000000+06:00`);
             // preconditions check
             assert.strictEqual(
                 date.getHours(), hour6 - timezoneOffsetHours + LOCAL_TIMEZONE_OFFSET_HOURS);
 
             const expectedHours = date.getHours();
             const expected = new Date(2018, 9, 15, expectedHours, 0, 0, 0);
-            const expectedStringified = 
-                moment(expected).format(momentDefaultDateFormat) + LOCAL_TIMEZONE_STRING;
+            const expectedStringified = format(expected, DateUtil.DEFAULT_DATE_FORMAT) + LOCAL_TIMEZONE_STRING;
             const stringified = dateUtil.stringify(date);
             assert.strictEqual(stringified, expectedStringified);
 
@@ -203,7 +198,7 @@ describe("DateUtil", function () {
 
             const hour6 = 12;
             const timezoneOffsetHours = 6;
-            const date = moment.parseZone(`2018-10-15T${hour6}:00:00.0000000+06:00`).toDate();
+            const date = DateUtil.tz.parse(`2018-10-15T${hour6}:00:00.0000000+06:00`);
             // preconditions check
             assert.strictEqual(
                 date.getHours(), hour6 - timezoneOffsetHours + LOCAL_TIMEZONE_OFFSET_HOURS);
@@ -211,8 +206,7 @@ describe("DateUtil", function () {
             const expectedHours = date.getHours() - LOCAL_TIMEZONE_OFFSET_HOURS;
             const utcTimezoneString = "+00:00";
             const expected = new Date(2018, 9, 15, expectedHours, 0, 0, 0);
-            const expectedStringified = 
-                moment(expected).format(momentDefaultDateFormat) + utcTimezoneString;
+            const expectedStringified = format(expected, DateUtil.DEFAULT_DATE_FORMAT) + utcTimezoneString;
             const stringified = dateUtil.stringify(date);
             assert.strictEqual(stringified, expectedStringified);
 

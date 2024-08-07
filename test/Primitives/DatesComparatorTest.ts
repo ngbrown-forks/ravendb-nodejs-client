@@ -1,12 +1,12 @@
-import moment from "moment";
 import { assertThat } from "../Utils/AssertExtensions.js";
 import { DatesComparator, leftDate, rightDate } from "../../src/Primitives/DatesComparator.js";
+import { addDays } from "date-fns";
 
 describe("DatesComparatorTest", function () {
 
     it("canCompareDefinedDates", () => {
-        const first = moment().toDate();
-        const second = moment().add(1, "day").toDate();
+        const first = new Date();
+        const second = addDays(new Date(), 1);
 
         assertThat(DatesComparator.compare(leftDate(first), rightDate(second)))
             .isLessThan(0);
@@ -16,7 +16,7 @@ describe("DatesComparatorTest", function () {
     });
 
     it("canCompareDatesWithNullUsingContext", () => {
-        const first = moment().toDate();
+        const first = new Date();
 
         assertThat(DatesComparator.compare(leftDate(first), rightDate(null)))
             .isLessThan(0);

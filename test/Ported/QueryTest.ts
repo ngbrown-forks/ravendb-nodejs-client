@@ -1,4 +1,3 @@
-import moment from "moment";
 import { User, Event } from "../Assets/Entities.js";
 import assert from "node:assert"
 import { testContext, disposeTestDocumentStore } from "../Utils/TestUtil.js";
@@ -12,6 +11,7 @@ import {
 import { DateUtil } from "../../src/Utility/DateUtil.js";
 import { TypeUtil } from "../../src/Utility/TypeUtil.js";
 import { assertThat } from "../Utils/AssertExtensions.js";
+import { addDays } from "date-fns";
 
 describe("QueryTest", function () {
 
@@ -728,15 +728,15 @@ describe("QueryTest", function () {
     it("query where between with dates", async () => {
         const cocartFestival = new Event({
             name: "CoCArt Festival",
-            date: moment("2018-03-08T00:00:00Z").toDate()
+            date: DateUtil.default.parse("2018-03-08T00:00:00.000Z")
         });
         const openerFestival = new Event({
             name: "Open'er Festival",
-            date: moment("2018-07-04T00:00:00Z").toDate()
+            date: DateUtil.default.parse("2018-07-04T00:00:00.000Z")
         });
         const offFestival = new Event({
             name: "OFF Festival",
-            date: moment("2018-08-03T00:00:00Z").toDate()
+            date: DateUtil.default.parse("2018-08-03T00:00:00.000Z")
         });
 
         {
@@ -774,8 +774,9 @@ describe("QueryTest", function () {
             })
                 .whereBetween(
                     "date",
-                    moment(cocartFestival.date).add(1, "d").toDate(),
-                    moment(offFestival.date).add(-1, "d").toDate())
+                    addDays(cocartFestival.date, 1),
+                    addDays(offFestival.date, -1)
+                )
                 .all();
 
             assert.strictEqual(festivalsHappeningBetweenCocartAndOffExclusive.length, 1);

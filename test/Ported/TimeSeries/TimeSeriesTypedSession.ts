@@ -15,9 +15,9 @@ import {
 } from "../../../src/index.js";
 import { User } from "../../Assets/Entities.js";
 import { assertThat } from "../../Utils/AssertExtensions.js";
-import moment from "moment";
 import { TimeValue } from "../../../src/Primitives/TimeValue.js";
 import { delay } from "../../../src/Utility/PromiseUtil.js";
+import { addDays, addHours, addMilliseconds, addMinutes, addMonths, addSeconds } from "date-fns";
 
 (RavenTestContext.isPullRequest ? describe.skip : describe)("TimeSeriesTypedSessionTest", function () {
 
@@ -126,7 +126,7 @@ import { delay } from "../../../src/Utility/PromiseUtil.js";
             heartRateMeasure.heartRate = 59;
 
             const ts = session.timeSeriesFor<HeartRateMeasure>("users/ayende", HeartRateMeasure);
-            ts.append(baseLine.toDate(), heartRateMeasure, "watches/fitbit");
+            ts.append(baseLine, heartRateMeasure, "watches/fitbit");
             await session.saveChanges();
         }
 
@@ -138,7 +138,7 @@ import { delay } from "../../../src/Utility/PromiseUtil.js";
             assertThat(val.tag)
                 .isEqualTo("watches/fitbit");
             assertThat(val.timestamp.getTime())
-                .isEqualTo(baseLine.toDate().getTime());
+                .isEqualTo(baseLine.getTime());
         }
     });
 
@@ -151,9 +151,9 @@ import { delay } from "../../../src/Utility/PromiseUtil.js";
             await session.store(user, "users/ayende");
 
             const tsf = session.timeSeriesFor("users/ayende", "HeartRateMeasures");
-            tsf.append(baseLine.clone().add(1, "minutes").toDate(), 59, "watches/fitbit");
-            tsf.append(baseLine.clone().add(2, "minutes").toDate(), 60, "watches/fitbit");
-            tsf.append(baseLine.clone().add(2, "minutes").toDate(), 61, "watches/fitbit");
+            tsf.append(addMinutes(baseLine, 1), 59, "watches/fitbit");
+            tsf.append(addMinutes(baseLine, 2), 60, "watches/fitbit");
+            tsf.append(addMinutes(baseLine, 2), 61, "watches/fitbit");
 
             await session.saveChanges()
         }
@@ -181,8 +181,8 @@ import { delay } from "../../../src/Utility/PromiseUtil.js";
             await session.store(user, "users/ayende");
 
             const tsf = session.timeSeriesFor("users/ayende", "HeartRateMeasures");
-            tsf.append(baseLine.toDate(), 58, "watches/fitbit");
-            tsf.append(baseLine.clone().add(10, "minutes").toDate(), 60, "watches/fitbit");
+            tsf.append(baseLine, 58, "watches/fitbit");
+            tsf.append(addMinutes(baseLine, 10), 60, "watches/fitbit");
 
             await session.saveChanges();
         }
@@ -190,13 +190,13 @@ import { delay } from "../../../src/Utility/PromiseUtil.js";
         {
             const session = store.openSession();
             let vals = await session.timeSeriesFor("users/ayende", HeartRateMeasure)
-                .get(baseLine.clone().add(-10, "minutes").toDate(), baseLine.clone().add(-5, "minutes").toDate());
+                .get(addMinutes(baseLine, -10), addMinutes(baseLine, -5));
 
             assertThat(vals)
                 .hasSize(0);
 
             vals = await session.timeSeriesFor("users/ayende", HeartRateMeasure)
-                .get(baseLine.clone().add(5, "minutes").toDate(), baseLine.clone().add(9, "minutes").toDate());
+                .get(addMinutes(baseLine, 5), addMinutes(baseLine, 9));
 
             assertThat(vals)
                 .hasSize(0);
@@ -270,13 +270,13 @@ import { delay } from "../../../src/Utility/PromiseUtil.js";
             const tag = "watches/fitbit";
             const m = new HeartRateMeasure();
             m.heartRate = 59;
-            tsf.append(baseLine.clone().add(61, "minutes").toDate(), m, tag);
+            tsf.append(addMinutes(baseLine, 61), m, tag);
 
             m.heartRate = 79;
-            tsf.append(baseLine.clone().add(62, "minutes").toDate(), m, tag);
+            tsf.append(addMinutes(baseLine, 62), m, tag);
 
             m.heartRate = 69;
-            tsf.append(baseLine.clone().add(63, "minutes").toDate(), m, tag);
+            tsf.append(addMinutes(baseLine, 63), m, tag);
 
             await session.saveChanges();
         }
@@ -292,8 +292,8 @@ import { delay } from "../../../src/Utility/PromiseUtil.js";
                     "    from @all_docs as u\n" +
                     "    where id() == 'users/ayende'\n" +
                     "    select out(u)", TimeSeriesAggregationResult)
-                .addParameter("start", baseLine.toDate())
-                .addParameter("end", baseLine.clone().add(1, "day").toDate());
+                .addParameter("start", baseLine)
+                .addParameter("end", addDays(baseLine, 1));
 
             const agg = (await query.first()).asTypedEntry<HeartRateMeasure>(HeartRateMeasure);
 
@@ -314,9 +314,9 @@ import { delay } from "../../../src/Utility/PromiseUtil.js";
                 .isEqualTo(79);
 
             assertThat(val.from.getTime())
-                .isEqualTo(baseLine.clone().add(60, "minutes").toDate().getTime());
+                .isEqualTo(addMinutes(baseLine, 60).getTime());
             assertThat(val.to.getTime())
-                .isEqualTo(baseLine.clone().add(120, "minutes").toDate().getTime());
+                .isEqualTo(addMinutes(baseLine, 120).getTime());
         }
     });
 
@@ -337,22 +337,22 @@ import { delay } from "../../../src/Utility/PromiseUtil.js";
                 const tsf = session.timeSeriesFor(id, HeartRateMeasure);
                 const m = new HeartRateMeasure();
                 m.heartRate = 59;
-                tsf.append(baseLine.clone().add(61, "minutes").toDate(), m, "watches/fitbit");
+                tsf.append(addMinutes(baseLine, 61), m, "watches/fitbit");
 
                 m.heartRate = 79;
-                tsf.append(baseLine.clone().add(62, "minutes").toDate(), m, "watches/fitbit");
+                tsf.append(addMinutes(baseLine, 62), m, "watches/fitbit");
 
                 m.heartRate = 69;
-                tsf.append(baseLine.clone().add(63, "minutes").toDate(), m, "watches/apple");
+                tsf.append(addMinutes(baseLine, 63), m, "watches/apple");
 
                 m.heartRate = 159;
-                tsf.append(baseLine.clone().add(61, "minutes").add(1, "month").toDate(), m, "watches/fitbit");
+                tsf.append(addMonths(addMinutes(baseLine, 61), 1), m, "watches/fitbit");
 
                 m.heartRate = 179;
-                tsf.append(baseLine.clone().add(62, "minutes").add(1, "month").toDate(), m, "watches/apple");
+                tsf.append(addMonths(addMinutes(baseLine, 62), 1), m, "watches/apple");
 
                 m.heartRate = 169;
-                tsf.append(baseLine.clone().add(63, "minutes").add(1, "month").toDate(), m, "watches/fitbit");
+                tsf.append(addMonths(addMinutes(baseLine, 63), 1), m, "watches/fitbit");
             }
 
             await session.saveChanges();
@@ -368,8 +368,8 @@ import { delay } from "../../../src/Utility/PromiseUtil.js";
                 "from Users as doc\n" +
                 "where doc.age > 49\n" +
                 "select out(doc)", TimeSeriesRawResult)
-                .addParameter("start", baseLine.toDate())
-                .addParameter("end", baseLine.clone().add(2, "months").toDate())
+                .addParameter("start", baseLine)
+                .addParameter("end", addMonths(baseLine, 2))
                 .all();
 
             assertThat(result)
@@ -393,7 +393,7 @@ import { delay } from "../../../src/Utility/PromiseUtil.js";
                 assertThat(val.tag)
                     .isEqualTo("watches/fitbit");
                 assertThat(val.timestamp.getTime())
-                    .isEqualTo(baseLine.clone().add(61, "minutes").toDate().getTime());
+                    .isEqualTo(addMinutes(baseLine, 61).getTime());
 
                 val = agg.results[1];
 
@@ -404,7 +404,7 @@ import { delay } from "../../../src/Utility/PromiseUtil.js";
                 assertThat(val.tag)
                     .isEqualTo("watches/fitbit");
                 assertThat(val.timestamp.getTime())
-                    .isEqualTo(baseLine.clone().add(62, "minutes").toDate().getTime());
+                    .isEqualTo(addMinutes(baseLine, 62).getTime());
 
                 val = agg.results[2];
 
@@ -415,7 +415,7 @@ import { delay } from "../../../src/Utility/PromiseUtil.js";
                 assertThat(val.tag)
                     .isEqualTo("watches/apple");
                 assertThat(val.timestamp.getTime())
-                    .isEqualTo(baseLine.clone().add(63, "minutes").toDate().getTime());
+                    .isEqualTo(addMinutes(baseLine, 63).getTime());
 
                 val = agg.results[3];
 
@@ -426,7 +426,7 @@ import { delay } from "../../../src/Utility/PromiseUtil.js";
                 assertThat(val.tag)
                     .isEqualTo("watches/fitbit");
                 assertThat(val.timestamp.getTime())
-                    .isEqualTo(baseLine.clone().add(61, "minutes").add(1, "month").toDate().getTime());
+                    .isEqualTo(addMonths(addMinutes(baseLine, 61), 1).getTime());
 
                 val = agg.results[4];
 
@@ -437,7 +437,7 @@ import { delay } from "../../../src/Utility/PromiseUtil.js";
                 assertThat(val.tag)
                     .isEqualTo("watches/apple");
                 assertThat(val.timestamp.getTime())
-                    .isEqualTo(baseLine.clone().add(62, "minutes").add(1, "month").toDate().getTime());
+                    .isEqualTo(addMonths(addMinutes(baseLine, 62), 1).getTime());
 
                 val = agg.results[5];
 
@@ -448,7 +448,7 @@ import { delay } from "../../../src/Utility/PromiseUtil.js";
                 assertThat(val.tag)
                     .isEqualTo("watches/fitbit");
                 assertThat(val.timestamp.getTime())
-                    .isEqualTo(baseLine.clone().add(63, "minutes").add(1, "month").toDate().getTime());
+                    .isEqualTo(addMonths(addMinutes(baseLine, 63), 1).getTime());
             }
         }
     });
@@ -476,8 +476,8 @@ import { delay } from "../../../src/Utility/PromiseUtil.js";
 
         // please notice we don't modify server time here!
 
-        let now = moment();
-        const baseline = now.clone().add(-12, "days");
+        let now = new Date();
+        const baseline = addDays(now, -12);
 
         const total = Math.floor(TimeValue.ofDays(12).value / 60);
 
@@ -499,7 +499,7 @@ import { delay } from "../../../src/Utility/PromiseUtil.js";
                 entry.low = i + 300_000;
                 entry.volume = i + 400_000;
 
-                ts.append(baseline.clone().add(i, "minute").toDate(), entry, "watches/fitbit");
+                ts.append(addMinutes(baseline, i), entry, "watches/fitbit");
             }
 
             await session.saveChanges();
@@ -516,8 +516,8 @@ import { delay } from "../../../src/Utility/PromiseUtil.js";
                 "}\n" +
                 "from Users as u\n" +
                 "select out()", TimeSeriesRawResult)
-                .addParameter("start", baseline.clone().add(-1, "day").toDate())
-                .addParameter("end", now.clone().add(1, "day").toDate());
+                .addParameter("start", addDays(baseline, -1))
+                .addParameter("end", addDays(now, 1));
 
             const resultRaw = await query.single();
             const result = resultRaw.asTypedResult<StockPrice>(StockPrice);
@@ -540,7 +540,7 @@ import { delay } from "../../../src/Utility/PromiseUtil.js";
             }
         }
 
-        now = moment();
+        now = new Date();
 
         {
             const session = store.openSession();
@@ -556,7 +556,7 @@ import { delay } from "../../../src/Utility/PromiseUtil.js";
         {
             const session = store.openSession();
             const ts = session.timeSeriesRollupFor<StockPrice>("users/karmel", p1.name, StockPrice);
-            const res = await ts.get(now.clone().add(-1, "millisecond").toDate(), now.clone().add(1, "day").toDate());
+            const res = await ts.get(addMilliseconds(now, -1), addDays(now, 1));
 
             assertThat(res)
                 .hasSize(1);
@@ -566,7 +566,7 @@ import { delay } from "../../../src/Utility/PromiseUtil.js";
     });
 
     it("usingDifferentNumberOfValues_LargeToSmall", async () => {
-        const baseLine = testContext.utcToday().add(-1, "days");
+        const baseLine = addDays(testContext.utcToday(), -1);
 
         {
             const session = store.openSession();
@@ -585,7 +585,7 @@ import { delay } from "../../../src/Utility/PromiseUtil.js";
                     measure6: i
                 });
 
-                big.append(baseLine.clone().add(3 * i, "seconds").toDate(), bigMeasure, "watches/fitbit");
+                big.append(addSeconds(baseLine, 3 * i), bigMeasure, "watches/fitbit");
             }
 
             await session.saveChanges();
@@ -596,7 +596,7 @@ import { delay } from "../../../src/Utility/PromiseUtil.js";
             const big = session.timeSeriesFor("users/karmel", "BigMeasures");
 
             for (let i = 5; i < 10; i++) {
-                big.append(baseLine.clone().add(12, "hours").add(3 * i, "seconds").toDate(), i, "watches/fitbit");
+                big.append(addSeconds(addHours(baseLine, 12), 3 * i), i, "watches/fitbit");
             }
 
             await session.saveChanges();
@@ -664,7 +664,7 @@ import { delay } from "../../../src/Utility/PromiseUtil.js";
         await store.timeSeries.register(User, StockPrice);
 
         const now = testContext.utcToday();
-        const baseline = now.clone().add(-12, "days");
+        const baseline = addDays(now, -12);
         const total = 60 * 24 * 12;
 
         {
@@ -682,7 +682,7 @@ import { delay } from "../../../src/Utility/PromiseUtil.js";
                 entry.low = i + 300_000;
                 entry.volume = i + 400_000;
 
-                ts.append(baseline.clone().add(i, "minutes").toDate(), entry, "watches/fitbit");
+                ts.append(addMinutes(baseline, i), entry, "watches/fitbit");
             }
 
             await session.saveChanges();

@@ -4,8 +4,8 @@ import {
     TimeSeriesValue
 } from "../../../src/index.js";
 import { disposeTestDocumentStore, testContext } from "../../Utils/TestUtil.js";
-import moment from "moment";
 import { assertThat } from "../../Utils/AssertExtensions.js";
+import { addDays, addHours } from "date-fns";
 
 describe("RDBC_501Test", function () {
 
@@ -19,7 +19,7 @@ describe("RDBC_501Test", function () {
         await disposeTestDocumentStore(store));
 
     it("shouldProperlyMapTypedEntries", async () => {
-        const baseLine = moment().utc().startOf("day");
+        const baseLine = testContext.utcToday();
 
         {
             const session = store.openSession();
@@ -46,9 +46,9 @@ describe("RDBC_501Test", function () {
 
             const tsf = session.timeSeriesFor(symbol, "history", SymbolPrice);
 
-            tsf.append(baseLine.clone().add(1, "hours").toDate(), price1);
-            tsf.append(baseLine.clone().add(2, "hours").toDate(), price2);
-            tsf.append(baseLine.clone().add(2, "days").toDate(), price3);
+            tsf.append(addHours(baseLine, 1), price1);
+            tsf.append(addHours(baseLine, 2), price2);
+            tsf.append(addDays(baseLine, 2), price3);
 
             await session.saveChanges();
         }

@@ -7,7 +7,7 @@ import { AsyncQueue } from "../../Utils/AsyncQueue.js";
 import { throwError } from "../../../src/Exceptions/index.js";
 import { User } from "../../Assets/Entities.js";
 import { assertThat, assertThrows } from "../../Utils/AssertExtensions.js";
-import moment from "moment";
+import { addMinutes } from "date-fns";
 
 describe("RavenDB_14230", function () {
 
@@ -141,7 +141,7 @@ describe("RavenDB_14230", function () {
                 session.timeSeriesFor("users/1", "Likes")
                     .append(date, 33);
                 session.timeSeriesFor("users/1", "Likes")
-                    .append(moment(date).clone().add(1, "minute").toDate(), 22);
+                    .append(addMinutes(date, 1), 22);
 
                 await session.saveChanges();
             }
@@ -161,7 +161,7 @@ describe("RavenDB_14230", function () {
             assertThat(timeSeriesChange.from.getTime())
                 .isEqualTo(date.getTime());
             assertThat(timeSeriesChange.to.getTime())
-                .isEqualTo(moment(date).clone().add(1, "minute").toDate().getTime());
+                .isEqualTo(addMinutes(date, 1).getTime());
 
             {
                 const session = store.openSession();

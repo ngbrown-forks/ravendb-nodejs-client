@@ -5,10 +5,10 @@ import {
     TimeSeriesRange
 } from "../../../src/index.js";
 import { disposeTestDocumentStore, testContext } from "../../Utils/TestUtil.js";
-import moment from "moment";
 import { Company, Order } from "../../Assets/Entities.js";
 import { assertThat, assertThrows } from "../../Utils/AssertExtensions.js";
 import { TimeValue } from "../../../src/Primitives/TimeValue.js";
+import { addHours, addMinutes, addSeconds } from "date-fns";
 
 describe("TimeSeriesIncludesTest", function () {
 
@@ -36,9 +36,9 @@ describe("TimeSeriesIncludesTest", function () {
             await session.store(order, "orders/1-A");
 
             const tsf = session.timeSeriesFor("orders/1-A", "Heartrate");
-            tsf.append(baseLine.toDate(), 67, "watches/apple");
-            tsf.append(baseLine.clone().add(5, "minutes").toDate(), 64, "watches/apple");
-            tsf.append(baseLine.clone().add(10, "minutes").toDate(), 65, "watches/fitbit");
+            tsf.append(baseLine, 67, "watches/apple");
+            tsf.append(addMinutes(baseLine, 5), 64, "watches/apple");
+            tsf.append(addMinutes(baseLine, 10), 65, "watches/fitbit");
 
             await session.saveChanges();
         }
@@ -68,7 +68,7 @@ describe("TimeSeriesIncludesTest", function () {
             assertThat(values[0].tag)
                 .isEqualTo("watches/apple");
             assertThat(values[0].timestamp.getTime())
-                .isEqualTo(baseLine.toDate().getTime());
+                .isEqualTo(baseLine.getTime());
             assertThat(values[1].values)
                 .hasSize(1);
             assertThat(values[1].values[0])
@@ -76,7 +76,7 @@ describe("TimeSeriesIncludesTest", function () {
             assertThat(values[1].tag)
                 .isEqualTo("watches/apple");
             assertThat(values[1].timestamp.getTime())
-                .isEqualTo(baseLine.clone().add(5, "minutes").toDate().getTime());
+                .isEqualTo(addMinutes(baseLine, 5).getTime());
             assertThat(values[2].values)
                 .hasSize(1);
             assertThat(values[2].values[0])
@@ -84,7 +84,7 @@ describe("TimeSeriesIncludesTest", function () {
             assertThat(values[2].tag)
                 .isEqualTo("watches/fitbit");
             assertThat(values[2].timestamp.getTime())
-                .isEqualTo(baseLine.clone().add(10, "minutes").toDate().getTime());
+                .isEqualTo(addMinutes(baseLine, 10).getTime());
 
             assertThat(session.advanced.numberOfRequests)
                 .isEqualTo(1);
@@ -108,7 +108,7 @@ describe("TimeSeriesIncludesTest", function () {
             const session = store.openSession();
             const tsf = session.timeSeriesFor(documentId, "Heartrate");
             for (let i = 0; i < 360; i++) {
-                tsf.append(baseLine.clone().add(10 * i, "seconds").toDate(), 6, "watches/fitbit");
+                tsf.append(addSeconds(baseLine, 10 * i), 6, "watches/fitbit");
             }
 
             await session.saveChanges();
@@ -117,7 +117,7 @@ describe("TimeSeriesIncludesTest", function () {
         {
             const session = store.openSession();
             let vals = await session.timeSeriesFor(documentId, "Heartrate")
-                .get(baseLine.clone().add(2, "minutes").toDate(), baseLine.clone().add(10, "minutes").toDate());
+                .get(addMinutes(baseLine, 2), addMinutes(baseLine, 10));
 
             assertThat(session.advanced.numberOfRequests)
                 .isEqualTo(1);
@@ -126,15 +126,15 @@ describe("TimeSeriesIncludesTest", function () {
                 .hasSize(49);
 
             assertThat(vals[0].timestamp.getTime())
-                .isEqualTo(baseLine.clone().add(2, "minutes").toDate().getTime());
+                .isEqualTo(addMinutes(baseLine, 2).getTime());
             assertThat(vals[48].timestamp.getTime())
-                .isEqualTo(baseLine.clone().add(10, "minutes").toDate().getTime());
+                .isEqualTo(addMinutes(baseLine, 10).getTime());
 
             let user = await session.load<User>(documentId, {
                 documentType: User,
                 includes: i => i.includeTimeSeries("Heartrate",
-                    baseLine.clone().add(40, "minutes").toDate(),
-                    baseLine.clone().add(50, "minutes").toDate())
+                    addMinutes(baseLine, 40),
+                    addMinutes(baseLine, 50))
             });
 
             assertThat(session.advanced.numberOfRequests)
@@ -143,7 +143,7 @@ describe("TimeSeriesIncludesTest", function () {
             // should not go to server
 
             vals = await session.timeSeriesFor(documentId, "Heartrate")
-                .get(baseLine.clone().add(40, "minutes").toDate(), baseLine.clone().add(50, "minutes").toDate());
+                .get(addMinutes(baseLine, 40), addMinutes(baseLine, 50));
 
             assertThat(session.advanced.numberOfRequests)
                 .isEqualTo(2);
@@ -152,9 +152,9 @@ describe("TimeSeriesIncludesTest", function () {
                 .hasSize(61);
 
             assertThat(vals[0].timestamp.getTime())
-                .isEqualTo(baseLine.clone().add(40, "minutes").toDate().getTime());
+                .isEqualTo(addMinutes(baseLine, 40).getTime());
             assertThat(vals[60].timestamp.getTime())
-                .isEqualTo(baseLine.clone().add(50, "minutes").toDate().getTime());
+                .isEqualTo(addMinutes(baseLine, 50).getTime());
 
             const sessionOperations = session as unknown as InMemoryDocumentSessionOperations;
 
@@ -168,13 +168,13 @@ describe("TimeSeriesIncludesTest", function () {
                 .hasSize(2);
 
             assertThat(ranges[0].from.getTime())
-                .isEqualTo(baseLine.clone().add(2, "minutes").toDate().getTime());
+                .isEqualTo(addMinutes(baseLine, 2).getTime());
             assertThat(ranges[0].to.getTime())
-                .isEqualTo(baseLine.clone().add(10, "minutes").toDate().getTime());
+                .isEqualTo(addMinutes(baseLine, 10).getTime());
             assertThat(ranges[1].from.getTime())
-                .isEqualTo(baseLine.clone().add(40, "minutes").toDate().getTime());
+                .isEqualTo(addMinutes(baseLine, 40).getTime());
             assertThat(ranges[1].to.getTime())
-                .isEqualTo(baseLine.clone().add(50, "minutes").toDate().getTime());
+                .isEqualTo(addMinutes(baseLine, 50).getTime());
 
             // we intentionally evict just the document (without it's TS data),
             // so that Load request will go to server
@@ -187,7 +187,7 @@ describe("TimeSeriesIncludesTest", function () {
             user = await session.load<User>(documentId, {
                 documentType: User,
                 includes: i => i.includeTimeSeries(
-                    "Heartrate", baseLine.toDate(), baseLine.clone().add(2, "minutes").toDate())
+                    "Heartrate", baseLine, addMinutes(baseLine, 2))
             });
 
             assertThat(session.advanced.numberOfRequests)
@@ -196,7 +196,7 @@ describe("TimeSeriesIncludesTest", function () {
             // should not go to server
 
             vals = await session.timeSeriesFor(documentId, "Heartrate")
-                .get(baseLine.toDate(), baseLine.clone().add(2, "minutes").toDate());
+                .get(baseLine, addMinutes(baseLine, 2));
 
 
             assertThat(session.advanced.numberOfRequests)
@@ -205,20 +205,20 @@ describe("TimeSeriesIncludesTest", function () {
             assertThat(vals)
                 .hasSize(13);
             assertThat(vals[0].timestamp.getTime())
-                .isEqualTo(baseLine.toDate().getTime());
+                .isEqualTo(baseLine.getTime());
             assertThat(vals[12].timestamp.getTime())
-                .isEqualTo(baseLine.clone().add(2, "minutes").toDate().getTime());
+                .isEqualTo(addMinutes(baseLine, 2).getTime());
 
             assertThat(ranges)
                 .hasSize(2);
             assertThat(ranges[0].from.getTime())
-                .isEqualTo(baseLine.toDate().getTime());
+                .isEqualTo(baseLine.getTime());
             assertThat(ranges[0].to.getTime())
-                .isEqualTo(baseLine.clone().add(10, "minutes").toDate().getTime());
+                .isEqualTo(addMinutes(baseLine, 10).getTime());
             assertThat(ranges[1].from.getTime())
-                .isEqualTo(baseLine.clone().add(40, "minutes").toDate().getTime());
+                .isEqualTo(addMinutes(baseLine, 40).getTime());
             assertThat(ranges[1].to.getTime())
-                .isEqualTo(baseLine.clone().add(50, "minutes").toDate().getTime());
+                .isEqualTo(addMinutes(baseLine, 50).getTime());
 
             // evict just the document
             sessionOperations.documentsByEntity.evict(user);
@@ -229,8 +229,8 @@ describe("TimeSeriesIncludesTest", function () {
                 documentType: User,
                 includes: i => i.includeTimeSeries(
                     "Heartrate",
-                    baseLine.clone().add(10, "minutes").toDate(),
-                    baseLine.clone().add(16, "minutes").toDate())
+                    addMinutes(baseLine, 10),
+                    addMinutes(baseLine, 16))
             });
 
             assertThat(session.advanced.numberOfRequests)
@@ -238,7 +238,7 @@ describe("TimeSeriesIncludesTest", function () {
 
             // should not go to server
             vals = await session.timeSeriesFor(documentId, "Heartrate")
-                .get(baseLine.clone().add(10, "minutes").toDate(), baseLine.clone().add(16, "minutes").toDate());
+                .get(addMinutes(baseLine, 10), addMinutes(baseLine, 16));
 
             assertThat(session.advanced.numberOfRequests)
                 .isEqualTo(4);
@@ -246,21 +246,21 @@ describe("TimeSeriesIncludesTest", function () {
             assertThat(vals)
                 .hasSize(37);
             assertThat(vals[0].timestamp.getTime())
-                .isEqualTo(baseLine.clone().add(10, "minutes").toDate().getTime());
+                .isEqualTo(addMinutes(baseLine, 10).getTime());
             assertThat(vals[36].timestamp.getTime())
-                .isEqualTo(baseLine.clone().add(16, "minutes").toDate().getTime());
+                .isEqualTo(addMinutes(baseLine, 16).getTime());
 
             assertThat(ranges)
                 .hasSize(2);
 
             assertThat(ranges[0].from.getTime())
-                .isEqualTo(baseLine.clone().add(0, "minutes").toDate().getTime());
+                .isEqualTo(addMinutes(baseLine, 0).getTime());
             assertThat(ranges[0].to.getTime())
-                .isEqualTo(baseLine.clone().add(16, "minutes").toDate().getTime());
+                .isEqualTo(addMinutes(baseLine, 16).getTime());
             assertThat(ranges[1].from.getTime())
-                .isEqualTo(baseLine.clone().add(40, "minutes").toDate().getTime());
+                .isEqualTo(addMinutes(baseLine, 40).getTime());
             assertThat(ranges[1].to.getTime())
-                .isEqualTo(baseLine.clone().add(50, "minutes").toDate().getTime());
+                .isEqualTo(addMinutes(baseLine, 50).getTime());
 
             // evict just the document
             sessionOperations.documentsByEntity.evict(user);
@@ -273,8 +273,8 @@ describe("TimeSeriesIncludesTest", function () {
                 documentType: User,
                 includes: i => i.includeTimeSeries(
                     "Heartrate",
-                    baseLine.clone().add(17, "minutes").toDate(),
-                    baseLine.clone().add(19, "minutes").toDate())
+                    addMinutes(baseLine, 17),
+                    addMinutes(baseLine, 19))
             });
 
             assertThat(session.advanced.numberOfRequests)
@@ -282,7 +282,7 @@ describe("TimeSeriesIncludesTest", function () {
 
             // should not go to server
             vals = await session.timeSeriesFor(documentId, "Heartrate")
-                .get(baseLine.clone().add(17, "minutes").toDate(), baseLine.clone().add(19, "minutes").toDate());
+                .get(addMinutes(baseLine, 17), addMinutes(baseLine, 19));
 
             assertThat(session.advanced.numberOfRequests)
                 .isEqualTo(5);
@@ -290,25 +290,25 @@ describe("TimeSeriesIncludesTest", function () {
             assertThat(vals)
                 .hasSize(13);
             assertThat(vals[0].timestamp.getTime())
-                .isEqualTo(baseLine.clone().add(17, "minutes").toDate().getTime());
+                .isEqualTo(addMinutes(baseLine, 17).getTime());
             assertThat(vals[12].timestamp.getTime())
-                .isEqualTo(baseLine.clone().add(19, "minutes").toDate().getTime());
+                .isEqualTo(addMinutes(baseLine, 19).getTime());
 
             assertThat(ranges)
                 .hasSize(3);
 
             assertThat(ranges[0].from.getTime())
-                .isEqualTo(baseLine.clone().add(0, "minutes").toDate().getTime());
+                .isEqualTo(addMinutes(baseLine, 0).getTime());
             assertThat(ranges[0].to.getTime())
-                .isEqualTo(baseLine.clone().add(16, "minutes").toDate().getTime());
+                .isEqualTo(addMinutes(baseLine, 16).getTime());
             assertThat(ranges[1].from.getTime())
-                .isEqualTo(baseLine.clone().add(17, "minutes").toDate().getTime());
+                .isEqualTo(addMinutes(baseLine, 17).getTime());
             assertThat(ranges[1].to.getTime())
-                .isEqualTo(baseLine.clone().add(19, "minutes").toDate().getTime());
+                .isEqualTo(addMinutes(baseLine, 19).getTime());
             assertThat(ranges[2].from.getTime())
-                .isEqualTo(baseLine.clone().add(40, "minutes").toDate().getTime());
+                .isEqualTo(addMinutes(baseLine, 40).getTime());
             assertThat(ranges[2].to.getTime())
-                .isEqualTo(baseLine.clone().add(50, "minutes").toDate().getTime());
+                .isEqualTo(addMinutes(baseLine, 50).getTime());
 
             // evict just the document
             sessionOperations.documentsByEntity.evict(user);
@@ -322,8 +322,8 @@ describe("TimeSeriesIncludesTest", function () {
                 documentType: User,
                 includes: i => i.includeTimeSeries(
                     "Heartrate",
-                    baseLine.clone().add(18, "minutes").toDate(),
-                    baseLine.clone().add(48, "minutes").toDate())
+                    addMinutes(baseLine, 18),
+                    addMinutes(baseLine, 48))
             });
 
             assertThat(session.advanced.numberOfRequests)
@@ -331,7 +331,7 @@ describe("TimeSeriesIncludesTest", function () {
 
             // should not go to server
             vals = await session.timeSeriesFor(documentId, "Heartrate")
-                .get(baseLine.clone().add(18, "minutes").toDate(), baseLine.clone().add(48, "minutes").toDate());
+                .get(addMinutes(baseLine, 18), addMinutes(baseLine, 48));
 
             assertThat(session.advanced.numberOfRequests)
                 .isEqualTo(6);
@@ -339,21 +339,21 @@ describe("TimeSeriesIncludesTest", function () {
             assertThat(vals)
                 .hasSize(181);
             assertThat(vals[0].timestamp.getTime())
-                .isEqualTo(baseLine.clone().add(18, "minutes").toDate().getTime());
+                .isEqualTo(addMinutes(baseLine, 18).getTime());
             assertThat(vals[180].timestamp.getTime())
-                .isEqualTo(baseLine.clone().add(48, "minutes").toDate().getTime());
+                .isEqualTo(addMinutes(baseLine, 48).getTime());
 
             assertThat(ranges)
                 .hasSize(2);
 
             assertThat(ranges[0].from.getTime())
-                .isEqualTo(baseLine.clone().add(0, "minutes").toDate().getTime());
+                .isEqualTo(addMinutes(baseLine, 0).getTime());
             assertThat(ranges[0].to.getTime())
-                .isEqualTo(baseLine.clone().add(16, "minutes").toDate().getTime());
+                .isEqualTo(addMinutes(baseLine, 16).getTime());
             assertThat(ranges[1].from.getTime())
-                .isEqualTo(baseLine.clone().add(17, "minutes").toDate().getTime());
+                .isEqualTo(addMinutes(baseLine, 17).getTime());
             assertThat(ranges[1].to.getTime())
-                .isEqualTo(baseLine.clone().add(50, "minutes").toDate().getTime());
+                .isEqualTo(addMinutes(baseLine, 50).getTime());
 
             // evict just the document
             sessionOperations.documentsByEntity.evict(user);
@@ -367,8 +367,8 @@ describe("TimeSeriesIncludesTest", function () {
                 documentType: User,
                 includes: i => i.includeTimeSeries(
                     "Heartrate",
-                    baseLine.clone().add(12, "minutes").toDate(),
-                    baseLine.clone().add(22, "minutes").toDate())
+                    addMinutes(baseLine, 12),
+                    addMinutes(baseLine, 22))
             });
 
             assertThat(session.advanced.numberOfRequests)
@@ -376,7 +376,7 @@ describe("TimeSeriesIncludesTest", function () {
 
             // should not go to server
             vals = await session.timeSeriesFor(documentId, "Heartrate")
-                .get(baseLine.clone().add(12, "minutes").toDate(), baseLine.clone().add(22, "minutes").toDate());
+                .get(addMinutes(baseLine, 12), addMinutes(baseLine, 22));
 
             assertThat(session.advanced.numberOfRequests)
                 .isEqualTo(7);
@@ -384,17 +384,17 @@ describe("TimeSeriesIncludesTest", function () {
             assertThat(vals)
                 .hasSize(61);
             assertThat(vals[0].timestamp.getTime())
-                .isEqualTo(baseLine.clone().add(12, "minutes").toDate().getTime());
+                .isEqualTo(addMinutes(baseLine, 12).getTime());
             assertThat(vals[60].timestamp.getTime())
-                .isEqualTo(baseLine.clone().add(22, "minutes").toDate().getTime());
+                .isEqualTo(addMinutes(baseLine, 22).getTime());
 
             assertThat(ranges)
                 .hasSize(1);
 
             assertThat(ranges[0].from.getTime())
-                .isEqualTo(baseLine.clone().add(0, "minutes").toDate().getTime());
+                .isEqualTo(addMinutes(baseLine, 0).getTime());
             assertThat(ranges[0].to.getTime())
-                .isEqualTo(baseLine.clone().add(50, "minutes").toDate().getTime());
+                .isEqualTo(addMinutes(baseLine, 50).getTime());
 
             // evict just the document
             sessionOperations.documentsByEntity.evict(user);
@@ -413,7 +413,7 @@ describe("TimeSeriesIncludesTest", function () {
 
             // should not go to server
             vals = await session.timeSeriesFor(documentId, "heartrate")
-                .get(baseLine.clone().add(50, "minutes").toDate(), null);
+                .get(addMinutes(baseLine, 50), null);
 
             assertThat(session.advanced.numberOfRequests)
                 .isEqualTo(8);
@@ -422,14 +422,14 @@ describe("TimeSeriesIncludesTest", function () {
                 .hasSize(60);
 
             assertThat(vals[0].timestamp.getTime())
-                .isEqualTo(baseLine.clone().add(50, "minutes").toDate().getTime());
+                .isEqualTo(addMinutes(baseLine, 50).getTime());
             assertThat(vals[59].timestamp.getTime())
-                .isEqualTo(baseLine.clone().add(59, "minutes").add(50, "seconds").toDate().getTime());
+                .isEqualTo(addSeconds(addMinutes(baseLine, 59), 50).getTime());
 
             assertThat(ranges)
                 .hasSize(1);
             assertThat(ranges[0].from.getTime())
-                .isEqualTo(baseLine.toDate().getTime());
+                .isEqualTo(baseLine.getTime());
             assertThat(ranges[0].to)
                 .isNull();
         }
@@ -452,7 +452,7 @@ describe("TimeSeriesIncludesTest", function () {
             const session = store.openSession();
             const tsf = session.timeSeriesFor(documentId, "Heartrate");
             for (let i = 0; i < 360; i++) {
-                tsf.append(baseLine.clone().add(i * 10, "seconds").toDate(), 6, "watches/fitbit");
+                tsf.append(addSeconds(baseLine, 10 * i), 6, "watches/fitbit");
             }
 
             await session.saveChanges();
@@ -461,7 +461,7 @@ describe("TimeSeriesIncludesTest", function () {
         {
             const session = store.openSession();
             let vals = await session.timeSeriesFor("users/ayende", "Heartrate")
-                .get(baseLine.clone().add(2, "minutes").toDate(), baseLine.clone().add(10, "minutes").toDate());
+                .get(addMinutes(baseLine, 2), addMinutes(baseLine, 10));
 
             assertThat(session.advanced.numberOfRequests)
                 .isEqualTo(1);
@@ -469,12 +469,12 @@ describe("TimeSeriesIncludesTest", function () {
             assertThat(vals)
                 .hasSize(49);
             assertThat(vals[0].timestamp.getTime())
-                .isEqualTo(baseLine.clone().add(2, "minutes").toDate().getTime());
+                .isEqualTo(addMinutes(baseLine, 2).getTime());
             assertThat(vals[48].timestamp.getTime())
-                .isEqualTo(baseLine.clone().add(10, "minutes").toDate().getTime());
+                .isEqualTo(addMinutes(baseLine, 10).getTime());
 
             session.timeSeriesFor("users/ayende", "Heartrate")
-                .append(baseLine.clone().add(3, "minutes").add(3, "seconds").toDate(), 6, "watches/fitbit");
+                .append(addMinutes(addSeconds(baseLine, 3), 3), 6, "watches/fitbit");
 
             await session.saveChanges();
 
@@ -485,8 +485,8 @@ describe("TimeSeriesIncludesTest", function () {
                 documentType: User,
                 includes: i => i.includeTimeSeries(
                     "Heartrate",
-                    baseLine.clone().add(3, "minutes").toDate(),
-                    baseLine.clone().add(5, "minutes").toDate())
+                    addMinutes(baseLine, 3),
+                    addMinutes(baseLine, 5))
             });
 
             assertThat(session.advanced.numberOfRequests)
@@ -495,7 +495,7 @@ describe("TimeSeriesIncludesTest", function () {
             // should not go to server
 
             vals = await session.timeSeriesFor("users/ayende", "Heartrate")
-                .get(baseLine.clone().add(3, "minutes").toDate(), baseLine.clone().add(5, "minutes").toDate());
+                .get(addMinutes(baseLine, 3), addMinutes(baseLine, 5));
 
             assertThat(session.advanced.numberOfRequests)
                 .isEqualTo(3);
@@ -504,11 +504,11 @@ describe("TimeSeriesIncludesTest", function () {
                 .hasSize(14);
 
             assertThat(vals[0].timestamp.getTime())
-                .isEqualTo(baseLine.clone().add(3, "minutes").toDate().getTime());
+                .isEqualTo(addMinutes(baseLine, 3).getTime());
             assertThat(vals[1].timestamp.getTime())
-                .isEqualTo(baseLine.clone().add(3, "seconds").add(3, "minutes").toDate().getTime());
+                .isEqualTo(addSeconds(addMinutes(baseLine, 3), 3).getTime());
             assertThat(vals[13].timestamp.getTime())
-                .isEqualTo(baseLine.clone().add(5, "minutes").toDate().getTime());
+                .isEqualTo(addMinutes(baseLine, 5).getTime());
         }
     });
 
@@ -527,11 +527,11 @@ describe("TimeSeriesIncludesTest", function () {
             const session = store.openSession();
             for (let i = 0; i < 360; i++) {
                 session.timeSeriesFor("users/ayende", "Heartrate")
-                    .append(baseLine.clone().add(i * 10, "seconds").toDate(), 6, "watches/fitbit");
+                    .append(addSeconds(baseLine, i * 10), 6, "watches/fitbit");
                 session.timeSeriesFor("users/ayende", "BloodPressure")
-                    .append(baseLine.clone().add(i * 10, "seconds").toDate(), 66, "watches/fitbit");
+                    .append(addSeconds(baseLine, i * 10), 66, "watches/fitbit");
                 session.timeSeriesFor("users/ayende", "Nasdaq")
-                    .append(baseLine.clone().add(i * 10, "seconds").toDate(), 8097.23, "nasdaq.com");
+                    .append(addSeconds(baseLine, i * 10), 8097.23, "nasdaq.com");
             }
 
             await session.saveChanges();
@@ -544,16 +544,16 @@ describe("TimeSeriesIncludesTest", function () {
                 includes: i => i
                     .includeTimeSeries(
                         "Heartrate",
-                        baseLine.clone().add(3, "minutes").toDate(),
-                        baseLine.clone().add(5, "minutes").toDate())
+                        addMinutes(baseLine, 3),
+                        addMinutes(baseLine, 5))
                     .includeTimeSeries(
                         "BloodPressure",
-                        baseLine.clone().add(40, "minutes").toDate(),
-                        baseLine.clone().add(45, "minutes").toDate())
+                        addMinutes(baseLine, 40),
+                        addMinutes(baseLine, 45))
                     .includeTimeSeries(
                         "Nasdaq",
-                        baseLine.clone().add(15, "minutes").toDate(),
-                        baseLine.clone().add(25, "minutes").toDate())
+                        addMinutes(baseLine, 15),
+                        addMinutes(baseLine, 25))
             });
 
             assertThat(session.advanced.numberOfRequests)
@@ -565,7 +565,7 @@ describe("TimeSeriesIncludesTest", function () {
             // should not go to server
 
             let vals = await session.timeSeriesFor("users/ayende", "Heartrate")
-                .get(baseLine.clone().add(3, "minutes").toDate(), baseLine.clone().add(5, "minutes").toDate());
+                .get(addMinutes(baseLine, 3), addMinutes(baseLine, 5));
 
             assertThat(session.advanced.numberOfRequests)
                 .isEqualTo(1);
@@ -573,14 +573,14 @@ describe("TimeSeriesIncludesTest", function () {
                 .hasSize(13);
 
             assertThat(vals[0].timestamp.getTime())
-                .isEqualTo(baseLine.clone().add(3, "minutes").toDate().getTime());
+                .isEqualTo(addMinutes(baseLine, 3).getTime());
             assertThat(vals[12].timestamp.getTime())
-                .isEqualTo(baseLine.clone().add(5, "minutes").toDate().getTime());
+                .isEqualTo(addMinutes(baseLine, 5).getTime());
 
             // should not go to server
 
             vals = await session.timeSeriesFor("users/ayende", "BloodPressure")
-                .get(baseLine.clone().add(42, "minutes").toDate(), baseLine.clone().add(43, "minutes").toDate());
+                .get(addMinutes(baseLine, 42), addMinutes(baseLine, 43));
 
             assertThat(session.advanced.numberOfRequests)
                 .isEqualTo(1);
@@ -588,14 +588,14 @@ describe("TimeSeriesIncludesTest", function () {
                 .hasSize(7);
 
             assertThat(vals[0].timestamp.getTime())
-                .isEqualTo(baseLine.clone().add(42, "minutes").toDate().getTime());
+                .isEqualTo(addMinutes(baseLine, 42).getTime());
             assertThat(vals[6].timestamp.getTime())
-                .isEqualTo(baseLine.clone().add(43, "minutes").toDate().getTime());
+                .isEqualTo(addMinutes(baseLine, 43).getTime());
 
             // should not go to server
 
             vals = await session.timeSeriesFor("users/ayende", "BloodPressure")
-                .get(baseLine.clone().add(40, "minutes").toDate(), baseLine.clone().add(45, "minutes").toDate());
+                .get(addMinutes(baseLine, 40), addMinutes(baseLine, 45));
 
             assertThat(session.advanced.numberOfRequests)
                 .isEqualTo(1);
@@ -603,14 +603,14 @@ describe("TimeSeriesIncludesTest", function () {
                 .hasSize(31);
 
             assertThat(vals[0].timestamp.getTime())
-                .isEqualTo(baseLine.clone().add(40, "minutes").toDate().getTime());
+                .isEqualTo(addMinutes(baseLine, 40).getTime());
             assertThat(vals[30].timestamp.getTime())
-                .isEqualTo(baseLine.clone().add(45, "minutes").toDate().getTime());
+                .isEqualTo(addMinutes(baseLine, 45).getTime());
 
             // should not go to server
 
             vals = await session.timeSeriesFor("users/ayende", "Nasdaq")
-                .get(baseLine.clone().add(15, "minutes").toDate(), baseLine.clone().add(25, "minutes").toDate());
+                .get(addMinutes(baseLine, 15), addMinutes(baseLine, 25));
 
             assertThat(session.advanced.numberOfRequests)
                 .isEqualTo(1);
@@ -618,9 +618,9 @@ describe("TimeSeriesIncludesTest", function () {
                 .hasSize(61);
 
             assertThat(vals[0].timestamp.getTime())
-                .isEqualTo(baseLine.clone().add(15, "minutes").toDate().getTime());
+                .isEqualTo(addMinutes(baseLine, 15).getTime());
             assertThat(vals[60].timestamp.getTime())
-                .isEqualTo(baseLine.clone().add(25, "minutes").toDate().getTime());
+                .isEqualTo(addMinutes(baseLine, 25).getTime());
         }
     });
 
@@ -639,7 +639,7 @@ describe("TimeSeriesIncludesTest", function () {
             const session = store.openSession();
             for (let i = 0; i < 360; i++) {
                 session.timeSeriesFor("users/ayende", "Heartrate")
-                    .append(baseLine.clone().add(i * 10, "seconds").toDate(), 6, "watches/fitbit");
+                    .append(addSeconds(baseLine, i * 10), 6, "watches/fitbit");
             }
 
             await session.saveChanges();
@@ -652,8 +652,8 @@ describe("TimeSeriesIncludesTest", function () {
                 includes: i => i
                     .includeTimeSeries(
                         "Heartrate",
-                        baseLine.clone().add(-30, "minutes").toDate(),
-                        baseLine.clone().add(-10, "minutes").toDate())
+                        addMinutes(baseLine, -30),
+                        addMinutes(baseLine, -10))
             });
 
             assertThat(session.advanced.numberOfRequests)
@@ -665,7 +665,7 @@ describe("TimeSeriesIncludesTest", function () {
             // should not go to server
 
             let vals = await session.timeSeriesFor("users/ayende", "Heartrate")
-                .get(baseLine.clone().add(-30, "minutes").toDate(), baseLine.clone().add(-10, "minutes").toDate());
+                .get(addMinutes(baseLine, -30), addMinutes(baseLine, -10));
 
             assertThat(session.advanced.numberOfRequests)
                 .isEqualTo(1);
@@ -682,13 +682,13 @@ describe("TimeSeriesIncludesTest", function () {
             assertThat(ranges[0].entries)
                 .hasSize(0);
             assertThat(ranges[0].from.getTime())
-                .isEqualTo(baseLine.clone().add(-30, "minutes").toDate().getTime());
+                .isEqualTo(addMinutes(baseLine, -30).getTime());
             assertThat(ranges[0].to.getTime())
-                .isEqualTo(baseLine.clone().add(-10, "minutes").toDate().getTime());
+                .isEqualTo(addMinutes(baseLine, -10).getTime());
 
             // should not go to server
             vals = await session.timeSeriesFor("users/ayende", "Heartrate")
-                .get(baseLine.clone().add(-25, "minutes").toDate(), baseLine.clone().add(-15, "minutes").toDate());
+                .get(addMinutes(baseLine, -25), addMinutes(baseLine, -15));
 
             assertThat(session.advanced.numberOfRequests)
                 .isEqualTo(1);
@@ -702,8 +702,8 @@ describe("TimeSeriesIncludesTest", function () {
                 includes: i => i
                     .includeTimeSeries(
                         "BloodPressure",
-                        baseLine.clone().add(10, "minutes").toDate(),
-                        baseLine.clone().add(30, "minutes").toDate())
+                        addMinutes(baseLine, 10),
+                        addMinutes(baseLine, 30))
             });
 
             assertThat(session.advanced.numberOfRequests)
@@ -712,7 +712,7 @@ describe("TimeSeriesIncludesTest", function () {
             // should not go to server
 
             vals = await session.timeSeriesFor("users/ayende", "BloodPressure")
-                .get(baseLine.clone().add(10, "minutes").toDate(), baseLine.clone().add(30, "minutes").toDate());
+                .get(addMinutes(baseLine, 10), addMinutes(baseLine, 30));
 
             assertThat(session.advanced.numberOfRequests)
                 .isEqualTo(2);
@@ -731,9 +731,9 @@ describe("TimeSeriesIncludesTest", function () {
                 .hasSize(0);
 
             assertThat(ranges[0].from.getTime())
-                .isEqualTo(baseLine.clone().add(10, "minutes").toDate().getTime());
+                .isEqualTo(addMinutes(baseLine, 10).getTime());
             assertThat(ranges[0].to.getTime())
-                .isEqualTo(baseLine.clone().add(30, "minutes").toDate().getTime());
+                .isEqualTo(addMinutes(baseLine, 30).getTime());
         }
     });
 
@@ -759,10 +759,10 @@ describe("TimeSeriesIncludesTest", function () {
             const tsf2 = session.timeSeriesFor("users/ppekrol", "Heartrate");
 
             for (let i = 0; i < 360; i++) {
-                tsf1.append(baseLine.clone().add(i * 10, "seconds").toDate(), 6, "watches/fitbit");
+                tsf1.append(addSeconds(baseLine, i * 10), 6, "watches/fitbit");
 
                 if (i % 2 === 0) {
-                    tsf2.append(baseLine.clone().add(i * 10, "seconds").toDate(), 7, "watches/fitbit");
+                    tsf2.append(addSeconds(baseLine, i * 10), 7, "watches/fitbit");
                 }
             }
 
@@ -773,7 +773,7 @@ describe("TimeSeriesIncludesTest", function () {
             const session = store.openSession();
 
             const users = await session.load<User>(["users/ayende", "users/ppekrol"], {
-                includes: i => i.includeTimeSeries("Heartrate", baseLine.toDate(), baseLine.clone().add(30, "minutes").toDate())
+                includes: i => i.includeTimeSeries("Heartrate", baseLine, addMinutes(baseLine, 30))
             });
 
             assertThat(session.advanced.numberOfRequests)
@@ -787,7 +787,7 @@ describe("TimeSeriesIncludesTest", function () {
             // should not go to server
 
             let vals = await session.timeSeriesFor("users/ayende", "Heartrate")
-                .get(baseLine.toDate(), baseLine.clone().add(30, "minutes").toDate());
+                .get(baseLine, addMinutes(baseLine, 30));
 
             assertThat(session.advanced.numberOfRequests)
                 .isEqualTo(1);
@@ -796,14 +796,14 @@ describe("TimeSeriesIncludesTest", function () {
                 .hasSize(181);
 
             assertThat(vals[0].timestamp.getTime())
-                .isEqualTo(baseLine.toDate().getTime());
+                .isEqualTo(baseLine.getTime());
             assertThat(vals[180].timestamp.getTime())
-                .isEqualTo(baseLine.clone().add(30, "minutes").toDate().getTime());
+                .isEqualTo(addMinutes(baseLine, 30).getTime());
 
             // should not go to server
 
             vals = await session.timeSeriesFor("users/ppekrol", "Heartrate")
-                .get(baseLine.toDate(), baseLine.clone().add(30, "minutes").toDate());
+                .get(baseLine, addMinutes(baseLine, 30));
 
             assertThat(session.advanced.numberOfRequests)
                 .isEqualTo(1);
@@ -811,9 +811,9 @@ describe("TimeSeriesIncludesTest", function () {
             assertThat(vals)
                 .hasSize(91);
             assertThat(vals[0].timestamp.getTime())
-                .isEqualTo(baseLine.toDate().getTime());
+                .isEqualTo(baseLine.getTime());
             assertThat(vals[90].timestamp.getTime())
-                .isEqualTo(baseLine.clone().add(30, "minutes").toDate().getTime());
+                .isEqualTo(addMinutes(baseLine, 30).getTime());
         }
     });
 
@@ -839,7 +839,7 @@ describe("TimeSeriesIncludesTest", function () {
             const tsf = session.timeSeriesFor("users/ayende", "Heartrate");
 
             for (let i = 0; i < 360; i++) {
-                tsf.append(baseLine.clone().add(i * 10, "seconds").toDate(), 67, "watches/fitbit");
+                tsf.append(addSeconds(baseLine, i * 10), 67, "watches/fitbit");
             }
 
             session.countersFor("users/ayende").increment("likes", 100);
@@ -855,7 +855,7 @@ describe("TimeSeriesIncludesTest", function () {
                 documentType: User,
                 includes: i => i
                     .includeDocuments("worksAt")
-                    .includeTimeSeries("Heartrate", baseLine.toDate(), baseLine.clone().add(30, "minutes").toDate())
+                    .includeTimeSeries("Heartrate", baseLine, addMinutes(baseLine, 30))
                     .includeCounter("likes")
                     .includeCounter("dislikes")
             });
@@ -877,7 +877,7 @@ describe("TimeSeriesIncludesTest", function () {
 
             // should not go to server
             const vals = await session.timeSeriesFor("users/ayende", "Heartrate")
-                .get(baseLine.toDate(), baseLine.clone().add(30, "minutes").toDate());
+                .get(baseLine, addMinutes(baseLine, 30));
 
             assertThat(session.advanced.numberOfRequests)
                 .isEqualTo(1);
@@ -886,13 +886,13 @@ describe("TimeSeriesIncludesTest", function () {
                 .hasSize(181);
 
             assertThat(vals[0].timestamp.getTime())
-                .isEqualTo(baseLine.toDate().getTime());
+                .isEqualTo(baseLine.getTime());
             assertThat(vals[0].tag)
                 .isEqualTo("watches/fitbit");
             assertThat(vals[0].values[0])
                 .isEqualTo(67);
             assertThat(vals[180].timestamp.getTime())
-                .isEqualTo(baseLine.clone().add(30, "minutes").toDate().getTime());
+                .isEqualTo(addMinutes(baseLine, 30).getTime());
 
             // should not go to server
 
@@ -928,7 +928,7 @@ describe("TimeSeriesIncludesTest", function () {
             const tsf = session.timeSeriesFor("users/ayende", "Heartrate");
 
             for (let i = 0; i < 360; i++) {
-                tsf.append(baseLine.clone().add(i * 10, "seconds").toDate(), 67, "watches/fitbit");
+                tsf.append(addSeconds(baseLine, i * 10), 67, "watches/fitbit");
             }
 
             await session.saveChanges();
@@ -950,7 +950,7 @@ describe("TimeSeriesIncludesTest", function () {
             // should not go to server
 
             const vals = await session.timeSeriesFor("users/ayende", "Heartrate")
-                .get(baseLine.toDate(), baseLine.clone().add(30, "minutes").toDate());
+                .get(baseLine, addMinutes(baseLine, 30));
 
             assertThat(session.advanced.numberOfRequests)
                 .isEqualTo(1);
@@ -958,18 +958,18 @@ describe("TimeSeriesIncludesTest", function () {
             assertThat(vals)
                 .hasSize(181);
             assertThat(vals[0].timestamp.getTime())
-                .isEqualTo(baseLine.toDate().getTime());
+                .isEqualTo(baseLine.getTime());
             assertThat(vals[0].tag)
                 .isEqualTo("watches/fitbit");
             assertThat(vals[0].values[0])
                 .isEqualTo(67);
             assertThat(vals[180].timestamp.getTime())
-                .isEqualTo(baseLine.clone().add(30, "minutes").toDate().getTime());
+                .isEqualTo(addMinutes(baseLine, 30).getTime());
         }
     });
 
     it("canLoadAsyncWithIncludeTimeSeries_LastRange_ByCount", async function () {
-        const baseline = testContext.utcToday().add(12, "hours");
+        const baseLine = addHours(testContext.utcToday(), 12);
 
         {
             const session = store.openSession();
@@ -984,7 +984,7 @@ describe("TimeSeriesIncludesTest", function () {
             const tsf = session.timeSeriesFor("orders/1-A", "heartrate");
 
             for (let i = 0; i < 15; i++) {
-                tsf.append(baseline.clone().add(-i, "minutes").toDate(), i, "watches/fitbit");
+                tsf.append(addMinutes(baseLine, -i), i, "watches/fitbit");
             }
 
             await session.saveChanges();
@@ -1012,7 +1012,7 @@ describe("TimeSeriesIncludesTest", function () {
 
             // should not go to server
             const values = await session.timeSeriesFor(order, "heartrate")
-                .get(baseline.clone().add(-10, "minutes").toDate(), null);
+                .get(addMinutes(baseLine, -10), null);
 
             assertThat(session.advanced.numberOfRequests)
                 .isEqualTo(1);
@@ -1027,14 +1027,14 @@ describe("TimeSeriesIncludesTest", function () {
                 assertThat(values[i].tag)
                     .isEqualTo("watches/fitbit");
                 assertThat(values[i].timestamp.getTime())
-                    .isEqualTo(baseline.clone().add(-(values.length - 1 - i), "minutes").toDate().getTime());
+                    .isEqualTo(addMinutes(baseLine, -(values.length - 1 - i)).getTime());
 
             }
         }
     });
 
     it("canLoadAsyncWithInclude_AllTimeSeries_LastRange_ByTime", async function () {
-        const baseline = testContext.utcToday();
+        const baseLine = testContext.utcToday();
 
         {
             const session = store.openSession();
@@ -1049,12 +1049,12 @@ describe("TimeSeriesIncludesTest", function () {
             const tsf = session.timeSeriesFor("orders/1-A", "heartrate");
 
             for (let i = 0; i < 15; i++) {
-                tsf.append(baseline.clone().add(-i, "minutes").toDate(), i, "watches/bitfit");
+                tsf.append(addMinutes(baseLine, -i), i, "watches/bitfit");
             }
 
             const tsf2 = session.timeSeriesFor("orders/1-A", "speedrate");
             for (let i = 0; i < 15; i++) {
-                tsf2.append(baseline.clone().add(-i, "minutes").toDate(), i, "watches/fitbit");
+                tsf2.append(addMinutes(baseLine, -i), i, "watches/fitbit");
             }
             
             await session.saveChanges();
@@ -1080,7 +1080,7 @@ describe("TimeSeriesIncludesTest", function () {
 
             // should not go to server
             const heartrateValues = await session.timeSeriesFor(order, "heartrate")
-                .get(baseline.clone().add(-10, "minutes").toDate(), null);
+                .get(addMinutes(baseLine, -10), null);
 
             assertThat(heartrateValues)
                 .hasSize(11);
@@ -1089,7 +1089,7 @@ describe("TimeSeriesIncludesTest", function () {
                 .isEqualTo(1);
 
             const speedrateValues = await session.timeSeriesFor(order, "speedrate")
-                .get(baseline.clone().add(-10, "minutes").toDate(), null);
+                .get(addMinutes(baseLine, -10), null);
 
             assertThat(speedrateValues)
                 .hasSize(11);
@@ -1104,7 +1104,7 @@ describe("TimeSeriesIncludesTest", function () {
                 assertThat(heartrateValues[i].tag)
                     .isEqualTo("watches/bitfit");
                 assertThat(heartrateValues[i].timestamp.getTime())
-                    .isEqualTo(baseline.clone().add(-(heartrateValues.length - 1 - i), "minutes").toDate().getTime());
+                    .isEqualTo(addMinutes(baseLine, -(heartrateValues.length - 1 - i)).getTime());
             }
 
             for (let i = 0; i < speedrateValues.length; i++) {
@@ -1115,13 +1115,13 @@ describe("TimeSeriesIncludesTest", function () {
                 assertThat(speedrateValues[i].tag)
                     .isEqualTo("watches/fitbit");
                 assertThat(speedrateValues[i].timestamp.getTime())
-                    .isEqualTo(baseline.clone().add(-(speedrateValues.length - 1 - i), "minutes").toDate().getTime());
+                    .isEqualTo(addMinutes(baseLine, -(speedrateValues.length - 1 - i)).getTime());
             }
         }
     });
 
     it("canLoadAsyncWithInclude_AllTimeSeries_LastRange_ByCount", async function () {
-        const baseline = testContext.utcToday().add(3, "hours");
+        const baseLine = addHours(testContext.utcToday(), 3);
 
         {
             const session = store.openSession();
@@ -1135,12 +1135,12 @@ describe("TimeSeriesIncludesTest", function () {
 
             const tsf = session.timeSeriesFor("orders/1-A", "heartrate");
             for (let i = 0; i < 15; i++) {
-                tsf.append(baseline.clone().add(-i, "minutes").toDate(), i, "watches/bitfit");
+                tsf.append(addMinutes(baseLine, -i), i, "watches/bitfit");
             }
 
             const tsf2 = session.timeSeriesFor("orders/1-A", "speedrate");
             for (let i = 0; i < 15; i++) {
-                tsf2.append(baseline.clone().add(-i, "minutes").toDate(), i, "watches/fitbit");
+                tsf2.append(addMinutes(baseLine, -i), i, "watches/fitbit");
             }
 
             await session.saveChanges();
@@ -1167,7 +1167,7 @@ describe("TimeSeriesIncludesTest", function () {
 
             // should not go to server
             const heartrateValues = await session.timeSeriesFor(order, "heartrate")
-                .get(baseline.clone().add(-10, "minutes").toDate(), null);
+                .get(addMinutes(baseLine, -10), null);
 
             assertThat(heartrateValues)
                 .hasSize(11);
@@ -1175,7 +1175,7 @@ describe("TimeSeriesIncludesTest", function () {
                 .isEqualTo(1);
 
             const speedrateValues = await session.timeSeriesFor(order, "speedrate")
-                .get(baseline.clone().add(-10, "minutes").toDate(), null);
+                .get(addMinutes(baseLine, -10), null);
 
             assertThat(speedrateValues)
                 .hasSize(11);
@@ -1190,7 +1190,7 @@ describe("TimeSeriesIncludesTest", function () {
                 assertThat(heartrateValues[i].tag)
                     .isEqualTo("watches/bitfit");
                 assertThat(heartrateValues[i].timestamp.getTime())
-                    .isEqualTo(baseline.clone().add(-(heartrateValues.length - 1 - i), "minutes").toDate().getTime());
+                    .isEqualTo(addMinutes(baseLine, -(heartrateValues.length - 1 - i)).getTime());
             }
 
             for (let i = 0; i < speedrateValues.length; i++) {
@@ -1201,7 +1201,7 @@ describe("TimeSeriesIncludesTest", function () {
                 assertThat(speedrateValues[i].tag)
                     .isEqualTo("watches/fitbit");
                 assertThat(speedrateValues[i].timestamp.getTime())
-                    .isEqualTo(baseline.clone().add(-(speedrateValues.length - 1 - i), "minutes").toDate().getTime());
+                    .isEqualTo(addMinutes(baseLine, -(speedrateValues.length - 1 - i)).getTime());
             }
         }
     });
@@ -1602,7 +1602,7 @@ describe("TimeSeriesIncludesTest", function () {
 
 async function canLoadAsyncWithInclude_ArrayOfTimeSeriesLastRange(store: IDocumentStore, byTime: boolean) {
 
-    const baseline = byTime ? moment() : testContext.utcToday();
+    const baseLine = byTime ? new Date() : testContext.utcToday();
 
     {
         const session = store.openSession();
@@ -1615,15 +1615,15 @@ async function canLoadAsyncWithInclude_ArrayOfTimeSeriesLastRange(store: IDocume
         await session.store(order, "orders/1-A");
 
         const tsf = session.timeSeriesFor("orders/1-A", "heartrate");
-        tsf.append(baseline.toDate(), 67, "watches/apple");
-        tsf.append(baseline.clone().add(-5, "minutes").toDate(), 64, "watches/apple");
-        tsf.append(baseline.clone().add(-10, "minutes").toDate(), 65, "watches/fitbit");
+        tsf.append(baseLine, 67, "watches/apple");
+        tsf.append(addMinutes(baseLine, -5), 64, "watches/apple");
+        tsf.append(addMinutes(baseLine, -10), 65, "watches/fitbit");
 
         const tsf2 = session.timeSeriesFor("orders/1-A", "speedrate");
-        tsf2.append(baseline.clone().add(-15, "minutes").toDate(), 6, "watches/bitfit");
-        tsf2.append(baseline.clone().add(-10, "minutes").toDate(), 7, "watches/bitfit");
-        tsf2.append(baseline.clone().add(-9, "minutes").toDate(), 7, "watches/bitfit");
-        tsf2.append(baseline.clone().add(-8, "minutes").toDate(), 6, "watches/bitfit");
+        tsf2.append(addMinutes(baseLine, -15), 6, "watches/bitfit");
+        tsf2.append(addMinutes(baseLine, -10), 7, "watches/bitfit");
+        tsf2.append(addMinutes(baseLine, -9), 7, "watches/bitfit");
+        tsf2.append(addMinutes(baseLine, -8), 6, "watches/bitfit");
 
         await session.saveChanges();
     }
@@ -1661,7 +1661,7 @@ async function canLoadAsyncWithInclude_ArrayOfTimeSeriesLastRange(store: IDocume
 
         // should not go to server
         const heartrateValues = await session.timeSeriesFor(order, "heartrate")
-            .get(baseline.clone().add(-10, "minutes").toDate(), null);
+            .get(addMinutes(baseLine, -10), null);
 
         assertThat(session.advanced.numberOfRequests)
             .isEqualTo(1);
@@ -1675,7 +1675,7 @@ async function canLoadAsyncWithInclude_ArrayOfTimeSeriesLastRange(store: IDocume
         assertThat(heartrateValues[0].tag)
             .isEqualTo("watches/fitbit");
         assertThat(heartrateValues[0].timestamp.getTime())
-            .isEqualTo(baseline.clone().add(-10, "minutes").toDate().getTime());
+            .isEqualTo(addMinutes(baseLine, -10).getTime());
 
         assertThat(heartrateValues[1].values)
             .hasSize(1);
@@ -1684,7 +1684,7 @@ async function canLoadAsyncWithInclude_ArrayOfTimeSeriesLastRange(store: IDocume
         assertThat(heartrateValues[1].tag)
             .isEqualTo("watches/apple");
         assertThat(heartrateValues[1].timestamp.getTime())
-            .isEqualTo(baseline.clone().add(-5, "minutes").toDate().getTime());
+            .isEqualTo(addMinutes(baseLine, -5).getTime());
 
         assertThat(heartrateValues[2].values)
             .hasSize(1);
@@ -1693,11 +1693,11 @@ async function canLoadAsyncWithInclude_ArrayOfTimeSeriesLastRange(store: IDocume
         assertThat(heartrateValues[2].tag)
             .isEqualTo("watches/apple");
         assertThat(heartrateValues[2].timestamp.getTime())
-            .isEqualTo(baseline.toDate().getTime());
+            .isEqualTo(baseLine.getTime());
 
         // should not go to server
         const speedrateValues = await session.timeSeriesFor(order, "speedrate")
-            .get(baseline.clone().add(-10, "minutes").toDate(), null);
+            .get(addMinutes(baseLine, -10), null);
 
         assertThat(session.advanced.numberOfRequests)
             .isEqualTo(1);
@@ -1711,7 +1711,7 @@ async function canLoadAsyncWithInclude_ArrayOfTimeSeriesLastRange(store: IDocume
         assertThat(speedrateValues[0].tag)
             .isEqualTo("watches/bitfit");
         assertThat(speedrateValues[0].timestamp.getTime())
-            .isEqualTo(baseline.clone().add(-10, "minutes").toDate().getTime());
+            .isEqualTo(addMinutes(baseLine, -10).getTime());
 
         assertThat(speedrateValues[1].values)
             .hasSize(1);
@@ -1720,7 +1720,7 @@ async function canLoadAsyncWithInclude_ArrayOfTimeSeriesLastRange(store: IDocume
         assertThat(speedrateValues[1].tag)
             .isEqualTo("watches/bitfit");
         assertThat(speedrateValues[1].timestamp.getTime())
-            .isEqualTo(baseline.clone().add(-9, "minutes").toDate().getTime());
+            .isEqualTo(addMinutes(baseLine, -9).getTime());
 
         assertThat(speedrateValues[2].values)
             .hasSize(1);
@@ -1729,11 +1729,11 @@ async function canLoadAsyncWithInclude_ArrayOfTimeSeriesLastRange(store: IDocume
         assertThat(speedrateValues[2].tag)
             .isEqualTo("watches/bitfit");
         assertThat(speedrateValues[2].timestamp.getTime())
-            .isEqualTo(baseline.clone().add(-8, "minutes").toDate().getTime());
+            .isEqualTo(addMinutes(baseLine, -8).getTime());
     }
 
     it("sessionLoadWithIncludeTimeSeries2", async () => {
-        const baseline = testContext.utcToday();
+        const baseLine = testContext.utcToday();
 
         {
             const session = store.openSession();
@@ -1746,9 +1746,9 @@ async function canLoadAsyncWithInclude_ArrayOfTimeSeriesLastRange(store: IDocume
             await session.store(company, "companies/apple");
 
             const tsf = session.timeSeriesFor("orders/1-A", "Heartrate");
-            tsf.append(baseline.toDate(), 67, "companies/apple");
-            tsf.append(baseline.clone().add(5, "minutes").toDate(), 64, "companies/apple");
-            tsf.append(baseline.clone().add(10, "minutes").toDate(), 65, "companies/google");
+            tsf.append(baseLine, 67, "companies/apple");
+            tsf.append(addMinutes(baseLine, 5), 64, "companies/apple");
+            tsf.append(addMinutes(baseLine, 10), 65, "companies/google");
 
             await session.saveChanges();
         }
@@ -1777,7 +1777,7 @@ async function canLoadAsyncWithInclude_ArrayOfTimeSeriesLastRange(store: IDocume
     });
 
     it("sessionLoadWithIncludeTimeSeriesRanges", async function () {
-        const baseline = testContext.utcToday();
+        const baseLine = testContext.utcToday();
 
         {
             const session = store.openSession();
@@ -1803,9 +1803,9 @@ async function canLoadAsyncWithInclude_ArrayOfTimeSeriesLastRange(store: IDocume
             await session.store(company4, "companies/google");
 
             const tsf = session.timeSeriesFor("orders/1-A", "Heartrate");
-            tsf.append(baseline.toDate(), 67, "companies/apple");
-            tsf.append(baseline.clone().add(5, "minutes").toDate(), 64, "companies/apple");
-            tsf.append(baseline.clone().add(10, "minutes").toDate(), 65, "companies/google");
+            tsf.append(baseLine, 67, "companies/apple");
+            tsf.append(addMinutes(baseLine, 5), 64, "companies/apple");
+            tsf.append(addMinutes(baseLine, 10), 65, "companies/google");
 
             await session.saveChanges();
         }
@@ -1813,9 +1813,9 @@ async function canLoadAsyncWithInclude_ArrayOfTimeSeriesLastRange(store: IDocume
         {
             const session = store.openSession();
             //get 3 points so they'll get saved in session
-            const nowDate = baseline.toDate();
-            const nowPlus5 = baseline.clone().add(5, "minutes").toDate();
-            const nowPlus10 = baseline.clone().add(10, "minutes").toDate();
+            const nowDate = baseLine;
+            const nowPlus5 = addMinutes(baseLine, 5);
+            const nowPlus10 = addMinutes(baseLine, 10);
             await session.timeSeriesFor("orders/1-A", "Heartrate").get(nowDate, nowDate);
             await session.timeSeriesFor("orders/1-A", "Heartrate").get(nowPlus5, nowPlus5);
             await session.timeSeriesFor("orders/1-A", "Heartrate").get(nowPlus10, nowPlus10);
@@ -1832,7 +1832,7 @@ async function canLoadAsyncWithInclude_ArrayOfTimeSeriesLastRange(store: IDocume
     });
 
     it("timeSeriesIncludeTagsCaseSensitive", async function() {
-        const baseline = testContext.utcToday();
+        const baseLine = testContext.utcToday();
 
         {
             const session = store.openSession();
@@ -1854,9 +1854,9 @@ async function canLoadAsyncWithInclude_ArrayOfTimeSeriesLastRange(store: IDocume
             await session.store(company3, "companies/apple");
 
             const tsf = session.timeSeriesFor("orders/1-A", "Heartrate");
-            tsf.append(baseline.toDate(), 67, "companies/apple");
-            tsf.append(baseline.clone().add(5, "minutes").toDate(), 68, "companies/apple");
-            tsf.append(baseline.clone().add(10, "minutes").toDate(), 69, "companies/amazon");
+            tsf.append(baseLine, 67, "companies/apple");
+            tsf.append(addMinutes(baseLine, 5), 68, "companies/apple");
+            tsf.append(addMinutes(baseLine, 10), 69, "companies/amazon");
 
             await session.saveChanges();
         }

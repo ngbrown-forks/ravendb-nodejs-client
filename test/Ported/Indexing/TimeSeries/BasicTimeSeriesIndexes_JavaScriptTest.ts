@@ -5,7 +5,6 @@ import {
     AbstractRawJavaScriptTimeSeriesIndexCreationTask
 } from "../../../../src/index.js";
 import { disposeTestDocumentStore, testContext } from "../../../Utils/TestUtil.js";
-import moment from "moment";
 import { Employee } from "../../../Assets/Orders.js";
 import { Address, Company, User } from "../../../Assets/Entities.js";
 import { assertThat } from "../../../Utils/AssertExtensions.js";
@@ -24,7 +23,6 @@ describe("BasicTimeSeriesIndexes_JavaScript", function () {
 
     it("basicMapIndexWithLoad", async () => {
         const now1 = new Date();
-        const now2 = moment().add(1, "second").toDate();
 
         {
             const session = store.openSession();
@@ -157,7 +155,6 @@ describe("BasicTimeSeriesIndexes_JavaScript", function () {
 
     it("canMapAllTimeSeriesFromCollection", async function () {
         const now1 = new Date();
-        const now2 = moment().add(1, "seconds").toDate();
 
         {
             const session = store.openSession();

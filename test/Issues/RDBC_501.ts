@@ -6,6 +6,7 @@ import {
 import { disposeTestDocumentStore, testContext } from "../Utils/TestUtil.js";
 
 import { assertThat } from "../Utils/AssertExtensions.js";
+import { addDays, addHours } from "date-fns";
  
 class SymbolPrice {
     open: number;
@@ -65,9 +66,9 @@ describe("RDBC-501", function () {
 
             const tsf = session.timeSeriesFor<SymbolPrice>(symbol, "history", SymbolPrice);
 
-            tsf.append(baseLine.clone().add(1, "hours").toDate(), price1);
-            tsf.append(baseLine.clone().add(2, "hours").toDate(), price2);
-            tsf.append(baseLine.clone().add(2, "days").toDate(), price3);
+            tsf.append(addHours(baseLine, 1), price1);
+            tsf.append(addHours(baseLine, 2), price2);
+            tsf.append(addDays(baseLine, 2), price3);
 
             await session.saveChanges();
         }
