@@ -14,10 +14,10 @@ import {
     RegisterReplicationHubAccessOperation
 } from "../../../../src/index.js";
 import { ReplicationTestContext } from "../../../Utils/ReplicationTestContext.js";
-import moment from "moment";
 import { GenerateCertificateOperation } from "../../../Infrastructure/GenerateCertificateOperation.js";
 import { assertThat } from "../../../Utils/AssertExtensions.js";
 import { delay } from "../../../../src/Utility/PromiseUtil.js";
+import { addMinutes } from "date-fns";
 
 (RavenTestContext.isPullRequest ? describe.skip : describe)("PullReplicationTest", function () {
 
@@ -84,12 +84,12 @@ import { delay } from "../../../../src/Utility/PromiseUtil.js";
                     const user1 = new User();
                     user1.source = "Sink";
                     await s.store(user1, "users/insink/1");
-                    s.advanced.getMetadataFor(user1)["@expires"] = moment().add(10, "minutes").toDate().toISOString();
+                    s.advanced.getMetadataFor(user1)["@expires"] = addMinutes(new Date(), 10).toISOString();
 
                     const user2 = new User();
                     user2.source = "Sink";
                     await s.store(user2, "users/insink/2");
-                    s.advanced.getMetadataFor(user2)["@expires"] = moment().add(10, "minutes").toDate().toISOString();
+                    s.advanced.getMetadataFor(user2)["@expires"] = addMinutes(new Date(), 10).toISOString();
 
                     await s.saveChanges();
                 }

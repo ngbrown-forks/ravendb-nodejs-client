@@ -2,6 +2,7 @@ import { IDocumentStore, SubscriptionWorkerOptions } from "../../../src/index.js
 import { disposeTestDocumentStore, testContext } from "../../Utils/TestUtil.js";
 import { User } from "../../Assets/Entities.js";
 import { assertThat } from "../../Utils/AssertExtensions.js";
+import { addHours } from "date-fns";
 
 describe("RavenDB_19538Test", function () {
 
@@ -38,8 +39,8 @@ describe("RavenDB_19538Test", function () {
         }
 
         try {
-            const date1 = testContext.utcToday().clone().add(1, "hour").toString();
-            const date2 = testContext.utcToday().clone().add(2, "hour").toString();
+            const date1 = addHours(testContext.utcToday(), 1).toString();
+            const date2 = addHours(testContext.utcToday(), 2).toString();
 
             await new Promise<void>((resolve, reject) => {
                 let count = 0;

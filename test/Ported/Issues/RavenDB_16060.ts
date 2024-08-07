@@ -1,5 +1,5 @@
 import {
-    ConfigureTimeSeriesOperation,
+    ConfigureTimeSeriesOperation, DateUtil,
     IDocumentStore,
     InMemoryDocumentSessionOperations,
     RawTimeSeriesPolicy,
@@ -9,12 +9,12 @@ import {
     TimeSeriesValue
 } from "../../../src/index.js";
 import { disposeTestDocumentStore, RavenTestContext, testContext } from "../../Utils/TestUtil.js";
-import moment from "moment";
 import { User } from "../../Assets/Entities.js";
 import { assertThat } from "../../Utils/AssertExtensions.js";
 import { TimeValue } from "../../../src/Primitives/TimeValue.js";
 import { StockPrice } from "../TimeSeries/TimeSeriesTypedSession.js";
 import { delay } from "../../../src/Utility/PromiseUtil.js";
+import { addDays, addMinutes, addSeconds, addYears } from "date-fns";
 
 (RavenTestContext.isPullRequest ? describe.skip : describe)("RavenDB_16060Test", function () {
 
@@ -28,7 +28,7 @@ import { delay } from "../../../src/Utility/PromiseUtil.js";
         await disposeTestDocumentStore(store));
 
     it("canIncludeTypedTimeSeries", async () => {
-        const baseLine = moment().utc().startOf("month");
+        const baseLine = testContext.utcToday();
 
         {
             const session = store.openSession();
@@ -38,7 +38,7 @@ import { delay } from "../../../src/Utility/PromiseUtil.js";
             await session.store(user, "users/ayende");
 
             const ts = session.timeSeriesFor("users/ayende", HeartRateMeasure);
-            ts.append(baseLine.toDate(), HeartRateMeasure.create(59), "watches/fitbit");
+            ts.append(baseLine, HeartRateMeasure.create(59), "watches/fitbit");
 
             await session.saveChanges();
         }
@@ -65,7 +65,7 @@ import { delay } from "../../../src/Utility/PromiseUtil.js";
 
     it("canServeTimeSeriesFromCache_Typed", async function () {
         //RavenDB-16136
-        const baseLine = moment().utc().startOf("month");
+        const baseLine = testContext.utcMonthStart();
 
         const id = "users/gabor";
 
@@ -77,7 +77,7 @@ import { delay } from "../../../src/Utility/PromiseUtil.js";
 
             const ts = session.timeSeriesFor(id, HeartRateMeasure);
 
-            ts.append(baseLine.toDate(), HeartRateMeasure.create(59), "watches/fitbit");
+            ts.append(baseLine, HeartRateMeasure.create(59), "watches/fitbit");
             await session.saveChanges();
         }
 
@@ -102,7 +102,7 @@ import { delay } from "../../../src/Utility/PromiseUtil.js";
     });
 
     it("includeTimeSeriesAndMergeWithExistingRangesInCache_Typed", async function () {
-        const baseLine = moment().utc().startOf("month");
+        const baseLine = testContext.utcMonthStart();
 
         const documentId = "users/ayende";
 
@@ -120,7 +120,7 @@ import { delay } from "../../../src/Utility/PromiseUtil.js";
 
             for (let i = 0; i < 360; i++) {
                 const typedMeasure = HeartRateMeasure.create(6);
-                tsf.append(baseLine.clone().add(i * 10, "seconds").toDate(), typedMeasure, "watches/fitbit");
+                tsf.append(addSeconds(baseLine, i * 10), typedMeasure, "watches/fitbit");
             }
 
             await session.saveChanges();
@@ -129,7 +129,7 @@ import { delay } from "../../../src/Utility/PromiseUtil.js";
         {
             const session = store.openSession();
             let vals = await session.timeSeriesFor(documentId, HeartRateMeasure)
-                .get(baseLine.clone().add(2, "minutes").toDate(), baseLine.clone().add(10, "minutes").toDate());
+                .get(addMinutes(baseLine, 2), addMinutes(baseLine, 10));
 
             assertThat(session.advanced.numberOfRequests)
                 .isEqualTo(1);
@@ -137,14 +137,14 @@ import { delay } from "../../../src/Utility/PromiseUtil.js";
             assertThat(vals)
                 .hasSize(49);
             assertThat(vals[0].timestamp.getTime())
-                .isEqualTo(baseLine.clone().add(2, "minutes").toDate().getTime());
+                .isEqualTo(addMinutes(baseLine, 2).getTime());
             assertThat(vals[48].timestamp.getTime())
-                .isEqualTo(baseLine.clone().add(10, "minutes").toDate().getTime());
+                .isEqualTo(addMinutes(baseLine, 10).getTime());
 
             let user = await session
                 .load<User>(documentId, {
                     documentType: User,
-                    includes: i => i.includeTimeSeries("heartRateMeasures", baseLine.clone().add(40, "minutes").toDate(), baseLine.clone().add(50, "minutes").toDate())
+                    includes: i => i.includeTimeSeries("heartRateMeasures", addMinutes(baseLine, 40), addMinutes(baseLine, 50))
                 });
 
             assertThat(session.advanced.numberOfRequests)
@@ -153,7 +153,7 @@ import { delay } from "../../../src/Utility/PromiseUtil.js";
             // should not go to server
 
             vals = await session.timeSeriesFor(documentId, HeartRateMeasure)
-                .get(baseLine.clone().add(40, "minutes").toDate(), baseLine.clone().add(50, "minutes").toDate());
+                .get(addMinutes(baseLine, 40), addMinutes(baseLine, 50));
 
             assertThat(session.advanced.numberOfRequests)
                 .isEqualTo(2);
@@ -161,9 +161,9 @@ import { delay } from "../../../src/Utility/PromiseUtil.js";
             assertThat(vals)
                 .hasSize(61);
             assertThat(vals[0].timestamp.getTime())
-                .isEqualTo(baseLine.clone().add(40, "minutes").toDate().getTime());
+                .isEqualTo(addMinutes(baseLine, 40).getTime());
             assertThat(vals[60].timestamp.getTime())
-                .isEqualTo(baseLine.clone().add(50, "minutes").toDate().getTime());
+                .isEqualTo(addMinutes(baseLine, 50).getTime());
 
             const sessionOperations = session as unknown as InMemoryDocumentSessionOperations;
 
@@ -175,13 +175,13 @@ import { delay } from "../../../src/Utility/PromiseUtil.js";
                 .hasSize(2);
 
             assertThat(ranges[0].from.getTime())
-                .isEqualTo(baseLine.clone().add(2, "minutes").toDate().getTime());
+                .isEqualTo(addMinutes(baseLine, 2).getTime());
             assertThat(ranges[0].to.getTime())
-                .isEqualTo(baseLine.clone().add(10, "minutes").toDate().getTime());
+                .isEqualTo(addMinutes(baseLine, 10).getTime());
             assertThat(ranges[1].from.getTime())
-                .isEqualTo(baseLine.clone().add(40, "minutes").toDate().getTime());
+                .isEqualTo(addMinutes(baseLine, 40).getTime());
             assertThat(ranges[1].to.getTime())
-                .isEqualTo(baseLine.clone().add(50, "minutes").toDate().getTime());
+                .isEqualTo(addMinutes(baseLine, 50).getTime());
 
             // we intentionally evict just the document (without it's TS data),
             // so that Load request will go to server
@@ -192,7 +192,7 @@ import { delay } from "../../../src/Utility/PromiseUtil.js";
             // should go to server to get [0, 2] and merge it into existing [2, 10]
             user = await session.load(documentId, {
                 documentType: User,
-                includes: i => i.includeTimeSeries("heartRateMeasures", baseLine.toDate(), baseLine.clone().add(2, "minutes").toDate())
+                includes: i => i.includeTimeSeries("heartRateMeasures", baseLine, addMinutes(baseLine, 2))
             });
 
             assertThat(session.advanced.numberOfRequests)
@@ -201,7 +201,7 @@ import { delay } from "../../../src/Utility/PromiseUtil.js";
             // should not go to server
 
             vals = await session.timeSeriesFor(documentId, HeartRateMeasure)
-                .get(baseLine.toDate(), baseLine.clone().add(2, "minutes").toDate());
+                .get(baseLine, addMinutes(baseLine, 2));
 
             assertThat(session.advanced.numberOfRequests)
                 .isEqualTo(3);
@@ -209,21 +209,21 @@ import { delay } from "../../../src/Utility/PromiseUtil.js";
             assertThat(vals)
                 .hasSize(13);
             assertThat(vals[0].timestamp.getTime())
-                .isEqualTo(baseLine.toDate().getTime());
+                .isEqualTo(baseLine.getTime());
             assertThat(vals[12].timestamp.getTime())
-                .isEqualTo(baseLine.clone().add(2, "minutes").toDate().getTime());
+                .isEqualTo(addMinutes(baseLine, 2).getTime());
 
             assertThat(ranges)
                 .hasSize(2);
 
             assertThat(ranges[0].from.getTime())
-                .isEqualTo(baseLine.toDate().getTime());
+                .isEqualTo(baseLine.getTime());
             assertThat(ranges[0].to.getTime())
-                .isEqualTo(baseLine.clone().add(10, "minutes").toDate().getTime());
+                .isEqualTo(addMinutes(baseLine, 10).getTime());
             assertThat(ranges[1].from.getTime())
-                .isEqualTo(baseLine.clone().add(40, "minutes").toDate().getTime());
+                .isEqualTo(addMinutes(baseLine, 40).getTime());
             assertThat(ranges[1].to.getTime())
-                .isEqualTo(baseLine.clone().add(50, "minutes").toDate().getTime());
+                .isEqualTo(addMinutes(baseLine, 50).getTime());
 
             // evict just the document
 
@@ -233,7 +233,7 @@ import { delay } from "../../../src/Utility/PromiseUtil.js";
             // should go to server to get [10, 16] and merge it into existing [0, 10]
             user = await session.load(documentId, {
                 documentType: User,
-                includes: i => i.includeTimeSeries("heartRateMeasures", baseLine.clone().add(10, "minutes").toDate(), baseLine.clone().add(16, "minutes").toDate())
+                includes: i => i.includeTimeSeries("heartRateMeasures", addMinutes(baseLine, 10), addMinutes(baseLine, 16))
             });
 
             assertThat(session.advanced.numberOfRequests)
@@ -242,7 +242,7 @@ import { delay } from "../../../src/Utility/PromiseUtil.js";
             // should not go to server
 
             vals = await session.timeSeriesFor(documentId, HeartRateMeasure)
-                .get(baseLine.clone().add(10, "minutes").toDate(), baseLine.clone().add(16, "minutes").toDate());
+                .get(addMinutes(baseLine, 10), addMinutes(baseLine, 16));
 
             assertThat(session.advanced.numberOfRequests)
                 .isEqualTo(4);
@@ -250,21 +250,21 @@ import { delay } from "../../../src/Utility/PromiseUtil.js";
             assertThat(vals)
                 .hasSize(37);
             assertThat(vals[0].timestamp.getTime())
-                .isEqualTo(baseLine.clone().add(10, "minutes").toDate().getTime());
+                .isEqualTo(addMinutes(baseLine, 10).getTime());
             assertThat(vals[36].timestamp.getTime())
-                .isEqualTo(baseLine.clone().add(16, "minutes").toDate().getTime());
+                .isEqualTo(addMinutes(baseLine, 16).getTime());
 
             assertThat(ranges)
                 .hasSize(2);
 
             assertThat(ranges[0].from.getTime())
-                .isEqualTo(baseLine.toDate().getTime());
+                .isEqualTo(baseLine.getTime());
             assertThat(ranges[0].to.getTime())
-                .isEqualTo(baseLine.clone().add(16, "minutes").toDate().getTime());
+                .isEqualTo(addMinutes(baseLine, 16).getTime());
             assertThat(ranges[1].from.getTime())
-                .isEqualTo(baseLine.clone().add(40, "minutes").toDate().getTime());
+                .isEqualTo(addMinutes(baseLine, 40).getTime());
             assertThat(ranges[1].to.getTime())
-                .isEqualTo(baseLine.clone().add(50, "minutes").toDate().getTime());
+                .isEqualTo(addMinutes(baseLine, 50).getTime());
 
             // evict just the document
             sessionOperations.documentsByEntity.evict(user);
@@ -275,7 +275,7 @@ import { delay } from "../../../src/Utility/PromiseUtil.js";
 
             user = await session.load(documentId, {
                 documentType: User,
-                includes: i => i.includeTimeSeries("heartRateMeasures", baseLine.clone().add(17, "minutes").toDate(), baseLine.clone().add(19, "minutes").toDate())
+                includes: i => i.includeTimeSeries("heartRateMeasures", addMinutes(baseLine, 17), addMinutes(baseLine, 19))
             });
 
             assertThat(session.advanced.numberOfRequests)
@@ -284,7 +284,7 @@ import { delay } from "../../../src/Utility/PromiseUtil.js";
             // should not go to server
 
             vals = await session.timeSeriesFor(documentId, HeartRateMeasure)
-                .get(baseLine.clone().add(17, "minutes").toDate(), baseLine.clone().add(19, "minutes").toDate());
+                .get(addMinutes(baseLine, 17), addMinutes(baseLine, 19));
 
             assertThat(session.advanced.numberOfRequests)
                 .isEqualTo(5);
@@ -293,25 +293,25 @@ import { delay } from "../../../src/Utility/PromiseUtil.js";
                 .hasSize(13);
 
             assertThat(vals[0].timestamp.getTime())
-                .isEqualTo(baseLine.clone().add(17, "minutes").toDate().getTime());
+                .isEqualTo(addMinutes(baseLine, 17).getTime());
             assertThat(vals[12].timestamp.getTime())
-                .isEqualTo(baseLine.clone().add(19, "minutes").toDate().getTime());
+                .isEqualTo(addMinutes(baseLine, 19).getTime());
 
             assertThat(ranges)
                 .hasSize(3);
 
             assertThat(ranges[0].from.getTime())
-                .isEqualTo(baseLine.toDate().getTime());
+                .isEqualTo(baseLine.getTime());
             assertThat(ranges[0].to.getTime())
-                .isEqualTo(baseLine.clone().add(16, "minutes").toDate().getTime());
+                .isEqualTo(addMinutes(baseLine, 16).getTime());
             assertThat(ranges[1].from.getTime())
-                .isEqualTo(baseLine.clone().add(17, "minutes").toDate().getTime());
+                .isEqualTo(addMinutes(baseLine, 17).getTime());
             assertThat(ranges[1].to.getTime())
-                .isEqualTo(baseLine.clone().add(19, "minutes").toDate().getTime());
+                .isEqualTo(addMinutes(baseLine, 19).getTime());
             assertThat(ranges[2].from.getTime())
-                .isEqualTo(baseLine.clone().add(40, "minutes").toDate().getTime());
+                .isEqualTo(addMinutes(baseLine, 40).getTime());
             assertThat(ranges[2].to.getTime())
-                .isEqualTo(baseLine.clone().add(50, "minutes").toDate().getTime());
+                .isEqualTo(addMinutes(baseLine, 50).getTime());
 
             // evict just the document
             sessionOperations.documentsByEntity.evict(user);
@@ -323,7 +323,7 @@ import { delay } from "../../../src/Utility/PromiseUtil.js";
 
             user = await session.load<User>(documentId, {
                 documentType: User,
-                includes: i => i.includeTimeSeries("heartRateMeasures", baseLine.clone().add(18, "minutes").toDate(), baseLine.clone().add(48, "minutes").toDate())
+                includes: i => i.includeTimeSeries("heartRateMeasures", addMinutes(baseLine, 18), addMinutes(baseLine, 48))
             });
 
             assertThat(session.advanced.numberOfRequests)
@@ -332,7 +332,7 @@ import { delay } from "../../../src/Utility/PromiseUtil.js";
             // should not go to server
 
             vals = await session.timeSeriesFor(documentId, HeartRateMeasure)
-                .get(baseLine.clone().add(18, "minutes").toDate(), baseLine.clone().add(48, "minutes").toDate());
+                .get(addMinutes(baseLine, 18), addMinutes(baseLine, 48));
 
             assertThat(session.advanced.numberOfRequests)
                 .isEqualTo(6);
@@ -340,21 +340,21 @@ import { delay } from "../../../src/Utility/PromiseUtil.js";
             assertThat(vals)
                 .hasSize(181);
             assertThat(vals[0].timestamp.getTime())
-                .isEqualTo(baseLine.clone().add(18, "minutes").toDate().getTime());
+                .isEqualTo(addMinutes(baseLine, 18).getTime());
             assertThat(vals[180].timestamp.getTime())
-                .isEqualTo(baseLine.clone().add(48, "minutes").toDate().getTime());
+                .isEqualTo(addMinutes(baseLine, 48).getTime());
 
             assertThat(ranges)
                 .hasSize(2);
 
             assertThat(ranges[0].from.getTime())
-                .isEqualTo(baseLine.toDate().getTime());
+                .isEqualTo(baseLine.getTime());
             assertThat(ranges[0].to.getTime())
-                .isEqualTo(baseLine.clone().add(16, "minutes").toDate().getTime());
+                .isEqualTo(addMinutes(baseLine, 16).getTime());
             assertThat(ranges[1].from.getTime())
-                .isEqualTo(baseLine.clone().add(17, "minutes").toDate().getTime());
+                .isEqualTo(addMinutes(baseLine, 17).getTime());
             assertThat(ranges[1].to.getTime())
-                .isEqualTo(baseLine.clone().add(50, "minutes").toDate().getTime());
+                .isEqualTo(addMinutes(baseLine, 50).getTime());
 
             // evict just the document
             sessionOperations.documentsByEntity.evict(user);
@@ -366,7 +366,7 @@ import { delay } from "../../../src/Utility/PromiseUtil.js";
 
             user = await session.load<User>(documentId, {
                 documentType: User,
-                includes: i => i.includeTimeSeries("heartRateMeasures", baseLine.clone().add(12, "minutes").toDate(), baseLine.clone().add(22, "minutes").toDate())
+                includes: i => i.includeTimeSeries("heartRateMeasures", addMinutes(baseLine, 12), addMinutes(baseLine, 22))
             });
 
             assertThat(session.advanced.numberOfRequests)
@@ -375,7 +375,7 @@ import { delay } from "../../../src/Utility/PromiseUtil.js";
             // should not go to server
 
             vals = await session.timeSeriesFor(documentId, HeartRateMeasure)
-                .get(baseLine.clone().add(12, "minutes").toDate(), baseLine.clone().add(22, "minutes").toDate());
+                .get(addMinutes(baseLine, 12), addMinutes(baseLine, 22));
 
             assertThat(session.advanced.numberOfRequests)
                 .isEqualTo(7);
@@ -384,16 +384,16 @@ import { delay } from "../../../src/Utility/PromiseUtil.js";
                 .hasSize(61);
 
             assertThat(vals[0].timestamp.getTime())
-                .isEqualTo(baseLine.clone().add(12, "minutes").toDate().getTime());
+                .isEqualTo(addMinutes(baseLine, 12).getTime());
             assertThat(vals[60].timestamp.getTime())
-                .isEqualTo(baseLine.clone().add(22, "minutes").toDate().getTime());
+                .isEqualTo(addMinutes(baseLine, 22).getTime());
 
             assertThat(ranges)
                 .hasSize(1);
             assertThat(ranges[0].from.getTime())
-                .isEqualTo(baseLine.toDate().getTime());
+                .isEqualTo(baseLine.getTime());
             assertThat(ranges[0].to.getTime())
-                .isEqualTo(baseLine.clone().add(50, "minutes").toDate().getTime());
+                .isEqualTo(addMinutes(baseLine, 50).getTime());
 
             // evict just the document
             sessionOperations.documentsByEntity.evict(user);
@@ -413,7 +413,7 @@ import { delay } from "../../../src/Utility/PromiseUtil.js";
             // should not go to server
 
             vals = await session.timeSeriesFor(documentId, HeartRateMeasure)
-                .get(baseLine.clone().add(50, "minutes").toDate(), null);
+                .get(addMinutes(baseLine, 50), null);
 
             assertThat(session.advanced.numberOfRequests)
                 .isEqualTo(8);
@@ -422,22 +422,22 @@ import { delay } from "../../../src/Utility/PromiseUtil.js";
                 .hasSize(60);
 
             assertThat(vals[0].timestamp.getTime())
-                .isEqualTo(baseLine.clone().add(50, "minutes").toDate().getTime());
+                .isEqualTo(addMinutes(baseLine, 50).getTime());
             assertThat(vals[59].timestamp.getTime())
-                .isEqualTo(baseLine.clone().add(59, "minutes").add(50, "seconds").toDate().getTime());
+                .isEqualTo(addSeconds(addMinutes(baseLine, 59), 50).getTime());
 
             assertThat(ranges)
                 .hasSize(1);
 
             assertThat(ranges[0].from.getTime())
-                .isEqualTo(baseLine.toDate().getTime());
+                .isEqualTo(baseLine.getTime());
             assertThat(ranges[0].to)
                 .isNull();
         }
     });
 
     it("includeTimeSeriesAndUpdateExistingRangeInCache_Typed", async function () {
-        const baseLine = moment().utc().startOf("month");
+        const baseLine = testContext.utcMonthStart();
 
         {
             const session = store.openSession();
@@ -453,7 +453,7 @@ import { delay } from "../../../src/Utility/PromiseUtil.js";
             const tsf = session.timeSeriesFor("users/ayende", HeartRateMeasure);
 
             for (let i = 0; i < 360; i++) {
-                tsf.append(baseLine.clone().add(i * 10, "seconds").toDate(), HeartRateMeasure.create(6), "watches/fitbit");
+                tsf.append(addSeconds(baseLine, i * 10), HeartRateMeasure.create(6), "watches/fitbit");
             }
 
             await session.saveChanges();
@@ -462,7 +462,7 @@ import { delay } from "../../../src/Utility/PromiseUtil.js";
         {
             const session = store.openSession();
             let vals = await session.timeSeriesFor("users/ayende", HeartRateMeasure)
-                .get(baseLine.clone().add(2, "minutes").toDate(), baseLine.clone().add(10, "minutes").toDate());
+                .get(addMinutes(baseLine, 2), addMinutes(baseLine, 10));
 
             assertThat(session.advanced.numberOfRequests)
                 .isEqualTo(1);
@@ -471,12 +471,12 @@ import { delay } from "../../../src/Utility/PromiseUtil.js";
                 .hasSize(49);
 
             assertThat(vals[0].timestamp.getTime())
-                .isEqualTo(baseLine.clone().add(2, "minutes").toDate().getTime());
+                .isEqualTo(addMinutes(baseLine, 2).getTime());
             assertThat(vals[48].timestamp.getTime())
-                .isEqualTo(baseLine.clone().add(10, "minutes").toDate().getTime());
+                .isEqualTo(addMinutes(baseLine, 10).getTime());
 
             session.timeSeriesFor("users/ayende", HeartRateMeasure)
-                .append(baseLine.clone().add(3, "minutes").add(3, "seconds").toDate(), HeartRateMeasure.create(6), "watches/fitbit");
+                .append(addMinutes(addSeconds(baseLine, 3), 3), HeartRateMeasure.create(6), "watches/fitbit");
             await session.saveChanges();
 
             assertThat(session.advanced.numberOfRequests)
@@ -484,7 +484,7 @@ import { delay } from "../../../src/Utility/PromiseUtil.js";
 
             const user = await session.load<User>("users/ayende", {
                 documentType: User,
-                includes: i => i.includeTimeSeries("heartRateMeasures", baseLine.clone().add(3, "minutes").toDate(), baseLine.clone().add(5, "minutes").toDate())
+                includes: i => i.includeTimeSeries("heartRateMeasures", addMinutes(baseLine, 3), addMinutes(baseLine, 5))
             });
 
             assertThat(session.advanced.numberOfRequests)
@@ -493,7 +493,7 @@ import { delay } from "../../../src/Utility/PromiseUtil.js";
             // should not go to server
 
             vals = await session.timeSeriesFor("users/ayende", HeartRateMeasure)
-                .get(baseLine.clone().add(3, "minutes").toDate(), baseLine.clone().add(5, "minutes").toDate());
+                .get(addMinutes(baseLine, 3), addMinutes(baseLine, 5));
 
             assertThat(session.advanced.numberOfRequests)
                 .isEqualTo(3);
@@ -501,11 +501,11 @@ import { delay } from "../../../src/Utility/PromiseUtil.js";
             assertThat(vals)
                 .hasSize(14);
             assertThat(vals[0].timestamp.getTime())
-                .isEqualTo(baseLine.clone().add(3, "minutes").toDate().getTime());
+                .isEqualTo(addMinutes(baseLine, 3).getTime());
             assertThat(vals[1].timestamp.getTime())
-                .isEqualTo(baseLine.clone().add(3, "minutes").add(3, "seconds").toDate().getTime());
+                .isEqualTo(addSeconds(addMinutes(baseLine, 3), 3).getTime());
             assertThat(vals[13].timestamp.getTime())
-                .isEqualTo(baseLine.clone().add(5, "minutes").toDate().getTime());
+                .isEqualTo(addMinutes(baseLine, 5).getTime());
         }
     });
 
@@ -530,7 +530,7 @@ import { delay } from "../../../src/Utility/PromiseUtil.js";
 
         const total = TimeValue.ofDays(12).value;
 
-        const baseLine = moment().utc().startOf("month").add(-12, "days");
+        const baseLine = addDays(testContext.utcMonthStart(), -12);
 
         {
             const session = store.openSession();
@@ -540,7 +540,7 @@ import { delay } from "../../../src/Utility/PromiseUtil.js";
 
             const ts = session.timeSeriesFor("users/karmel", StockPrice);
             const entry = new StockPrice();
-            let baseTime = baseLine.toDate().getTime();
+            let baseTime = baseLine.getTime();
             for (let i = 0; i <= total; i++) {
                 entry.open = i;
                 entry.close = i + 100_000;
@@ -565,7 +565,7 @@ import { delay } from "../../../src/Utility/PromiseUtil.js";
                 .hasSize(16);
 
             // should not go to server
-            res = await ts.get(baseLine.toDate(), baseLine.clone().add(1, "year").toDate());
+            res = await ts.get(baseLine, addYears(baseLine, 1));
             assertThat(res)
                 .hasSize(16);
             assertThat(session.advanced.numberOfRequests)
@@ -593,7 +593,7 @@ import { delay } from "../../../src/Utility/PromiseUtil.js";
         await store.timeSeries.register(User, StockPrice);
 
         const total = TimeValue.ofDays(12).value;
-        const baseLine = moment().utc().startOf("month").add(-12, "days");
+        const baseLine = addDays(testContext.utcMonthStart(), -12);
 
         {
             const session = store.openSession();
@@ -609,7 +609,7 @@ import { delay } from "../../../src/Utility/PromiseUtil.js";
                 entry.high = i + 200_000;
                 entry.low = i + 300_000;
                 entry.volume = i + 400_000;
-                ts.append(baseLine.clone().add(i, "minutes").toDate(), entry, "watches/fitbit");
+                ts.append(addMinutes(baseLine, i), entry, "watches/fitbit");
             }
 
             await session.saveChanges();

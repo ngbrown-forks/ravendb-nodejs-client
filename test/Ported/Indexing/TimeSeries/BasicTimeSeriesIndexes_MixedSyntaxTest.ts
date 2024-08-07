@@ -27,7 +27,7 @@ describe("BasicTimeSeriesIndexes_MixedSyntaxTest", function () {
             const company = new Company();
             await session.store(company, "companies/1");
             session.timeSeriesFor(company, "HeartRate")
-                .append(now1.toDate(), 7, "tag");
+                .append(now1, 7, "tag");
 
             await session.saveChanges();
         }

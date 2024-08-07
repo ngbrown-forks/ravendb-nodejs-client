@@ -7,6 +7,7 @@ import {
 import { disposeTestDocumentStore, testContext } from "../../../Utils/TestUtil.js";
 import { User } from "../../../Assets/Entities.js";
 import { assertThat } from "../../../Utils/AssertExtensions.js";
+import { addMinutes } from "date-fns";
 
 describe("OtherTest", function () {
     let store: IDocumentStore;
@@ -32,7 +33,7 @@ describe("OtherTest", function () {
                 const ts = session.timeSeriesFor(id, "HeartRates");
                 const cf = session.countersFor(id);
                 for (let j = 0; j < 20; j++) {
-                    ts.append(baseLine.clone().add(j, "minutes").toDate(), j, "watches/apple");
+                    ts.append(addMinutes(baseLine, j), j, "watches/apple");
                     cf.increment("Likes", j);
                 }
 

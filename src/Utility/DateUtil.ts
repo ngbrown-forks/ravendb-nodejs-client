@@ -14,6 +14,7 @@ export class DateUtil {
     public static default: DateUtil = new DateUtil({});
 
     public static utc: DateUtil = new DateUtil({ useUtcDates: true });
+    public static tz: DateUtil = new DateUtil({ withTimezone: true });
 
     public constructor(protected opts: DateUtilOpts) {}
 

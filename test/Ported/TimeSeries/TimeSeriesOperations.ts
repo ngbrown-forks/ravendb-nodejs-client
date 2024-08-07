@@ -13,6 +13,7 @@ import { disposeTestDocumentStore, testContext } from "../../Utils/TestUtil.js";
 import { User } from "../../Assets/Entities.js";
 import { assertThat, assertThrows } from "../../Utils/AssertExtensions.js";
 import { RawQueryResult } from "./TimeSeriesRawQuery.js";
+import { addDays, addMinutes, addMonths, addSeconds, addYears } from "date-fns";
 
 describe("TimeSeriesOperations", function () {
 
@@ -37,7 +38,7 @@ describe("TimeSeriesOperations", function () {
 
         const baseLine = testContext.utcToday();
 
-        const append1 = new AppendOperation(baseLine.clone().add(1, "second").toDate(), [ 59 ], "watches/fitbit");
+        const append1 = new AppendOperation(addSeconds(baseLine, 1), [ 59 ], "watches/fitbit");
         const timeSeriesOp = new TimeSeriesOperation("Heartrate");
         timeSeriesOp.append(append1);
 
@@ -57,7 +58,7 @@ describe("TimeSeriesOperations", function () {
         assertThat(value.tag)
             .isEqualTo("watches/fitbit");
         assertThat(value.timestamp.getTime())
-            .isEqualTo(baseLine.clone().add(1, "second").toDate().getTime());
+            .isEqualTo(addSeconds(baseLine, 1).getTime());
     });
 
     it("canGetNonExistedRange", async () => {
@@ -71,7 +72,7 @@ describe("TimeSeriesOperations", function () {
         const baseLine = testContext.utcToday();
 
         const timeSeriesOp = new TimeSeriesOperation("Heartrate");
-        timeSeriesOp.append(new AppendOperation(baseLine.clone().add(1, "second").toDate(), [ 59 ], "watches/fitbit"));
+        timeSeriesOp.append(new AppendOperation(addSeconds(baseLine, 1), [ 59 ], "watches/fitbit"));
 
         const timeSeriesBatch = new TimeSeriesBatchOperation("users/ayende", timeSeriesOp);
         await store.operations.send(timeSeriesBatch);
@@ -80,8 +81,8 @@ describe("TimeSeriesOperations", function () {
             new GetTimeSeriesOperation(
                 "users/ayende",
                 "Heartrate",
-                baseLine.clone().add(-2, "months").toDate(),
-                baseLine.clone().add(-1, "months").toDate()
+                addMonths(baseLine, -2),
+                addMonths(baseLine, -1)
             ));
 
         assertThat(timeSeriesRangeResult.entries)
@@ -101,11 +102,11 @@ describe("TimeSeriesOperations", function () {
 
         const timeSeriesOp = new TimeSeriesOperation("Heartrate");
         timeSeriesOp
-            .append(new AppendOperation(baseLine.clone().add(1, "second").toDate(), [ 59 ], "watches/fitbit"));
+            .append(new AppendOperation(addSeconds(baseLine, 1), [ 59 ], "watches/fitbit"));
         timeSeriesOp
-            .append(new AppendOperation(baseLine.clone().add(2, "second").toDate(), [ 61 ], "watches/fitbit"));
+            .append(new AppendOperation(addSeconds(baseLine, 2), [ 61 ], "watches/fitbit"));
         timeSeriesOp
-            .append(new AppendOperation(baseLine.clone().add(5, "second").toDate(), [ 60 ], "watches/apple-watch"));
+            .append(new AppendOperation(addSeconds(baseLine, 5), [ 60 ], "watches/apple-watch"));
 
         const timeSeriesBatch = new TimeSeriesBatchOperation(documentId, timeSeriesOp);
 
@@ -123,7 +124,7 @@ describe("TimeSeriesOperations", function () {
         assertThat(value.tag)
             .isEqualTo("watches/fitbit");
         assertThat(value.timestamp.getTime())
-            .isEqualTo(baseLine.clone().add(1, "seconds").toDate().getTime());
+            .isEqualTo(addSeconds(baseLine, 1).getTime());
 
         value = timeSeriesRangeResult.entries[1];
 
@@ -132,7 +133,7 @@ describe("TimeSeriesOperations", function () {
         assertThat(value.tag)
             .isEqualTo("watches/fitbit");
         assertThat(value.timestamp.getTime())
-            .isEqualTo(baseLine.clone().add(2, "seconds").toDate().getTime());
+            .isEqualTo(addSeconds(baseLine, 2).getTime());
 
         value = timeSeriesRangeResult.entries[2];
 
@@ -141,7 +142,7 @@ describe("TimeSeriesOperations", function () {
         assertThat(value.tag)
             .isEqualTo("watches/apple-watch");
         assertThat(value.timestamp.getTime())
-            .isEqualTo(baseLine.clone().add(5, "seconds").toDate().getTime());
+            .isEqualTo(addSeconds(baseLine, 5).getTime());
     });
 
     it("canDeleteTimestampUsingStoreOperations", async () => {
@@ -159,23 +160,23 @@ describe("TimeSeriesOperations", function () {
 
         timeSeriesOp.append(
             new AppendOperation(
-                baseLine.clone().add(1, "seconds").toDate(), [ 59 ], "watches/fitbit"));
+                addSeconds(baseLine, 1), [ 59 ], "watches/fitbit"));
 
         timeSeriesOp.append(
             new AppendOperation(
-                baseLine.clone().add(2, "seconds").toDate(), [ 61 ], "watches/fitbit"));
+                addSeconds(baseLine, 2), [ 61 ], "watches/fitbit"));
 
         timeSeriesOp.append(
             new AppendOperation(
-                baseLine.clone().add(3, "seconds").toDate(), [ 60 ], "watches/fitbit"));
+                addSeconds(baseLine, 3), [ 60 ], "watches/fitbit"));
 
         timeSeriesOp.append(
             new AppendOperation(
-                baseLine.clone().add(4, "seconds").toDate(), [ 62.5 ], "watches/fitbit"));
+                addSeconds(baseLine, 4), [ 62.5 ], "watches/fitbit"));
 
         timeSeriesOp.append(
             new AppendOperation(
-                baseLine.clone().add(5, "seconds").toDate(), [ 62 ], "watches/fitbit"));
+                addSeconds(baseLine, 5), [ 62 ], "watches/fitbit"));
 
         let timeSeriesBatch = new TimeSeriesBatchOperation(documentId, timeSeriesOp);
 
@@ -191,7 +192,7 @@ describe("TimeSeriesOperations", function () {
         timeSeriesOp = new TimeSeriesOperation("Heartrate");
         timeSeriesOp.delete(
             new DeleteOperation(
-                baseLine.clone().add(2, "seconds").toDate(), baseLine.clone().add(3, "seconds").toDate()));
+                addSeconds(baseLine, 2), addSeconds(baseLine, 3)));
 
         timeSeriesBatch = new TimeSeriesBatchOperation(documentId, timeSeriesOp);
 
@@ -207,21 +208,21 @@ describe("TimeSeriesOperations", function () {
         assertThat(value.values[0])
             .isEqualTo(59);
         assertThat(value.timestamp.getTime())
-            .isEqualTo(baseLine.clone().add(1, "second").toDate().getTime());
+            .isEqualTo(addSeconds(baseLine, 1).getTime());
 
         value = timeSeriesRangeResult.entries[1];
 
         assertThat(value.values[0])
             .isEqualTo(62.5);
         assertThat(value.timestamp.getTime())
-            .isEqualTo(baseLine.clone().add(4, "seconds").toDate().getTime());
+            .isEqualTo(addSeconds(baseLine, 4).getTime());
 
         value = timeSeriesRangeResult.entries[2];
 
         assertThat(value.values[0])
             .isEqualTo(62);
         assertThat(value.timestamp.getTime())
-            .isEqualTo(baseLine.clone().add(5, "second").toDate().getTime());
+            .isEqualTo(addSeconds(baseLine, 5).getTime());
 
         {
             const session = store.openSession();
@@ -237,9 +238,9 @@ describe("TimeSeriesOperations", function () {
             await session.saveChanges();
 
             const tsf = session.timeSeriesFor(documentId, "Heartrate");
-            tsf.append(baseLine.clone().add(1, "minutes").toDate(), [ 59 ], "watches/fitbit");
-            tsf.append(baseLine.clone().add(2, "minutes").toDate(), [ 69 ], "watches/fitbit");
-            tsf.append(baseLine.clone().add(3, "minutes").toDate(), [ 79 ], "watches/fitbit");
+            tsf.append(addMinutes(baseLine, 1), [ 59 ], "watches/fitbit");
+            tsf.append(addMinutes(baseLine, 2), [ 69 ], "watches/fitbit");
+            tsf.append(addMinutes(baseLine, 3), [ 79 ], "watches/fitbit");
 
             await session.saveChanges();
         }
@@ -250,7 +251,7 @@ describe("TimeSeriesOperations", function () {
             user.name = "Oren";
             await session.store(user, documentId);
             session.timeSeriesFor(documentId, "Heartrate")
-                .deleteAt(baseLine.clone().add(2, "minutes").toDate());
+                .deleteAt(addMinutes(baseLine, 2));
             await session.saveChanges();
         }
 
@@ -268,7 +269,7 @@ describe("TimeSeriesOperations", function () {
             assertThat(vals[0].tag)
                 .isEqualTo("watches/fitbit");
             assertThat(vals[0].timestamp.getTime())
-                .isEqualTo(baseLine.clone().add(1, "minute").toDate().getTime());
+                .isEqualTo(addMinutes(baseLine, 1).getTime());
 
             assertThat(vals[1].values)
                 .hasSize(1);
@@ -277,12 +278,12 @@ describe("TimeSeriesOperations", function () {
             assertThat(vals[1].tag)
                 .isEqualTo("watches/fitbit");
             assertThat(vals[1].timestamp.getTime())
-                .isEqualTo(baseLine.clone().add(3, "minutes").toDate().getTime());
+                .isEqualTo(addMinutes(baseLine, 3).getTime());
         }
     });
 
     it("canDeleteLargeRange", async () => {
-        const baseLine = testContext.utcToday().add(-1, "second");
+        const baseLine = addSeconds(testContext.utcToday(), -1);
 
         {
             const session = store.openSession();
@@ -291,7 +292,7 @@ describe("TimeSeriesOperations", function () {
 
             for (let j = 1; j < 10_000; j++) {
                 const offset = j * 10;
-                const time = baseLine.clone().add(offset, "seconds").toDate();
+                const time = addSeconds(baseLine, offset);
 
                 tsf.append(time, [ j ], "watches/apple");
             }
@@ -311,8 +312,8 @@ describe("TimeSeriesOperations", function () {
         {
             const session = store.openSession();
             const query = session.advanced.rawQuery(rawQuery, RawQueryResult)
-                .addParameter("start", baseLine.toDate())
-                .addParameter("end", baseLine.clone().add(1, "day").toDate());
+                .addParameter("start", baseLine)
+                .addParameter("end", addDays(baseLine, 1));
 
             const result = await query.all();
 
@@ -350,7 +351,7 @@ describe("TimeSeriesOperations", function () {
             {
                 const session = store.openSession();
                 const tsf = session.timeSeriesFor("foo/bar", "BloodPressure");
-                tsf.delete(baseLine.clone().add(3600, "seconds").toDate(), baseLine.clone().add(3600 * 10, "seconds").toDate()); // remove 9 hours
+                tsf.delete(addSeconds(baseLine, 3600), addSeconds(baseLine, 3600 * 10)); // remove 9 hours
                 await session.saveChanges();
             }
 
@@ -361,8 +362,8 @@ describe("TimeSeriesOperations", function () {
             {
                 const session = store.openSession(sessionOptions);
                 const query = session.advanced.rawQuery(rawQuery, RawQueryResult)
-                    .addParameter("start", baseLine.toDate())
-                    .addParameter("end", baseLine.clone().add(1, "day").toDate());
+                    .addParameter("start", baseLine)
+                    .addParameter("end", addDays(baseLine, 1));
 
                 const result = await query.all();
 
@@ -426,9 +427,9 @@ describe("TimeSeriesOperations", function () {
         const baseLine = testContext.utcToday();
 
         let timeSeriesOp = new TimeSeriesOperation("Heartrate");
-        timeSeriesOp.append(new AppendOperation(baseLine.clone().add(1, "seconds").toDate(), [ 59 ], "watches/fitbit"));
-        timeSeriesOp.append(new AppendOperation(baseLine.clone().add(2, "seconds").toDate(), [ 61 ], "watches/fitbit"));
-        timeSeriesOp.append(new AppendOperation(baseLine.clone().add(3, "seconds").toDate(), [ 61.5 ], "watches/fitbit"));
+        timeSeriesOp.append(new AppendOperation(addSeconds(baseLine, 1), [ 59 ], "watches/fitbit"));
+        timeSeriesOp.append(new AppendOperation(addSeconds(baseLine, 2), [ 61 ], "watches/fitbit"));
+        timeSeriesOp.append(new AppendOperation(addSeconds(baseLine, 3), [ 61.5 ], "watches/fitbit"));
 
         let timeSeriesBatch = new TimeSeriesBatchOperation(documentId, timeSeriesOp);
 
@@ -439,11 +440,11 @@ describe("TimeSeriesOperations", function () {
             .hasSize(3);
 
         timeSeriesOp = new TimeSeriesOperation("Heartrate");
-        timeSeriesOp.append(new AppendOperation(baseLine.clone().add(4, "seconds").toDate(), [ 60 ], "watches/fitbit"));
-        timeSeriesOp.append(new AppendOperation(baseLine.clone().add(5, "seconds").toDate(), [ 62.5 ], "watches/fitbit"));
-        timeSeriesOp.append(new AppendOperation(baseLine.clone().add(6, "seconds").toDate(), [ 62 ], "watches/fitbit"));
+        timeSeriesOp.append(new AppendOperation(addSeconds(baseLine, 4), [ 60 ], "watches/fitbit"));
+        timeSeriesOp.append(new AppendOperation(addSeconds(baseLine, 5), [ 62.5 ], "watches/fitbit"));
+        timeSeriesOp.append(new AppendOperation(addSeconds(baseLine, 6), [ 62 ], "watches/fitbit"));
 
-        timeSeriesOp.delete(new DeleteOperation(baseLine.clone().add(2, "seconds").toDate(), baseLine.clone().add(3, "seconds").toDate()));
+        timeSeriesOp.delete(new DeleteOperation(addSeconds(baseLine, 2), addSeconds(baseLine, 3)));
 
         timeSeriesBatch = new TimeSeriesBatchOperation(documentId, timeSeriesOp);
 
@@ -458,32 +459,32 @@ describe("TimeSeriesOperations", function () {
         assertThat(value.values[0])
             .isEqualTo(59);
         assertThat(value.timestamp.getTime())
-            .isEqualTo(baseLine.clone().add(1, "seconds").toDate().getTime());
+            .isEqualTo(addSeconds(baseLine, 1).getTime());
 
         value = timeSeriesRangeResult.entries[1];
         assertThat(value.values[0])
             .isEqualTo(60);
         assertThat(value.timestamp.getTime())
-            .isEqualTo(baseLine.clone().add(4, "seconds").toDate().getTime());
+            .isEqualTo(addSeconds(baseLine, 4).getTime());
 
         value = timeSeriesRangeResult.entries[2];
         assertThat(value.values[0])
             .isEqualTo(62.5);
         assertThat(value.timestamp.getTime())
-            .isEqualTo(baseLine.clone().add(5, "seconds").toDate().getTime());
+            .isEqualTo(addSeconds(baseLine, 5).getTime());
 
         value = timeSeriesRangeResult.entries[3];
         assertThat(value.values[0])
             .isEqualTo(62);
         assertThat(value.timestamp.getTime())
-            .isEqualTo(baseLine.clone().add(6, "seconds").toDate().getTime());
+            .isEqualTo(addSeconds(baseLine, 6).getTime());
     });
 
     it("shouldThrowOnAttemptToCreateTimeSeriesOnMissingDocument", async () => {
         const baseLine = testContext.utcToday();
 
         const timeSeriesOp = new TimeSeriesOperation("Heartrate");
-        timeSeriesOp.append(new AppendOperation(baseLine.clone().add(1, "seconds").toDate(), [ 59 ], "watches/fitbit"));
+        timeSeriesOp.append(new AppendOperation(addSeconds(baseLine, 1), [ 59 ], "watches/fitbit"));
 
         const timeSeriesBatch = new TimeSeriesBatchOperation("users/ayende", timeSeriesOp);
         await assertThrows(async () => {
@@ -510,7 +511,7 @@ describe("TimeSeriesOperations", function () {
         const timeSeriesOp = new TimeSeriesOperation("Heartrate");
 
         for (let i = 0; i <= 360; i++) {
-            timeSeriesOp.append(new AppendOperation(baseLine.clone().add(i * 10, "seconds").toDate(), [ 59 ], "watches/fitbit"));
+            timeSeriesOp.append(new AppendOperation(addSeconds(baseLine, i * 10), [ 59 ], "watches/fitbit"));
         }
 
         const timeSeriesBatch = new TimeSeriesBatchOperation(documentId, timeSeriesOp);
@@ -519,18 +520,18 @@ describe("TimeSeriesOperations", function () {
         const timeSeriesDetails = await store.operations.send(new GetMultipleTimeSeriesOperation(documentId, [
             {
                 name: "Heartrate",
-                from: baseLine.clone().add(5, "minutes").toDate(),
-                to: baseLine.clone().add(10, "minutes").toDate()
+                from: addMinutes(baseLine, 5),
+                to: addMinutes(baseLine, 10)
             },
             {
                 name: "Heartrate",
-                from: baseLine.clone().add(15, "minutes").toDate(),
-                to: baseLine.clone().add(30, "minutes").toDate()
+                from: addMinutes(baseLine, 15),
+                to: addMinutes(baseLine, 30)
             },
             {
                 name: "Heartrate",
-                from: baseLine.clone().add(40, "minutes").toDate(),
-                to: baseLine.clone().add(60, "minutes").toDate()
+                from: addMinutes(baseLine, 40),
+                to: addMinutes(baseLine, 60)
             }
         ]));
 
@@ -544,47 +545,47 @@ describe("TimeSeriesOperations", function () {
         let range = timeSeriesDetails.values.get("Heartrate")[0];
 
         assertThat(range.from.getTime())
-            .isEqualTo(baseLine.clone().add(5, "minutes").toDate().getTime());
+            .isEqualTo(addMinutes(baseLine, 5).getTime());
         assertThat(range.to.getTime())
-            .isEqualTo(baseLine.clone().add(10, "minutes").toDate().getTime());
+            .isEqualTo(addMinutes(baseLine, 10).getTime());
 
         assertThat(range.entries)
             .hasSize(31);
 
         assertThat(range.entries[0].timestamp.getTime())
-            .isEqualTo(baseLine.clone().add(5, "minutes").toDate().getTime());
+            .isEqualTo(addMinutes(baseLine, 5).getTime());
         assertThat(range.entries[30].timestamp.getTime())
-            .isEqualTo(baseLine.clone().add(10, "minutes").toDate().getTime());
+            .isEqualTo(addMinutes(baseLine, 10).getTime());
 
         range = timeSeriesDetails.values.get("Heartrate")[1];
 
         assertThat(range.from.getTime())
-            .isEqualTo(baseLine.clone().add(15, "minutes").toDate().getTime());
+            .isEqualTo(addMinutes(baseLine, 15).getTime());
         assertThat(range.to.getTime())
-            .isEqualTo(baseLine.clone().add(30, "minutes").toDate().getTime());
+            .isEqualTo(addMinutes(baseLine, 30).getTime());
 
         assertThat(range.entries)
             .hasSize(91);
 
         assertThat(range.entries[0].timestamp.getTime())
-            .isEqualTo(baseLine.clone().add(15, "minutes").toDate().getTime());
+            .isEqualTo(addMinutes(baseLine, 15).getTime());
         assertThat(range.entries[90].timestamp.getTime())
-            .isEqualTo(baseLine.clone().add(30, "minutes").toDate().getTime());
+            .isEqualTo(addMinutes(baseLine, 30).getTime());
 
         range = timeSeriesDetails.values.get("Heartrate")[2];
 
         assertThat(range.from.getTime())
-            .isEqualTo(baseLine.clone().add(40, "minutes").toDate().getTime());
+            .isEqualTo(addMinutes(baseLine, 40).getTime());
         assertThat(range.to.getTime())
-            .isEqualTo(baseLine.clone().add(60, "minutes").toDate().getTime());
+            .isEqualTo(addMinutes(baseLine, 60).getTime());
 
         assertThat(range.entries)
             .hasSize(121);
 
         assertThat(range.entries[0].timestamp.getTime())
-            .isEqualTo(baseLine.clone().add(40, "minutes").toDate().getTime());
+            .isEqualTo(addMinutes(baseLine, 40).getTime());
         assertThat(range.entries[120].timestamp.getTime())
-            .isEqualTo(baseLine.clone().add(60, "minutes").toDate().getTime());
+            .isEqualTo(addMinutes(baseLine, 60).getTime());
     });
 
     it("canGetMultipleTimeSeriesInSingleRequest", async () => {
@@ -603,7 +604,7 @@ describe("TimeSeriesOperations", function () {
         let timeSeriesOp = new TimeSeriesOperation("Heartrate");
 
         for (let i = 0; i <= 10; i++) {
-            timeSeriesOp.append(new AppendOperation(baseLine.clone().add(i * 10, "minutes").toDate(), [ 72 ], "watches/fitbit"));
+            timeSeriesOp.append(new AppendOperation(addMinutes(baseLine, i * 10), [ 72 ], "watches/fitbit"));
         }
 
         let timeSeriesBatch = new TimeSeriesBatchOperation(documentId, timeSeriesOp);
@@ -613,7 +614,7 @@ describe("TimeSeriesOperations", function () {
         timeSeriesOp = new TimeSeriesOperation("BloodPressure");
 
         for (let i = 0; i <= 10; i++) {
-            timeSeriesOp.append(new AppendOperation(baseLine.clone().add(i * 10, "minutes").toDate(), [ 80 ]));
+            timeSeriesOp.append(new AppendOperation(addMinutes(baseLine, i * 10), [ 80 ]));
         }
 
         timeSeriesBatch = new TimeSeriesBatchOperation(documentId, timeSeriesOp);
@@ -623,7 +624,7 @@ describe("TimeSeriesOperations", function () {
         timeSeriesOp = new TimeSeriesOperation("Temperature");
 
         for (let i = 0; i <= 10; i++) {
-            timeSeriesOp.append(new AppendOperation(baseLine.clone().add(i * 10, "minutes").toDate(), [ 37 + i * 0.15 ]));
+            timeSeriesOp.append(new AppendOperation(addMinutes(baseLine, i * 10), [ 37 + i * 0.15 ]));
         }
 
         timeSeriesBatch = new TimeSeriesBatchOperation(documentId, timeSeriesOp);
@@ -635,24 +636,24 @@ describe("TimeSeriesOperations", function () {
         const timeSeriesDetails = await store.operations.send(new GetMultipleTimeSeriesOperation(documentId, [
             {
                 name: "Heartrate",
-                from: baseLine.toDate(),
-                to: baseLine.clone().add(15, "minutes").toDate()
+                from: baseLine,
+                to: addMinutes(baseLine, 15)
             }, {
                 name: "Heartrate",
-                from: baseLine.clone().add(30, "minutes").toDate(),
-                to: baseLine.clone().add(45, "minutes").toDate()
+                from: addMinutes(baseLine, 30),
+                to: addMinutes(baseLine, 45)
             }, {
                 name: "BloodPressure",
-                from: baseLine.toDate(),
-                to: baseLine.clone().add(30, "minutes").toDate()
+                from: baseLine,
+                to: addMinutes(baseLine, 30)
             }, {
                 name: "BloodPressure",
-                from: baseLine.clone().add(60, "minutes").toDate(),
-                to: baseLine.clone().add(90, "minutes").toDate()
+                from: addMinutes(baseLine, 60),
+                to: addMinutes(baseLine, 90)
             }, {
                 name: "Temperature",
-                from: baseLine.toDate(),
-                to: baseLine.clone().add(1, "day").toDate()
+                from: baseLine,
+                to: addDays(baseLine, 1)
             }
         ]));
 
@@ -668,17 +669,17 @@ describe("TimeSeriesOperations", function () {
         let range = timeSeriesDetails.values.get("Heartrate")[0];
 
         assertThat(range.from.getTime())
-            .isEqualTo(baseLine.toDate().getTime());
+            .isEqualTo(baseLine.getTime());
         assertThat(range.to.getTime())
-            .isEqualTo(baseLine.clone().add(15, "minutes").toDate().getTime());
+            .isEqualTo(addMinutes(baseLine, 15).getTime());
 
         assertThat(range.entries)
             .hasSize(2);
 
         assertThat(range.entries[0].timestamp.getTime())
-            .isEqualTo(baseLine.toDate().getTime());
+            .isEqualTo(baseLine.getTime());
         assertThat(range.entries[1].timestamp.getTime())
-            .isEqualTo(baseLine.clone().add(10, "minutes").toDate().getTime());
+            .isEqualTo(addMinutes(baseLine, 10).getTime());
 
         assertThat(range.totalResults)
             .isNull();
@@ -686,16 +687,16 @@ describe("TimeSeriesOperations", function () {
         range = timeSeriesDetails.values.get("Heartrate")[1];
 
         assertThat(range.from.getTime())
-            .isEqualTo(baseLine.clone().add(30, "minutes").toDate().getTime());
+            .isEqualTo(addMinutes(baseLine, 30).getTime());
         assertThat(range.to.getTime())
-            .isEqualTo(baseLine.clone().add(45, "minutes").toDate().getTime());
+            .isEqualTo(addMinutes(baseLine, 45).getTime());
 
         assertThat(range.entries)
             .hasSize(2);
         assertThat(range.entries[0].timestamp.getTime())
-            .isEqualTo(baseLine.clone().add(30, "minutes").toDate().getTime());
+            .isEqualTo(addMinutes(baseLine, 30).getTime());
         assertThat(range.entries[1].timestamp.getTime())
-            .isEqualTo(baseLine.clone().add(40, "minutes").toDate().getTime());
+            .isEqualTo(addMinutes(baseLine, 40).getTime());
 
         assertThat(range.totalResults)
             .isNull();
@@ -706,17 +707,17 @@ describe("TimeSeriesOperations", function () {
         range = timeSeriesDetails.values.get("BloodPressure")[0];
 
         assertThat(range.from.getTime())
-            .isEqualTo(baseLine.toDate().getTime());
+            .isEqualTo(baseLine.getTime());
         assertThat(range.to.getTime())
-            .isEqualTo(baseLine.clone().add(30, "minutes").toDate().getTime());
+            .isEqualTo(addMinutes(baseLine, 30).getTime());
 
         assertThat(range.entries)
             .hasSize(4);
 
         assertThat(range.entries[0].timestamp.getTime())
-            .isEqualTo(baseLine.toDate().getTime());
+            .isEqualTo(baseLine.getTime());
         assertThat(range.entries[3].timestamp.getTime())
-            .isEqualTo(baseLine.clone().add(30, "minutes").toDate().getTime());
+            .isEqualTo(addMinutes(baseLine, 30).getTime());
 
         assertThat(range.totalResults)
             .isNull();
@@ -724,17 +725,17 @@ describe("TimeSeriesOperations", function () {
         range = timeSeriesDetails.values.get("BloodPressure")[1];
 
         assertThat(range.from.getTime())
-            .isEqualTo(baseLine.clone().add(60, "minutes").toDate().getTime());
+            .isEqualTo(addMinutes(baseLine, 60).getTime());
         assertThat(range.to.getTime())
-            .isEqualTo(baseLine.clone().add(90, "minutes").toDate().getTime());
+            .isEqualTo(addMinutes(baseLine, 90).getTime());
 
         assertThat(range.entries)
             .hasSize(4);
 
         assertThat(range.entries[0].timestamp.getTime())
-            .isEqualTo(baseLine.clone().add(60, "minutes").toDate().getTime());
+            .isEqualTo(addMinutes(baseLine, 60).getTime());
         assertThat(range.entries[3].timestamp.getTime())
-            .isEqualTo(baseLine.clone().add(90, "minutes").toDate().getTime());
+            .isEqualTo(addMinutes(baseLine, 90).getTime());
 
         assertThat(range.totalResults)
             .isNull();
@@ -745,17 +746,17 @@ describe("TimeSeriesOperations", function () {
         range = timeSeriesDetails.values.get("Temperature")[0];
 
         assertThat(range.from.getTime())
-            .isEqualTo(baseLine.toDate().getTime());
+            .isEqualTo(baseLine.getTime());
         assertThat(range.to.getTime())
-            .isEqualTo(baseLine.clone().add(1, "day").toDate().getTime());
+            .isEqualTo(addDays(baseLine, 1).getTime());
 
         assertThat(range.entries)
             .hasSize(11);
 
         assertThat(range.entries[0].timestamp.getTime())
-            .isEqualTo(baseLine.toDate().getTime());
+            .isEqualTo(baseLine.getTime());
         assertThat(range.entries[10].timestamp.getTime())
-            .isEqualTo(baseLine.clone().add(100, "minutes").toDate().getTime());
+            .isEqualTo(addMinutes(baseLine, 100).getTime());
 
         assertThat(range.totalResults)
             .isEqualTo(11); // full range
@@ -777,7 +778,7 @@ describe("TimeSeriesOperations", function () {
         for (let i = 0; i <= 10; i++) {
             timeSeriesOp.append(
                 new AppendOperation(
-                    baseLine.clone().add(i * 10, "minutes").toDate(), [ 72 ], "watches/fitbit"));
+                    addMinutes(baseLine, i * 10), [ 72 ], "watches/fitbit"));
         }
 
         const timeSeriesBatch = new TimeSeriesBatchOperation(documentId, timeSeriesOp);
@@ -811,7 +812,7 @@ describe("TimeSeriesOperations", function () {
 
             for (let i = 0; i <= 10; i++) {
                 timeSeriesOp.append(
-                    new AppendOperation(baseLine.clone().add(i * 10, "minutes").toDate(), [ 72 ], "watches/fitbit"));
+                    new AppendOperation(addMinutes(baseLine, i * 10), [ 72 ], "watches/fitbit"));
             }
 
             const timeSeriesBatch = new TimeSeriesBatchOperation(documentId, timeSeriesOp);
@@ -821,7 +822,7 @@ describe("TimeSeriesOperations", function () {
             await assertThrows(() => {
                 return store.operations.send(new GetMultipleTimeSeriesOperation("users/ayende", [{
                     name: null,
-                    from: baseLine.toDate(),
+                    from: baseLine,
                     to: null
                 }]))
             }, err => {
@@ -849,7 +850,7 @@ describe("TimeSeriesOperations", function () {
         for (let i = 0; i <= 10; i++) {
             timeSeriesOp.append(
                 new AppendOperation(
-                    baseLine.clone().add(i * 10, "minutes").toDate(), [ 72 ], "watches/fitbit"));
+                    addMinutes(baseLine, i * 10), [ 72 ], "watches/fitbit"));
         }
 
         const timeSeriesBatch = new TimeSeriesBatchOperation(documentId, timeSeriesOp);
@@ -861,8 +862,8 @@ describe("TimeSeriesOperations", function () {
                 new GetTimeSeriesOperation(
                     "users/ayende",
                     "",
-                    baseLine.toDate(),
-                    baseLine.clone().add(10, "years").toDate()))
+                    baseLine,
+                    addYears(baseLine, 10)))
         , err => {
                 assertThat(err.message)
                     .contains("Timeseries cannot be null or empty");
@@ -881,12 +882,12 @@ describe("TimeSeriesOperations", function () {
 
             let ts = session.timeSeriesFor(documentId, "heartrate");
             for (let i = 0; i <= 10; i++) {
-                ts.append(baseLine.clone().add(i * 10, "minutes").toDate(), 72, "watches/fitbit");
+                ts.append(addMinutes(baseLine, i * 10), 72, "watches/fitbit");
             }
 
             ts = session.timeSeriesFor(documentId, "pressure");
             for (let i = 10; i <= 20; i++) {
-                ts.append(baseLine.clone().add(i * 10, "minutes").toDate(), 72, "watches/fitbit");
+                ts.append(addMinutes(baseLine, i * 10), 72, "watches/fitbit");
             }
 
             await session.saveChanges();
@@ -913,14 +914,14 @@ describe("TimeSeriesOperations", function () {
             .isEqualTo(11);
 
         assertThat(ts1.startDate.getTime())
-            .isEqualTo(baseLine.toDate().getTime());
+            .isEqualTo(baseLine.getTime());
         assertThat(ts1.endDate.getTime())
-            .isEqualTo(baseLine.clone().add(10 * 10, "minutes").toDate().getTime());
+            .isEqualTo(addMinutes(baseLine, 10 * 10).getTime());
 
         assertThat(ts2.startDate.getTime())
-            .isEqualTo(baseLine.clone().add(10 * 10, "minutes").toDate().getTime());
+            .isEqualTo(addMinutes(baseLine, 10 * 10).getTime());
         assertThat(ts2.endDate.getTime())
-            .isEqualTo(baseLine.clone().add(20 * 10, "minutes").toDate().getTime());
+            .isEqualTo(addMinutes(baseLine, 20 * 10).getTime());
     });
 
     it("canDeleteWithoutProvidingFromAndToDates", async () => {
@@ -937,9 +938,9 @@ describe("TimeSeriesOperations", function () {
             const tsf3 = session.timeSeriesFor(docId, "BodyTemperature");
 
             for (let j = 0; j < 100; j++) {
-                tsf.append(baseLine.clone().add(j, "minutes").toDate(), j);
-                tsf2.append(baseLine.clone().add(j, "minutes").toDate(), j);
-                tsf3.append(baseLine.clone().add(j, "minutes").toDate(), j);
+                tsf.append(addMinutes(baseLine, j), j);
+                tsf2.append(addMinutes(baseLine, j), j);
+                tsf3.append(addMinutes(baseLine, j), j);
             }
 
             await session.saveChanges();
@@ -970,7 +971,7 @@ describe("TimeSeriesOperations", function () {
 
         deleteOp = new TimeSeriesOperation();
         deleteOp.name = "BloodPressure";
-        deleteOp.delete(new DeleteOperation(baseLine.clone().add(50, "minutes").toDate(), null));
+        deleteOp.delete(new DeleteOperation(addMinutes(baseLine, 50), null));
 
         await store.operations.send(new TimeSeriesBatchOperation(docId, deleteOp));
 
@@ -986,7 +987,7 @@ describe("TimeSeriesOperations", function () {
         // null from
         deleteOp = new TimeSeriesOperation();
         deleteOp.name = "BodyTemperature";
-        deleteOp.delete(new DeleteOperation(null, baseLine.clone().add(19, "minutes").toDate()));
+        deleteOp.delete(new DeleteOperation(null, addMinutes(baseLine, 19)));
 
         await store.operations.send(new TimeSeriesBatchOperation(docId, deleteOp));
 

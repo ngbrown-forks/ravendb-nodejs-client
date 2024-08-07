@@ -1,12 +1,11 @@
 import {
     AbstractCsharpTimeSeriesIndexCreationTask,
-    AbstractMultiMapTimeSeriesIndexCreationTask,
+    AbstractMultiMapTimeSeriesIndexCreationTask, DateUtil,
     IDocumentStore
 } from "../../../../src/index.js";
 import { disposeTestDocumentStore, testContext } from "../../../Utils/TestUtil.js";
 import { Company } from "../../../Assets/Orders.js";
 import { assertThat } from "../../../Utils/AssertExtensions.js";
-import moment from "moment";
 import { User } from "../../../Assets/Entities.js";
 
 describe("BasicTimeSeriesIndexes_StrongSyntaxTest", function () {
@@ -28,7 +27,7 @@ describe("BasicTimeSeriesIndexes_StrongSyntaxTest", function () {
             const company = new Company();
             await session.store(company, "companies/1");
             session.timeSeriesFor(company, "HeartRate")
-                .append(now1.toDate(), 7, "tag");
+                .append(now1, 7, "tag");
 
             await session.saveChanges();
         }
@@ -53,8 +52,8 @@ describe("BasicTimeSeriesIndexes_StrongSyntaxTest", function () {
 
             const result = results[0];
 
-            assertThat(moment(result.date).toDate().getTime())
-                .isEqualTo(now1.toDate().getTime());
+            assertThat(DateUtil.utc.parse(result.date).getTime())
+                .isEqualTo(now1.getTime());
             assertThat(result.user)
                 .isNotNull();
             assertThat(result.heartBeat)
@@ -75,14 +74,14 @@ describe("BasicTimeSeriesIndexes_StrongSyntaxTest", function () {
             await session.store(company);
 
             session.timeSeriesFor(company, "HeartRate")
-                .append(now.toDate(), 2.5, "tag1");
+                .append(now, 2.5, "tag1");
             session.timeSeriesFor(company, "HeartRate2")
-                .append(now.toDate(), 3.5, "tag");
+                .append(now, 3.5, "tag");
 
             const user = new User();
             await session.store(user);
             session.timeSeriesFor(user, "HeartRate")
-                .append(now.toDate(), 4.5, "tag3");
+                .append(now, 4.5, "tag3");
 
             await session.saveChanges();
         }
@@ -98,8 +97,8 @@ describe("BasicTimeSeriesIndexes_StrongSyntaxTest", function () {
 
             const result = results[0];
 
-            assertThat(moment(result.date).toDate().getTime())
-                .isEqualTo(now.toDate().getTime());
+            assertThat(DateUtil.utc.parse(result.date).getTime())
+                .isEqualTo(now.getTime());
             assertThat(result.user)
                 .isNotNull();
             assertThat(result.heartBeat)

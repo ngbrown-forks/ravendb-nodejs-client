@@ -29,8 +29,8 @@ import { getLogger } from "../../src/Utility/LogUtil.js";
 import { AdminJsConsoleOperation } from "./AdminJsConsoleOperation.js";
 import { Stopwatch } from "../../src/Utility/Stopwatch.js";
 import { delay, wrapWithTimeout } from "../../src/Utility/PromiseUtil.js";
-import moment from "moment";
 import { INDEXES } from "../../src/Constants.js";
+import { addMinutes, startOfDay, startOfMonth } from "date-fns";
 
 const log = getLogger({ module: "TestDriver" });
 
@@ -257,7 +257,13 @@ export class RavenTestContext extends RavenTestDriver implements IDisposable {
     }
 
     public utcToday() {
-        return moment().utc().startOf("day");
+        const now = startOfDay(new Date());
+        return addMinutes(now, -now.getTimezoneOffset());
+    }
+
+    public utcMonthStart() {
+        const now = startOfMonth(new Date());
+        return addMinutes(now, -now.getTimezoneOffset());
     }
 
     public async waitForDocument<T extends object>(documentInfo: DocumentType<T>,

@@ -1,12 +1,12 @@
-import moment from "moment";
 import assert from "node:assert"
 import { testContext, disposeTestDocumentStore } from "../../Utils/TestUtil.js";
 
 import {
-    AbstractJavaScriptIndexCreationTask,
+    AbstractJavaScriptIndexCreationTask, DateUtil,
     IDocumentStore,
     RangeBuilder,
 } from "../../../src/index.js";
+import { addDays, setYear } from "date-fns";
 
 class ItemsOrders_All extends AbstractJavaScriptIndexCreationTask<ItemsOrder, Pick<ItemsOrder, "at" | "items">> {
     public constructor() {
@@ -309,24 +309,24 @@ describe("AggregationTest", function () {
         const idx = new ItemsOrders_All();
         await idx.execute(store);
 
-        const now = moment();
+        const now = new Date();
         {
             const session = store.openSession();
             const item1 = new ItemsOrder();
             item1.items = ["first", "second"];
-            item1.at = moment(now).toDate();
+            item1.at = now;
 
             const item2 = new ItemsOrder();
             item2.items = ["first", "second"];
-            item2.at = moment(now).add(-1, "d").toDate();
+            item2.at = addDays(now, -1);
 
             const item3 = new ItemsOrder();
             item3.items = ["first"];
-            item3.at = moment(now).toDate();
+            item3.at = now;
 
             const item4 = new ItemsOrder();
             item4.items = ["first"];
-            item4.at = moment(now).toDate();
+            item4.at = now;
 
             await session.store(item1);
             await session.store(item2);
@@ -335,13 +335,12 @@ describe("AggregationTest", function () {
             await session.saveChanges();
         }
 
-        const oldDate = moment(now).toDate();
-        oldDate.setFullYear(1980);
+        const oldDate = setYear(now, 1980);
 
         const minValue = oldDate;
-        const end0 = moment(now).add(-2, "d").toDate();
-        const end1 = moment(now).add(-1, "d").toDate();
-        const end2 = moment(now).toDate();
+        const end0 = addDays(now, -2);
+        const end1 = addDays(now, -1);
+        const end2 = now;
 
         await testContext.waitForIndexing(store);
 

@@ -6,6 +6,7 @@ import {
 } from "../../../src/index.js";
 import { disposeTestDocumentStore, testContext } from "../../Utils/TestUtil.js";
 import { assertThat } from "../../Utils/AssertExtensions.js";
+import { addDays, addMinutes, addMonths } from "date-fns";
 
 describe("TimeSeriesRawQuery", function () {
 
@@ -34,9 +35,9 @@ describe("TimeSeriesRawQuery", function () {
 
                 const tsf = session.timeSeriesFor(id, "Heartrate");
 
-                tsf.append(baseLine.clone().add(61, "minutes").toDate(), 59, "watches/fitbit");
-                tsf.append(baseLine.clone().add(62, "minutes").toDate(), 79, "watches/fitbit");
-                tsf.append(baseLine.clone().add(63, "minutes").toDate(), 69, "watches/fitbit");
+                tsf.append(addMinutes(baseLine, 61), 59, "watches/fitbit");
+                tsf.append(addMinutes(baseLine, 62), 79, "watches/fitbit");
+                tsf.append(addMinutes(baseLine, 63), 69, "watches/fitbit");
 
                 await session.saveChanges();
             }
@@ -57,8 +58,8 @@ describe("TimeSeriesRawQuery", function () {
 from index 'People' as p
 where p.age > 49
 select out(p) as heartRate, p.name`, RawQueryResult)
-                .addParameter("start", baseLine.toDate())
-                .addParameter("end", baseLine.clone().add(1, "day").toDate());
+                .addParameter("start", baseLine)
+                .addParameter("end", addDays(baseLine, 1));
 
             const result = await query.all();
 
@@ -86,16 +87,16 @@ select out(p) as heartRate, p.name`, RawQueryResult)
                     .isEqualTo(79);
 
                 assertThat(val.from.getTime())
-                    .isEqualTo(baseLine.clone().add(60, "minutes").toDate().getTime());
+                    .isEqualTo(addMinutes(baseLine, 60).getTime());
                 assertThat(val.to.getTime())
-                    .isEqualTo(baseLine.clone().add(120, "minutes").toDate().getTime());
+                    .isEqualTo(addMinutes(baseLine, 120).getTime());
             }
         }
     });
 
     it("canQueryTimeSeriesAggregation_DeclareSyntax_MultipleSeries", async () => {
         const baseLine = testContext.utcToday();
-        const baseLine2 = baseLine.clone().add(-1, "day");
+        const baseLine2 = addDays(baseLine, -1);
 
         {
             const session = store.openSession();
@@ -110,15 +111,15 @@ select out(p) as heartRate, p.name`, RawQueryResult)
 
                 let tsf = session.timeSeriesFor(id, "Heartrate");
 
-                tsf.append(baseLine.clone().add(61, "minutes").toDate(), 59, "watches/fitbit");
-                tsf.append(baseLine.clone().add(62, "minutes").toDate(), 79, "watches/fitbit");
-                tsf.append(baseLine.clone().add(63, "minutes").toDate(), 69, "watches/fitbit");
+                tsf.append(addMinutes(baseLine, 61), 59, "watches/fitbit");
+                tsf.append(addMinutes(baseLine, 62), 79, "watches/fitbit");
+                tsf.append(addMinutes(baseLine, 63), 69, "watches/fitbit");
 
                 tsf = session.timeSeriesFor(id, "BloodPressure");
 
-                tsf.append(baseLine2.clone().add(61, "minutes").toDate(), 159, "watches/apple");
-                tsf.append(baseLine2.clone().add(62, "minutes").toDate(), 179, "watches/apple");
-                tsf.append(baseLine2.clone().add(63, "minutes").toDate(), 168, "watches/apple");
+                tsf.append(addMinutes(baseLine2, 61), 159, "watches/apple");
+                tsf.append(addMinutes(baseLine2, 62), 179, "watches/apple");
+                tsf.append(addMinutes(baseLine2, 63), 168, "watches/apple");
 
                 await session.saveChanges();
             }
@@ -145,10 +146,10 @@ select out(p) as heartRate, p.name`, RawQueryResult)
                 "from index 'People' as p\n" +
                 "where p.age > 49\n" +
                 "select heart_rate(p) as heartRate, blood_pressure(p) as bloodPressure", RawQueryResult)
-                .addParameter("start", baseLine.toDate())
-                .addParameter("end", baseLine.clone().add(1, "day").toDate())
-                .addParameter("start2", baseLine2.toDate())
-                .addParameter("end2", baseLine2.clone().add(1, "day").toDate());
+                .addParameter("start", baseLine)
+                .addParameter("end", addDays(baseLine, 1))
+                .addParameter("start2", baseLine2)
+                .addParameter("end2", addDays(baseLine2, 1));
 
             const result = await query.all();
 
@@ -172,9 +173,9 @@ select out(p) as heartRate, p.name`, RawQueryResult)
                     .isEqualTo(79);
 
                 assertThat(val.from.getTime())
-                    .isEqualTo(baseLine.clone().add(60, "minutes").toDate().getTime());
+                    .isEqualTo(addMinutes(baseLine, 60).getTime());
                 assertThat(val.to.getTime())
-                    .isEqualTo(baseLine.clone().add(120, "minutes").toDate().getTime());
+                    .isEqualTo(addMinutes(baseLine, 120).getTime());
 
                 const bloodPressure = agg.bloodPressure;
 
@@ -197,9 +198,9 @@ select out(p) as heartRate, p.name`, RawQueryResult)
                     .isEqualTo(expectedAvg);
 
                 assertThat(val.from.getTime())
-                    .isEqualTo(baseLine2.clone().add(60, "minutes").toDate().getTime());
+                    .isEqualTo(addMinutes(baseLine2, 60).getTime());
                 assertThat(val.to.getTime())
-                    .isEqualTo(baseLine2.clone().add(120, "minutes").toDate().getTime());
+                    .isEqualTo(addMinutes(baseLine2, 120).getTime());
             }
         }
     });
@@ -220,13 +221,13 @@ select out(p) as heartRate, p.name`, RawQueryResult)
 
                 const tsf = session.timeSeriesFor(id, "Heartrate");
 
-                tsf.append(baseLine.clone().add(61, "minutes").toDate(), [ 59, 159 ], "watches/fitbit");
-                tsf.append(baseLine.clone().add(62, "minutes").toDate(), [ 79, 179 ], "watches/fitbit");
-                tsf.append(baseLine.clone().add(63, "minutes").toDate(), 69, "watches/apple");
+                tsf.append(addMinutes(baseLine, 61), [ 59, 159 ], "watches/fitbit");
+                tsf.append(addMinutes(baseLine, 62), [ 79, 179 ], "watches/fitbit");
+                tsf.append(addMinutes(baseLine, 63), 69, "watches/apple");
 
-                tsf.append(baseLine.clone().add(61, "minutes").add(1, "month").toDate(), [ 159, 259 ], "watches/fitbit");
-                tsf.append(baseLine.clone().add(62, "minutes").add(1, "month").toDate(), [ 179 ], "watches/fitbit");
-                tsf.append(baseLine.clone().add(63, "minutes").add(1, "month").toDate(), [ 169, 269 ], "watches/fitbit");
+                tsf.append(addMonths(addMinutes(baseLine, 61), 1), [ 159, 259 ], "watches/fitbit");
+                tsf.append(addMonths(addMinutes(baseLine, 62), 1), [ 179 ], "watches/fitbit");
+                tsf.append(addMonths(addMinutes(baseLine, 63), 1), [ 169, 269 ], "watches/fitbit");
 
                 await session.saveChanges();
             }
@@ -242,8 +243,8 @@ select out(p) as heartRate, p.name`, RawQueryResult)
                     "where doc.age > 49\n" +
                     "select out(doc)",
                     TimeSeriesRawResult)
-                    .addParameter("start", baseLine.toDate())
-                    .addParameter("end", baseLine.clone().add(2, "months").toDate());
+                    .addParameter("start", baseLine)
+                    .addParameter("end", addMonths(baseLine, 2));
 
                 const result = await query.all();
                 assertThat(result)
@@ -267,7 +268,7 @@ select out(p) as heartRate, p.name`, RawQueryResult)
                     assertThat(val.tag)
                         .isEqualTo("watches/fitbit");
                     assertThat(val.timestamp.getTime())
-                        .isEqualTo(baseLine.clone().add(61, "minutes").toDate().getTime());
+                        .isEqualTo(addMinutes(baseLine, 61).getTime());
 
                     val = agg.results[1];
 
@@ -281,7 +282,7 @@ select out(p) as heartRate, p.name`, RawQueryResult)
                     assertThat(val.tag)
                         .isEqualTo("watches/fitbit");
                     assertThat(val.timestamp.getTime())
-                        .isEqualTo(baseLine.clone().add(62, "minutes").toDate().getTime());
+                        .isEqualTo(addMinutes(baseLine, 62).getTime());
 
                     val = agg.results[2];
 
@@ -293,7 +294,7 @@ select out(p) as heartRate, p.name`, RawQueryResult)
                     assertThat(val.tag)
                         .isEqualTo("watches/apple");
                     assertThat(val.timestamp.getTime())
-                        .isEqualTo(baseLine.clone().add(63, "minutes").toDate().getTime());
+                        .isEqualTo(addMinutes(baseLine, 63).getTime());
 
                     val = agg.results[3];
 
@@ -307,7 +308,7 @@ select out(p) as heartRate, p.name`, RawQueryResult)
                     assertThat(val.tag)
                         .isEqualTo("watches/fitbit");
                     assertThat(val.timestamp.getTime())
-                        .isEqualTo(baseLine.clone().add(61, "minutes").add(1, "month").toDate().getTime());
+                        .isEqualTo(addMonths(addMinutes(baseLine, 61), 1).getTime());
 
                     val = agg.results[4];
 
@@ -319,7 +320,7 @@ select out(p) as heartRate, p.name`, RawQueryResult)
                     assertThat(val.tag)
                         .isEqualTo("watches/fitbit");
                     assertThat(val.timestamp.getTime())
-                        .isEqualTo(baseLine.clone().add(62, "minutes").add(1, "month").toDate().getTime());
+                        .isEqualTo(addMonths(addMinutes(baseLine, 62), 1).getTime());
 
                     val = agg.results[5];
 
@@ -333,7 +334,7 @@ select out(p) as heartRate, p.name`, RawQueryResult)
                     assertThat(val.tag)
                         .isEqualTo("watches/fitbit");
                     assertThat(val.timestamp.getTime())
-                        .isEqualTo(baseLine.clone().add(63, "minutes").add(1, "month").toDate().getTime());
+                        .isEqualTo(addMonths(addMinutes(baseLine, 63), 1).getTime());
                 }
             }
         }

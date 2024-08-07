@@ -6,12 +6,12 @@ import {
 } from "../../../src/index.js";
 import { disposeTestDocumentStore, RavenTestContext, testContext } from "../../Utils/TestUtil.js";
 import { User } from "../../Assets/Entities.js";
-import moment from "moment";
 import { Stopwatch } from "../../../src/Utility/Stopwatch.js";
 import { throwError } from "../../../src/Exceptions/index.js";
 import { assertThat } from "../../Utils/AssertExtensions.js";
 import { delay } from "../../../src/Utility/PromiseUtil.js";
 import { DateUtil } from "../../../src/Utility/DateUtil.js";
+import { addHours } from "date-fns";
 
 (RavenTestContext.isPullRequest ? describe.skip : describe)("RavenDB_13735", function () {
 
@@ -36,9 +36,9 @@ import { DateUtil } from "../../../src/Utility/DateUtil.js";
 
             await session.store(user, "users/1-A");
 
-            const hourAgo = moment().add(-1, "hour");
+            const hourAgo = addHours(new Date(), -1);
 
-            session.advanced.getMetadataFor(user)[CONSTANTS.Documents.Metadata.REFRESH] = DateUtil.utc.stringify(hourAgo.toDate());
+            session.advanced.getMetadataFor(user)[CONSTANTS.Documents.Metadata.REFRESH] = DateUtil.utc.stringify(hourAgo);
 
             await session.saveChanges();
 

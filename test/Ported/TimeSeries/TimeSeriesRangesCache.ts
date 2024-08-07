@@ -2,6 +2,7 @@ import { disposeTestDocumentStore, testContext } from "../../Utils/TestUtil.js";
 import { IDocumentStore, InMemoryDocumentSessionOperations } from "../../../src/index.js";
 import { User } from "../../Assets/Entities.js";
 import { assertThat } from "../../Utils/AssertExtensions.js";
+import { addDays, addHours, addMinutes, addSeconds } from "date-fns";
 
 describe("TimeSeriesRangesCacheTest", function () {
 
@@ -23,7 +24,7 @@ describe("TimeSeriesRangesCacheTest", function () {
             user.name = "Oren";
             await session.store(user, "users/ayende");
             session.timeSeriesFor("users/ayende", "Heartrate")
-                .append(baseLine.clone().add(1, "minute").toDate(), [ 59 ], "watches/fitbit");
+                .append(addMinutes(baseLine, 1), [ 59 ], "watches/fitbit");
             await session.saveChanges();
         }
 
@@ -37,7 +38,7 @@ describe("TimeSeriesRangesCacheTest", function () {
             assertThat(val.tag)
                 .isEqualTo("watches/fitbit");
             assertThat(val.timestamp.getTime())
-                .isEqualTo(baseLine.clone().add(1, "minutes").toDate().getTime());
+                .isEqualTo(addMinutes(baseLine, 1).getTime());
 
             assertThat(session.advanced.numberOfRequests)
                 .isEqualTo(1);
@@ -51,7 +52,7 @@ describe("TimeSeriesRangesCacheTest", function () {
             assertThat(val.tag)
                 .isEqualTo("watches/fitbit");
             assertThat(val.timestamp.getTime())
-                .isEqualTo(baseLine.clone().add(1, "minutes").toDate().getTime());
+                .isEqualTo(addMinutes(baseLine, 1).getTime());
 
             assertThat(session.advanced.numberOfRequests)
                 .isEqualTo(1);
@@ -67,7 +68,7 @@ describe("TimeSeriesRangesCacheTest", function () {
             user.name = "Oren";
             await session.store(user, "users/ayende");
             session.timeSeriesFor("users/ayende", "Heartrate")
-                .append(baseLine.clone().add(1, "minute").toDate(), [ 59 ], "watches/fitbit");
+                .append(addMinutes(baseLine, 1), [ 59 ], "watches/fitbit");
             await session.saveChanges();
         }
 
@@ -81,7 +82,7 @@ describe("TimeSeriesRangesCacheTest", function () {
             assertThat(val.tag)
                 .isEqualTo("watches/fitbit");
             assertThat(val.timestamp.getTime())
-                .isEqualTo(baseLine.clone().add(1, "minutes").toDate().getTime());
+                .isEqualTo(addMinutes(baseLine, 1).getTime());
 
             assertThat(session.advanced.numberOfRequests)
                 .isEqualTo(1);
@@ -95,7 +96,7 @@ describe("TimeSeriesRangesCacheTest", function () {
             assertThat(val.tag)
                 .isEqualTo("watches/fitbit");
             assertThat(val.timestamp.getTime())
-                .isEqualTo(baseLine.clone().add(1, "minutes").toDate().getTime());
+                .isEqualTo(addMinutes(baseLine, 1).getTime());
 
             assertThat(session.advanced.numberOfRequests)
                 .isEqualTo(1);
@@ -126,18 +127,18 @@ describe("TimeSeriesRangesCacheTest", function () {
             await session.store(user, "users/ayende");
 
             session.timeSeriesFor("users/ayende", "Heartrate")
-                .append(baseLine.clone().add(1, "minutes").toDate(), 59, "watches/fitbit");
+                .append(addMinutes(baseLine, 1), 59, "watches/fitbit");
             session.timeSeriesFor("users/ayende", "Heartrate")
-                .append(baseLine.clone().add(2, "minutes").toDate(), 60, "watches/fitbit");
+                .append(addMinutes(baseLine, 2), 60, "watches/fitbit");
             session.timeSeriesFor("users/ayende", "Heartrate")
-                .append(baseLine.clone().add(3, "minutes").toDate(), 61, "watches/fitbit");
+                .append(addMinutes(baseLine, 3), 61, "watches/fitbit");
             await session.saveChanges();
         }
 
         {
             const session = store.openSession();
             let val = await session.timeSeriesFor("users/ayende", "Heartrate")
-                .get(baseLine.clone().add(2, "days").toDate(), baseLine.clone().add(3, "days").toDate(), start, pageSize);
+                .get(addDays(baseLine, 2), addDays(baseLine, 3), start, pageSize);
 
             assertThat(val)
                 .hasSize(0);
@@ -145,7 +146,7 @@ describe("TimeSeriesRangesCacheTest", function () {
                 .isEqualTo(1);
 
             val = await session.timeSeriesFor("users/ayende", "Heartrate")
-                .get(baseLine.clone().add(1, "days").toDate(), baseLine.clone().add(4, "days").toDate(), start, pageSize)
+                .get(addDays(baseLine, 1), addDays(baseLine, 4), start, pageSize)
 
             assertThat(val)
                 .hasSize(0);
@@ -164,7 +165,7 @@ describe("TimeSeriesRangesCacheTest", function () {
                 .isEqualTo(1);
 
             val = await session.timeSeriesFor("users/ayende", "Heartrate")
-                .get(baseLine.clone().add(1, "days").toDate(), baseLine.clone().add(4, "days").toDate(), start, pageSize);
+                .get(addDays(baseLine, 1), addDays(baseLine, 4), start, pageSize);
 
             assertThat(val)
                 .hasSize(0);
@@ -188,7 +189,7 @@ describe("TimeSeriesRangesCacheTest", function () {
             const session = store.openSession();
             const tsf = session.timeSeriesFor("users/ayende", "Heartrate");
             for (let i = 0; i < 360; i++) {
-                tsf.append(baseLine.clone().add(i * 10, "seconds").toDate(), [ 6 ], "watches/fitbit");
+                tsf.append(addSeconds(baseLine, i * 10), [ 6 ], "watches/fitbit");
             }
 
             await session.saveChanges();
@@ -198,8 +199,8 @@ describe("TimeSeriesRangesCacheTest", function () {
             const session = store.openSession();
             let vals = await session.timeSeriesFor("users/ayende", "Heartrate")
                 .get(
-                    baseLine.clone().add(2, "minutes").toDate(),
-                    baseLine.clone().add(10, "minutes").toDate()
+                    addMinutes(baseLine, 2),
+                    addMinutes(baseLine, 10)
                 );
 
             assertThat(session.advanced.numberOfRequests)
@@ -208,16 +209,16 @@ describe("TimeSeriesRangesCacheTest", function () {
             assertThat(vals)
                 .hasSize(49);
             assertThat(vals[0].timestamp.getTime())
-                .isEqualTo(baseLine.clone().add(2, "minutes").toDate().getTime());
+                .isEqualTo(addMinutes(baseLine, 2).getTime());
             assertThat(vals[48].timestamp.getTime())
-                .isEqualTo(baseLine.clone().add(10, "minutes").toDate().getTime());
+                .isEqualTo(addMinutes(baseLine, 10).getTime());
 
             // should load partial range from cache
 
             vals = await session.timeSeriesFor("users/ayende", "Heartrate")
                 .get(
-                    baseLine.clone().add(5, "minutes").toDate(),
-                    baseLine.clone().add(7, "minutes").toDate()
+                    addMinutes(baseLine, 5),
+                    addMinutes(baseLine, 7)
                 );
 
             assertThat(session.advanced.numberOfRequests)
@@ -226,16 +227,16 @@ describe("TimeSeriesRangesCacheTest", function () {
             assertThat(vals)
                 .hasSize(13);
             assertThat(vals[0].timestamp.getTime())
-                .isEqualTo(baseLine.clone().add(5, "minutes").toDate().getTime());
+                .isEqualTo(addMinutes(baseLine, 5).getTime());
             assertThat(vals[12].timestamp.getTime())
-                .isEqualTo(baseLine.clone().add(7, "minutes").toDate().getTime());
+                .isEqualTo(addMinutes(baseLine, 7).getTime());
 
             // should go to server
 
             vals = await session.timeSeriesFor("users/ayende", "Heartrate")
                 .get(
-                    baseLine.clone().add(40, "minutes").toDate(),
-                    baseLine.clone().add(50, "minutes").toDate()
+                    addMinutes(baseLine, 40),
+                    addMinutes(baseLine, 50)
                 );
 
             assertThat(session.advanced.numberOfRequests)
@@ -244,9 +245,9 @@ describe("TimeSeriesRangesCacheTest", function () {
             assertThat(vals)
                 .hasSize(61);
             assertThat(vals[0].timestamp.getTime())
-                .isEqualTo(baseLine.clone().add(40, "minutes").toDate().getTime());
+                .isEqualTo(addMinutes(baseLine, 40).getTime());
             assertThat(vals[60].timestamp.getTime())
-                .isEqualTo(baseLine.clone().add(50, "minutes").toDate().getTime());
+                .isEqualTo(addMinutes(baseLine, 50).getTime());
 
             const inMemoryDocumentSession = session as unknown as InMemoryDocumentSessionOperations;
 
@@ -260,18 +261,18 @@ describe("TimeSeriesRangesCacheTest", function () {
                 .hasSize(2);
 
             assertThat(ranges[0].from.getTime())
-                .isEqualTo(baseLine.clone().add(2, "minutes").toDate().getTime());
+                .isEqualTo(addMinutes(baseLine, 2).getTime());
             assertThat(ranges[0].to.getTime())
-                .isEqualTo(baseLine.clone().add(10, "minutes").toDate().getTime());
+                .isEqualTo(addMinutes(baseLine, 10).getTime());
 
             assertThat(ranges[1].from.getTime())
-                .isEqualTo(baseLine.clone().add(40, "minutes").toDate().getTime());
+                .isEqualTo(addMinutes(baseLine, 40).getTime());
             assertThat(ranges[1].to.getTime())
-                .isEqualTo(baseLine.clone().add(50, "minutes").toDate().getTime());
+                .isEqualTo(addMinutes(baseLine, 50).getTime());
 
             // should go to server to get [0, 2] and merge it into existing [2, 10]
             vals = await session.timeSeriesFor("users/ayende", "Heartrate")
-                .get(baseLine.toDate(), baseLine.clone().add(5, "minutes").toDate());
+                .get(baseLine, addMinutes(baseLine, 5));
 
 
             assertThat(session.advanced.numberOfRequests)
@@ -281,28 +282,28 @@ describe("TimeSeriesRangesCacheTest", function () {
                 .hasSize(31);
 
             assertThat(vals[0].timestamp.getTime())
-                .isEqualTo(baseLine.toDate().getTime());
+                .isEqualTo(baseLine.getTime());
             assertThat(vals[30].timestamp.getTime())
-                .isEqualTo(baseLine.clone().add(5, "minutes").toDate().getTime());
+                .isEqualTo(addMinutes(baseLine, 5).getTime());
 
             assertThat(ranges)
                 .hasSize(2);
 
             assertThat(ranges[0].from.getTime())
-                .isEqualTo(baseLine.clone().add(0, "minutes").toDate().getTime());
+                .isEqualTo(baseLine.getTime());
             assertThat(ranges[0].to.getTime())
-                .isEqualTo(baseLine.clone().add(10, "minutes").toDate().getTime());
+                .isEqualTo(addMinutes(baseLine, 10).getTime());
 
             assertThat(ranges[1].from.getTime())
-                .isEqualTo(baseLine.clone().add(40, "minutes").toDate().getTime());
+                .isEqualTo(addMinutes(baseLine, 40).getTime());
             assertThat(ranges[1].to.getTime())
-                .isEqualTo(baseLine.clone().add(50, "minutes").toDate().getTime());
+                .isEqualTo(addMinutes(baseLine, 50).getTime());
 
             // should go to server to get [10, 16] and merge it into existing [0, 10]
             vals = await session.timeSeriesFor("users/ayende", "Heartrate")
                 .get(
-                    baseLine.clone().add(8, "minutes").toDate(),
-                    baseLine.clone().add(16, "minutes").toDate()
+                    addMinutes(baseLine, 8),
+                    addMinutes(baseLine, 16)
                 );
 
             assertThat(session.advanced.numberOfRequests)
@@ -311,30 +312,30 @@ describe("TimeSeriesRangesCacheTest", function () {
             assertThat(vals)
                 .hasSize(49);
             assertThat(vals[0].timestamp.getTime())
-                .isEqualTo(baseLine.clone().add(8, "minutes").toDate().getTime());
+                .isEqualTo(addMinutes(baseLine, 8).getTime());
             assertThat(vals[48].timestamp.getTime())
-                .isEqualTo(baseLine.clone().add(16, "minutes").toDate().getTime());
+                .isEqualTo(addMinutes(baseLine, 16).getTime());
 
             assertThat(ranges)
                 .hasSize(2);
 
             assertThat(ranges[0].from.getTime())
-                .isEqualTo(baseLine.clone().add(0, "minutes").toDate().getTime());
+                .isEqualTo(baseLine.getTime());
             assertThat(ranges[0].to.getTime())
-                .isEqualTo(baseLine.clone().add(16, "minutes").toDate().getTime());
+                .isEqualTo(addMinutes(baseLine, 16).getTime());
 
             assertThat(ranges[1].from.getTime())
-                .isEqualTo(baseLine.clone().add(40, "minutes").toDate().getTime());
+                .isEqualTo(addMinutes(baseLine, 40).getTime());
             assertThat(ranges[1].to.getTime())
-                .isEqualTo(baseLine.clone().add(50, "minutes").toDate().getTime());
+                .isEqualTo(addMinutes(baseLine, 50).getTime());
 
             // should go to server to get range [17, 19]
             // and add it to cache in between [10, 16] and [40, 50]
 
             vals = await session.timeSeriesFor("users/ayende", "Heartrate")
                 .get(
-                    baseLine.clone().add(17, "minutes").toDate(),
-                    baseLine.clone().add(19, "minutes").toDate()
+                    addMinutes(baseLine, 17),
+                    addMinutes(baseLine, 19)
                 );
 
             assertThat(session.advanced.numberOfRequests)
@@ -344,27 +345,27 @@ describe("TimeSeriesRangesCacheTest", function () {
                 .hasSize(13);
 
             assertThat(vals[0].timestamp.getTime())
-                .isEqualTo(baseLine.clone().add(17, "minutes").toDate().getTime());
+                .isEqualTo(addMinutes(baseLine, 17).getTime());
             assertThat(vals[12].timestamp.getTime())
-                .isEqualTo(baseLine.clone().add(19, "minutes").toDate().getTime());
+                .isEqualTo(addMinutes(baseLine, 19).getTime());
 
             assertThat(ranges)
                 .hasSize(3);
 
             assertThat(ranges[0].from.getTime())
-                .isEqualTo(baseLine.clone().add(0, "minutes").toDate().getTime());
+                .isEqualTo(baseLine.getTime());
             assertThat(ranges[0].to.getTime())
-                .isEqualTo(baseLine.clone().add(16, "minutes").toDate().getTime());
+                .isEqualTo(addMinutes(baseLine, 16).getTime());
 
             assertThat(ranges[1].from.getTime())
-                .isEqualTo(baseLine.clone().add(17, "minutes").toDate().getTime());
+                .isEqualTo(addMinutes(baseLine, 17).getTime());
             assertThat(ranges[1].to.getTime())
-                .isEqualTo(baseLine.clone().add(19, "minutes").toDate().getTime());
+                .isEqualTo(addMinutes(baseLine, 19).getTime());
 
             assertThat(ranges[2].from.getTime())
-                .isEqualTo(baseLine.clone().add(40, "minutes").toDate().getTime());
+                .isEqualTo(addMinutes(baseLine, 40).getTime());
             assertThat(ranges[2].to.getTime())
-                .isEqualTo(baseLine.clone().add(50, "minutes").toDate().getTime());
+                .isEqualTo(addMinutes(baseLine, 50).getTime());
 
             // should go to server to get range [19, 40]
             // and merge the result with existing ranges [17, 19] and [40, 50]
@@ -372,8 +373,8 @@ describe("TimeSeriesRangesCacheTest", function () {
 
             vals = await session.timeSeriesFor("users/ayende", "Heartrate")
                 .get(
-                    baseLine.clone().add(18, "minutes").toDate(),
-                    baseLine.clone().add(48, "minutes").toDate()
+                    addMinutes(baseLine, 18),
+                    addMinutes(baseLine, 48)
                 );
 
             assertThat(session.advanced.numberOfRequests)
@@ -383,22 +384,22 @@ describe("TimeSeriesRangesCacheTest", function () {
                 .hasSize(181);
 
             assertThat(vals[0].timestamp.getTime())
-                .isEqualTo(baseLine.clone().add(18, "minutes").toDate().getTime());
+                .isEqualTo(addMinutes(baseLine, 18).getTime());
             assertThat(vals[180].timestamp.getTime())
-                .isEqualTo(baseLine.clone().add(48, "minutes").toDate().getTime());
+                .isEqualTo(addMinutes(baseLine, 48).getTime());
 
             assertThat(ranges)
                 .hasSize(2);
 
             assertThat(ranges[0].from.getTime())
-                .isEqualTo(baseLine.clone().add(0, "minutes").toDate().getTime());
+                .isEqualTo(baseLine.getTime());
             assertThat(ranges[0].to.getTime())
-                .isEqualTo(baseLine.clone().add(16, "minutes").toDate().getTime());
+                .isEqualTo(addMinutes(baseLine, 16).getTime());
 
             assertThat(ranges[1].from.getTime())
-                .isEqualTo(baseLine.clone().add(17, "minutes").toDate().getTime());
+                .isEqualTo(addMinutes(baseLine, 17).getTime());
             assertThat(ranges[1].to.getTime())
-                .isEqualTo(baseLine.clone().add(50, "minutes").toDate().getTime());
+                .isEqualTo(addMinutes(baseLine, 50).getTime());
 
             // should go to server to get range [16, 17]
             // and merge the result with existing ranges [0, 16] and [17, 50]
@@ -406,8 +407,8 @@ describe("TimeSeriesRangesCacheTest", function () {
 
             vals = await session.timeSeriesFor("users/ayende", "Heartrate")
                 .get(
-                    baseLine.clone().add(12, "minutes").toDate(),
-                    baseLine.clone().add(22, "minutes").toDate()
+                    addMinutes(baseLine, 12),
+                    addMinutes(baseLine, 22)
                 );
 
             assertThat(session.advanced.numberOfRequests)
@@ -417,17 +418,17 @@ describe("TimeSeriesRangesCacheTest", function () {
                 .hasSize(61);
 
             assertThat(vals[0].timestamp.getTime())
-                .isEqualTo(baseLine.clone().add(12, "minutes").toDate().getTime());
+                .isEqualTo(addMinutes(baseLine, 12).getTime());
             assertThat(vals[60].timestamp.getTime())
-                .isEqualTo(baseLine.clone().add(22, "minutes").toDate().getTime());
+                .isEqualTo(addMinutes(baseLine, 22).getTime());
 
             assertThat(ranges)
                 .hasSize(1);
 
             assertThat(ranges[0].from.getTime())
-                .isEqualTo(baseLine.clone().add(0, "minutes").toDate().getTime());
+                .isEqualTo(baseLine.getTime());
             assertThat(ranges[0].to.getTime())
-                .isEqualTo(baseLine.clone().add(50, "minutes").toDate().getTime());
+                .isEqualTo(addMinutes(baseLine, 50).getTime());
         }
     });
 
@@ -446,13 +447,13 @@ describe("TimeSeriesRangesCacheTest", function () {
             const session = store.openSession();
             let tsf = session.timeSeriesFor("users/ayende", "Heartrate");
             for (let i = 0; i < 360; i++) {
-                tsf.append(baseLine.clone().add(i * 10, "seconds").toDate(), [ 60 ], "watches/fitbit");
+                tsf.append(addSeconds(baseLine, i * 10), [ 60 ], "watches/fitbit");
             }
 
             tsf = session.timeSeriesFor("users/ayende", "Heartrate2");
 
-            tsf.append(baseLine.clone().add(1, "hour").toDate(), 70, "watches/fitbit");
-            tsf.append(baseLine.clone().add(90, "minutes").toDate(), 75, "watches/fitbit");
+            tsf.append(addHours(baseLine, 1), 70, "watches/fitbit");
+            tsf.append(addMinutes(baseLine, 90), 75, "watches/fitbit");
 
             await session.saveChanges();
         }
@@ -461,8 +462,8 @@ describe("TimeSeriesRangesCacheTest", function () {
             const session = store.openSession();
             let vals = await session.timeSeriesFor("users/ayende", "Heartrate")
                 .get(
-                    baseLine.clone().add(2, "minutes").toDate(),
-                    baseLine.clone().add(10, "minutes").toDate()
+                    addMinutes(baseLine, 2),
+                    addMinutes(baseLine, 10)
                 );
 
             assertThat(session.advanced.numberOfRequests)
@@ -471,16 +472,16 @@ describe("TimeSeriesRangesCacheTest", function () {
             assertThat(vals)
                 .hasSize(49);
             assertThat(vals[0].timestamp.getTime())
-                .isEqualTo(baseLine.clone().add(2, "minutes").toDate().getTime());
+                .isEqualTo(addMinutes(baseLine, 2).getTime());
             assertThat(vals[48].timestamp.getTime())
-                .isEqualTo(baseLine.clone().add(10, "minutes").toDate().getTime());
+                .isEqualTo(addMinutes(baseLine, 10).getTime());
 
             // should go the server
 
             vals = await session.timeSeriesFor("users/ayende", "Heartrate")
                 .get(
-                    baseLine.clone().add(22, "minutes").toDate(),
-                    baseLine.clone().add(32, "minutes").toDate()
+                    addMinutes(baseLine, 22),
+                    addMinutes(baseLine, 32)
                 );
 
             assertThat(session.advanced.numberOfRequests)
@@ -489,15 +490,15 @@ describe("TimeSeriesRangesCacheTest", function () {
             assertThat(vals)
                 .hasSize(61);
             assertThat(vals[0].timestamp.getTime())
-                .isEqualTo(baseLine.clone().add(22, "minutes").toDate().getTime());
+                .isEqualTo(addMinutes(baseLine, 22).getTime());
             assertThat(vals[60].timestamp.getTime())
-                .isEqualTo(baseLine.clone().add(32, "minutes").toDate().getTime());
+                .isEqualTo(addMinutes(baseLine, 32).getTime());
 
             // should go to server
             vals = await session.timeSeriesFor("users/ayende", "Heartrate")
                 .get(
-                    baseLine.clone().add(1, "minutes").toDate(),
-                    baseLine.clone().add(11, "minutes").toDate()
+                    addMinutes(baseLine, 1),
+                    addMinutes(baseLine, 11)
                 );
 
             assertThat(session.advanced.numberOfRequests)
@@ -506,9 +507,9 @@ describe("TimeSeriesRangesCacheTest", function () {
             assertThat(vals)
                 .hasSize(61);
             assertThat(vals[0].timestamp.getTime())
-                .isEqualTo(baseLine.clone().add(1, "minutes").toDate().getTime());
+                .isEqualTo(addMinutes(baseLine, 1).getTime());
             assertThat(vals[60].timestamp.getTime())
-                .isEqualTo(baseLine.clone().add(11, "minutes").toDate().getTime());
+                .isEqualTo(addMinutes(baseLine, 11).getTime());
 
             const inMemoryDocumentSession = session as unknown as InMemoryDocumentSessionOperations;
 
@@ -522,21 +523,21 @@ describe("TimeSeriesRangesCacheTest", function () {
                 .hasSize(2);
 
             assertThat(ranges[0].from.getTime())
-                .isEqualTo(baseLine.clone().add(1, "minutes").toDate().getTime());
+                .isEqualTo(addMinutes(baseLine, 1).getTime());
             assertThat(ranges[0].to.getTime())
-                .isEqualTo(baseLine.clone().add(11, "minutes").toDate().getTime());
+                .isEqualTo(addMinutes(baseLine, 11).getTime());
 
             assertThat(ranges[1].from.getTime())
-                .isEqualTo(baseLine.clone().add(22, "minutes").toDate().getTime());
+                .isEqualTo(addMinutes(baseLine, 22).getTime());
             assertThat(ranges[1].to.getTime())
-                .isEqualTo(baseLine.clone().add(32, "minutes").toDate().getTime());
+                .isEqualTo(addMinutes(baseLine, 32).getTime());
 
             // should go to server to get [32, 35] and merge with [22, 32]
 
             vals = await session.timeSeriesFor("users/ayende", "Heartrate")
                 .get(
-                    baseLine.clone().add(25, "minutes").toDate(),
-                    baseLine.clone().add(35, "minutes").toDate()
+                    addMinutes(baseLine, 25),
+                    addMinutes(baseLine, 35)
                 );
 
             assertThat(session.advanced.numberOfRequests)
@@ -545,31 +546,31 @@ describe("TimeSeriesRangesCacheTest", function () {
             assertThat(vals)
                 .hasSize(61);
             assertThat(vals[0].timestamp.getTime())
-                .isEqualTo(baseLine.clone().add(25, "minutes").toDate().getTime());
+                .isEqualTo(addMinutes(baseLine, 25).getTime());
             assertThat(vals[60].timestamp.getTime())
-                .isEqualTo(baseLine.clone().add(35, "minutes").toDate().getTime());
+                .isEqualTo(addMinutes(baseLine, 35).getTime());
 
             assertThat(ranges)
                 .isNotNull()
                 .hasSize(2);
 
             assertThat(ranges[0].from.getTime())
-                .isEqualTo(baseLine.clone().add(1, "minutes").toDate().getTime());
+                .isEqualTo(addMinutes(baseLine, 1).getTime());
             assertThat(ranges[0].to.getTime())
-                .isEqualTo(baseLine.clone().add(11, "minutes").toDate().getTime());
+                .isEqualTo(addMinutes(baseLine, 11).getTime());
 
             assertThat(ranges[1].from.getTime())
-                .isEqualTo(baseLine.clone().add(22, "minutes").toDate().getTime());
+                .isEqualTo(addMinutes(baseLine, 22).getTime());
             assertThat(ranges[1].to.getTime())
-                .isEqualTo(baseLine.clone().add(35, "minutes").toDate().getTime());
+                .isEqualTo(addMinutes(baseLine, 35).getTime());
 
             // should go to server to get [20, 22] and [35, 40]
             // and merge them with [22, 35] into a single range [20, 40]
 
             vals = await session.timeSeriesFor("users/ayende", "Heartrate")
                 .get(
-                    baseLine.clone().add(20, "minutes").toDate(),
-                    baseLine.clone().add(40, "minutes").toDate()
+                    addMinutes(baseLine, 20),
+                    addMinutes(baseLine, 40)
                 );
 
             assertThat(session.advanced.numberOfRequests)
@@ -578,30 +579,30 @@ describe("TimeSeriesRangesCacheTest", function () {
             assertThat(vals)
                 .hasSize(121);
             assertThat(vals[0].timestamp.getTime())
-                .isEqualTo(baseLine.clone().add(20, "minutes").toDate().getTime());
+                .isEqualTo(addMinutes(baseLine, 20).getTime());
             assertThat(vals[120].timestamp.getTime())
-                .isEqualTo(baseLine.clone().add(40, "minutes").toDate().getTime());
+                .isEqualTo(addMinutes(baseLine, 40).getTime());
 
             assertThat(ranges)
                 .isNotNull()
                 .hasSize(2);
 
             assertThat(ranges[0].from.getTime())
-                .isEqualTo(baseLine.clone().add(1, "minutes").toDate().getTime());
+                .isEqualTo(addMinutes(baseLine, 1).getTime());
             assertThat(ranges[0].to.getTime())
-                .isEqualTo(baseLine.clone().add(11, "minutes").toDate().getTime());
+                .isEqualTo(addMinutes(baseLine, 11).getTime());
 
             assertThat(ranges[1].from.getTime())
-                .isEqualTo(baseLine.clone().add(20, "minutes").toDate().getTime());
+                .isEqualTo(addMinutes(baseLine, 20).getTime());
             assertThat(ranges[1].to.getTime())
-                .isEqualTo(baseLine.clone().add(40, "minutes").toDate().getTime());
+                .isEqualTo(addMinutes(baseLine, 40).getTime());
 
             // should go to server to get [15, 20] and merge with [20, 40]
 
             vals = await session.timeSeriesFor("users/ayende", "Heartrate")
                 .get(
-                    baseLine.clone().add(15, "minutes").toDate(),
-                    baseLine.clone().add(35, "minutes").toDate()
+                    addMinutes(baseLine, 15),
+                    addMinutes(baseLine, 35)
                 );
 
             assertThat(session.advanced.numberOfRequests)
@@ -610,30 +611,30 @@ describe("TimeSeriesRangesCacheTest", function () {
             assertThat(vals)
                 .hasSize(121);
             assertThat(vals[0].timestamp.getTime())
-                .isEqualTo(baseLine.clone().add(15, "minutes").toDate().getTime());
+                .isEqualTo(addMinutes(baseLine, 15).getTime());
             assertThat(vals[120].timestamp.getTime())
-                .isEqualTo(baseLine.clone().add(35, "minutes").toDate().getTime());
+                .isEqualTo(addMinutes(baseLine, 35).getTime());
 
             assertThat(ranges)
                 .isNotNull()
                 .hasSize(2);
 
             assertThat(ranges[0].from.getTime())
-                .isEqualTo(baseLine.clone().add(1, "minutes").toDate().getTime());
+                .isEqualTo(addMinutes(baseLine, 1).getTime());
             assertThat(ranges[0].to.getTime())
-                .isEqualTo(baseLine.clone().add(11, "minutes").toDate().getTime());
+                .isEqualTo(addMinutes(baseLine, 11).getTime());
 
             assertThat(ranges[1].from.getTime())
-                .isEqualTo(baseLine.clone().add(15, "minutes").toDate().getTime());
+                .isEqualTo(addMinutes(baseLine, 15).getTime());
             assertThat(ranges[1].to.getTime())
-                .isEqualTo(baseLine.clone().add(40, "minutes").toDate().getTime());
+                .isEqualTo(addMinutes(baseLine, 40).getTime());
 
             // should go to server and add new cache entry for Heartrate2
 
             vals = await session.timeSeriesFor("users/ayende", "Heartrate2")
                 .get(
-                    baseLine.toDate(),
-                    baseLine.clone().add(2, "hours").toDate()
+                    baseLine,
+                    addHours(baseLine, 2)
                 );
 
             assertThat(session.advanced.numberOfRequests)
@@ -642,25 +643,25 @@ describe("TimeSeriesRangesCacheTest", function () {
             assertThat(vals)
                 .hasSize(2);
             assertThat(vals[0].timestamp.getTime())
-                .isEqualTo(baseLine.clone().add(1, "hour").toDate().getTime());
+                .isEqualTo(addHours(baseLine, 1).getTime());
             assertThat(vals[1].timestamp.getTime())
-                .isEqualTo(baseLine.clone().add(90, "minutes").toDate().getTime());
+                .isEqualTo(addMinutes(baseLine, 90).getTime());
 
             const ranges2 = cache.get("Heartrate2");
             assertThat(ranges2)
                 .hasSize(1);
 
             assertThat(ranges2[0].from.getTime())
-                .isEqualTo(baseLine.toDate().getTime());
+                .isEqualTo(baseLine.getTime());
             assertThat(ranges2[0].to.getTime())
-                .isEqualTo(baseLine.clone().add(2, "hours").toDate().getTime());
+                .isEqualTo(addHours(baseLine, 2).getTime());
 
             // should not go to server
 
             vals = await session.timeSeriesFor("users/ayende", "Heartrate2")
                 .get(
-                    baseLine.clone().add(30, "minutes").toDate(),
-                    baseLine.clone().add(100, "minutes").toDate()
+                    addMinutes(baseLine, 30),
+                    addMinutes(baseLine, 100)
                 );
 
             assertThat(session.advanced.numberOfRequests)
@@ -669,15 +670,15 @@ describe("TimeSeriesRangesCacheTest", function () {
             assertThat(vals)
                 .hasSize(2);
             assertThat(vals[0].timestamp.getTime())
-                .isEqualTo(baseLine.clone().add(1, "hour").toDate().getTime());
+                .isEqualTo(addHours(baseLine, 1).getTime());
             assertThat(vals[1].timestamp.getTime())
-                .isEqualTo(baseLine.clone().add(90, "minutes").toDate().getTime());
+                .isEqualTo(addMinutes(baseLine, 90).getTime());
 
             // should go to server
             vals = await session.timeSeriesFor("users/ayende", "Heartrate")
                 .get(
-                    baseLine.clone().add(42, "minutes").toDate(),
-                    baseLine.clone().add(43, "minutes").toDate()
+                    addMinutes(baseLine, 42),
+                    addMinutes(baseLine, 43)
                 );
 
             assertThat(session.advanced.numberOfRequests)
@@ -686,35 +687,35 @@ describe("TimeSeriesRangesCacheTest", function () {
             assertThat(vals)
                 .hasSize(7);
             assertThat(vals[0].timestamp.getTime())
-                .isEqualTo(baseLine.clone().add(42, "minutes").toDate().getTime());
+                .isEqualTo(addMinutes(baseLine, 42).getTime());
             assertThat(vals[6].timestamp.getTime())
-                .isEqualTo(baseLine.clone().add(43, "minutes").toDate().getTime());
+                .isEqualTo(addMinutes(baseLine, 43).getTime());
 
             assertThat(ranges)
                 .isNotNull()
                 .hasSize(3);
 
             assertThat(ranges[0].from.getTime())
-                .isEqualTo(baseLine.clone().add(1, "minutes").toDate().getTime());
+                .isEqualTo(addMinutes(baseLine, 1).getTime());
             assertThat(ranges[0].to.getTime())
-                .isEqualTo(baseLine.clone().add(11, "minutes").toDate().getTime());
+                .isEqualTo(addMinutes(baseLine, 11).getTime());
 
             assertThat(ranges[1].from.getTime())
-                .isEqualTo(baseLine.clone().add(15, "minutes").toDate().getTime());
+                .isEqualTo(addMinutes(baseLine, 15).getTime());
             assertThat(ranges[1].to.getTime())
-                .isEqualTo(baseLine.clone().add(40, "minutes").toDate().getTime());
+                .isEqualTo(addMinutes(baseLine, 40).getTime());
 
             assertThat(ranges[2].from.getTime())
-                .isEqualTo(baseLine.clone().add(42, "minutes").toDate().getTime());
+                .isEqualTo(addMinutes(baseLine, 42).getTime());
             assertThat(ranges[2].to.getTime())
-                .isEqualTo(baseLine.clone().add(43, "minutes").toDate().getTime());
+                .isEqualTo(addMinutes(baseLine, 43).getTime());
 
             // should go to server and to get the missing parts and merge all ranges into [0, 45]
 
             vals = await session.timeSeriesFor("users/ayende", "Heartrate")
                 .get(
-                    baseLine.toDate(),
-                    baseLine.clone().add(45, "minutes").toDate()
+                    baseLine,
+                    addMinutes(baseLine, 45)
                 );
 
             assertThat(session.advanced.numberOfRequests)
@@ -723,9 +724,9 @@ describe("TimeSeriesRangesCacheTest", function () {
             assertThat(vals)
                 .hasSize(271);
             assertThat(vals[0].timestamp.getTime())
-                .isEqualTo(baseLine.toDate().getTime());
+                .isEqualTo(baseLine.getTime());
             assertThat(vals[270].timestamp.getTime())
-                .isEqualTo(baseLine.clone().add(45, "minutes").toDate().getTime());
+                .isEqualTo(addMinutes(baseLine, 45).getTime());
 
             ranges = cache.get("Heartrate");
             assertThat(ranges)
@@ -733,9 +734,9 @@ describe("TimeSeriesRangesCacheTest", function () {
                 .hasSize(1);
 
             assertThat(ranges[0].from.getTime())
-                .isEqualTo(baseLine.clone().add(0, "minutes").toDate().getTime());
+                .isEqualTo(baseLine.getTime());
             assertThat(ranges[0].to.getTime())
-                .isEqualTo(baseLine.clone().add(45, "minutes").toDate().getTime());
+                .isEqualTo(addMinutes(baseLine, 45).getTime());
         }
     });
 
@@ -755,13 +756,13 @@ describe("TimeSeriesRangesCacheTest", function () {
             const session = store.openSession();
             let tsf = session.timeSeriesFor("users/ayende", "Heartrate");
             for (let i = 0; i < 360; i++) {
-                tsf.append(baseLine.clone().add(i * 10, "seconds").toDate(), 60, "watches/fitbit");
+                tsf.append(addSeconds(baseLine, i * 10), 60, "watches/fitbit");
             }
 
             tsf = session.timeSeriesFor("users/ayende", "Heartrate");
 
-            tsf.append(baseLine.clone().add(1, "hours").toDate(), 70, "watches/fitbit");
-            tsf.append(baseLine.clone().add(90, "minutes").toDate(), 75, "watches/fitbit");
+            tsf.append(addHours(baseLine, 1), 70, "watches/fitbit");
+            tsf.append(addMinutes(baseLine, 90), 75, "watches/fitbit");
 
             await session.saveChanges();
         }
@@ -771,8 +772,8 @@ describe("TimeSeriesRangesCacheTest", function () {
 
             let vals = await session.timeSeriesFor("users/ayende", "Heartrate")
                 .get(
-                    baseLine.clone().add(1, "minutes").toDate(),
-                    baseLine.clone().add(2, "minutes").toDate()
+                    addMinutes(baseLine, 1),
+                    addMinutes(baseLine, 2)
                 );
 
             assertThat(session.advanced.numberOfRequests)
@@ -781,15 +782,15 @@ describe("TimeSeriesRangesCacheTest", function () {
             assertThat(vals)
                 .hasSize(7);
             assertThat(vals[0].timestamp.getTime())
-                .isEqualTo(baseLine.clone().add(1, "minutes").toDate().getTime());
+                .isEqualTo(addMinutes(baseLine, 1).getTime());
             assertThat(vals[6].timestamp.getTime())
-                .isEqualTo(baseLine.clone().add(2, "minutes").toDate().getTime());
+                .isEqualTo(addMinutes(baseLine, 2).getTime());
 
 
             vals = await session.timeSeriesFor("users/ayende", "Heartrate")
                 .get(
-                    baseLine.clone().add(5, "minutes").toDate(),
-                    baseLine.clone().add(6, "minutes").toDate()
+                    addMinutes(baseLine, 5),
+                    addMinutes(baseLine, 6)
                 );
 
             assertThat(session.advanced.numberOfRequests)
@@ -798,9 +799,9 @@ describe("TimeSeriesRangesCacheTest", function () {
             assertThat(vals)
                 .hasSize(7);
             assertThat(vals[0].timestamp.getTime())
-                .isEqualTo(baseLine.clone().add(5, "minutes").toDate().getTime());
+                .isEqualTo(addMinutes(baseLine, 5).getTime());
             assertThat(vals[6].timestamp.getTime())
-                .isEqualTo(baseLine.clone().add(6, "minutes").toDate().getTime());
+                .isEqualTo(addMinutes(baseLine, 6).getTime());
 
             const inMemoryDocumentSession = session as unknown as InMemoryDocumentSessionOperations;
 
@@ -814,21 +815,21 @@ describe("TimeSeriesRangesCacheTest", function () {
                 .hasSize(2);
 
             assertThat(ranges[0].from.getTime())
-                .isEqualTo(baseLine.clone().add(1, "minutes").toDate().getTime());
+                .isEqualTo(addMinutes(baseLine, 1).getTime());
             assertThat(ranges[0].to.getTime())
-                .isEqualTo(baseLine.clone().add(2, "minutes").toDate().getTime());
+                .isEqualTo(addMinutes(baseLine, 2).getTime());
 
             assertThat(ranges[1].from.getTime())
-                .isEqualTo(baseLine.clone().add(5, "minutes").toDate().getTime());
+                .isEqualTo(addMinutes(baseLine, 5).getTime());
             assertThat(ranges[1].to.getTime())
-                .isEqualTo(baseLine.clone().add(6, "minutes").toDate().getTime());
+                .isEqualTo(addMinutes(baseLine, 6).getTime());
 
             // should go to server to get [2, 3] and merge with [1, 2]
 
             vals = await session.timeSeriesFor("users/ayende", "Heartrate")
                 .get(
-                    baseLine.clone().add(2, "minutes").toDate(),
-                    baseLine.clone().add(3, "minutes").toDate()
+                    addMinutes(baseLine, 2),
+                    addMinutes(baseLine, 3)
                 );
 
             assertThat(session.advanced.numberOfRequests)
@@ -837,30 +838,30 @@ describe("TimeSeriesRangesCacheTest", function () {
             assertThat(vals)
                 .hasSize(7);
             assertThat(vals[0].timestamp.getTime())
-                .isEqualTo(baseLine.clone().add(2, "minutes").toDate().getTime());
+                .isEqualTo(addMinutes(baseLine, 2).getTime());
             assertThat(vals[6].timestamp.getTime())
-                .isEqualTo(baseLine.clone().add(3, "minutes").toDate().getTime());
+                .isEqualTo(addMinutes(baseLine, 3).getTime());
 
             assertThat(ranges)
                 .isNotNull()
                 .hasSize(2);
 
             assertThat(ranges[0].from.getTime())
-                .isEqualTo(baseLine.clone().add(1, "minutes").toDate().getTime());
+                .isEqualTo(addMinutes(baseLine, 1).getTime());
             assertThat(ranges[0].to.getTime())
-                .isEqualTo(baseLine.clone().add(3, "minutes").toDate().getTime());
+                .isEqualTo(addMinutes(baseLine, 3).getTime());
 
             assertThat(ranges[1].from.getTime())
-                .isEqualTo(baseLine.clone().add(5, "minutes").toDate().getTime());
+                .isEqualTo(addMinutes(baseLine, 5).getTime());
             assertThat(ranges[1].to.getTime())
-                .isEqualTo(baseLine.clone().add(6, "minutes").toDate().getTime());
+                .isEqualTo(addMinutes(baseLine, 6).getTime());
 
             // should go to server to get [4, 5] and merge with [5, 6]
 
             vals = await session.timeSeriesFor("users/ayende", "Heartrate")
                 .get(
-                    baseLine.clone().add(4, "minutes").toDate(),
-                    baseLine.clone().add(5, "minutes").toDate()
+                    addMinutes(baseLine, 4),
+                    addMinutes(baseLine, 5)
                 );
 
             assertThat(session.advanced.numberOfRequests)
@@ -869,30 +870,30 @@ describe("TimeSeriesRangesCacheTest", function () {
             assertThat(vals)
                 .hasSize(7);
             assertThat(vals[0].timestamp.getTime())
-                .isEqualTo(baseLine.clone().add(4, "minutes").toDate().getTime());
+                .isEqualTo(addMinutes(baseLine, 4).getTime());
             assertThat(vals[6].timestamp.getTime())
-                .isEqualTo(baseLine.clone().add(5, "minutes").toDate().getTime());
+                .isEqualTo(addMinutes(baseLine, 5).getTime());
 
             assertThat(ranges)
                 .isNotNull()
                 .hasSize(2);
 
             assertThat(ranges[0].from.getTime())
-                .isEqualTo(baseLine.clone().add(1, "minutes").toDate().getTime());
+                .isEqualTo(addMinutes(baseLine, 1).getTime());
             assertThat(ranges[0].to.getTime())
-                .isEqualTo(baseLine.clone().add(3, "minutes").toDate().getTime());
+                .isEqualTo(addMinutes(baseLine, 3).getTime());
 
             assertThat(ranges[1].from.getTime())
-                .isEqualTo(baseLine.clone().add(4, "minutes").toDate().getTime());
+                .isEqualTo(addMinutes(baseLine, 4).getTime());
             assertThat(ranges[1].to.getTime())
-                .isEqualTo(baseLine.clone().add(6, "minutes").toDate().getTime());
+                .isEqualTo(addMinutes(baseLine, 6).getTime());
 
             // should go to server to get [3, 4] and merge all ranges into [1, 6]
 
             vals = await session.timeSeriesFor("users/ayende", "Heartrate")
                 .get(
-                    baseLine.clone().add(3, "minutes").toDate(),
-                    baseLine.clone().add(4, "minutes").toDate()
+                    addMinutes(baseLine, 3),
+                    addMinutes(baseLine, 4)
                 );
 
             assertThat(session.advanced.numberOfRequests)
@@ -901,18 +902,18 @@ describe("TimeSeriesRangesCacheTest", function () {
             assertThat(vals)
                 .hasSize(7);
             assertThat(vals[0].timestamp.getTime())
-                .isEqualTo(baseLine.clone().add(3, "minutes").toDate().getTime());
+                .isEqualTo(addMinutes(baseLine, 3).getTime());
             assertThat(vals[6].timestamp.getTime())
-                .isEqualTo(baseLine.clone().add(4, "minutes").toDate().getTime());
+                .isEqualTo(addMinutes(baseLine, 4).getTime());
 
             assertThat(ranges)
                 .isNotNull()
                 .hasSize(1);
 
             assertThat(ranges[0].from.getTime())
-                .isEqualTo(baseLine.clone().add(1, "minutes").toDate().getTime());
+                .isEqualTo(addMinutes(baseLine, 1).getTime());
             assertThat(ranges[0].to.getTime())
-                .isEqualTo(baseLine.clone().add(6, "minutes").toDate().getTime());
+                .isEqualTo(addMinutes(baseLine, 6).getTime());
         }
     });
 
@@ -931,7 +932,7 @@ describe("TimeSeriesRangesCacheTest", function () {
             const session = store.openSession();
             const tsf = session.timeSeriesFor("users/ayende", "Heartrate");
             for (let i = 0; i < 360; i++) {
-                tsf.append(baseLine.clone().add(i * 10, "seconds").toDate(), 60, "watches/fitbit");
+                tsf.append(addSeconds(baseLine, i * 10), 60, "watches/fitbit");
             }
 
             await session.saveChanges();
@@ -941,8 +942,8 @@ describe("TimeSeriesRangesCacheTest", function () {
             const session = store.openSession();
             let vals = await session.timeSeriesFor("users/ayende", "Heartrate")
                 .get(
-                    baseLine.clone().add(-2, "hours").toDate(),
-                    baseLine.clone().add(-1, "hours").toDate()
+                    addHours(baseLine, -2),
+                    addHours(baseLine, -1)
                 );
 
             assertThat(vals)
@@ -954,8 +955,8 @@ describe("TimeSeriesRangesCacheTest", function () {
             // should not go to server
             vals = await session.timeSeriesFor("users/ayende", "Heartrate")
                 .get(
-                    baseLine.clone().add(-2, "hours").toDate(),
-                    baseLine.clone().add(-1, "hours").toDate()
+                    addHours(baseLine, -2),
+                    addHours(baseLine, -1)
                 );
 
             assertThat(vals)
@@ -967,8 +968,8 @@ describe("TimeSeriesRangesCacheTest", function () {
             // should not go to server
             vals = await session.timeSeriesFor("users/ayende", "Heartrate")
                 .get(
-                    baseLine.clone().add(-90, "minutes").toDate(),
-                    baseLine.clone().add(-70, "minutes").toDate()
+                    addMinutes(baseLine, -90),
+                    addMinutes(baseLine, -70)
                 );
 
             assertThat(vals)
@@ -980,16 +981,16 @@ describe("TimeSeriesRangesCacheTest", function () {
             // should go to server to get [-60, 1] and merge with [-120, -60]
             vals = await session.timeSeriesFor("users/ayende", "Heartrate")
                 .get(
-                    baseLine.clone().add(-1, "hours").toDate(),
-                    baseLine.clone().add(1, "minutes").toDate()
+                    addHours(baseLine, -1),
+                    addMinutes(baseLine, 1)
                 );
 
             assertThat(vals)
                 .hasSize(7);
             assertThat(vals[0].timestamp.getTime())
-                .isEqualTo(baseLine.toDate().getTime());
+                .isEqualTo(baseLine.getTime());
             assertThat(vals[6].timestamp.getTime())
-                .isEqualTo(baseLine.clone().add(1, "minutes").toDate().getTime());
+                .isEqualTo(addMinutes(baseLine, 1).getTime());
 
             assertThat(session.advanced.numberOfRequests)
                 .isEqualTo(2);
@@ -1002,9 +1003,9 @@ describe("TimeSeriesRangesCacheTest", function () {
                 .hasSize(1);
 
             assertThat(ranges[0].from.getTime())
-                .isEqualTo(baseLine.clone().add(-2, "hours").toDate().getTime());
+                .isEqualTo(addHours(baseLine, -2).getTime());
             assertThat(ranges[0].to.getTime())
-                .isEqualTo(baseLine.clone().add(1, "minutes").toDate().getTime());
+                .isEqualTo(addMinutes(baseLine, 1).getTime());
         }
     })
 });

@@ -2,6 +2,7 @@ import { GetTimeSeriesOperation, IDocumentStore } from "../../../src/index.js";
 import { disposeTestDocumentStore, testContext } from "../../Utils/TestUtil.js";
 import { User } from "../../Assets/Entities.js";
 import { assertThat } from "../../Utils/AssertExtensions.js";
+import { addMinutes } from "date-fns";
 
 describe("RavenDB_14994", function () {
 
@@ -45,7 +46,7 @@ describe("RavenDB_14994", function () {
 
             const tsf = session.timeSeriesFor(documentId, "HeartRate");
             for (let i = 0; i < 10; i++) {
-                tsf.append(baseLine.clone().add(i, "minutes").toDate(), i);
+                tsf.append(addMinutes(baseLine, i), i);
             }
 
             await session.saveChanges();
@@ -55,8 +56,8 @@ describe("RavenDB_14994", function () {
             new GetTimeSeriesOperation(
                 documentId,
                 "HeartRate",
-                baseLine.clone().add(-2, "minutes").toDate(),
-                baseLine.clone().add(-1, "minutes").toDate()));
+                addMinutes(baseLine, -2),
+                addMinutes(baseLine, -1)));
 
         assertThat(get.entries)
             .hasSize(0);
@@ -64,7 +65,7 @@ describe("RavenDB_14994", function () {
         {
             const session = store.openSession();
             const result = await session.timeSeriesFor(documentId, "HeartRate")
-                .get(baseLine.clone().add(-2, "minutes").toDate(), baseLine.clone().add(-1, "minutes").toDate());
+                .get(addMinutes(baseLine, -2), addMinutes(baseLine, -1));
             assertThat(result)
                 .hasSize(0);
         }
