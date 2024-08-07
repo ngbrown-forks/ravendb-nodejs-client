@@ -164,7 +164,7 @@ describe("Request executor", function () {
 
     it("fails when server is offline", async function () {
         const documentConventions = new DocumentConventions();
-        const executor = RequestExecutor.create(["http://no_such_host:8081"], "db1", {
+        const executor = RequestExecutor.create(["http://127.0.0.85:8081"], "db1", {
             documentConventions
         });
         const getTopology = new GetDatabaseTopologyCommand();

@@ -109,6 +109,8 @@ describe("BulkInsertAttachmentsTest", function () {
         const size = 16 * 1024;
 
         const streams = new Map<string, Map<string, Buffer>>();
+        const bytes = [...new Array(size).keys()].map(x => Math.floor(Math.random() * 255));
+        const bArr = Buffer.from(bytes);
 
         {
             const bulkInsert = store.bulkInsert();
@@ -125,9 +127,6 @@ describe("BulkInsertAttachmentsTest", function () {
                 const attachmentsBulkInsert = bulkInsert.attachmentsFor(id);
 
                 for (let j = 0; j < attachments; j++) {
-                    const bytes = [...new Array(size).keys()].map(x => Math.floor(Math.random() * 255));
-                    const bArr = Buffer.from(bytes);
-
                     const name = j.toString();
                     await attachmentsBulkInsert.store(name, bArr);
 

@@ -9,7 +9,7 @@ export interface DateUtilOpts {
 export class DateUtil {
 
     public static DEFAULT_DATE_FORMAT = "yyyy-MM-dd'T'HH:mm:ss.SSS'0000'";
-    public static DEFAULT_DATE_TZ_FORMAT = "yyyy-MM-dd'T'HH:mm:ss.SSS'0000'XXX";
+    public static DEFAULT_DATE_TZ_FORMAT = "yyyy-MM-dd'T'HH:mm:ss.SSS'0000'xxx";
 
     public static default: DateUtil = new DateUtil({});
 

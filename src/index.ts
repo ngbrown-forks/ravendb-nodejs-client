@@ -780,6 +780,8 @@ export { TypesAwareObjectMapper } from "./Mapping/ObjectMapper.js";
 export type { ITypesAwareObjectMapper, TypeInfo } from "./Mapping/ObjectMapper.js";
 export { camelCaseReviver, pascalCaseReviver, camelCaseReplacer, pascalCaseReplacer } from "./Mapping/Json/index.js";
 
+export { DateUtil } from "./Utility/DateUtil.js";
+
 // CONSTANTS
 export { CONSTANTS } from "./Constants.js";
 
