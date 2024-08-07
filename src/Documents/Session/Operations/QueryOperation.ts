@@ -20,6 +20,7 @@ import { ObjectChangeCaseOptions, ObjectUtil } from "../../../Utility/ObjectUtil
 import { TimeSeriesEntry } from "../TimeSeries/TimeSeriesEntry.js";
 import { StringBuilder } from "../../../Utility/StringBuilder.js";
 import { DocumentConventions } from "../../Conventions/DocumentConventions.js";
+import { DateUtil } from "../../../Utility/DateUtil.js";
 
 const log = getLogger({ module: "QueryOperation" });
 
@@ -260,9 +261,9 @@ export class QueryOperation {
         const mapper = conventions.objectMapper;
 
         if (result instanceof TimeSeriesAggregationResult) {
-            Object.assign(result, QueryOperation._reviveTimeSeriesAggregationResult(raw, conventions));
+            Object.assign(result, QueryOperation._reviveTimeSeriesAggregationResult(raw));
         } else if (result instanceof TimeSeriesRawResult) {
-            Object.assign(result, QueryOperation._reviveTimeSeriesRawResult(raw, conventions));
+            Object.assign(result, QueryOperation._reviveTimeSeriesRawResult(raw));
         } else {
             if (fieldsToFetch && fieldsToFetch.projections && fieldsToFetch.projections.length) {
                 const keys = conventions.serverToLocalFieldNameConverter
@@ -305,9 +306,9 @@ export class QueryOperation {
                 if (value) {
                     const newValue = QueryOperation._detectTimeSeriesResultType(value);
                     if (newValue instanceof TimeSeriesAggregationResult) {
-                        Object.assign(newValue, QueryOperation._reviveTimeSeriesAggregationResult(value, conventions));
+                        Object.assign(newValue, QueryOperation._reviveTimeSeriesAggregationResult(value));
                     } else if (newValue instanceof TimeSeriesRawResult) {
-                        Object.assign(newValue, QueryOperation._reviveTimeSeriesRawResult(value, conventions));
+                        Object.assign(newValue, QueryOperation._reviveTimeSeriesRawResult(value));
                     }
 
                     result[timeSeriesField] = newValue;
@@ -329,7 +330,7 @@ export class QueryOperation {
         return new TimeSeriesRawResult();
     }
 
-    private static _reviveTimeSeriesAggregationResult(raw: object, conventions: DocumentConventions) {
+    private static _reviveTimeSeriesAggregationResult(raw: object) {
         const rawLower = ObjectUtil.transformObjectKeys(raw, { defaultTransform: ObjectUtil.camel }) as any;
 
         const { results, ...otherProps } = rawLower;
@@ -338,8 +339,8 @@ export class QueryOperation {
             const { from, to, ...otherRangeProps } = r;
 
             const overrides: Partial<TimeSeriesRangeAggregation> = {
-                from: conventions.dateUtil.parse(from),
-                to: conventions.dateUtil.parse(to)
+                from: DateUtil.utc.parse(from),
+                to: DateUtil.utc.parse(to)
             };
 
             return Object.assign(new TimeSeriesRangeAggregation(), otherRangeProps, overrides);
@@ -351,7 +352,7 @@ export class QueryOperation {
         }
     }
 
-    private static _reviveTimeSeriesRawResult(raw: object, conventions: DocumentConventions) {
+    private static _reviveTimeSeriesRawResult(raw: object) {
         const rawLower = ObjectUtil.transformObjectKeys(raw, { defaultTransform: ObjectUtil.camel }) as any;
 
         const { results, ...otherProps } = rawLower;
@@ -360,7 +361,7 @@ export class QueryOperation {
             const { timestamp, ...otherRangeProps } = r;
 
             const overrides: Partial<TimeSeriesEntry> = {
-                timestamp: conventions.dateUtil.parse(timestamp),
+                timestamp: DateUtil.utc.parse(timestamp),
             };
 
             return Object.assign(new TimeSeriesEntry(), otherRangeProps, overrides);

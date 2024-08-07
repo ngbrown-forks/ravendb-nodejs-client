@@ -196,7 +196,7 @@ describe("bulk insert", function () {
 
     it("can modify metadata with bulk insert", async () => {
 
-        const date = DateUtil.default.stringify(new Date());
+        const date = DateUtil.utc.stringify(new Date());
         const fooBar = new FooBar();
         fooBar.name = "John Snow";
 

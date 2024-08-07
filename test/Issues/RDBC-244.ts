@@ -17,6 +17,7 @@ describe("RDBC-244", function () {
     });
 
     afterEach(async () => {
+        testContext.customizeStore = null;
         await disposeTestDocumentStore(store);
     });
 

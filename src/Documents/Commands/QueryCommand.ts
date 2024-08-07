@@ -10,6 +10,7 @@ import { readToEnd } from "../../Utility/StreamUtil.js";
 import { ObjectUtil } from "../../Utility/ObjectUtil.js";
 import { InMemoryDocumentSessionOperations } from "../Session/InMemoryDocumentSessionOperations.js";
 import { AbstractQueryCommand } from "./AbstractQueryCommand.js";
+import { DateUtil } from "../../Utility/DateUtil.js";
 
 export interface QueryCommandOptions {
     metadataOnly?: boolean;
@@ -104,7 +105,7 @@ export class QueryCommand extends AbstractQueryCommand<QueryResult, { [param: st
             results: json.Results.map(x => ObjectUtil.transformDocumentKeys(x, conventions)),
             includes: ObjectUtil.mapIncludesToLocalObject(json.Includes, conventions),
             indexName: json.IndexName,
-            indexTimestamp: conventions.dateUtil.parse(json.IndexTimestamp),
+            indexTimestamp: DateUtil.utc.parse(json.IndexTimestamp),
             includedPaths: json.IncludedPaths,
             isStale: json.IsStale,
             skippedResults: json.SkippedResults,
@@ -112,7 +113,7 @@ export class QueryCommand extends AbstractQueryCommand<QueryResult, { [param: st
             highlightings: json.Highlightings,
             explanations: json.Explanations,
             timingsInMs: json.TimingsInMs,
-            lastQueryTime: conventions.dateUtil.parse(json.LastQueryTime),
+            lastQueryTime: DateUtil.utc.parse(json.LastQueryTime),
             durationInMs: json.DurationInMs,
             resultEtag: json.ResultEtag,
             nodeTag: json.NodeTag,

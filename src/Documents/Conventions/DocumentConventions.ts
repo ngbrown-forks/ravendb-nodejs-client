@@ -153,7 +153,6 @@ export class DocumentConventions {
 
         this._knownEntityTypes = new Map();
         this._objectMapper = new TypesAwareObjectMapper({
-            dateFormat: DateUtil.DEFAULT_DATE_FORMAT,
             documentConventions: this
         });
 

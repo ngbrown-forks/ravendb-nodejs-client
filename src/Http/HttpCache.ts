@@ -1,4 +1,3 @@
-import moment from "moment";
 import { safeMemoryCache } from "safe-memory-cache";
 import { IDisposable } from "../Types/Contracts.js";
 
@@ -90,7 +89,7 @@ export class ReleaseCacheItem {
 
     public notModified(): void {
         if (this.item) {
-            this.item.lastServerUpdate = moment().toDate();
+            this.item.lastServerUpdate = new Date();
         }
     }
 
@@ -117,7 +116,7 @@ export class HttpCacheItem {
     public cache: HttpCache;
 
     public constructor() {
-        this.lastServerUpdate = moment().toDate();
+        this.lastServerUpdate = new Date();
     }
 }
 

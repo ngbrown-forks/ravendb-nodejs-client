@@ -158,7 +158,7 @@ export class RavenTestContext extends RavenTestDriver implements IDisposable {
     }
 
     private _customizeDbRecord: (dbRecord: DatabaseRecord) => void = TypeUtil.NOOP;
-    private _customizeStore: (store: DocumentStore) => Promise<void> = TypeUtil.ASYNC_NOOP;
+    private _customizeStore: (store: DocumentStore) => Promise<void> = null;
 
     public set customizeDbRecord(customizeDbRecord: (dbRecord: DatabaseRecord) => void) {
         this._customizeDbRecord = customizeDbRecord;
@@ -734,6 +734,10 @@ class ClusterNode {
 }
 
 export async function disposeTestDocumentStore(store: IDocumentStore) {
+    if (testContext.customizeStore) {
+        // looks like we forgot to call: testContext.customizeStore = null; in test case
+        throw new Error("Looks like testContext.customizeStore wasn't reset. Please clean it up.");
+    }
     if (!store) {
         return;
     }

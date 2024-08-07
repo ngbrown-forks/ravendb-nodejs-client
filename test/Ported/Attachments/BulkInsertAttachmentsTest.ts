@@ -23,12 +23,10 @@ describe("BulkInsertAttachmentsTest", function () {
         store = await testContext.getDocumentStore();
     });
 
-    afterEach(async () =>
-        await disposeTestDocumentStore(store));
-
-
-
-    afterEach(() => testContext.customizeStore = null);
+    afterEach(async () => {
+        testContext.customizeStore = null;
+        await disposeTestDocumentStore(store);
+    });
 
     it("storeManyAttachments1", async () => {
         await storeManyAttachments(1, 32 * 1024);
@@ -111,6 +109,8 @@ describe("BulkInsertAttachmentsTest", function () {
         const size = 16 * 1024;
 
         const streams = new Map<string, Map<string, Buffer>>();
+        const bytes = [...new Array(size).keys()].map(x => Math.floor(Math.random() * 255));
+        const bArr = Buffer.from(bytes);
 
         {
             const bulkInsert = store.bulkInsert();
@@ -127,9 +127,6 @@ describe("BulkInsertAttachmentsTest", function () {
                 const attachmentsBulkInsert = bulkInsert.attachmentsFor(id);
 
                 for (let j = 0; j < attachments; j++) {
-                    const bytes = [...new Array(size).keys()].map(x => Math.floor(Math.random() * 255));
-                    const bArr = Buffer.from(bytes);
-
                     const name = j.toString();
                     await attachmentsBulkInsert.store(name, bArr);
 

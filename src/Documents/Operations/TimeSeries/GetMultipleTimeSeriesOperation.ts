@@ -158,7 +158,7 @@ export class GetMultipleTimeSeriesCommand extends RavenCommand<TimeSeriesDetails
         this.result.values = CaseInsensitiveKeysMap.create();
 
         for (const [key, value] of Object.entries(results.Values)) {
-            const mapped = (value as any).map(x => reviveTimeSeriesRangeResult(GetTimeSeriesCommand.mapToLocalObject(x, this._conventions), this._conventions));
+            const mapped = (value as any).map(x => reviveTimeSeriesRangeResult(GetTimeSeriesCommand.mapToLocalObject(x)));
             this.result.values.set(key, mapped);
         }
 

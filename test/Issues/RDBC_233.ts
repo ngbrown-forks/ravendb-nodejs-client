@@ -25,8 +25,8 @@ describe("RDBC-233", function () {
         const obj = {
             date: null,
             anotherOne: {
-                start: "2018-01-02",
-                end: "2018-01-03"
+                start: "2018-01-02T12:00:00.000",
+                end: "2018-01-03T12:00:00.000"
             }
         };
 

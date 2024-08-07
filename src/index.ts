@@ -1,6 +1,6 @@
 export { DocumentConventions } from "./Documents/Conventions/DocumentConventions.js";
 export { BulkInsertConventions } from "./Documents/Conventions/BulkInsertConventions.js";
-export { RavenErrorType } from "./Exceptions/index.js";
+export type { RavenErrorType } from "./Exceptions/index.js";
 export * from "./Types/index.js";
 
 // HTTP
@@ -83,33 +83,35 @@ export * from "./ServerWide/Operations/Configuration/DatabaseSettings.js";
 export * from "./ServerWide/Operations/Configuration/GetDatabaseSettingsOperation.js";
 export * from "./ServerWide/Operations/Configuration/PutDatabaseSettingsOperation.js";
 
-export { OrchestratorTopology } from "./ServerWide/OrchestratorTopology.js";
+export type { OrchestratorTopology } from "./ServerWide/OrchestratorTopology.js";
 export { GetDatabaseTopologyCommand } from "./ServerWide/Commands/GetDatabaseTopologyCommand.js";
 export { GetClusterTopologyCommand } from "./ServerWide/Commands/GetClusterTopologyCommand.js";
 export { GetTcpInfoCommand } from "./ServerWide/Commands/GetTcpInfoCommand.js";
-export { NodeInfo } from "./ServerWide/Commands/NodeInfo.js";
+export type { NodeInfo } from "./ServerWide/Commands/NodeInfo.js";
 export { GetNodeInfoCommand } from "./ServerWide/Commands/GetNodeInfoCommand.js";
 export { AddClusterNodeCommand } from "./ServerWide/Commands/Cluster/AddClusterNodeCommand.js";
 export { CreateDatabaseOperation } from "./ServerWide/Operations/CreateDatabaseOperation.js";
-export { DatabaseRecord, ConflictSolver, ScriptResolver } from "./ServerWide/index.js";
+export type { DatabaseRecord, ConflictSolver, ScriptResolver } from "./ServerWide/index.js";
 export * from "./ServerWide/Operations/ModifyConflictSolverOperation.js";
 export * from "./Documents/Operations/Etl/ConnectionString.js";
 
 // OPERATIONS AND COMMANDS
-export { BulkInsertOperation, IAttachmentsBulkInsert, ICountersBulkInsert, ITimeSeriesBulkInsert, ITypedTimeSeriesBulkInsert } from "./Documents/BulkInsertOperation.js";
+export { BulkInsertOperation } from "./Documents/BulkInsertOperation.js";
+export type { IAttachmentsBulkInsert, ICountersBulkInsert, ITimeSeriesBulkInsert, ITypedTimeSeriesBulkInsert } from "./Documents/BulkInsertOperation.js";
 export * from "./Documents/BulkInsert/BulkInsertOptions.js";
-export { BulkInsertProgress } from "./Documents/Operations/BulkInsertProgress.js";
-export { CollectionDetails } from "./Documents/Operations/CollectionDetails.js";
+export type { BulkInsertProgress } from "./Documents/Operations/BulkInsertProgress.js";
+export type { CollectionDetails } from "./Documents/Operations/CollectionDetails.js";
 export * from "./Documents/Operations/Backups/BackupConfiguration.js";
 export * from "./Documents/Operations/Backups/DelayBackupOperation.js";
 export * from "./Documents/Operations/Backups/BackupTaskType.js";
 export { DatabaseHealthCheckOperation } from "./Documents/Operations/DatabaseHealthCheckOperation.js";
-export { DetailedCollectionStatistics } from "./Documents/Operations/DetailedCollectionStatistics.js";
+export type { DetailedCollectionStatistics } from "./Documents/Operations/DetailedCollectionStatistics.js";
 export { GetEssentialStatisticsOperation } from "./Documents/Operations/GetEssentialStatisticsOperation.js";
 export { GetDetailedCollectionStatisticsOperation } from "./Documents/Operations/GetDetailedCollectionStatisticsOperation.js";
 export * from "./Documents/Operations/OperationAbstractions.js";
 export { CompactDatabaseOperation } from "./Documents/Operations/CompactDatabaseOperation.js";
-export { PutConnectionStringOperation, PutConnectionStringResult } from "./Documents/Operations/ConnectionStrings/PutConnectionStringOperation.js";
+export { PutConnectionStringOperation } from "./Documents/Operations/ConnectionStrings/PutConnectionStringOperation.js";
+export type { PutConnectionStringResult } from "./Documents/Operations/ConnectionStrings/PutConnectionStringOperation.js";
 export { PatchOperation } from "./Documents/Operations/PatchOperation.js";
 export { DeleteSorterOperation } from "./Documents/Operations/Sorters/DeleteSorterOperation.js";
 export { PutSortersOperation } from "./Documents/Operations/Sorters/PutSortersOperation.js";
@@ -134,10 +136,8 @@ export {
     CompareExchangeValueResultParser
 }
     from "./Documents/Operations/CompareExchange/CompareExchangeValueResultParser.js";
-export {
-    GetCompareExchangeValuesOperation, GetCompareExchangeValuesParameters
-}
-    from "./Documents/Operations/CompareExchange/GetCompareExchangeValuesOperation.js";
+export { GetCompareExchangeValuesOperation } from "./Documents/Operations/CompareExchange/GetCompareExchangeValuesOperation.js";
+export type { GetCompareExchangeValuesParameters } from "./Documents/Operations/CompareExchange/GetCompareExchangeValuesOperation.js";
 export {
     DeleteCompareExchangeValueOperation
 }
@@ -150,18 +150,18 @@ export {
     CompareExchangeValueJsonConverter
 }
     from "./Documents/Operations/CompareExchange/CompareExchangeValueJsonConverter.js";
-export {
+export type {
     CompareExchangeValueState
 }
     from "./Documents/Operations/CompareExchange/CompareExchangeValueState.js";
-export {
+export type {
     ICompareExchangeValue
 }
     from "./Documents/Operations/CompareExchange/ICompareExchangeValue.js";
 export { DeleteByQueryOperation } from "./Documents/Operations/DeleteByQueryOperation.js";
 export { GetCollectionStatisticsOperation } from "./Documents/Operations/GetCollectionStatisticsOperation.js";
-export { CollectionStatistics } from "./Documents/Operations/CollectionStatistics.js";
-export { GetServerWideExternalReplicationsResponse } from "./Documents/Operations/GetServerWideExternalReplicationsResponse.js";
+export type { CollectionStatistics } from "./Documents/Operations/CollectionStatistics.js";
+export type { GetServerWideExternalReplicationsResponse } from "./Documents/Operations/GetServerWideExternalReplicationsResponse.js";
 export { GetNextOperationIdCommand } from "./Documents/Commands/GetNextOperationIdCommand.js";
 export { KillOperationCommand } from "./Documents/Commands/KillOperationCommand.js";
 export { DeleteDocumentCommand } from "./Documents/Commands/DeleteDocumentCommand.js";
@@ -170,14 +170,14 @@ export { SeedIdentityForCommand } from "./Documents/Commands/SeedIdentityForComm
 export { ExplainQueryCommand } from "./Documents/Commands/ExplainQueryCommand.js";
 export { GetIdentitiesOperation } from "./Documents/Operations/Identities/GetIdentitiesOperation.js";
 export { GetStatisticsOperation, GetStatisticsCommand } from "./Documents/Operations/GetStatisticsOperation.js";
-export { DatabaseStatistics } from "./Documents/Operations/DatabaseStatistics.js";
+export type { DatabaseStatistics } from "./Documents/Operations/DatabaseStatistics.js";
 export { GetOperationStateOperation } from "./Documents/Operations/GetOperationStateOperation.js";
-export { IndexInformation } from "./Documents/Operations/IndexInformation.js";
-export { IndexOptimizeResult } from "./Documents/Operations/IndexOptimizeResult.js";
+export type { IndexInformation } from "./Documents/Operations/IndexInformation.js";
+export type { IndexOptimizeResult } from "./Documents/Operations/IndexOptimizeResult.js";
 export { PatchResultBase } from "./Documents/Operations/PatchResultBase.js";
 export { MaintenanceOperationExecutor } from "./Documents/Operations/MaintenanceOperationExecutor.js";
 export { OperationCompletionAwaiter } from "./Documents/Operations/OperationCompletionAwaiter.js";
-export { ClientConfiguration } from "./Documents/Operations/Configuration/ClientConfiguration.js";
+export type { ClientConfiguration } from "./Documents/Operations/Configuration/ClientConfiguration.js";
 export { GetClientConfigurationOperation } from "./Documents/Operations/Configuration/GetClientConfigurationOperation.js";
 export { PutClientConfigurationOperation } from "./Documents/Operations/Configuration/PutClientConfigurationOperation.js";
 export { PutDocumentCommand } from "./Documents/Commands/PutDocumentCommand.js";
@@ -198,16 +198,16 @@ export { StopIndexOperation } from "./Documents/Operations/Indexes/StopIndexOper
 export { StartIndexOperation } from "./Documents/Operations/Indexes/StartIndexOperation.js";
 export { ResetIndexOperation } from "./Documents/Operations/Indexes/ResetIndexOperation.js";
 export { DeleteIndexOperation } from "./Documents/Operations/Indexes/DeleteIndexOperation.js";
-export { GetServerWideBackupConfigurationsResponse } from "./Documents/Operations/GetServerWideBackupConfigurationsResponse.js";
+export type { GetServerWideBackupConfigurationsResponse } from "./Documents/Operations/GetServerWideBackupConfigurationsResponse.js";
 export { NextIdentityForOperation } from "./Documents/Operations/Identities/NextIdentityForOperation.js";
 export { SeedIdentityForOperation } from "./Documents/Operations/Identities/SeedIdentityForOperation.js";
-export { IOperationProgress } from "./Documents/Operations/IOperationProgress.js";
-export { IOperationResult } from "./Documents/Operations/IOperationResult.js";
+export type { IOperationProgress } from "./Documents/Operations/IOperationProgress.js";
+export type { IOperationResult } from "./Documents/Operations/IOperationResult.js";
 export {
     UpdateExternalReplicationOperation
 }
     from "./Documents/Operations/Replication/UpdateExternalReplicationOperation.js";
-export {
+export type {
     PullReplicationDefinitionAndCurrentConnections
 } from "./Documents/Operations/Replication/PullReplicationDefinitionAndCurrentConnections.js";
 export {
@@ -227,14 +227,10 @@ export {
     UpdatePullReplicationAsSinkOperation
 } from "./Documents/Operations/Replication/UpdatePullReplicationAsSinkOperation.js";
 export { GetConflictsCommand } from "./Documents/Commands/GetConflictsCommand.js";
-export {
-    SetIndexesLockOperation,
-    SetIndexesLockOperationParameters
-} from "./Documents/Operations/Indexes/SetIndexesLockOperation.js";
-export {
-    SetIndexesPriorityOperation,
-    SetIndexesPriorityOperationParameters
-} from "./Documents/Operations/Indexes/SetIndexesPriorityOperation.js";
+export { SetIndexesLockOperation } from "./Documents/Operations/Indexes/SetIndexesLockOperation.js";
+export type { SetIndexesLockOperationParameters } from "./Documents/Operations/Indexes/SetIndexesLockOperation.js";
+export { SetIndexesPriorityOperation } from "./Documents/Operations/Indexes/SetIndexesPriorityOperation.js";
+export type { SetIndexesPriorityOperationParameters } from "./Documents/Operations/Indexes/SetIndexesPriorityOperation.js";
 export * from "./Documents/Operations/PatchRequest.js";
 export * from "./Documents/Operations/GetDetailedStatisticsOperation.js";
 export * from "./Documents/Commands/Batches/BatchOptions.js";
@@ -570,18 +566,18 @@ export * from "./Documents/Lazy.js";
 export { CounterBatch } from "./Documents/Operations/Counters/CounterBatch.js";
 export { GetCountersOperation } from "./Documents/Operations/Counters/GetCountersOperation.js";
 export { CounterBatchOperation } from "./Documents/Operations/Counters/CounterBatchOperation.js";
-export { CounterOperationType } from "./Documents/Operations/Counters/CounterOperationType.js";
+export type { CounterOperationType } from "./Documents/Operations/Counters/CounterOperationType.js";
 export { CounterOperation } from "./Documents/Operations/Counters/CounterOperation.js";
 export { DocumentCountersOperation } from "./Documents/Operations/Counters/DocumentCountersOperation.js";
 export * from "./Documents/Operations/Counters/CounterDetail.js";
 export * from "./Documents/Operations/Counters/CountersDetail.js";
 
 // TIME SERIES
-export { AggregationType } from "./Documents/Operations/TimeSeries/AggregationType.js";
+export type { AggregationType } from "./Documents/Operations/TimeSeries/AggregationType.js";
 export { TIME_SERIES_ROLLUP_SEPARATOR } from "./Documents/Operations/TimeSeries/RawTimeSeriesTypes.js";
 export { ConfigureRawTimeSeriesPolicyOperation } from "./Documents/Operations/TimeSeries/ConfigureRawTimeSeriesPolicyOperation.js";
 export { ConfigureTimeSeriesOperation } from "./Documents/Operations/TimeSeries/ConfigureTimeSeriesOperation.js";
-export { ConfigureTimeSeriesOperationResult } from "./Documents/Operations/TimeSeries/ConfigureTimeSeriesOperationResult.js";
+export type { ConfigureTimeSeriesOperationResult } from "./Documents/Operations/TimeSeries/ConfigureTimeSeriesOperationResult.js";
 export { ConfigureTimeSeriesPolicyOperation } from "./Documents/Operations/TimeSeries/ConfigureTimeSeriesPolicyOperation.js";
 export { ConfigureTimeSeriesValueNamesOperation } from "./Documents/Operations/TimeSeries/ConfigureTimeSeriesValueNamesOperation.js";
 export { GetMultipleTimeSeriesOperation, GetMultipleTimeSeriesCommand } from "./Documents/Operations/TimeSeries/GetMultipleTimeSeriesOperation.js";
@@ -593,16 +589,16 @@ export { TimeSeriesBatchOperation } from "./Documents/Operations/TimeSeries/Time
 export { TimeSeriesCollectionConfiguration } from "./Documents/Operations/TimeSeries/TimeSeriesCollectionConfiguration.js";
 export { TimeSeriesConfiguration } from "./Documents/Operations/TimeSeries/TimeSeriesConfiguration.js";
 export { TimeSeriesDetails } from "./Documents/Operations/TimeSeries/TimeSeriesDetails.js";
-export { TimeSeriesItemDetail } from "./Documents/Operations/TimeSeries/TimeSeriesItemDetail.js";
+export type { TimeSeriesItemDetail } from "./Documents/Operations/TimeSeries/TimeSeriesItemDetail.js";
 export * from "./Documents/Operations/TimeSeries/TimeSeriesOperation.js";
 export { TimeSeriesPolicy } from "./Documents/Operations/TimeSeries/TimeSeriesPolicy.js";
-export { TimeSeriesRange } from "./Documents/Operations/TimeSeries/TimeSeriesRange.js";
-export { TimeSeriesCountRange } from "./Documents/Operations/TimeSeries/TimeSeriesCountRange.js";
-export { TimeSeriesRangeType } from "./Documents/Operations/TimeSeries/TimeSeriesRangeType.js";
-export { TimeSeriesTimeRange } from "./Documents/Operations/TimeSeries/TimeSeriesTimeRange.js";
+export type { TimeSeriesRange } from "./Documents/Operations/TimeSeries/TimeSeriesRange.js";
+export type { TimeSeriesCountRange } from "./Documents/Operations/TimeSeries/TimeSeriesCountRange.js";
+export type { TimeSeriesRangeType } from "./Documents/Operations/TimeSeries/TimeSeriesRangeType.js";
+export type { TimeSeriesTimeRange } from "./Documents/Operations/TimeSeries/TimeSeriesTimeRange.js";
 export { TimeSeriesRangeResult } from "./Documents/Operations/TimeSeries/TimeSeriesRangeResult.js";
-export { TimeSeriesStatistics } from "./Documents/Operations/TimeSeries/TimeSeriesStatistics.js";
-export { AbstractTimeSeriesRange } from "./Documents/Operations/TimeSeries/AbstractTimeSeriesRange.js";
+export type { TimeSeriesStatistics } from "./Documents/Operations/TimeSeries/TimeSeriesStatistics.js";
+export type { AbstractTimeSeriesRange } from "./Documents/Operations/TimeSeries/AbstractTimeSeriesRange.js";
 export { TimeValue } from "./Primitives/TimeValue.js";
 // AUTH
 export * from "./Auth/AuthOptions.js";
@@ -780,8 +776,11 @@ export * from "./ServerWide/Sharding/ShardBucketMigration.js";
 export * from "./ServerWide/Sharding/ShardingConfiguration.js";
 
 // MAPPING
-export { TypesAwareObjectMapper, ITypesAwareObjectMapper, TypeInfo } from "./Mapping/ObjectMapper.js";
+export { TypesAwareObjectMapper } from "./Mapping/ObjectMapper.js";
+export type { ITypesAwareObjectMapper, TypeInfo } from "./Mapping/ObjectMapper.js";
 export { camelCaseReviver, pascalCaseReviver, camelCaseReplacer, pascalCaseReplacer } from "./Mapping/Json/index.js";
+
+export { DateUtil } from "./Utility/DateUtil.js";
 
 // CONSTANTS
 export { CONSTANTS } from "./Constants.js";

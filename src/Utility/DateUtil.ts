@@ -1,5 +1,5 @@
-import moment from "moment";
 import { throwError } from "../Exceptions/index.js";
+import { format, parse, parseISO } from "date-fns";
 
 export interface DateUtilOpts {
     withTimezone?: boolean;
@@ -8,8 +8,8 @@ export interface DateUtilOpts {
 
 export class DateUtil {
 
-    public static DEFAULT_DATE_FORMAT = "YYYY-MM-DDTHH:mm:ss.SSS0000";
-    public static DEFAULT_DATE_TZ_FORMAT = "YYYY-MM-DDTHH:mm:ss.SSS0000Z";
+    public static DEFAULT_DATE_FORMAT = "yyyy-MM-dd'T'HH:mm:ss.SSS'0000'";
+    public static DEFAULT_DATE_TZ_FORMAT = "yyyy-MM-dd'T'HH:mm:ss.SSS'0000'xxx";
 
     public static default: DateUtil = new DateUtil({});
 
@@ -18,15 +18,15 @@ export class DateUtil {
     public constructor(protected opts: DateUtilOpts) {}
 
     public static timestamp(): number {
-        return moment().unix();
+        return Math.floor(new Date().getTime() / 1000);
     }
 
     public static timestampMs(): number {
-        return moment().valueOf();
+        return new Date().getTime();
     }
 
     public static zeroDate(): Date {
-        return moment([1, 1, 1]).toDate();
+        return new Date(0);
     }
 
     public parse(dateString: string): Date {
@@ -34,34 +34,59 @@ export class DateUtil {
             return null;
         }
 
-        let parsed;
-        if (this.opts.useUtcDates || this.opts.withTimezone || dateString.endsWith("Z")) {
-            parsed = moment.parseZone(dateString, DateUtil.DEFAULT_DATE_TZ_FORMAT);
+        dateString = DateUtil.alignPrecision(dateString);
+        let parsed: Date;
+        if (this.opts.withTimezone) {
+            parsed = parse(dateString, DateUtil.DEFAULT_DATE_TZ_FORMAT, new Date());
+        } else if (this.opts.useUtcDates || dateString.endsWith("Z")) {
+            if (!dateString.endsWith("Z")) {
+                dateString += "Z";
+            }
+            parsed = parseISO(dateString);
         } else {
-            parsed = moment(dateString, DateUtil.DEFAULT_DATE_FORMAT);
+            parsed = parse(dateString, DateUtil.DEFAULT_DATE_FORMAT, new Date());
         }
 
-        if (!parsed.isValid()) {
+        if (isNaN(parsed.getTime())) {
             throwError("InvalidArgumentException", `Could not parse date string '${dateString}'.`);
         }
 
-        return parsed.toDate();
+        return parsed;
+    }
+
+    private static alignPrecision(date: string) {
+        const hasZ = date.endsWith("Z");
+        if (hasZ) {
+            date = date.slice(0, -1);
+        }
+        const lastDot = date.lastIndexOf(".");
+        const tzPlusIndex = date.indexOf("+", lastDot);
+        const tzMinusIndex = date.indexOf("-", lastDot);
+        const tzIndex = Math.max(tzPlusIndex, tzMinusIndex);
+        let tzSuffix = "";
+        if (tzIndex !== -1) {
+            tzSuffix = date.substring(tzIndex);
+            date = date.slice(0, tzIndex - 1);
+        }
+
+        const suffix = "0000" + tzSuffix + (hasZ ? "Z" : "");
+
+        if (lastDot === -1 || lastDot < date.length - 3) {
+            return date.slice(0, lastDot + 4) + suffix;
+        }
+        return date + suffix;
     }
 
     public stringify(date: Date): string {
-        const m = moment(date);
         if (this.opts.useUtcDates) {
-            m.utc();
-        }
+            const utcString = date.toISOString().slice(0, -1);
 
-        const format = this.opts.withTimezone
+            return this.opts.withTimezone ? utcString + "0000+00:00" : utcString + "0000Z";
+        }
+        const dateFormat = this.opts.withTimezone
             ? DateUtil.DEFAULT_DATE_TZ_FORMAT
             : DateUtil.DEFAULT_DATE_FORMAT;
-        const result = m.format(format);
-        if (this.opts.useUtcDates && !this.opts.withTimezone) {
-            return result + "Z";
-        }
-        
-        return result;
+        return format(date, dateFormat);
     }
+
 }

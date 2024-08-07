@@ -56,8 +56,8 @@ describe("CustomEntityName", function () {
                     .hasSize(1);
             }
         } finally {
-            await disposeTestDocumentStore(store);
             testContext.customizeStore = null;
+            await disposeTestDocumentStore(store);
         }
     }
 

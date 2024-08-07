@@ -4,8 +4,8 @@ import { CreateSampleDataOperation } from "../../Utils/CreateSampleDataOperation
 
 import { GetStatisticsCommand, GetStatisticsOperation, IDocumentStore, } from "../../../src/index.js";
 import { User } from "../../Assets/Entities.js";
-import moment from "moment";
 import { assertThat } from "../../Utils/AssertExtensions.js";
+import { addMinutes } from "date-fns";
 
 describe("GetStatisticsCommand()", function () {
 
@@ -80,7 +80,7 @@ describe("GetStatisticsCommand()", function () {
             const tsf = session.timeSeriesFor("users/1", "Heartrate");
             tsf.append(new Date(), 70);
 
-            tsf.append(moment().add(1, "minute").toDate(), 20);
+            tsf.append(addMinutes(new Date(), 1), 20);
 
             await session.saveChanges();
         }

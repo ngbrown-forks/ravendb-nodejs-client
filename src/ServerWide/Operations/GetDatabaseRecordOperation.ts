@@ -69,12 +69,10 @@ export class GetDatabaseRecordCommand extends RavenCommand<DatabaseRecordWithEta
             })
             .process(bodyStream);
 
-        const dateUtil = this._conventions.dateUtil;
-
         if (this.result.rollingIndexes) {
             for (const index of Object.values(this.result.rollingIndexes)) {
                 if (index.activeDeployments) {
-                    index.activeDeployments = GetDatabaseRecordCommand.mapRollingDeployment(dateUtil, index.activeDeployments as any);
+                    index.activeDeployments = GetDatabaseRecordCommand.mapRollingDeployment(index.activeDeployments as any);
                 }
             }
         }
@@ -90,8 +88,8 @@ export class GetDatabaseRecordCommand extends RavenCommand<DatabaseRecordWithEta
 
                     return {
                         ...otherHistoryProps,
-                        createdAt: dateUtil.parse(createdAt),
-                        rollingDeployment: GetDatabaseRecordCommand.mapRollingDeployment(dateUtil, rollingDeployment)
+                        createdAt: DateUtil.utc.parse(createdAt),
+                        rollingDeployment: GetDatabaseRecordCommand.mapRollingDeployment(rollingDeployment)
                     } as IndexHistoryEntry;
                 });
             }
@@ -104,7 +102,7 @@ export class GetDatabaseRecordCommand extends RavenCommand<DatabaseRecordWithEta
         return body;
     }
 
-    static mapRollingDeployment(dateUtil: DateUtil, input: ServerResponse<Record<string, RollingIndexDeployment>>): Record<string, RollingIndexDeployment> {
+    static mapRollingDeployment(input: ServerResponse<Record<string, RollingIndexDeployment>>): Record<string, RollingIndexDeployment> {
         if (!input) {
             return null;
         }
@@ -114,9 +112,9 @@ export class GetDatabaseRecordCommand extends RavenCommand<DatabaseRecordWithEta
             const deployment = input[tag];
             result[tag] = {
                 state: deployment.state,
-                createdAt: dateUtil.parse(deployment.createdAt),
-                startedAt: dateUtil.parse(deployment.startedAt),
-                finishedAt: dateUtil.parse(deployment.finishedAt),
+                createdAt: DateUtil.utc.parse(deployment.createdAt),
+                startedAt: DateUtil.utc.parse(deployment.startedAt),
+                finishedAt: DateUtil.utc.parse(deployment.finishedAt),
             }
         }
 
