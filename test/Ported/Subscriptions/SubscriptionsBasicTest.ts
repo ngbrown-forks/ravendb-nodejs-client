@@ -22,6 +22,7 @@ import { TypeUtil } from "../../../src/Utility/TypeUtil.js";
 import { assertThat, assertThrows } from "../../Utils/AssertExtensions.js";
 import { TimeValue } from "../../../src/Primitives/TimeValue.js";
 import { Semaphore } from "../../../src/Utility/Semaphore.js";
+import { addDays } from "date-fns";
 
 describe("SubscriptionsBasicTest", function () {
     const _reasonableWaitTime = 15 * 1000;
@@ -1115,12 +1116,12 @@ describe("SubscriptionsBasicTest", function () {
                        .isEqualTo(0);
 
                    const timeSeries = session.timeSeriesFor(company, "stockPrice");
-                   const timeSeriesEntries = await timeSeries.get(now.clone().add(-7, "days").toDate(), null);
+                   const timeSeriesEntries = await timeSeries.get(addDays(now, -7), null);
 
                    assertThat(timeSeriesEntries)
                        .hasSize(1);
                    assertThat(timeSeriesEntries[0].timestamp.getTime())
-                       .isEqualTo(now.toDate().getTime());
+                       .isEqualTo(now.getTime());
                    assertThat(timeSeriesEntries[0].value)
                        .isEqualTo(10);
                    assertThat(session.advanced.numberOfRequests)
@@ -1142,7 +1143,7 @@ describe("SubscriptionsBasicTest", function () {
                await session.store(company);
 
                session.timeSeriesFor(company, "stockPrice")
-                   .append(now.toDate(), 10);
+                   .append(now, 10);
                await session.saveChanges();
            }
 
@@ -1182,14 +1183,14 @@ describe("SubscriptionsBasicTest", function () {
 
                    const timeSeries = session.timeSeriesFor(company, "stockPrice");
                    const timeSeriesEntries = await timeSeries.get(
-                       now.clone().add(-7, "days").toDate(),
+                       addDays(now, -7),
                        null
                    );
 
                    assertThat(timeSeriesEntries)
                        .hasSize(1);
                    assertThat(timeSeriesEntries[0].timestamp.getTime())
-                       .isEqualTo(now.clone().add(-7, "days").toDate().getTime());
+                       .isEqualTo(addDays(now, -7).getTime());
                    assertThat(timeSeriesEntries[0].value)
                        .isEqualTo(10);
                    assertThat(session.advanced.numberOfRequests)
@@ -1211,7 +1212,7 @@ describe("SubscriptionsBasicTest", function () {
                await session.store(company);
 
                session.timeSeriesFor(company, "stockPrice")
-                   .append(now.clone().add(-7, "days").toDate(), 10);
+                   .append(addDays(now, -7), 10);
                await session.saveChanges();
            }
 
@@ -1251,14 +1252,14 @@ describe("SubscriptionsBasicTest", function () {
 
                    let timeSeries = session.timeSeriesFor(company, "stockPrice");
                    let timeSeriesEntries = await timeSeries.get(
-                       now.clone().add(-7, "days").toDate(),
+                       addDays(now, -7),
                        null
                    );
 
                    assertThat(timeSeriesEntries)
                        .hasSize(1);
                    assertThat(timeSeriesEntries[0].timestamp.getTime())
-                       .isEqualTo(now.clone().add(-7, "days").toDate().getTime());
+                       .isEqualTo(addDays(now, -7).getTime());
                    assertThat(timeSeriesEntries[0].value)
                        .isEqualTo(10);
                    assertThat(session.advanced.numberOfRequests)
@@ -1266,14 +1267,14 @@ describe("SubscriptionsBasicTest", function () {
 
                    timeSeries = session.timeSeriesFor(company, "stockPrice2");
                    timeSeriesEntries = await timeSeries.get(
-                       now.clone().add(-5, "days").toDate(),
+                       addDays(now, -5),
                        null
                    );
 
                    assertThat(timeSeriesEntries)
                        .hasSize(1);
                    assertThat(timeSeriesEntries[0].timestamp.getTime())
-                       .isEqualTo(now.clone().add(-5, "days").toDate().getTime());
+                       .isEqualTo(addDays(now, -5).getTime());
                    assertThat(timeSeriesEntries[0].value)
                        .isEqualTo(100);
                    assertThat(session.advanced.numberOfRequests)
@@ -1295,9 +1296,9 @@ describe("SubscriptionsBasicTest", function () {
                await session.store(company);
 
                session.timeSeriesFor(company, "stockPrice")
-                   .append(now.clone().add(-7, "days").toDate(), 10);
+                   .append(addDays(now, -7), 10);
                session.timeSeriesFor(company, "stockPrice2")
-                   .append(now.clone().add(-5, "days").toDate(), 100);
+                   .append(addDays(now, -5), 100);
                await session.saveChanges();
            }
 
@@ -1337,14 +1338,14 @@ describe("SubscriptionsBasicTest", function () {
 
                    let timeSeries = session.timeSeriesFor(company, "stockPrice");
                    let timeSeriesEntries = await timeSeries.get(
-                       now.clone().add(-7, "days").toDate(),
+                       addDays(now, -7),
                        null
                    );
 
                    assertThat(timeSeriesEntries)
                        .hasSize(1);
                    assertThat(timeSeriesEntries[0].timestamp.getTime())
-                       .isEqualTo(now.clone().add(-7, "days").toDate().getTime());
+                       .isEqualTo(addDays(now, -7).getTime());
                    assertThat(timeSeriesEntries[0].value)
                        .isEqualTo(10);
                    assertThat(session.advanced.numberOfRequests)
@@ -1352,14 +1353,14 @@ describe("SubscriptionsBasicTest", function () {
 
                    timeSeries = session.timeSeriesFor(company, "stockPrice2");
                    timeSeriesEntries = await timeSeries.get(
-                       now.clone().add(-5, "days").toDate(),
+                       addDays(now, -5),
                        null
                    );
 
                    assertThat(timeSeriesEntries)
                        .hasSize(1);
                    assertThat(timeSeriesEntries[0].timestamp.getTime())
-                       .isEqualTo(now.clone().add(-5, "days").toDate().getTime());
+                       .isEqualTo(addDays(now, -5).getTime());
                    assertThat(timeSeriesEntries[0].value)
                        .isEqualTo(100);
                    assertThat(session.advanced.numberOfRequests)
@@ -1381,9 +1382,9 @@ describe("SubscriptionsBasicTest", function () {
                await session.store(company);
 
                session.timeSeriesFor(company, "stockPrice")
-                   .append(now.clone().add(-7, "days").toDate(), 10);
+                   .append(addDays(now, -7), 10);
                session.timeSeriesFor(company, "stockPrice2")
-                   .append(now.clone().add(-5, "days").toDate(), 100);
+                   .append(addDays(now, -5), 100);
                await session.saveChanges();
            }
 

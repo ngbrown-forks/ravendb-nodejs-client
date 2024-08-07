@@ -7,6 +7,7 @@ import { disposeTestDocumentStore, testContext } from "../../Utils/TestUtil.js";
 import { User } from "../../Assets/Entities.js";
 import { assertThat } from "../../Utils/AssertExtensions.js";
 import { TypeUtil } from "../../../src/Utility/TypeUtil.js";
+import { addMinutes } from "date-fns";
 
 describe("RavenDB_15426", function () {
 
@@ -27,7 +28,7 @@ describe("RavenDB_15426", function () {
             await session.store(new User(), "users/1-A");
             const tsf = session.timeSeriesFor("users/1-A", "Heartrate");
             for (let i = 0; i <= 20; i++) {
-                tsf.append(baseLine.clone().add(i, "minute").toDate(), [ i ], "watches/apple");
+                tsf.append(addMinutes(baseLine, i), [ i ], "watches/apple");
             }
 
             await session.saveChanges();
@@ -85,13 +86,13 @@ describe("RavenDB_15426", function () {
             const tsf = session.timeSeriesFor(id, "raven");
 
             for (let i = 0; i <= 10; i++) {
-                tsf.append(baseLine.clone().add(i, "minute").toDate(), [ i ], "watches/apple");
+                tsf.append(addMinutes(baseLine, i), [ i ], "watches/apple");
             }
             for (let i = 12; i <= 13; i++) {
-                tsf.append(baseLine.clone().add(i, "minute").toDate(), [ i ], "watches/apple");
+                tsf.append(addMinutes(baseLine, i), [ i ], "watches/apple");
             }
             for (let i = 16; i <= 20; i++) {
-                tsf.append(baseLine.clone().add(i, "minute").toDate(), [ i ], "watches/apple");
+                tsf.append(addMinutes(baseLine, i), [ i ], "watches/apple");
             }
 
             await session.saveChanges();
@@ -99,8 +100,8 @@ describe("RavenDB_15426", function () {
 
         let rangesList: TimeSeriesRange[] = [
             {
-                from: baseLine.clone().add(1, "minute").toDate(),
-                to: baseLine.clone().add(7, "minute").toDate(),
+                from: addMinutes(baseLine, 1),
+                to: addMinutes(baseLine, 7),
                 name: "raven"
             }
         ];
@@ -119,8 +120,8 @@ describe("RavenDB_15426", function () {
         rangesList = [
             {
                 name: "raven",
-                from: baseLine.clone().add(8, "minute").toDate(),
-                to: baseLine.clone().add(11, "minute").toDate()
+                from: addMinutes(baseLine, 8),
+                to: addMinutes(baseLine, 11)
             }
         ];
 
@@ -137,8 +138,8 @@ describe("RavenDB_15426", function () {
         rangesList = [
             {
                 name: "raven",
-                from: baseLine.clone().add(8, "minute").toDate(),
-                to: baseLine.clone().add(17, "minute").toDate()
+                from: addMinutes(baseLine, 8),
+                to: addMinutes(baseLine, 17)
             }
         ];
 
@@ -155,8 +156,8 @@ describe("RavenDB_15426", function () {
         rangesList = [
             {
                 name: "raven",
-                from: baseLine.clone().add(14, "minute").toDate(),
-                to: baseLine.clone().add(15, "minute").toDate()
+                from: addMinutes(baseLine, 14),
+                to: addMinutes(baseLine, 15)
             }
         ];
 
@@ -173,8 +174,8 @@ describe("RavenDB_15426", function () {
         rangesList = [
             {
                 name: "raven",
-                from: baseLine.clone().add(23, "minute").toDate(),
-                to: baseLine.clone().add(25, "minute").toDate()
+                from: addMinutes(baseLine, 23),
+                to: addMinutes(baseLine, 25)
             }
         ];
 
@@ -191,8 +192,8 @@ describe("RavenDB_15426", function () {
         rangesList = [
             {
                 name: "raven",
-                from: baseLine.clone().add(20, "minute").toDate(),
-                to: baseLine.clone().add(26, "minute").toDate()
+                from: addMinutes(baseLine, 20),
+                to: addMinutes(baseLine, 26)
             }
         ];
 
@@ -216,7 +217,7 @@ describe("RavenDB_15426", function () {
             const tsf = session.timeSeriesFor("users/1-A", "Heartrate");
 
             for (let i = 0; i < 20; i++) {
-                tsf.append(baseLine.clone().add(i, "minute").toDate(), [ i ], "watches/apple");
+                tsf.append(addMinutes(baseLine, i), [ i ], "watches/apple");
             }
 
             await session.saveChanges();
@@ -241,7 +242,7 @@ describe("RavenDB_15426", function () {
             assertThat(res)
                 .hasSize(10);
             assertThat(res[0].timestamp.getTime())
-                .isEqualTo(baseLine.clone().add(10, "minutes").toDate().getTime());
+                .isEqualTo(addMinutes(baseLine, 10).getTime());
             assertThat(session.advanced.numberOfRequests)
                 .isEqualTo(3);
 
@@ -250,9 +251,9 @@ describe("RavenDB_15426", function () {
             assertThat(res)
                 .hasSize(20);
             assertThat(res[0].timestamp.getTime())
-                .isEqualTo(baseLine.toDate().getTime());
+                .isEqualTo(baseLine.getTime());
             assertThat(res[10].timestamp.getTime())
-                .isEqualTo(baseLine.clone().add(10, "minutes").toDate().getTime());
+                .isEqualTo(addMinutes(baseLine, 10).getTime());
             assertThat(session.advanced.numberOfRequests)
                 .isEqualTo(4);
 
@@ -260,7 +261,7 @@ describe("RavenDB_15426", function () {
             assertThat(res)
                 .hasSize(10);
             assertThat(res[0].timestamp.getTime())
-                .isEqualTo(baseLine.clone().add(10, "minutes").toDate().getTime());
+                .isEqualTo(addMinutes(baseLine, 10).getTime());
 
             assertThat(session.advanced.numberOfRequests)
                 .isEqualTo(4);
@@ -280,7 +281,7 @@ describe("RavenDB_15426", function () {
             await session.store(new User(), id);
             let tsf = session.timeSeriesFor(id, "raven");
             for (let i = 0; i < 8; i++) {
-                tsf.append(baseLine.clone().add(i, "minutes").toDate(), [ 64 ], "watches/apple");
+                tsf.append(addMinutes(baseLine, i), [ 64 ], "watches/apple");
             }
 
             await session.saveChanges();
@@ -288,18 +289,18 @@ describe("RavenDB_15426", function () {
             const rangesList: TimeSeriesRange[] = [
                 {
                     name: "raven",
-                    from: baseLine.clone().add(0, "minutes").toDate(),
-                    to: baseLine.clone().add(3, "minutes").toDate(),
+                    from: baseLine,
+                    to: addMinutes(baseLine, 3),
                 },
                 {
                     name: "raven",
-                    from: baseLine.clone().add(4, "minutes").toDate(),
-                    to: baseLine.clone().add(7, "minutes").toDate(),
+                    from: addMinutes(baseLine, 4),
+                    to: addMinutes(baseLine, 7),
                 },
                 {
                     name: "raven",
-                    from: baseLine.clone().add(8, "minutes").toDate(),
-                    to: baseLine.clone().add(11, "minutes").toDate(),
+                    from: addMinutes(baseLine, 8),
+                    to: addMinutes(baseLine, 11),
                 }
             ];
 
@@ -324,7 +325,7 @@ describe("RavenDB_15426", function () {
 
             tsf = session.timeSeriesFor(id, "raven");
             for (let i = 8; i < 11; i++) {
-                tsf.append(baseLine.clone().add(i, "minutes").toDate(), [ 1000 ], "watches/apple");
+                tsf.append(addMinutes(baseLine, i), [ 1000 ], "watches/apple");
             }
 
             await session.saveChanges();
@@ -360,7 +361,7 @@ describe("RavenDB_15426", function () {
             await session.store(new User(), id);
             const tsf = session.timeSeriesFor(id, tag);
             for (let i = 0; i <= 15; i++) {
-                tsf.append(baseLine.clone().add(i, "minutes").toDate(), [ i ], "watches/apple");
+                tsf.append(addMinutes(baseLine, i), [ i ], "watches/apple");
             }
 
             await session.saveChanges();
@@ -369,18 +370,18 @@ describe("RavenDB_15426", function () {
         const rangesList: TimeSeriesRange[] = [
             {
                 name: "raven",
-                from: baseLine.clone().add(0, "minutes").toDate(),
-                to: baseLine.clone().add(3, "minutes").toDate(),
+                from: baseLine,
+                to: addMinutes(baseLine, 3),
             },
             {
                 name: "raven",
-                from: baseLine.clone().add(4, "minutes").toDate(),
-                to: baseLine.clone().add(7, "minutes").toDate(),
+                from: addMinutes(baseLine, 4),
+                to: addMinutes(baseLine, 7),
             },
             {
                 name: "raven",
-                from: baseLine.clone().add(8, "minutes").toDate(),
-                to: baseLine.clone().add(11, "minutes").toDate(),
+                from: addMinutes(baseLine, 8),
+                to: addMinutes(baseLine, 11),
             }
         ];
 
@@ -437,7 +438,7 @@ describe("RavenDB_15426", function () {
             await session.store(new User(), id);
             const tsf = session.timeSeriesFor(id, tag);
             for (let i = 0; i <= 15; i++) {
-                tsf.append(baseLine.clone().add(i, "minutes").toDate(), [ i ], "watches/apple");
+                tsf.append(addMinutes(baseLine, i), [ i ], "watches/apple");
             }
 
             await session.saveChanges();
@@ -446,18 +447,18 @@ describe("RavenDB_15426", function () {
         const rangesList: TimeSeriesRange[] = [
             {
                 name: "raven",
-                from: baseLine.clone().add(0, "minutes").toDate(),
-                to: baseLine.clone().add(3, "minutes").toDate(),
+                from: baseLine,
+                to: addMinutes(baseLine, 3),
             },
             {
                 name: "raven",
-                from: baseLine.clone().add(4, "minutes").toDate(),
-                to: baseLine.clone().add(7, "minutes").toDate(),
+                from: addMinutes(baseLine, 4),
+                to: addMinutes(baseLine, 7),
             },
             {
                 name: "raven",
-                from: baseLine.clone().add(8, "minutes").toDate(),
-                to: baseLine.clone().add(11, "minutes").toDate(),
+                from: addMinutes(baseLine, 8),
+                to: addMinutes(baseLine, 11),
             }
         ];
 

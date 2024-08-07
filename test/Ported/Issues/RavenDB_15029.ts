@@ -23,7 +23,7 @@ describe("RavenDB_15029", function () {
             user.name = "Karmel";
             await session.store(user, "users/karmel");
             session.timeSeriesFor("users/karmel", "HeartRate")
-                .append(baseLine.toDate(), 60, "watches/fitbit");
+                .append(baseLine, 60, "watches/fitbit");
             await session.saveChanges();
         }
 
@@ -46,7 +46,7 @@ describe("RavenDB_15029", function () {
             assertThat(result.results[0].value)
                 .isEqualTo(60);
             assertThat(result.results[0].timestamp.getTime())
-                .isEqualTo(baseLine.toDate().getTime());
+                .isEqualTo(baseLine.getTime());
             assertThat(result.results[0].tag)
                 .isEqualTo("watches/fitbit");
         }

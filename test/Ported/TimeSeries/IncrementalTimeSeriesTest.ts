@@ -12,6 +12,7 @@ import { User } from "../../Assets/Entities.js";
 import { assertThat, assertThrows } from "../../Utils/AssertExtensions.js";
 import { TimeValue } from "../../../src/Primitives/TimeValue.js";
 import { delay } from "../../../src/Utility/PromiseUtil.js";
+import { addDays, addMinutes, addSeconds } from "date-fns";
 
 
 const INCREMENTAL_TS_NAME = HEADERS.INCREMENTAL_TIME_SERIES_PREFIX + "HeartRate";
@@ -36,21 +37,21 @@ describe("IncrementalTimeSeriesTest", function () {
             await session.store(user, "users/ayende");
 
             const ts = session.incrementalTimeSeriesFor("users/ayende", INCREMENTAL_TS_NAME);
-            ts.increment(baseline.toDate(), 100_000);
+            ts.increment(baseline, 100_000);
             await session.saveChanges();
         }
 
         {
             const session = store.openSession();
             const ts = session.incrementalTimeSeriesFor("users/ayende", INCREMENTAL_TS_NAME);
-            ts.increment(baseline.toDate(), 100_000);
+            ts.increment(baseline, 100_000);
             await session.saveChanges();
         }
 
         {
             const session = store.openSession();
             const ts = await session.incrementalTimeSeriesFor("users/ayende", INCREMENTAL_TS_NAME)
-                .get(baseline.toDate(), null);
+                .get(baseline, null);
             assertThat(ts)
                 .hasSize(1);
             assertThat(ts[0].value)
@@ -68,21 +69,21 @@ describe("IncrementalTimeSeriesTest", function () {
             await session.store(user, "users/ayende");
 
             const ts = session.incrementalTimeSeriesFor("users/ayende", INCREMENTAL_TS_NAME);
-            ts.increment(baseline.toDate(), 4);
+            ts.increment(baseline, 4);
             await session.saveChanges();
         }
 
         {
             const session = store.openSession();
             const ts = session.incrementalTimeSeriesFor("users/ayende", INCREMENTAL_TS_NAME);
-            ts.increment(baseline.toDate(), 6);
+            ts.increment(baseline, 6);
             await session.saveChanges();
         }
 
         {
             const session = store.openSession();
             const ts = await session.incrementalTimeSeriesFor("users/ayende", INCREMENTAL_TS_NAME)
-                .get(baseline.toDate(), baseline.toDate());
+                .get(baseline, baseline);
             assertThat(ts)
                 .hasSize(1);
             assertThat(ts[0].value)
@@ -100,14 +101,14 @@ describe("IncrementalTimeSeriesTest", function () {
             await session.store(user, "users/ayende");
 
             const ts = session.incrementalTimeSeriesFor("users/ayende", INCREMENTAL_TS_NAME);
-            ts.increment(baseline.toDate(), 4);
+            ts.increment(baseline, 4);
             await session.saveChanges();
         }
 
         {
             const session = store.openSession();
             const ts = await session.incrementalTimeSeriesFor("users/ayende", INCREMENTAL_TS_NAME)
-                .get(baseline.toDate(), baseline.toDate());
+                .get(baseline, baseline);
             assertThat(ts)
                 .hasSize(1);
             assertThat(ts[0].value)
@@ -126,21 +127,21 @@ describe("IncrementalTimeSeriesTest", function () {
             user.name = "Oren";
             await session.store(user, "users/ayende");
             const ts = session.incrementalTimeSeriesFor("users/ayende", INCREMENTAL_TS_NAME);
-            ts.increment(baseline.toDate(), [1,1,1]);
+            ts.increment(baseline, [1,1,1]);
             await session.saveChanges();
         }
 
         {
             const session = store.openSession();
             const ts = session.incrementalTimeSeriesFor("users/ayende", INCREMENTAL_TS_NAME);
-            ts.increment(baseline.toDate(), [0,0,9]);
+            ts.increment(baseline, [0,0,9]);
             await session.saveChanges();
         }
 
         {
             const session = store.openSession();
             const ts = await session.incrementalTimeSeriesFor("users/ayende", INCREMENTAL_TS_NAME)
-                .get(baseline.toDate(), baseline.toDate());
+                .get(baseline, baseline);
             assertThat(ts)
                 .hasSize(1);
             assertThat(ts[0].values)
@@ -163,21 +164,21 @@ describe("IncrementalTimeSeriesTest", function () {
             user.name = "Oren";
             await session.store(user, "users/ayende");
             const ts = session.incrementalTimeSeriesFor("users/ayende", INCREMENTAL_TS_NAME);
-            ts.increment(baseline.toDate(), [1]);
+            ts.increment(baseline, [1]);
             await session.saveChanges();
         }
 
         {
             const session = store.openSession();
             const ts = session.incrementalTimeSeriesFor("users/ayende", INCREMENTAL_TS_NAME);
-            ts.increment(baseline.toDate(), [2, 10, 9]);
+            ts.increment(baseline, [2, 10, 9]);
             await session.saveChanges();
         }
 
         {
             const session = store.openSession();
             const ts = await session.incrementalTimeSeriesFor("users/ayende", INCREMENTAL_TS_NAME)
-                .get(baseline.toDate(), baseline.toDate());
+                .get(baseline, baseline);
 
             assertThat(ts)
                 .hasSize(1);
@@ -201,21 +202,21 @@ describe("IncrementalTimeSeriesTest", function () {
             user.name = "Oren";
             await session.store(user, "users/ayende");
             const ts = session.incrementalTimeSeriesFor("users/ayende", INCREMENTAL_TS_NAME);
-            ts.increment(baseline.toDate(), [1, 0]);
+            ts.increment(baseline, [1, 0]);
             await session.saveChanges();
         }
 
         {
             const session = store.openSession();
             const ts = session.incrementalTimeSeriesFor("users/ayende", INCREMENTAL_TS_NAME);
-            ts.increment(baseline.clone().add(1, "minute").toDate(), [1, -3, 0, 0]);
+            ts.increment(addMinutes(baseline, 1), [1, -3, 0, 0]);
             await session.saveChanges();
         }
 
         {
             const session = store.openSession();
             const ts = session.incrementalTimeSeriesFor("users/ayende", INCREMENTAL_TS_NAME);
-            ts.increment(baseline.toDate(), [0, 0, 0, 0]);
+            ts.increment(baseline, [0, 0, 0, 0]);
             await session.saveChanges();
         }
 
@@ -258,14 +259,14 @@ describe("IncrementalTimeSeriesTest", function () {
             user.name = "Oren";
             await session.store(user, "users/ayende");
             const ts = session.incrementalTimeSeriesFor("users/ayende", INCREMENTAL_TS_NAME);
-            ts.increment(baseline.toDate(), [1, -2, 3]);
+            ts.increment(baseline, [1, -2, 3]);
             await session.saveChanges();
         }
 
         {
             const session = store.openSession();
             const ts = await session.incrementalTimeSeriesFor("users/ayende", INCREMENTAL_TS_NAME)
-                .get(baseline.toDate(), baseline.toDate());
+                .get(baseline, baseline);
 
             assertThat(ts)
                 .hasSize(1);
@@ -295,7 +296,7 @@ describe("IncrementalTimeSeriesTest", function () {
             const session = store.openSession();
             const ts = session.incrementalTimeSeriesFor("users/ayende", INCREMENTAL_TS_NAME);
             for (let i = 0; i < 10_000; i++) {
-                ts.increment(baseline.clone().add(i, "minutes").toDate(), i);
+                ts.increment(addMinutes(baseline, i), i);
             }
             await session.saveChanges();
         }
@@ -319,7 +320,7 @@ describe("IncrementalTimeSeriesTest", function () {
 
         await store.maintenance.send(new ConfigureTimeSeriesOperation(config));
 
-        const baseline = testContext.utcToday().clone().add(-1, "day");
+        const baseline = addDays(testContext.utcToday(), -1);
 
         {
             const session = store.openSession();
@@ -329,7 +330,7 @@ describe("IncrementalTimeSeriesTest", function () {
 
             for (let i = 0; i < 100; i++) {
                 session.incrementalTimeSeriesFor("users/karmel", INCREMENTAL_TS_NAME)
-                    .increment(baseline.clone().add(4 * i, "seconds").toDate(), [29 * i]);
+                    .increment(addSeconds(baseline, 4 * i), [29 * i]);
             }
 
             await session.saveChanges();
@@ -372,14 +373,14 @@ describe("IncrementalTimeSeriesTest", function () {
         {
             const session = store.openSession();
             const ts = session.incrementalTimeSeriesFor("users/ayende", INCREMENTAL_TS_NAME);
-            ts.increment(time.toDate(), 1);
+            ts.increment(time, 1);
             await session.saveChanges();
         }
 
         {
             const session = store.openSession();
             const ts = session.incrementalTimeSeriesFor("users/ayende", INCREMENTAL_TS_NAME);
-            ts.increment(time.toDate(), -1);
+            ts.increment(time, -1);
             await session.saveChanges();
         }
 
@@ -413,7 +414,7 @@ describe("IncrementalTimeSeriesTest", function () {
             const session = store.openSession();
             await assertThrows(async () => {
                 session.incrementalTimeSeriesFor("users/karmel", "Heartrate")
-                    .increment(baseline.toDate(), [29]);
+                    .increment(baseline, [29]);
                 await session.saveChanges();
             }, err => {
                 assertThat(err.name)

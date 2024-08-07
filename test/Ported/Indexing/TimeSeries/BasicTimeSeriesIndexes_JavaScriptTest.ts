@@ -9,6 +9,7 @@ import { Employee } from "../../../Assets/Orders.js";
 import { Address, Company, User } from "../../../Assets/Entities.js";
 import { assertThat } from "../../../Utils/AssertExtensions.js";
 import { RavenTestHelper } from "../../../Utils/RavenTestHelper.js";
+import { addHours } from "date-fns";
 
 describe("BasicTimeSeriesIndexes_JavaScript", function () {
 
@@ -105,7 +106,7 @@ describe("BasicTimeSeriesIndexes_JavaScript", function () {
 
             for (let i = 0; i < 10; i++) {
                 session.timeSeriesFor(user, "heartRate")
-                    .append(today.clone().add(i, "hours").toDate(), 180 + i, address.id);
+                    .append(addHours(today, i), 180 + i, address.id);
             }
 
             await session.saveChanges();
@@ -191,14 +192,14 @@ describe("BasicTimeSeriesIndexes_JavaScript", function () {
             await session.store(company);
 
             session.timeSeriesFor(company, "heartRate")
-                .append(now.toDate(), 2.5, "tag1");
+                .append(now, 2.5, "tag1");
             session.timeSeriesFor(company, "heartRate2")
-                .append(now.toDate(), 3.5, "tag2");
+                .append(now, 3.5, "tag2");
 
             const user = new User();
             await session.store(user);
             session.timeSeriesFor(user, "heartRAte")
-                .append(now.toDate(), 4.5, "tag3");
+                .append(now, 4.5, "tag3");
 
             await session.saveChanges();
         }
@@ -247,9 +248,9 @@ describe("BasicTimeSeriesIndexes_JavaScript", function () {
                 const session = store.openSession();
                 const company = await session.load("companies/1", Company);
                 session.timeSeriesFor(company, "heartRate")
-                    .append(now.toDate(), 2.5, "tag1");
+                    .append(now, 2.5, "tag1");
                 session.timeSeriesFor(company, "heartRate2")
-                    .append(now.toDate(), 3.5, "tag2");
+                    .append(now, 3.5, "tag2");
 
                 await session.saveChanges();
             }

@@ -6,6 +6,7 @@ import {
 } from "../../../src/index.js";
 import { User } from "../../Assets/Entities.js";
 import { assertThat } from "../../Utils/AssertExtensions.js";
+import { addMinutes, addMonths } from "date-fns";
 
 describe("TimeSeriesDocumentQuery", function () {
 
@@ -31,17 +32,17 @@ describe("TimeSeriesDocumentQuery", function () {
 
             const tsf = session.timeSeriesFor("users/ayende", "Heartrate");
 
-            tsf.append(baseLine.clone().add(61, "minutes").toDate(), 59, "watches/fitbit");
-            tsf.append(baseLine.clone().add(62, "minutes").toDate(), 79, "watches/apple");
-            tsf.append(baseLine.clone().add(63, "minutes").toDate(), 69, "watches/fitbit");
+            tsf.append(addMinutes(baseLine, 61), 59, "watches/fitbit");
+            tsf.append(addMinutes(baseLine, 62), 79, "watches/apple");
+            tsf.append(addMinutes(baseLine, 63), 69, "watches/fitbit");
 
-            tsf.append(baseLine.clone().add(61, "minutes").add(1, "month").toDate(),
+            tsf.append(addMonths(addMinutes(baseLine, 61), 1),
                 159,
                 "watches/apple");
-            tsf.append(baseLine.clone().add(62, "minutes").add(1, "month").toDate(),
+            tsf.append(addMonths(addMinutes(baseLine, 62), 1),
                 179,
                 "watches/apple");
-            tsf.append(baseLine.clone().add(63, "minutes").add(1, "month").toDate(),
+            tsf.append(addMonths(addMinutes(baseLine, 63), 1),
                 169,
                 "watches/fitbit");
 
@@ -59,8 +60,8 @@ describe("TimeSeriesDocumentQuery", function () {
             const result = await session.query(User)
                 .whereGreaterThan("age", 21)
                 .selectTimeSeries(b => b.raw(tsQueryText), TimeSeriesAggregationResult)
-                .addParameter("start", baseLine.toDate())
-                .addParameter("end", baseLine.clone().add(3, "months").toDate())
+                .addParameter("start", baseLine)
+                .addParameter("end", addMonths(baseLine, 3))
                 .all();
 
             assertThat(result)
@@ -107,17 +108,17 @@ describe("TimeSeriesDocumentQuery", function () {
             await session.store(user, "users/ayende");
 
             const tsf = session.timeSeriesFor("users/ayende", "Heartrate");
-            tsf.append(baseLine.clone().add(61, "minutes").toDate(), 59, "watches/fitbit");
-            tsf.append(baseLine.clone().add(62, "minutes").toDate(), 79, "watches/apple");
-            tsf.append(baseLine.clone().add(63, "minutes").toDate(), 69, "watches/fitbit");
+            tsf.append(addMinutes(baseLine, 61), 59, "watches/fitbit");
+            tsf.append(addMinutes(baseLine, 62), 79, "watches/apple");
+            tsf.append(addMinutes(baseLine, 63), 69, "watches/fitbit");
 
-            tsf.append(baseLine.clone().add(61, "minutes").add(1, "month").toDate(),
+            tsf.append(addMonths(addMinutes(baseLine, 61), 1),
                 159,
                 "watches/apple");
-            tsf.append(baseLine.clone().add(62, "minutes").add(1, "month").toDate(),
+            tsf.append(addMonths(addMinutes(baseLine, 62), 1),
                 179,
                 "watches/apple");
-            tsf.append(baseLine.clone().add(63, "minutes").add(1, "month").toDate(),
+            tsf.append(addMonths(addMinutes(baseLine, 63), 1),
                 169,
                 "watches/fitbit");
 
@@ -132,8 +133,8 @@ describe("TimeSeriesDocumentQuery", function () {
             const result = await session.query(User)
                 .whereGreaterThan("age", 21)
                 .selectTimeSeries(b => b.raw(tsQueryText), TimeSeriesRawResult)
-                .addParameter("start", baseLine.toDate())
-                .addParameter("end", baseLine.clone().add(3, "months").toDate())
+                .addParameter("start", baseLine)
+                .addParameter("end", addMonths(baseLine, 3))
                 .all();
 
             assertThat(result)
@@ -153,21 +154,21 @@ describe("TimeSeriesDocumentQuery", function () {
             assertThat(values[0].tag)
                 .isEqualTo("watches/fitbit");
             assertThat(values[0].timestamp.getTime())
-                .isEqualTo(baseLine.clone().add(61, "minutes").toDate().getTime());
+                .isEqualTo(addMinutes(baseLine, 61).getTime());
 
             assertThat(values[1].values[0])
                 .isEqualTo(69);
             assertThat(values[1].tag)
                 .isEqualTo("watches/fitbit");
             assertThat(values[1].timestamp.getTime())
-                .isEqualTo(baseLine.clone().add(63, "minutes").toDate().getTime());
+                .isEqualTo(addMinutes(baseLine, 63).getTime());
 
             assertThat(values[2].values[0])
                 .isEqualTo(169);
             assertThat(values[2].tag)
                 .isEqualTo("watches/fitbit");
             assertThat(values[2].timestamp.getTime())
-                .isEqualTo(baseLine.clone().add(63, "minutes").add(1, "month").toDate().getTime());
+                .isEqualTo(addMonths(addMinutes(baseLine, 63), 1).getTime());
         }
     });
 

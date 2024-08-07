@@ -19,6 +19,7 @@ import {
     ConfigureTimeSeriesValueNamesOperation,
     ConfigureTimeSeriesValueNamesParameters
 } from "../../../src/Documents/Operations/TimeSeries/ConfigureTimeSeriesValueNamesOperation.js";
+import { addDays, addMilliseconds } from "date-fns";
 
 (RavenTestContext.isPullRequest ? describe.skip : describe)("TimeSeriesConfiguration", function () {
 
@@ -188,7 +189,7 @@ import {
 
         await store.maintenance.send(new ConfigureTimeSeriesOperation(config));
 
-        const baseLine = testContext.utcToday().subtract(1, "day");
+        const baseLine = addDays(testContext.utcToday(), -1);
 
         {
             const session = store.openSession();
@@ -198,7 +199,7 @@ import {
 
             for (let i = 0; i < 100; i++) {
                 session.timeSeriesFor("users/karmel", "Heartrate")
-                    .append(baseLine.clone().add(400 * i, "milliseconds").toDate(), 29 * i, "watches/fitbit");
+                    .append(addMilliseconds(baseLine, 400 * i), 29 * i, "watches/fitbit");
             }
 
             await session.saveChanges();

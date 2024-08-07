@@ -1,6 +1,7 @@
 import { IDocumentStore } from "../../../src/index.js";
 import { disposeTestDocumentStore, testContext } from "../../Utils/TestUtil.js";
 import { assertThat } from "../../Utils/AssertExtensions.js";
+import { setYear } from "date-fns";
 
 describe("AddOrPatchTest", function () {
 
@@ -36,7 +37,7 @@ describe("AddOrPatchTest", function () {
             newUser.lastName = "Rhinos";
             newUser.lastLogin = new Date();
 
-            const newDate = testContext.utcToday().set({ year: 1993 }).toDate();
+            const newDate = setYear(testContext.utcToday(), 1993);
 
             session.advanced.addOrPatch(id, newUser, "lastLogin", newDate);
             await session.saveChanges();
@@ -55,7 +56,7 @@ describe("AddOrPatchTest", function () {
             newUser.lastName = "Rhinos";
             newUser.lastLogin = new Date(0);
 
-            const newDate = testContext.utcToday().set({ year: 1993 }).toDate();
+            const newDate = setYear(testContext.utcToday(), 1993);
 
             session.advanced.addOrPatch(id, newUser, "lastLogin", newDate);
             await session.saveChanges();
@@ -81,7 +82,7 @@ describe("AddOrPatchTest", function () {
             user.firstName = "Hibernating";
             user.lastName = "Rhinos";
 
-            const d2000 = testContext.utcToday().set({ year: 2000 }).toDate();
+            const d2000 = setYear(testContext.utcToday(), 2000);
 
             user.loginTimes = [ d2000 ];
             await session.store(user, id);
@@ -98,8 +99,8 @@ describe("AddOrPatchTest", function () {
             newUser.lastName = "Rhinos";
             newUser.loginTimes = [new Date()];
 
-            const d1993 = testContext.utcToday().set({ year: 1993 }).toDate();
-            const d2000 = testContext.utcToday().set({ year: 2000 }).toDate();
+            const d1993 = setYear(testContext.utcToday(), 1993);
+            const d2000 = setYear(testContext.utcToday(), 2000);
 
             session.advanced.addOrPatchArray(id, newUser, "loginTimes", u => u.push(d1993, d2000));
 
@@ -125,7 +126,7 @@ describe("AddOrPatchTest", function () {
             newUser.firstName = "Rhinos";
             newUser.lastLogin = now;
 
-            const d1993 = testContext.utcToday().set({ year: 1993 }).toDate();
+            const d1993 = setYear(testContext.utcToday(), 1993);
 
             session.advanced.addOrPatch(id, newUser, "lastLogin", d1993);
 
@@ -185,7 +186,7 @@ describe("AddOrPatchTest", function () {
             newUser.lastName = "Rhinos";
             newUser.lastLogin = new Date(0);
 
-            const d1993 = testContext.utcToday().set({ year: 1993 }).toDate();
+            const d1993 = setYear(testContext.utcToday(), 1993);
 
             session.advanced.addOrPatch(id, newUser, "lastLogin", d1993);
 

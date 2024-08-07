@@ -25,7 +25,7 @@ describe("RavenDB_15792Test", function () {
             await session.store(new User(), documentId);
 
             const tsf = session.timeSeriesFor(documentId, "gas m3 usage");
-            tsf.append(baseLine.toDate(), 1);
+            tsf.append(baseLine, 1);
 
             await session.saveChanges();
         }

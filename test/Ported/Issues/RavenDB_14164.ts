@@ -2,6 +2,7 @@ import { IDocumentStore } from "../../../src/index.js";
 import { disposeTestDocumentStore, testContext } from "../../Utils/TestUtil.js";
 import { User } from "../../Assets/Entities.js";
 import { assertThat } from "../../Utils/AssertExtensions.js";
+import { addHours, addMinutes } from "date-fns";
 
 describe("RavenDB_14164Test", function () {
 
@@ -49,7 +50,7 @@ describe("RavenDB_14164Test", function () {
             const tsf = session.timeSeriesFor(documentId, "heartRate");
 
             for (let i = 0; i <= 120; i++) {
-                tsf.append(baseLine.clone().add(i, "minutes").toDate(), i, tags[i % 3]);
+                tsf.append(addMinutes(baseLine, i), i, tags[i % 3]);
             }
 
             await session.saveChanges();
@@ -58,7 +59,7 @@ describe("RavenDB_14164Test", function () {
         {
             const session = store.openSession();
             const getResults = await session.timeSeriesFor(documentId, "heartRate")
-                .get(baseLine.toDate(), baseLine.clone().add(2, "hours").toDate(), b => b.includeTags());
+                .get(baseLine, addHours(baseLine, 2), b => b.includeTags());
 
             assertThat(session.advanced.numberOfRequests)
                 .isEqualTo(1);
@@ -66,9 +67,9 @@ describe("RavenDB_14164Test", function () {
             assertThat(getResults)
                 .hasSize(121);
             assertThat(getResults[0].timestamp.getTime())
-                .isEqualTo(baseLine.toDate().getTime());
+                .isEqualTo(baseLine.getTime());
             assertThat(getResults.at(-1).timestamp.getTime())
-                .isEqualTo(baseLine.clone().add(2, "hours").toDate().getTime());
+                .isEqualTo(addHours(baseLine, 2).getTime());
 
             // should not go to server
 
@@ -138,7 +139,7 @@ describe("RavenDB_14164Test", function () {
             const tsf = session.timeSeriesFor(documentId, "heartRate");
 
             for (let i = 0; i <= 120; i++) {
-                tsf.append(baseLine.clone().add(i, "minutes").toDate(), i, tags[i % 3]);
+                tsf.append(addMinutes(baseLine, i), i, tags[i % 3]);
             }
 
             await session.saveChanges();
@@ -147,7 +148,7 @@ describe("RavenDB_14164Test", function () {
         {
             const session = store.openSession();
             const getResults = await session.timeSeriesFor(documentId, "heartRate")
-                .get(baseLine.toDate(), baseLine.clone().add(2, "hours").toDate(), b => b.includeTags().includeDocument());
+                .get(baseLine, addHours(baseLine, 2), b => b.includeTags().includeDocument());
 
             assertThat(session.advanced.numberOfRequests)
                 .isEqualTo(1);
@@ -155,9 +156,9 @@ describe("RavenDB_14164Test", function () {
             assertThat(getResults)
                 .hasSize(121);
             assertThat(getResults[0].timestamp.getTime())
-                .isEqualTo(baseLine.toDate().getTime());
+                .isEqualTo(baseLine.getTime());
             assertThat(getResults.at(-1).timestamp.getTime())
-                .isEqualTo(baseLine.clone().add(2, "hours").toDate().getTime());
+                .isEqualTo(addHours(baseLine, 2).getTime());
 
             // should not go to server
 
@@ -241,7 +242,7 @@ describe("RavenDB_14164Test", function () {
                 } else {
                     tag = tags[2];
                 }
-                tsf.append(baseLine.clone().add(i, "minutes").toDate(), i, tag);
+                tsf.append(addMinutes(baseLine, i), i, tag);
             }
 
             await session.saveChanges();
@@ -251,22 +252,22 @@ describe("RavenDB_14164Test", function () {
             const session = store.openSession();
             // get [00:00 - 01:00]
             let getResults = await session.timeSeriesFor(documentId, "heartRate")
-                .get(baseLine.toDate(), baseLine.clone().add(1, "hours").toDate());
+                .get(baseLine, addHours(baseLine, 1));
             assertThat(session.advanced.numberOfRequests)
                 .isEqualTo(1);
 
             assertThat(getResults)
                 .hasSize(61);
             assertThat(getResults[0].timestamp.getTime())
-                .isEqualTo(baseLine.toDate().getTime());
+                .isEqualTo(baseLine.getTime());
             assertThat(getResults.at(-1).timestamp.getTime())
-                .isEqualTo(baseLine.clone().add(1, "hours").toDate().getTime());
+                .isEqualTo(addHours(baseLine, 1).getTime());
 
             // get [01:15 - 02:00] with includes
             getResults = await session.timeSeriesFor(documentId, "heartRate")
                 .get(
-                    baseLine.clone().add(75, "minutes").toDate(),
-                    baseLine.clone().add(2, "hours").toDate(),
+                    addMinutes(baseLine, 75),
+                    addHours(baseLine, 2),
                     i => i.includeTags());
 
             assertThat(session.advanced.numberOfRequests)
@@ -275,9 +276,9 @@ describe("RavenDB_14164Test", function () {
             assertThat(getResults)
                 .hasSize(46);
             assertThat(getResults[0].timestamp.getTime())
-                .isEqualTo(baseLine.clone().add(75, "minutes").toDate().getTime());
+                .isEqualTo(addMinutes(baseLine, 75).getTime());
             assertThat(getResults.at(-1).timestamp.getTime())
-                .isEqualTo(baseLine.clone().add(2, "hours").toDate().getTime());
+                .isEqualTo(addHours(baseLine, 2).getTime());
 
             // should not go to server
             const tagsDocuments = await session.load([tags[1], tags[2]], Watch);
@@ -356,7 +357,7 @@ describe("RavenDB_14164Test", function () {
                 } else {
                     tag = tags[2];
                 }
-                tsf.append(baseLine.clone().add(i, "minutes").toDate(), i, tag);
+                tsf.append(addMinutes(baseLine, i), i, tag);
             }
 
             await session.saveChanges();
@@ -366,7 +367,7 @@ describe("RavenDB_14164Test", function () {
             const session = store.openSession();
             // get [00:00 - 01:00]
             let getResults = await session.timeSeriesFor(documentId, "heartRate")
-                .get(baseLine.toDate(), baseLine.clone().add(1, "hours").toDate());
+                .get(baseLine, addHours(baseLine, 1));
 
             assertThat(session.advanced.numberOfRequests)
                 .isEqualTo(1);
@@ -374,13 +375,13 @@ describe("RavenDB_14164Test", function () {
             assertThat(getResults)
                 .hasSize(61);
             assertThat(getResults[0].timestamp.getTime())
-                .isEqualTo(baseLine.toDate().getTime());
+                .isEqualTo(baseLine.getTime());
             assertThat(getResults.at(-1).timestamp.getTime())
-                .isEqualTo(baseLine.clone().add(1, "hours").toDate().getTime());
+                .isEqualTo(addHours(baseLine, 1).getTime());
 
             // get [01:30 - 02:00]
             getResults = await session.timeSeriesFor(documentId, "heartRate")
-                .get(baseLine.clone().add(90, "minutes").toDate(), baseLine.clone().add(2, "hours").toDate());
+                .get(addMinutes(baseLine, 90), addHours(baseLine, 2));
 
             assertThat(session.advanced.numberOfRequests)
                 .isEqualTo(2);
@@ -388,15 +389,15 @@ describe("RavenDB_14164Test", function () {
             assertThat(getResults)
                 .hasSize(31);
             assertThat(getResults[0].timestamp.getTime())
-                .isEqualTo(baseLine.clone().add(90, "minutes").toDate().getTime());
+                .isEqualTo(addMinutes(baseLine, 90).getTime());
             assertThat(getResults.at(-1).timestamp.getTime())
-                .isEqualTo(baseLine.clone().add(2, "hours").toDate().getTime());
+                .isEqualTo(addHours(baseLine, 2).getTime());
 
             // get [01:00 - 01:15] with includes
             getResults = await session.timeSeriesFor(documentId, "heartRate")
                 .get(
-                    baseLine.clone().add(1, "hour").toDate(),
-                    baseLine.clone().add(75, "minutes").toDate(),
+                    addHours(baseLine, 1),
+                    addMinutes(baseLine, 75),
                     i => i.includeTags());
 
             assertThat(session.advanced.numberOfRequests)
@@ -405,9 +406,9 @@ describe("RavenDB_14164Test", function () {
             assertThat(getResults)
                 .hasSize(16);
             assertThat(getResults[0].timestamp.getTime())
-                .isEqualTo(baseLine.clone().add(1, "hours").toDate().getTime());
+                .isEqualTo(addHours(baseLine, 1).getTime());
             assertThat(getResults.at(-1).timestamp.getTime())
-                .isEqualTo(baseLine.clone().add(75, "minutes").toDate().getTime());
+                .isEqualTo(addMinutes(baseLine, 75).getTime());
 
             // should not go to server
 
@@ -478,7 +479,7 @@ describe("RavenDB_14164Test", function () {
             const tsf = session.timeSeriesFor(documentId, "heartRate");
 
             for (let i = 0; i <= 120; i++) {
-                tsf.append(baseLine.clone().add(i, "minutes").toDate(), i, tags[i % 3]);
+                tsf.append(addMinutes(baseLine, i), i, tags[i % 3]);
             }
 
             await session.saveChanges();
@@ -489,7 +490,7 @@ describe("RavenDB_14164Test", function () {
 
             // get range [00:00 - 00:30]
             let getResults = await session.timeSeriesFor(documentId, "heartRate")
-                .get(baseLine.toDate(), baseLine.clone().add(30, "minutes").toDate());
+                .get(baseLine, addMinutes(baseLine, 30));
 
             assertThat(session.advanced.numberOfRequests)
                 .isEqualTo(1);
@@ -497,36 +498,36 @@ describe("RavenDB_14164Test", function () {
             assertThat(getResults)
                 .hasSize(31);
             assertThat(getResults[0].timestamp.getTime())
-                .isEqualTo(baseLine.toDate().getTime());
+                .isEqualTo(baseLine.getTime());
             assertThat(getResults.at(-1).timestamp.getTime())
-                .isEqualTo(baseLine.clone().add(30, "minutes").toDate().getTime());
+                .isEqualTo(addMinutes(baseLine, 30).getTime());
 
             // get range [00:45 - 00:60]
 
             getResults = await session.timeSeriesFor(documentId, "heartRate")
-                .get(baseLine.clone().add(45, "minutes").toDate(), baseLine.clone().add(1, "hour").toDate());
+                .get(addMinutes(baseLine, 45), addHours(baseLine, 1));
             assertThat(session.advanced.numberOfRequests)
                 .isEqualTo(2);
 
             assertThat(getResults)
                 .hasSize(16);
             assertThat(getResults[0].timestamp.getTime())
-                .isEqualTo(baseLine.clone().add(45, "minutes").toDate().getTime());
+                .isEqualTo(addMinutes(baseLine, 45).getTime());
             assertThat(getResults.at(-1).timestamp.getTime())
-                .isEqualTo(baseLine.clone().add(1, "hour").toDate().getTime());
+                .isEqualTo(addHours(baseLine, 1).getTime());
 
             // get range [01:30 - 02:00]
             getResults = await session.timeSeriesFor(documentId, "heartRate")
-                .get(baseLine.clone().add(90, "minutes").toDate(), baseLine.clone().add(2, "hour").toDate());
+                .get(addMinutes(baseLine, 90), addHours(baseLine, 2));
             assertThat(session.advanced.numberOfRequests)
                 .isEqualTo(3);
 
             assertThat(getResults)
                 .hasSize(31);
             assertThat(getResults[0].timestamp.getTime())
-                .isEqualTo(baseLine.clone().add(90, "minutes").toDate().getTime());
+                .isEqualTo(addMinutes(baseLine, 90).getTime());
             assertThat(getResults.at(-1).timestamp.getTime())
-                .isEqualTo(baseLine.clone().add(2, "hour").toDate().getTime());
+                .isEqualTo(addHours(baseLine, 2).getTime());
 
             // get multiple ranges with includes
             // ask for entire range [00:00 - 02:00] with includes
@@ -534,8 +535,8 @@ describe("RavenDB_14164Test", function () {
 
             getResults = await session.timeSeriesFor(documentId, "heartRate")
                 .get(
-                    baseLine.toDate(),
-                    baseLine.clone().add(2, "hours").toDate(),
+                    baseLine,
+                    addHours(baseLine, 2),
                     i => i.includeTags().includeDocument());
 
             assertThat(session.advanced.numberOfRequests)
@@ -544,9 +545,9 @@ describe("RavenDB_14164Test", function () {
                 .hasSize(121);
 
             assertThat(getResults[0].timestamp.getTime())
-                .isEqualTo(baseLine.toDate().getTime());
+                .isEqualTo(baseLine.getTime());
             assertThat(getResults.at(-1).timestamp.getTime())
-                .isEqualTo(baseLine.clone().add(2, "hours").toDate().getTime());
+                .isEqualTo(addHours(baseLine, 2).getTime());
 
             // should not go to server
 
@@ -623,7 +624,7 @@ describe("RavenDB_14164Test", function () {
                 const tag = i % 10 === 0
                     ? null
                     : tags[i % 3];
-                tsf.append(baseLine.clone().add(i, "minutes").toDate(), i, tag);
+                tsf.append(addMinutes(baseLine, i), i, tag);
             }
 
             await session.saveChanges();
@@ -632,7 +633,7 @@ describe("RavenDB_14164Test", function () {
         {
             const session = store.openSession();
             const getResults = await session.timeSeriesFor(documentId, "heartRate")
-                .get(baseLine.toDate(), baseLine.clone().add(2, "hours").toDate(), i => i.includeTags());
+                .get(baseLine, addHours(baseLine, 2), i => i.includeTags());
 
             assertThat(session.advanced.numberOfRequests)
                 .isEqualTo(1);
@@ -640,9 +641,9 @@ describe("RavenDB_14164Test", function () {
             assertThat(getResults)
                 .hasSize(121);
             assertThat(getResults[0].timestamp.getTime())
-                .isEqualTo(baseLine.toDate().getTime());
+                .isEqualTo(baseLine.getTime());
             assertThat(getResults.at(-1).timestamp.getTime())
-                .isEqualTo(baseLine.clone().add(2, "hours").toDate().getTime());
+                .isEqualTo(addHours(baseLine, 2).getTime());
 
             // should not go to server
 
@@ -711,7 +712,7 @@ describe("RavenDB_14164Test", function () {
             const tsf = session.timeSeriesFor(documentId, "heartRate");
 
             for (let i = 0; i <= 120; i++) {
-                tsf.append(baseLine.clone().add(i, "minutes").toDate(), i, tags[i % 3]);
+                tsf.append(addMinutes(baseLine, i), i, tags[i % 3]);
             }
 
             await session.saveChanges();
@@ -720,7 +721,7 @@ describe("RavenDB_14164Test", function () {
         {
             const session = store.openSession();
             const getResults = await session.timeSeriesFor(documentId, "heartRate")
-                .get(baseLine.toDate(), baseLine.clone().add(2, "hours").toDate(), i => i.includeTags());
+                .get(baseLine, addHours(baseLine, 2), i => i.includeTags());
 
             assertThat(session.advanced.numberOfRequests)
                 .isEqualTo(1);
@@ -728,9 +729,9 @@ describe("RavenDB_14164Test", function () {
             assertThat(getResults)
                 .hasSize(121);
             assertThat(getResults[0].timestamp.getTime())
-                .isEqualTo(baseLine.toDate().getTime());
+                .isEqualTo(baseLine.getTime());
             assertThat(getResults.at(-1).timestamp.getTime())
-                .isEqualTo(baseLine.clone().add(2, "hours").toDate().getTime());
+                .isEqualTo(addHours(baseLine, 2).getTime());
 
             // should not go to server
             const tagDocuments = await session.load(tags, Watch);
@@ -776,8 +777,8 @@ describe("RavenDB_14164Test", function () {
             const session = store.openSession();
             const getResults = await session.timeSeriesFor(documentId, "heartRate")
                 .get(
-                    baseLine.toDate(),
-                    baseLine.clone().add(2, "hours").toDate(),
+                    baseLine,
+                    addHours(baseLine, 2),
                     b => b.includeTags());
 
             assertThat(session.advanced.numberOfRequests)
@@ -786,9 +787,9 @@ describe("RavenDB_14164Test", function () {
             assertThat(getResults)
                 .hasSize(121);
             assertThat(getResults[0].timestamp.getTime())
-                .isEqualTo(baseLine.toDate().getTime());
+                .isEqualTo(baseLine.getTime());
             assertThat(getResults.at(-1).timestamp.getTime())
-                .isEqualTo(baseLine.clone().add(2, "hours").toDate().getTime());
+                .isEqualTo(addHours(baseLine, 2).getTime());
 
             // should not go to server
 
@@ -823,7 +824,7 @@ describe("RavenDB_14164Test", function () {
             // update a time series entry to have the new tag
 
             session.timeSeriesFor(documentId, "heartRate")
-                .append(baseLine.clone().add(45, "minutes").toDate(), 90, newTag);
+                .append(addMinutes(baseLine, 45), 90, newTag);
 
             await session.saveChanges();
         }
@@ -832,8 +833,8 @@ describe("RavenDB_14164Test", function () {
             const session = store.openSession();
             const getResults = await session.timeSeriesFor(documentId, "heartRate")
                 .get(
-                    baseLine.toDate(),
-                    baseLine.clone().add(2, "hours").toDate(),
+                    baseLine,
+                    addHours(baseLine, 2),
                     i => i.includeTags());
 
             assertThat(session.advanced.numberOfRequests)
@@ -842,9 +843,9 @@ describe("RavenDB_14164Test", function () {
             assertThat(getResults)
                 .hasSize(121);
             assertThat(getResults[0].timestamp.getTime())
-                .isEqualTo(baseLine.toDate().getTime());
+                .isEqualTo(baseLine.getTime());
             assertThat(getResults.at(-1).timestamp.getTime())
-                .isEqualTo(baseLine.clone().add(2, "hours").toDate().getTime());
+                .isEqualTo(addHours(baseLine, 2).getTime());
 
             // should not go to server
             await session.load(tags, Watch);
