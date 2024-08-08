@@ -52,12 +52,12 @@ import { ReplicationTestContext } from "../../Utils/ReplicationTestContext.js";
                         const heartRateMeasure1 = new HeartRateMeasure();
                         heartRateMeasure1.heartRate = 34;
                         s.timeSeriesFor("users/pheobe", HeartRateMeasure)
-                            .append(today.toDate(), heartRateMeasure1, "test/things/out");
+                            .append(today, heartRateMeasure1, "test/things/out");
 
                         const heartRateMeasure2 = new HeartRateMeasure()
                         heartRateMeasure2.heartRate = 55;
                         s.timeSeriesFor("users/ayende", HeartRateMeasure)
-                            .append(today.toDate(), heartRateMeasure2, "test/things/out");
+                            .append(today, heartRateMeasure2, "test/things/out");
 
                         s.advanced.attachments.store("users/ayende", "test.bin", Buffer.from("hello", "utf8"));
                         s.advanced.attachments.store("users/pheobe", "test.bin", Buffer.from("hello", "utf8"));
