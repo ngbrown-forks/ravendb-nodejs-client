@@ -168,10 +168,10 @@ export abstract class RavenCommand<TResult> {
         const fetchFn = fetcher ?? fetch; // support for custom fetcher
         const response = await fetchFn(uri, optionsToUse);
 
-        const effectiveStream: Readable =
+        const effectiveStream: Stream =
             response.body
                 ? Readable.fromWeb(response.body)
-                : (response.body ?? new Stream());
+                : new Stream();
 
         effectiveStream
             .pipe(passthrough);

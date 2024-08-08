@@ -16,7 +16,6 @@
     "lib": [ "ES2022" ],
     "typeRoots": [
       "node_modules/@types",
-      "node_modules/moment",
       "src/Types"
     ],
     "types": [

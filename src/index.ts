@@ -13,6 +13,7 @@ export * from "./Http/IBroadcast.js";
 export * from "./Http/IRaftCommand.js";
 export * from "./Http/NodeSelector.js";
 export * from "./Http/LoadBalanceBehavior.js";
+export * from "./Http/HttpCompressionAlgorithm.js";
 export * from "./Http/RavenCommand.js";
 export * from "./Http/ReadBalanceBehavior.js";
 export * from "./Http/RequestExecutor.js";

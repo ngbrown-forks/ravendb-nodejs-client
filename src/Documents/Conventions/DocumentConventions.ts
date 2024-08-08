@@ -19,6 +19,7 @@ import { BulkInsertConventions } from "./BulkInsertConventions.js";
 import { InMemoryDocumentSessionOperations } from "../Session/InMemoryDocumentSessionOperations.js";
 import { ShardingConventions } from "./ShardingConventions.js";
 import { plural } from "../../ext/pluralize/pluralize.js";
+import { HttpCompressionAlgorithm } from "../../Http/HttpCompressionAlgorithm.js";
 
 export type IdConvention = (databaseName: string, entity: object) => Promise<string>;
 export type IValueForQueryConverter<T> =
@@ -98,7 +99,9 @@ export class DocumentConventions {
     private _customFetch: any;
     private _dateUtil: DateUtil;
 
-    private _useCompression: boolean;
+    private _useHttpDecompression: boolean | null = null;
+    private _httpCompressionAlgorithm: HttpCompressionAlgorithm = "Gzip";
+
     private _sendApplicationIdentifier: boolean;
 
     private readonly _bulkInsert: BulkInsertConventions;
@@ -155,8 +158,6 @@ export class DocumentConventions {
         this._objectMapper = new TypesAwareObjectMapper({
             documentConventions: this
         });
-
-        this._useCompression = null;
 
         this._dateUtilOpts = {};
         this._dateUtil = new DateUtil(this._dateUtilOpts);
@@ -407,10 +408,6 @@ export class DocumentConventions {
         this._maxHttpCacheSize = value;
     }
 
-    public get hasExplicitlySetCompressionUsage() {
-        return this._useCompression !== null;
-    }
-
     public get waitForIndexesAfterSaveChangesTimeout() {
         return this._waitForIndexesAfterSaveChangesTimeout;
     }
@@ -438,17 +435,26 @@ export class DocumentConventions {
         this._waitForReplicationAfterSaveChangesTimeout = value;
     }
 
-    public get useCompression() {
-        if (this._useCompression === null) {
+    /**
+     * Can accept compressed HTTP response content and will use decompression methods
+     */
+    public get useHttpDecompression() {
+        if (this._useHttpDecompression === null) {
             return true;
         }
-
-        return this._useCompression;
+        return this._useHttpDecompression;
     }
 
-    public set useCompression(value) {
+    /**
+     * Can accept compressed HTTP response content and will use decompression methods
+     */
+    public set useHttpDecompression(value: boolean) {
         this._assertNotFrozen();
-        this._useCompression = value;
+        this._useHttpDecompression = value;
+    }
+
+    public get httpCompressionAlgorithm() {
+        return this._httpCompressionAlgorithm;
     }
 
     private _dateUtilOpts: DateUtilOpts;
