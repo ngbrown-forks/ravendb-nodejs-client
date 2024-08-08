@@ -71,7 +71,6 @@
     "open": "^10.1.0",
     "reflect-metadata": "^0.2.2",
     "sinon": "^18.0.0",
-    "source-map-support": "^0.5.21",
     "ts-node": "^10.9.2",
     "tshy": "^3.0.2",
     "typescript": "^5.5.4",
