@@ -12,9 +12,8 @@ import {
 } from "../../src/index.js";
 import { disposeTestDocumentStore, RavenTestContext, TemporaryDirContext, testContext } from "../Utils/TestUtil.js";
 import path from "node:path";
-import fs from "node:fs";
+import fs, { rmSync } from "node:fs";
 import { assertThat } from "../Utils/AssertExtensions.js";
-import { sync } from "rimraf";
 import { Stopwatch } from "../../src/Utility/Stopwatch.js";
 import { throwError } from "../../src/Exceptions/index.js";
 import { delay } from "../../src/Utility/PromiseUtil.js";
@@ -67,7 +66,7 @@ import { TimeUtil } from "../../src/Utility/TimeUtil.js";
             assertThat(backupStatus.status.isEncrypted)
                 .isFalse();
         } finally {
-            sync(backupDir);
+            rmSync(backupDir, { recursive: true, force: true });
         }
     });
 
@@ -129,7 +128,7 @@ import { TimeUtil } from "../../src/Utility/TimeUtil.js";
 
         } finally {
             testContext.customizeDbRecord = null;
-            sync(backupDir);
+            rmSync(backupDir, { recursive: true, force: true });
         }
     });
 

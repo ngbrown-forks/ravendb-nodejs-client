@@ -1,4 +1,4 @@
-import fs from "node:fs";
+import fs, { rmSync } from "node:fs";
 import path from "node:path";
 import url from "node:url";
 import { RavenTestDriver } from "../TestDriver/index.js";
@@ -22,7 +22,6 @@ import {
     IDocumentStore,
     IAuthOptions
 } from "../../src/index.js";
-import { sync } from "rimraf";
 import { ChildProcess } from "node:child_process";
 import { TypeUtil } from "../../src/Utility/TypeUtil.js";
 import { getLogger } from "../../src/Utility/LogUtil.js";
@@ -798,6 +797,6 @@ export class TemporaryDirContext implements IDisposable {
     }
 
     dispose(): void {
-        sync(this.tempDir);
+        rmSync(this.tempDir, { recursive: true, force: true });
     }
 }
