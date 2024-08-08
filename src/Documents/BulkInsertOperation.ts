@@ -34,6 +34,7 @@ import { Semaphore } from "../Utility/Semaphore.js";
 import { BulkInsertOperationBase } from "./BulkInsert/BulkInsertOperationBase.js";
 import { BulkInsertOptions } from "./BulkInsert/BulkInsertOptions.js";
 import { BulkInsertWriter } from "./BulkInsert/BulkInsertWriter.js";
+import { HttpCompressionAlgorithm } from "../Http/HttpCompressionAlgorithm.js";
 
 export class BulkInsertOperation extends BulkInsertOperationBase<object> {
 
@@ -750,11 +751,11 @@ export class BulkInsertOperation extends BulkInsertOperationBase<object> {
     }
 
     protected async _ensureStream() {
-        await this._writer.ensureStream(this.useCompression);
+        const compressionAlgorithm = this._useCompression ? this._conventions.httpCompressionAlgorithm : null;
+        await this._writer.ensureStream(compressionAlgorithm);
 
         const bulkCommand =
-            new BulkInsertCommand(this._operationId, this._writer.compressedStream ?? this._writer.requestBodyStream, this._nodeTag, this._options.skipOverwriteIfUnchanged);
-        bulkCommand.useCompression = this._useCompression;
+            new BulkInsertCommand(this._operationId, compressionAlgorithm, this._writer.compressedStream ?? this._writer.requestBodyStream, this._nodeTag, this._options.skipOverwriteIfUnchanged);
 
         this._bulkInsertExecuteTask = this._requestExecutor.execute(bulkCommand);
         this._bulkInsertExecuteTask
@@ -955,11 +956,12 @@ export class BulkInsertCommand extends RavenCommand<void> {
     private readonly _stream: Readable;
     private _skipOverwriteIfUnchanged: boolean;
     private readonly _id: number;
-    public useCompression: boolean;
+    private _compressionAlgorithm: HttpCompressionAlgorithm;
 
-    public constructor(id: number, stream: Readable, nodeTag: string, skipOverwriteIfUnchanged: boolean) {
+    public constructor(id: number, compressionAlgorithm: HttpCompressionAlgorithm, stream: Readable, nodeTag: string, skipOverwriteIfUnchanged: boolean) {
         super();
 
+        this._compressionAlgorithm = compressionAlgorithm;
         this._stream = stream;
         this._id = id;
         this._selectedNodeTag = nodeTag;
@@ -973,7 +975,7 @@ export class BulkInsertCommand extends RavenCommand<void> {
             + "&skipOverwriteIfUnchanged=" + (this._skipOverwriteIfUnchanged ? "true" : "false");
 
         const headersBuilder = this._headers().typeAppJson();
-        if (this.useCompression) {
+        if (this._compressionAlgorithm === "Gzip") {
             headersBuilder.with("Content-Encoding", "gzip");
         }
 

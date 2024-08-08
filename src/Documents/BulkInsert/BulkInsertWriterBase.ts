@@ -4,6 +4,7 @@ import { pipeline, Readable } from "node:stream";
 import type { Gzip } from "node:zlib";
 import { promisify } from "node:util";
 import { TypeUtil } from "../../Utility/TypeUtil.js";
+import { HttpCompressionAlgorithm } from "../../Http/HttpCompressionAlgorithm.js";
 
 export class BulkInsertWriterBase implements IDisposable {
     private readonly _maxSizeInBuffer = 1024 * 1024;
@@ -97,8 +98,8 @@ export class BulkInsertWriterBase implements IDisposable {
         }
     }
 
-    public async ensureStream(compression: boolean) {
-        if (compression) {
+    public async ensureStream(compression: HttpCompressionAlgorithm) {
+        if (compression === "Gzip") {
             const { createGzip } = await import("node:zlib");
             this.compressedStream = createGzip();
             pipeline(this.requestBodyStream, this.compressedStream, TypeUtil.NOOP);

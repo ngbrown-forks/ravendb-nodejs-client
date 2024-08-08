@@ -365,6 +365,19 @@ export class RequestExecutor implements IDisposable {
         }
     }
 
+    private compressionHeaders(params: HttpRequestParameters) {
+        if (this._conventions.useHttpDecompression) {
+            // do nothing - node.js sends 'accept-encoding: gzip, deflate' by default
+        } else {
+            // disable response compression
+            let { headers} = params;
+            if (!headers) {
+                params.headers = headers = {};
+            }
+            headers["Accept-Encoding"] = "identity";
+        }
+    }
+
     private static async createAgent(options: Agent.Options) {
         try {
             const { Agent: AgentInstance } = await import(importFix("undici"));
@@ -1162,6 +1175,7 @@ export class RequestExecutor implements IDisposable {
         if (this._shouldExecuteOnAll(chosenNode, command)) {
             responseAndStream = await this._executeOnAllToFigureOutTheFastest(chosenNode, command);
         } else {
+            this.compressionHeaders(request);
             responseAndStream = await command.send(await this.getHttpAgent(), request);
         }
 
@@ -1331,6 +1345,7 @@ export class RequestExecutor implements IDisposable {
                         return;
                     }
                     this._setRequestHeaders(null, null, req);
+                    this.compressionHeaders(req);
                     return command.send(agent, req);
                 })
                 .then(commandResult => new IndexAndResponse(taskNumber, commandResult.response, commandResult.bodyStream))
@@ -1918,14 +1933,8 @@ export class RequestExecutor implements IDisposable {
 
 
     private _setDefaultRequestOptions(): void {
-        // add property only if compression enabled - having fixed properly makes custom fetch (like in next.js) fail
-        const compressOpts = !this._conventions.hasExplicitlySetCompressionUsage || this._conventions.useCompression ? {
-            compress: true
-        } : {};
-
         this._defaultRequestOptions = Object.assign(
             DEFAULT_REQUEST_OPTIONS,
-            compressOpts,
             this._customHttpRequestOptions);
     }
 
