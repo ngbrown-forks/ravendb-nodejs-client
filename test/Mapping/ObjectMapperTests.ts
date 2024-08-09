@@ -8,7 +8,6 @@ import {
     DocumentConventions,
     TypeInfo
 } from "../../src/index.js";
-import { DateUtil } from "../../src/Utility/DateUtil.js";
 import { TypeUtil } from "../../src/Utility/TypeUtil.js";
 
 describe("ObjectMapper", function () {

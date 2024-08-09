@@ -1,4 +1,3 @@
-import assert from "node:assert"
 import sinon from "sinon";
 import { testContext, disposeTestDocumentStore } from "../Utils/TestUtil.js";
 
