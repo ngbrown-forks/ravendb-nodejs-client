@@ -2,7 +2,7 @@ import assert from "node:assert"
 import { testContext, disposeTestDocumentStore } from "../../Utils/TestUtil.js";
 
 import {
-    AbstractJavaScriptIndexCreationTask, DateUtil,
+    AbstractJavaScriptIndexCreationTask,
     IDocumentStore,
     RangeBuilder,
 } from "../../../src/index.js";

@@ -83,7 +83,7 @@ describe("IDocumentQueryCustomizationMethodsTest", function () {
     });
 
     // TBD - enable test when RDBC-713 is done
-    it.skip("afterStreamExecuted", async () => {
+    it("afterStreamExecuted", async () => {
         const session = store.openSession();
         
         // prepare data

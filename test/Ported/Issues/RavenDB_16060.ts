@@ -1,5 +1,5 @@
 import {
-    ConfigureTimeSeriesOperation, DateUtil,
+    ConfigureTimeSeriesOperation,
     IDocumentStore,
     InMemoryDocumentSessionOperations,
     RawTimeSeriesPolicy,

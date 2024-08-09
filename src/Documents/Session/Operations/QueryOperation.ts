@@ -19,7 +19,6 @@ import { TimeSeriesRangeAggregation } from "../../Queries/TimeSeries/TimeSeriesR
 import { ObjectChangeCaseOptions, ObjectUtil } from "../../../Utility/ObjectUtil.js";
 import { TimeSeriesEntry } from "../TimeSeries/TimeSeriesEntry.js";
 import { StringBuilder } from "../../../Utility/StringBuilder.js";
-import { DocumentConventions } from "../../Conventions/DocumentConventions.js";
 import { DateUtil } from "../../../Utility/DateUtil.js";
 
 const log = getLogger({ module: "QueryOperation" });
