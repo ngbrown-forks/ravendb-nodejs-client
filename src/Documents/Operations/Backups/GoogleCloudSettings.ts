@@ -1,6 +1,6 @@
-import { BackupStatus } from "./BackupStatus";
+import { BackupSettings } from "./BackupSettings";
 
-export interface GoogleCloudSettings extends BackupStatus {
+export interface GoogleCloudSettings extends BackupSettings {
 
     bucketName: string;
     remoteFolderName: string;
